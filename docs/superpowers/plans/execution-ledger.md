@@ -187,3 +187,22 @@ refresh/TTY handling is deferred because it cannot be safely exercised in this
 non-TTY container. Cost: no interactive process viewer.
 Ruling: parseProcCmdline returns a view into a module-level buffer; applets are
 single-threaded, so this is safe here. Cost: the helper is not thread-safe.
+
+Task 15: complete (subset) — ash/hush interpreter in src/shell/main.zig +
+shell_test.zig, wired to the registry. Commit `77f566e`.
+RED: 4 new tests failed/were missing while 110 existing passed; GREEN: 116/116
+via `zig build test`. Binary integration verified `ash -c` with quotes,
+$VARIABLE expansion, `;`, cd/pwd, external commands, stdin mode, `exit 7`, and
+`hush -c`.
+Two bugs found in binary verification, each RED→GREEN: semicolons were not
+command separators (added runInput splitting with a test); and getcwd's length
+included the trailing NUL, so pwd emitted it (added cwdSlice with a test).
+Ruling: the interpreter covers word tokenization (quotes/escapes), $VAR
+expansion, assignments, `;`, builtins (echo/cd/pwd/true/false/export/exit),
+PATH lookup and external commands. Pipelines, redirections, globbing, control
+flow, job control and TTY prompts are deferred — they need a full parser and
+interactive terminal handling that cannot be safely tested here. Cost: complex
+shell scripts will not run.
+Ruling: `;` is split textually, even inside quotes; external commands receive
+an empty envp (no environment inheritance, same as ionice). Cost: quoted
+semicolons and env-dependent commands are unsupported.
