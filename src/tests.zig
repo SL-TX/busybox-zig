@@ -20,4 +20,5 @@ test {
     _ = @import("miscutils/misc_test.zig");
     _ = @import("procps/procps_test.zig");
     _ = @import("shell/shell_test.zig");
+    _ = @import("loginutils/login_test.zig");
 }

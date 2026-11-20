@@ -627,12 +627,12 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("vlock", Applet{ .name = "vlock", .main = vlock_main, .flags = .{} }) catch unreachable;
     map.put("deluser", Applet{ .name = "deluser", .main = deluser_main, .flags = .{} }) catch unreachable;
     map.put("adduser", Applet{ .name = "adduser", .main = adduser_main, .flags = .{} }) catch unreachable;
-    map.put("login", Applet{ .name = "login", .main = login_main, .flags = .{} }) catch unreachable;
+    map.put("login", Applet{ .name = "login", .main = @import("loginutils").login_main, .flags = .{} }) catch unreachable;
     map.put("addgroup", Applet{ .name = "addgroup", .main = addgroup_main, .flags = .{} }) catch unreachable;
-    map.put("passwd", Applet{ .name = "passwd", .main = passwd_main, .flags = .{} }) catch unreachable;
+    map.put("passwd", Applet{ .name = "passwd", .main = @import("loginutils").passwd_main, .flags = .{} }) catch unreachable;
     map.put("chpasswd", Applet{ .name = "chpasswd", .main = chpasswd_main, .flags = .{} }) catch unreachable;
     map.put("add_remove_shell", Applet{ .name = "add_remove_shell", .main = add_remove_shell_main, .flags = .{} }) catch unreachable;
-    map.put("su", Applet{ .name = "su", .main = su_main, .flags = .{} }) catch unreachable;
+    map.put("su", Applet{ .name = "su", .main = @import("loginutils").su_main, .flags = .{} }) catch unreachable;
     map.put("sulogin", Applet{ .name = "sulogin", .main = sulogin_main, .flags = .{} }) catch unreachable;
     map.put("cryptpw", Applet{ .name = "cryptpw", .main = @import("loginutils").cryptpw_main, .flags = .{} }) catch unreachable;
     map.put("mkpasswd", Applet{ .name = "mkpasswd", .main = mkpasswd_main, .flags = .{} }) catch unreachable;
