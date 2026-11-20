@@ -428,7 +428,7 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("flock", Applet{ .name = "flock", .main = flock_main, .flags = .{} }) catch unreachable;
     map.put("fstrim", Applet{ .name = "fstrim", .main = fstrim_main, .flags = .{} }) catch unreachable;
     map.put("hwclock", Applet{ .name = "hwclock", .main = hwclock_main, .flags = .{} }) catch unreachable;
-    map.put("ionice", Applet{ .name = "ionice", .main = ionice_main, .flags = .{} }) catch unreachable;
+    map.put("ionice", Applet{ .name = "ionice", .main = @import("miscutils").ionice_main, .flags = .{} }) catch unreachable;
     map.put("last", Applet{ .name = "last", .main = last_main, .flags = .{} }) catch unreachable;
     map.put("lsblk", Applet{ .name = "lsblk", .main = lsblk_main, .flags = .{} }) catch unreachable;
     map.put("mdev", Applet{ .name = "mdev", .main = mdev_main, .flags = .{} }) catch unreachable;
@@ -438,7 +438,7 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("nsenter", Applet{ .name = "nsenter", .main = nsenter_main, .flags = .{} }) catch unreachable;
     map.put("pivot_root", Applet{ .name = "pivot_root", .main = pivot_root_main, .flags = .{} }) catch unreachable;
     map.put("readprofile", Applet{ .name = "readprofile", .main = readprofile_main, .flags = .{} }) catch unreachable;
-    map.put("renice", Applet{ .name = "renice", .main = renice_main, .flags = .{} }) catch unreachable;
+    map.put("renice", Applet{ .name = "renice", .main = @import("miscutils").renice_main, .flags = .{} }) catch unreachable;
     map.put("switch_root", Applet{ .name = "switch_root", .main = switch_root_main, .flags = .{} }) catch unreachable;
     map.put("taskset", Applet{ .name = "taskset", .main = taskset_main, .flags = .{} }) catch unreachable;
     map.put("unshare", Applet{ .name = "unshare", .main = unshare_main, .flags = .{} }) catch unreachable;
@@ -559,7 +559,7 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("flash_eraseall", Applet{ .name = "flash_eraseall", .main = flash_eraseall_main, .flags = .{} }) catch unreachable;
     map.put("tree", Applet{ .name = "tree", .main = tree_main, .flags = .{} }) catch unreachable;
     map.put("lsscsi", Applet{ .name = "lsscsi", .main = lsscsi_main, .flags = .{} }) catch unreachable;
-    map.put("crontab", Applet{ .name = "crontab", .main = crontab_main, .flags = .{} }) catch unreachable;
+    map.put("crontab", Applet{ .name = "crontab", .main = @import("miscutils").crontab_main, .flags = .{} }) catch unreachable;
     map.put("volname", Applet{ .name = "volname", .main = volname_main, .flags = .{} }) catch unreachable;
     map.put("flashcp", Applet{ .name = "flashcp", .main = flashcp_main, .flags = .{} }) catch unreachable;
     map.put("flash_lock_unlock", Applet{ .name = "flash_lock_unlock", .main = flash_lock_unlock_main, .flags = .{} }) catch unreachable;

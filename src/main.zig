@@ -50,6 +50,7 @@ fn printAppletList() void {
 
 pub fn main(init: Init) u8 {
     libbb_zig.init();
+    libbb_zig.env.map = init.environ_map;
 
     const vec = init.minimal.args.vector;
     const argv0 = if (vec.len > 0) std.mem.span(vec[0]) else "busybox";

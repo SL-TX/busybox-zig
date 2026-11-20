@@ -16,3 +16,4 @@ pub const hash = @import("hash.zig");
 pub const socket = @import("socket.zig");
 pub const util = @import("util.zig");
 pub const pw = @import("pw.zig");
+pub const env = @import("env.zig");

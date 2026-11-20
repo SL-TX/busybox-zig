@@ -54,6 +54,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    miscutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("miscutils", miscutils);
 
     // Add procps module
