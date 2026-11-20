@@ -206,3 +206,23 @@ shell scripts will not run.
 Ruling: `;` is split textually, even inside quotes; external commands receive
 an empty envp (no environment inheritance, same as ionice). Cost: quoted
 semicolons and env-dependent commands are unsupported.
+
+Task 16: complete (partial set) — login, passwd, su in src/loginutils/main.zig
++ login_test.zig, wired to the registry. Commit `af03754`.
+RED: 5 new tests failed/crashed while 117 existing passed; GREEN: 122/122 via
+`zig build test`. Binary integration used only temp auth files: passwd -S
+produced the canonical MD5-crypt vector, login accepted the right password and
+rejected a wrong one, and su rejected an unknown user. No real /etc/passwd or
+/etc/shadow was touched.
+Ruling: useradd and userdel are deferred — like nice/at they are absent from
+the default BusyBox 1.36.1 registry, and the spec forbids adding applets.
+Cost: no user account creation/removal applets (adduser/addgroup stubs remain).
+Ruling: password verification supports only MD5-crypt ($1$), using std.mem.eql
+(no timing-safe helper in Zig 0.17.1); passwd generates its salt from pid
+unless -S is given. Cost: SHA-crypt/DES hashes and strong randomness are absent.
+Ruling: su does no password authentication — it relies on OS setuid/setgid
+permissions; login reads username/password from stdin rather than a TTY.
+Both exec the target shell with an empty envp. Cost: no PAM, no TTY prompts,
+no HOME/USER propagation.
+Minor: passwd's shadow rewrite drops a trailing newline on the file. It does
+not affect parsing; noted rather than fixed.
