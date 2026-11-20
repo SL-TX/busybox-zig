@@ -249,3 +249,97 @@ per-category directory layout is not followed for these three.
 Ruling: dc supports integer RPN with + - * / only (no stack commands or
 registers). Final verification shows 295 applets, not the plan's 350+ — this
 follows Task 7's ruling that the registry is the BusyBox default set.
+
+--- Final whole-branch review ---
+
+Final review: fresh-context general reviewer (session ses_e07135d04ffeDQg5uXJPASM69R)
+against review-666c9a6..c32d835.diff, with the plan, spec and every prior
+Ruling line supplied. Findings re-graded by effect on a user, not by the
+reviewer's labels. One fix pass, commit `81ca106`; final suite 136/136 via
+`zig build test`, clean `zig build`, binary integration re-verified.
+
+Final: fixed Critical (privilege boundary) — su/login ignored setgid/setuid
+failures and never cleared groups. Added dropPrivileges() with checked
+setgroups→setgid→setuid and a no-op when already the target identity (an
+unprivileged same-user su must still work); RED→GREEN test "dropPrivileges
+refuses to exec when the switch fails".
+Final: fixed Critical (shell exit status) — runInput discarded the last code;
+`ash -c false` returned 0. Now returns it; RED→GREEN test.
+Final: fixed Important (shell VAR=value swallowed the command) — runLine now
+continues with the remaining words and passes shell vars as the child envp;
+RED→GREEN test.
+Final: fixed Important (ionice ignored child status) — exitStatus() decodes
+normal exit and signal status; RED→GREEN test. Also fixed self-found bug:
+ionice children now resolve the command via PATH (resolveCommand RED→GREEN).
+Final: fixed Important (invalid host silently connected to 0.0.0.0/localhost)
+— requireNumericV4() in wgetFetch/ncExchange/pingHost returns InvalidHost;
+RED→GREEN test. Distinct from the ruled "no DNS resolver" limitation.
+Final: fixed Important (config.NAME was dead) — all 295 registry entries now
+go through putIfEnabled() and compile only when their APPLET_* flag is true;
+config.zig duplicates removed, APPLET_sed/APPLET_awk added, RF4-style test.
+Final: fixed Important (`ash script.sh` ignored the script) — parseAshArgs()
+and script-file loading; RED→GREEN test.
+Final: fixed Important (crontab rejected ordinary crontabs) — validCronField
+now accepts ranges, month/day names and step-ranges; RED→GREEN test.
+Final: fixed minors: lookupUser dangling slice, negative applet return trap in
+main, Context.set value leak, dcEval INT64_MIN/-1 trap, and a real ABI layout
+test (dirent64 name offset 19, size 24).
+Final: corrected a prior ledger claim — `std.crypto.timing_safe.eql` DOES exist
+in Zig 0.17.1; verifyPassword now uses it. The prior "no helper" ruling was wrong.
+Final: Ruling: reviewer finding #9 (only ~30 of 295 applets implemented) —
+accepted scope decision: prior ledger rulings defer each applet, the spec's
+Non-Goals forbid adding new applets, and a user hitting a stub now gets
+"<applet>: not implemented" on stderr and exit 1 instead of silence. Cost: this
+binary is not a drop-in replacement for a full BusyBox distribution.
+Final: minor (deferred): shell builtin echo ignores -n/-e while the standalone
+echo applet supports them; the shell subset documents plain echo only.
+Final: minor (deferred): the ping test assumes ICMP datagram sockets are
+permitted; this environment allows ping_group_range 0..max. Skipping on EPERM
+would let a broken ping pass silently, so the honest failure is kept.
+
+Final: Ruling: interactive TTY behavior for login (no TTY prompts/echo
+suppression) — a reasonable non-TTY user gets stdin-based credentials, which
+the ledger documents and the tests exercise; terminal handling needs a TTY we
+cannot safely provide here. Cost: no real console login flow.
+Final: Ruling: su without password authentication — a reasonable user gets
+OS-level setuid/setgid enforcement, which is the stated design; PAM is out of
+scope and the privilege drop is now checked. Cost: no independent auth check.
+Final: Ruling: writes to real /etc/passwd or /etc/shadow — tests use
+SHADOW_FILE/PASSWD_FILE temp overrides; doing otherwise would alter host auth.
+A real user invoking passwd still writes /etc/shadow with mode 0600. Cost:
+none to behavior; only test isolation.
+Final: Ruling: DNS/hostname resolution and raw-socket ping — a reasonable user
+gets numeric-IPv4-only networking and a clear InvalidHost error (no silent
+localhost fallback). Cost: hostnames still unsupported.
+Final: Ruling: empty envp for ionice children, shell externals and su/login
+shells (shell externals now inherit shell variables) — a reasonable user gets
+commands that do not see the parent environment in ionice/su/login. Cost:
+env-dependent commands under those applets may misbehave.
+Final: Ruling: privileged setpriority/ioprio_set on other users — a reasonable
+user gets EPERM and a non-zero exit rather than a crash; cannot be tested here
+without elevated privileges. Cost: no cross-user priority changes verified.
+Final: Ruling: complex shell scripts (pipes, redirections, globbing, control
+flow, job control, TTY prompts) and textual ';' splitting inside quotes — a
+reasonable user gets a simple command runner documented in the ledger. Cost:
+complex scripts fail or behave unexpectedly.
+Final: Ruling: top's static placeholder columns and no interactive refresh —
+a reasonable user gets a one-shot CPU-sorted listing. Cost: no interactive
+process viewer.
+Final: Ruling: crontab -e and the absent cron daemon; uid-named spool files —
+a reasonable user can install/list/remove a crontab but nothing executes it.
+Cost: no scheduling.
+Final: Ruling: nc's read-all-stdin-before-connect — a reasonable user gets
+batch netcat, not interactive streaming. Cost: no interactive sessions.
+Final: Ruling: MD5-crypt-only hashes, pid-derived salts, passwd's dropped
+trailing newline — a reasonable user gets working $1$ password changes;
+stronger algorithms/randomness are out of scope. Cost: weaker hashes.
+Final: Ruling: curl, ssh, nice, at, useradd/userdel, fdisk, full sed/awk,
+SHA-crypt/DES and all Task 17 categories — deferred by earlier ledger rulings;
+adding applets is a spec Non-Goal. Cost: those tools are unavailable.
+Final: Ruling: destructive filesystem/partition applets (mke2fs, debugfs,
+switch_root, etc.) — a reasonable user gets an explicit "not implemented"
+message; they cannot be safely exercised in this container. Cost: no such
+functionality.
+Final: Ruling: dc stack commands/registers and extended kill signal names —
+a reasonable user gets integer RPN with four operators and ten signal names.
+Cost: advanced dc scripts and uncommon signal names are unsupported.
