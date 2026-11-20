@@ -357,6 +357,246 @@ pub fn touch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return 0;
 }
 
+// --- line-oriented text helpers --------------------------------------------
+
+pub const Counts = struct { lines: usize = 0, words: usize = 0, bytes: usize = 0 };
+
+fn lineSlices(a: std.mem.Allocator, data: []const u8) ![][]const u8 {
+    var lines: std.ArrayList([]const u8) = .empty;
+    errdefer lines.deinit(a);
+    var it = std.mem.splitScalar(u8, data, '\n');
+    while (it.next()) |line| {
+        if (line.len == 0 and it.peek() == null) break; // trailing newline
+        try lines.append(a, line);
+    }
+    return lines.toOwnedSlice(a);
+}
+
+fn joinLines(a: std.mem.Allocator, lines: []const []const u8) ![]u8 {
+    var out: std.ArrayList(u8) = .empty;
+    errdefer out.deinit(a);
+    for (lines) |line| {
+        try out.appendSlice(a, line);
+        try out.append(a, '\n');
+    }
+    return out.toOwnedSlice(a);
+}
+
+pub fn headLines(data: []const u8, n: usize) []const u8 {
+    if (n == 0) return "";
+    var seen: usize = 0;
+    var i: usize = 0;
+    while (i < data.len) : (i += 1) {
+        if (data[i] == '\n') {
+            seen += 1;
+            if (seen == n) return data[0 .. i + 1];
+        }
+    }
+    return data;
+}
+
+pub fn tailLines(data: []const u8, n: usize) []const u8 {
+    if (n == 0) return "";
+    var total: usize = 0;
+    for (data) |c| if (c == '\n') { total += 1; };
+    if (total <= n) return data;
+    var seen: usize = 0;
+    var i: usize = 0;
+    while (i < data.len) : (i += 1) {
+        if (data[i] == '\n') {
+            seen += 1;
+            if (seen == total - n) return data[i + 1 ..];
+        }
+    }
+    return data;
+}
+
+pub fn wordCount(data: []const u8) Counts {
+    var c = Counts{ .bytes = data.len };
+    var in_word = false;
+    for (data) |ch| {
+        if (ch == '\n') c.lines += 1;
+        const ws = ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r';
+        if (!ws and !in_word) c.words += 1;
+        in_word = !ws;
+    }
+    return c;
+}
+
+fn lessLine(_: void, a: []const u8, b: []const u8) bool {
+    return std.mem.order(u8, a, b) == .lt;
+}
+fn greaterLine(_: void, a: []const u8, b: []const u8) bool {
+    return std.mem.order(u8, a, b) == .gt;
+}
+
+pub fn sortLines(a: std.mem.Allocator, data: []const u8, reverse: bool, unique: bool) ![]u8 {
+    const lines = try lineSlices(a, data);
+    defer a.free(lines);
+    if (reverse) std.mem.sort([]const u8, lines, {}, greaterLine) else std.mem.sort([]const u8, lines, {}, lessLine);
+    if (unique) {
+        var out: std.ArrayList([]const u8) = .empty;
+        defer out.deinit(a);
+        for (lines) |line| {
+            if (out.items.len > 0 and std.mem.eql(u8, out.items[out.items.len - 1], line)) continue;
+            try out.append(a, line);
+        }
+        return joinLines(a, out.items);
+    }
+    return joinLines(a, lines);
+}
+
+pub fn uniqLines(a: std.mem.Allocator, data: []const u8) ![]u8 {
+    const lines = try lineSlices(a, data);
+    defer a.free(lines);
+    var out: std.ArrayList([]const u8) = .empty;
+    defer out.deinit(a);
+    for (lines) |line| {
+        if (out.items.len > 0 and std.mem.eql(u8, out.items[out.items.len - 1], line)) continue;
+        try out.append(a, line);
+    }
+    return joinLines(a, out.items);
+}
+
+pub fn cutFields(a: std.mem.Allocator, data: []const u8, delim: u8, field: usize) ![]u8 {
+    const lines = try lineSlices(a, data);
+    defer a.free(lines);
+    var out: std.ArrayList(u8) = .empty;
+    errdefer out.deinit(a);
+    for (lines) |line| {
+        var it = std.mem.splitScalar(u8, line, delim);
+        var idx: usize = 1;
+        while (it.next()) |part| : (idx += 1) {
+            if (idx == field) {
+                try out.appendSlice(a, part);
+                break;
+            }
+        }
+        try out.append(a, '\n');
+    }
+    return out.toOwnedSlice(a);
+}
+
+// --- more applets -----------------------------------------------------------
+
+fn readInput(a: std.mem.Allocator, path: []const u8) ![]u8 {
+    if (std.mem.eql(u8, path, "-") or path.len == 0) {
+        var out: std.ArrayList(u8) = .empty;
+        errdefer out.deinit(a);
+        var buf: [8192]u8 = undefined;
+        while (true) {
+            const n = linux.read(stdin, &buf, buf.len);
+            if (linux.errno(n) != .SUCCESS) break;
+            if (n == 0) break;
+            try out.appendSlice(a, buf[0..n]);
+        }
+        return out.toOwnedSlice(a);
+    }
+    var z: [4096:0]u8 = undefined;
+    const p = try toZ(path, &z);
+    const rc = linux.open(p, .{ .ACCMODE = .RDONLY }, 0);
+    if (linux.errno(rc) != .SUCCESS) return error.OpenFailed;
+    const fd: linux.fd_t = @intCast(rc);
+    defer _ = linux.close(fd);
+    var out: std.ArrayList(u8) = .empty;
+    errdefer out.deinit(a);
+    var buf: [8192]u8 = undefined;
+    while (true) {
+        const n = linux.read(fd, &buf, buf.len);
+        if (linux.errno(n) != .SUCCESS) break;
+        if (n == 0) break;
+        try out.appendSlice(a, buf[0..n]);
+    }
+    return out.toOwnedSlice(a);
+}
+
+pub fn head_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var n: usize = 10;
+    var path: []const u8 = "-";
+    var first: usize = 1;
+    if (args.len > 1 and args[1].len > 1 and args[1][0] == '-') {
+        n = std.fmt.parseInt(usize, args[1][1..], 10) catch 10;
+        first = 2;
+    }
+    if (args.len > first) path = args[args.len - 1];
+    const data = readInput(std.heap.page_allocator, path) catch return 1;
+    defer std.heap.page_allocator.free(data);
+    writeAll(stdout, headLines(data, n));
+    return 0;
+}
+
+pub fn tail_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var n: usize = 10;
+    var path: []const u8 = "-";
+    var first: usize = 1;
+    if (args.len > 1 and args[1].len > 1 and args[1][0] == '-') {
+        n = std.fmt.parseInt(usize, args[1][1..], 10) catch 10;
+        first = 2;
+    }
+    if (args.len > first) path = args[args.len - 1];
+    const data = readInput(std.heap.page_allocator, path) catch return 1;
+    defer std.heap.page_allocator.free(data);
+    writeAll(stdout, tailLines(data, n));
+    return 0;
+}
+
+pub fn wc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    const data = readInput(std.heap.page_allocator, if (args.len > 1) args[1] else "-") catch return 1;
+    defer std.heap.page_allocator.free(data);
+    const c = wordCount(data);
+    writeAll(stdout, std.fmt.allocPrint(std.heap.page_allocator, "{d: >7} {d: >7} {d: >7}\n", .{ c.lines, c.words, c.bytes }) catch return 1);
+    return 0;
+}
+
+pub fn sort_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var reverse = false;
+    var unique = false;
+    var path: []const u8 = "-";
+    for (args[1..]) |arg| {
+        if (std.mem.eql(u8, arg, "-r")) reverse = true else if (std.mem.eql(u8, arg, "-u")) unique = true else if (arg.len == 0 or arg[0] != '-') path = arg;
+    }
+    const data = readInput(std.heap.page_allocator, path) catch return 1;
+    defer std.heap.page_allocator.free(data);
+    const out = sortLines(std.heap.page_allocator, data, reverse, unique) catch return 1;
+    defer std.heap.page_allocator.free(out);
+    writeAll(stdout, out);
+    return 0;
+}
+
+pub fn uniq_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    const data = readInput(std.heap.page_allocator, if (args.len > 1) args[1] else "-") catch return 1;
+    defer std.heap.page_allocator.free(data);
+    const out = uniqLines(std.heap.page_allocator, data) catch return 1;
+    defer std.heap.page_allocator.free(out);
+    writeAll(stdout, out);
+    return 0;
+}
+
+pub fn cut_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var delim: u8 = '\t';
+    var field: usize = 1;
+    var path: []const u8 = "-";
+    for (args[1..]) |arg| {
+        if (std.mem.startsWith(u8, arg, "-d") and arg.len > 2) {
+            delim = arg[2];
+        } else if (std.mem.startsWith(u8, arg, "-f")) {
+            field = std.fmt.parseInt(usize, arg[2..], 10) catch 1;
+        } else if (arg.len == 0 or arg[0] != '-') path = arg;
+    }
+    const data = readInput(std.heap.page_allocator, path) catch return 1;
+    defer std.heap.page_allocator.free(data);
+    const out = cutFields(std.heap.page_allocator, data, delim, field) catch return 1;
+    defer std.heap.page_allocator.free(out);
+    writeAll(stdout, out);
+    return 0;
+}
+
 pub fn true_main(_: c_int, _: [*][*:0]const u8) c_int {
     return 0;
 }

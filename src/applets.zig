@@ -340,12 +340,12 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("rm", Applet{ .name = "rm", .main = coreutils.rm_main, .flags = .{} }) catch unreachable;
     map.put("mkdir", Applet{ .name = "mkdir", .main = coreutils.mkdir_main, .flags = .{} }) catch unreachable;
     map.put("touch", Applet{ .name = "touch", .main = coreutils.touch_main, .flags = .{} }) catch unreachable;
-    map.put("head", Applet{ .name = "head", .main = head_main, .flags = .{} }) catch unreachable;
-    map.put("tail", Applet{ .name = "tail", .main = tail_main, .flags = .{} }) catch unreachable;
-    map.put("sort", Applet{ .name = "sort", .main = sort_main, .flags = .{} }) catch unreachable;
-    map.put("uniq", Applet{ .name = "uniq", .main = uniq_main, .flags = .{} }) catch unreachable;
-    map.put("wc", Applet{ .name = "wc", .main = wc_main, .flags = .{} }) catch unreachable;
-    map.put("cut", Applet{ .name = "cut", .main = cut_main, .flags = .{} }) catch unreachable;
+    map.put("head", Applet{ .name = "head", .main = coreutils.head_main, .flags = .{} }) catch unreachable;
+    map.put("tail", Applet{ .name = "tail", .main = coreutils.tail_main, .flags = .{} }) catch unreachable;
+    map.put("sort", Applet{ .name = "sort", .main = coreutils.sort_main, .flags = .{} }) catch unreachable;
+    map.put("uniq", Applet{ .name = "uniq", .main = coreutils.uniq_main, .flags = .{} }) catch unreachable;
+    map.put("wc", Applet{ .name = "wc", .main = coreutils.wc_main, .flags = .{} }) catch unreachable;
+    map.put("cut", Applet{ .name = "cut", .main = coreutils.cut_main, .flags = .{} }) catch unreachable;
     map.put("true", Applet{ .name = "true", .main = coreutils.true_main, .flags = .{} }) catch unreachable;
     map.put("false", Applet{ .name = "false", .main = coreutils.false_main, .flags = .{} }) catch unreachable;
     map.put("date", Applet{ .name = "date", .main = date_main, .flags = .{} }) catch unreachable;

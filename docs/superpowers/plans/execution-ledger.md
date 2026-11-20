@@ -77,3 +77,11 @@ the module imports, so use `zig build test`.
 Git: repository initialized; `.gitignore` excludes `/tools/`, `/reference/`,
 build caches, and scratch binaries. Initial commit `666c9a6` holds Tasks 0-8.
 From here on each completed task gets its own commit.
+
+Task 9: complete — cp, mv, rm, mkdir, touch in coreutils/main.zig, wired to
+the registry. RED: 3 new fileop tests failed. GREEN: 65/65 total pass.
+Binary integration verified cp (incl. into a directory), mv, mkdir -p, touch,
+rm. Commit `3e61acd`.
+Ruling: `cp -r` and recursive `rm -r` are not implemented yet; directories
+are rejected by the current helpers. Cost: recursive use cases still need a
+dedicated recursive-walk task.

@@ -10,4 +10,5 @@ test {
     _ = @import("applets_test.zig");
     _ = @import("coreutils/coreutils_test.zig");
     _ = @import("coreutils/fileops_test.zig");
+    _ = @import("coreutils/textops_test.zig");
 }
