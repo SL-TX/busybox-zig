@@ -234,7 +234,22 @@ pub fn runlevel_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _
 pub fn readahead_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
 pub fn seedrng_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
 pub fn raidautorun_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn bbconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn bbconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int {
+    _ = _argc;
+    _ = _argv;
+    const a = std.heap.page_allocator;
+    const names = appletNames(a) catch return 1;
+    defer a.free(names);
+    var line: [256]u8 = undefined;
+    var upper: [128]u8 = undefined;
+    for (names) |name| {
+        if (name.len > upper.len) continue;
+        for (name, 0..) |c, i| upper[i] = std.ascii.toUpper(c);
+        const text = std.fmt.bufPrint(&line, "CONFIG_{s}=y\n", .{upper[0..name.len]}) catch continue;
+        _ = std.os.linux.write(1, text.ptr, text.len);
+    }
+    return 0;
+}
 pub fn ascii_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
 pub fn makedevs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
 pub fn bc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
@@ -541,7 +556,7 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("inotifyd", Applet{ .name = "inotifyd", .main = inotifyd_main, .flags = .{} }) catch unreachable;
     map.put("watchdog", Applet{ .name = "watchdog", .main = watchdog_main, .flags = .{} }) catch unreachable;
     map.put("hexedit", Applet{ .name = "hexedit", .main = hexedit_main, .flags = .{} }) catch unreachable;
-    map.put("dc", Applet{ .name = "dc", .main = dc_main, .flags = .{} }) catch unreachable;
+    map.put("dc", Applet{ .name = "dc", .main = @import("remaining").dc_main, .flags = .{} }) catch unreachable;
     map.put("ubirename", Applet{ .name = "ubirename", .main = ubirename_main, .flags = .{} }) catch unreachable;
     map.put("time", Applet{ .name = "time", .main = time_main, .flags = .{} }) catch unreachable;
     map.put("setserial", Applet{ .name = "setserial", .main = setserial_main, .flags = .{} }) catch unreachable;
@@ -553,7 +568,7 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("seedrng", Applet{ .name = "seedrng", .main = seedrng_main, .flags = .{} }) catch unreachable;
     map.put("raidautorun", Applet{ .name = "raidautorun", .main = raidautorun_main, .flags = .{} }) catch unreachable;
     map.put("bbconfig", Applet{ .name = "bbconfig", .main = bbconfig_main, .flags = .{} }) catch unreachable;
-    map.put("ascii", Applet{ .name = "ascii", .main = ascii_main, .flags = .{} }) catch unreachable;
+    map.put("ascii", Applet{ .name = "ascii", .main = @import("remaining").ascii_main, .flags = .{} }) catch unreachable;
     map.put("makedevs", Applet{ .name = "makedevs", .main = makedevs_main, .flags = .{} }) catch unreachable;
     map.put("bc", Applet{ .name = "bc", .main = bc_main, .flags = .{} }) catch unreachable;
     map.put("flash_eraseall", Applet{ .name = "flash_eraseall", .main = flash_eraseall_main, .flags = .{} }) catch unreachable;

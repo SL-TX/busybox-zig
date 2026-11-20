@@ -82,6 +82,14 @@ pub fn build(b: *std.Build) void {
     loginutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("loginutils", loginutils);
 
+    // Small applets from the remaining categories that are in the registry.
+    const remaining = b.addModule("remaining", .{
+        .root_source_file = b.path("src/remaining/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    exe.root_module.addImport("remaining", remaining);
+
     // Link libbb_zig to exe
     exe.root_module.addImport("libbb_zig", libbb_zig);
 
@@ -107,6 +115,7 @@ pub fn build(b: *std.Build) void {
     loginutils.addImport("libbb_zig", libbb_zig);
     test_module.addImport("loginutils", loginutils);
     test_module.addImport("libbb_zig", libbb_zig);
+    test_module.addImport("remaining", remaining);
     const tests = b.addTest(.{ .root_module = test_module });
     const run_tests = b.addRunArtifact(tests);
     const test_step = b.step("test", "Run unit tests");
