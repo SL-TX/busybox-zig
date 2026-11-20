@@ -132,3 +132,23 @@ causing an out-of-bounds slice; added a `rc > buf.len` guard.
 Ruling: fdisk from Task 11's list is deferred — it is an interactive,
 destructive partition editor that cannot be safely tested here. Cost: no
 disk-partitioning support yet.
+
+Task 12: complete (partial set) — ifconfig, ping, wget, nc in
+src/networking/main.zig + network_test.zig, wired to the registry. Commit `51574ee`.
+RED: 7 new tests failed (4 assertion, 3 null deref) while 90 existing passed;
+GREEN: 97/97 via `zig build test`. Binary integration verified ifconfig
+(/proc/net/dev), ping -c 2 127.0.0.1 over a Linux ICMP datagram socket,
+wget to a local HTTP server (stdout and -O), and nc to a local echo server.
+Ruling: curl and ssh from Task 12's list are deferred — they are not BusyBox
+1.36.1 applets, and the spec's Non-Goals forbid adding new applets; adding
+them would make the registry diverge from the default set. Cost: no curl/ssh
+applet, but wget/nc cover their in-scope use cases.
+Ruling: ifconfig is read-only (lists interfaces/counters from /proc/net/dev)
+— setting addresses needs CAP_NET_ADMIN and is a destructive side effect we
+cannot safely test here. Cost: no interface configuration support.
+Ruling: wget/nc resolve numeric IPv4 hosts only (libbb_zig/socket.zig has no
+resolver yet); ping uses SOCK_DGRAM/IPPROTO_ICMP instead of raw sockets, which
+works without CAP_NET_RAW when ping_group_range permits it. Cost: hostnames
+and restricted ICMP environments are unsupported.
+Test-side ruling: local echo/HTTP servers use poll() with a 3s bound so the
+RED run cannot hang on a stub client that never connects.
