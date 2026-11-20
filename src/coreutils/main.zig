@@ -212,6 +212,151 @@ pub fn printf_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return 0;
 }
 
+// --- file operations --------------------------------------------------------
+
+fn toZ(path: []const u8, buf: *[4096:0]u8) ![*:0]const u8 {
+    if (path.len >= buf.len) return error.NameTooLong;
+    @memcpy(buf[0..path.len], path);
+    buf[path.len] = 0;
+    return @ptrCast(buf);
+}
+
+pub fn copyFile(src: []const u8, dst: []const u8) !void {
+    var a: [4096:0]u8 = undefined;
+    var b: [4096:0]u8 = undefined;
+    const s = try toZ(src, &a);
+    const d = try toZ(dst, &b);
+    const in_fd: linux.fd_t = @intCast(linux.open(s, .{ .ACCMODE = .RDONLY }, 0));
+    if (linux.errno(@as(usize, @intCast(in_fd))) != .SUCCESS) return error.OpenFailed;
+    defer _ = linux.close(in_fd);
+    const out_fd: linux.fd_t = @intCast(linux.open(d, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o644));
+    if (linux.errno(@as(usize, @intCast(out_fd))) != .SUCCESS) return error.OpenFailed;
+    defer _ = linux.close(out_fd);
+    var buf: [8192]u8 = undefined;
+    while (true) {
+        const n = linux.read(in_fd, &buf, buf.len);
+        if (linux.errno(n) != .SUCCESS) return error.ReadFailed;
+        if (n == 0) break;
+        var off: usize = 0;
+        while (off < n) off += linux.write(out_fd, buf[off..].ptr, n - off);
+    }
+}
+
+pub fn mkdirP(path: []const u8) !void {
+    var buf: [4096:0]u8 = undefined;
+    const full = try toZ(path, &buf);
+    _ = full;
+    for (path, 0..) |c, i| {
+        if (c != '/' or i == 0) continue;
+        buf[i] = 0;
+        const rc = linux.mkdir(@ptrCast(&buf), 0o755);
+        const e = linux.errno(rc);
+        if (e != .SUCCESS and e != .EXIST) return error.MkdirFailed;
+        buf[i] = '/';
+    }
+    const rc = linux.mkdir(@ptrCast(&buf), 0o755);
+    const e = linux.errno(rc);
+    if (e != .SUCCESS and e != .EXIST) return error.MkdirFailed;
+}
+
+pub fn pathIsDir(path: []const u8) bool {
+    var buf: [4096:0]u8 = undefined;
+    const p = toZ(path, &buf) catch return false;
+    const rc = linux.open(p, .{ .ACCMODE = .RDONLY, .DIRECTORY = true }, 0);
+    if (linux.errno(rc) != .SUCCESS) return false;
+    _ = linux.close(@intCast(rc));
+    return true;
+}
+
+pub fn renamePath(src: []const u8, dst: []const u8) !void {
+    var a: [4096:0]u8 = undefined;
+    var b: [4096:0]u8 = undefined;
+    const s = try toZ(src, &a);
+    const d = try toZ(dst, &b);
+    const rc = linux.rename(s, d);
+    if (linux.errno(rc) != .SUCCESS) return error.RenameFailed;
+}
+
+pub fn removePath(path: []const u8) !void {
+    var buf: [4096:0]u8 = undefined;
+    const p = try toZ(path, &buf);
+    var rc = linux.unlink(p);
+    if (linux.errno(rc) == .SUCCESS) return;
+    rc = linux.rmdir(p);
+    if (linux.errno(rc) != .SUCCESS) return error.RemoveFailed;
+}
+
+// --- more applets -----------------------------------------------------------
+
+pub fn cp_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    // Skip option arguments; -r directories are not ported yet.
+    var first: usize = 1;
+    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
+    if (first + 1 >= args.len) return 1;
+    const dst = args[args.len - 1];
+    for (args[first .. args.len - 1]) |src| {
+        const target = if (pathIsDir(dst))
+            std.fmt.allocPrint(std.heap.page_allocator, "{s}/{s}", .{ dst, std.fs.path.basename(src) }) catch return 1
+        else
+            dst;
+        copyFile(src, target) catch return 1;
+    }
+    return 0;
+}
+
+pub fn mv_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var first: usize = 1;
+    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
+    if (first + 1 >= args.len) return 1;
+    const dst = args[args.len - 1];
+    for (args[first .. args.len - 1]) |src| {
+        const target = if (pathIsDir(dst))
+            std.fmt.allocPrint(std.heap.page_allocator, "{s}/{s}", .{ dst, std.fs.path.basename(src) }) catch return 1
+        else
+            dst;
+        renamePath(src, target) catch {
+            copyFile(src, target) catch return 1;
+            removePath(src) catch return 1;
+        };
+    }
+    return 0;
+}
+
+pub fn rm_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var first: usize = 1;
+    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
+    if (first >= args.len) return 1;
+    for (args[first..]) |path| removePath(path) catch return 1;
+    return 0;
+}
+
+pub fn mkdir_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var first: usize = 1;
+    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
+    if (first >= args.len) return 1;
+    for (args[first..]) |path| mkdirP(path) catch return 1;
+    return 0;
+}
+
+pub fn touch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var first: usize = 1;
+    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
+    if (first >= args.len) return 1;
+    for (args[first..]) |path| {
+        var buf: [4096:0]u8 = undefined;
+        const p = toZ(path, &buf) catch return 1;
+        const rc = linux.open(p, .{ .ACCMODE = .WRONLY, .CREAT = true, .APPEND = true }, 0o644);
+        if (linux.errno(rc) != .SUCCESS) return 1;
+        _ = linux.close(@intCast(rc));
+    }
+    return 0;
+}
+
 pub fn true_main(_: c_int, _: [*][*:0]const u8) c_int {
     return 0;
 }

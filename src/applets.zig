@@ -335,11 +335,11 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("ls", Applet{ .name = "ls", .main = coreutils.ls_main, .flags = .{} }) catch unreachable;
     map.put("echo", Applet{ .name = "echo", .main = coreutils.echo_main, .flags = .{} }) catch unreachable;
     map.put("printf", Applet{ .name = "printf", .main = coreutils.printf_main, .flags = .{} }) catch unreachable;
-    map.put("cp", Applet{ .name = "cp", .main = cp_main, .flags = .{} }) catch unreachable;
-    map.put("mv", Applet{ .name = "mv", .main = mv_main, .flags = .{} }) catch unreachable;
-    map.put("rm", Applet{ .name = "rm", .main = rm_main, .flags = .{} }) catch unreachable;
-    map.put("mkdir", Applet{ .name = "mkdir", .main = mkdir_main, .flags = .{} }) catch unreachable;
-    map.put("touch", Applet{ .name = "touch", .main = touch_main, .flags = .{} }) catch unreachable;
+    map.put("cp", Applet{ .name = "cp", .main = coreutils.cp_main, .flags = .{} }) catch unreachable;
+    map.put("mv", Applet{ .name = "mv", .main = coreutils.mv_main, .flags = .{} }) catch unreachable;
+    map.put("rm", Applet{ .name = "rm", .main = coreutils.rm_main, .flags = .{} }) catch unreachable;
+    map.put("mkdir", Applet{ .name = "mkdir", .main = coreutils.mkdir_main, .flags = .{} }) catch unreachable;
+    map.put("touch", Applet{ .name = "touch", .main = coreutils.touch_main, .flags = .{} }) catch unreachable;
     map.put("head", Applet{ .name = "head", .main = head_main, .flags = .{} }) catch unreachable;
     map.put("tail", Applet{ .name = "tail", .main = tail_main, .flags = .{} }) catch unreachable;
     map.put("sort", Applet{ .name = "sort", .main = sort_main, .flags = .{} }) catch unreachable;

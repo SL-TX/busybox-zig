@@ -73,3 +73,7 @@ an nm.len > 0 guard (re-verified).
 Ruling: added `zig build test` harness wiring all modules into one test
 binary; 62/62 tests pass. Cost: standalone `zig test` of module files needs
 the module imports, so use `zig build test`.
+
+Git: repository initialized; `.gitignore` excludes `/tools/`, `/reference/`,
+build caches, and scratch binaries. Initial commit `666c9a6` holds Tasks 0-8.
+From here on each completed task gets its own commit.
