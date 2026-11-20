@@ -1,0 +1,26 @@
+stages:
+  - build
+  - test
+
+variables:
+  ZIG_IMAGE: "$CI_REGISTRY_IMAGE/zig:0.17.1"
+  GIT_DEPTH: "1"
+
+# The Zig toolchain is baked into the image (see ci/Dockerfile), so the
+# pipeline never depends on ziglang.org being reachable.
+build:
+  image: $ZIG_IMAGE
+  stage: build
+  script:
+    - zig version
+    - zig build
+  artifacts:
+    paths:
+      - zig-out/bin/busybox
+    expire_in: 1 week
+
+test:
+  image: $ZIG_IMAGE
+  stage: test
+  script:
+    - zig build test
