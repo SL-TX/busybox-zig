@@ -481,11 +481,11 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
 
     // === Networking ===
     map.put("ip", Applet{ .name = "ip", .main = ip_main, .flags = .{} }) catch unreachable;
-    map.put("ping", Applet{ .name = "ping", .main = ping_main, .flags = .{} }) catch unreachable;
-    map.put("ifconfig", Applet{ .name = "ifconfig", .main = ifconfig_main, .flags = .{} }) catch unreachable;
+    map.put("ping", Applet{ .name = "ping", .main = @import("networking").ping_main, .flags = .{} }) catch unreachable;
+    map.put("ifconfig", Applet{ .name = "ifconfig", .main = @import("networking").ifconfig_main, .flags = .{} }) catch unreachable;
     map.put("route", Applet{ .name = "route", .main = route_main, .flags = .{} }) catch unreachable;
-    map.put("wget", Applet{ .name = "wget", .main = wget_main, .flags = .{} }) catch unreachable;
-    map.put("nc", Applet{ .name = "nc", .main = nc_main, .flags = .{} }) catch unreachable;
+    map.put("wget", Applet{ .name = "wget", .main = @import("networking").wget_main, .flags = .{} }) catch unreachable;
+    map.put("nc", Applet{ .name = "nc", .main = @import("networking").nc_main, .flags = .{} }) catch unreachable;
     map.put("tftp", Applet{ .name = "tftp", .main = tftp_main, .flags = .{} }) catch unreachable;
     map.put("httpd", Applet{ .name = "httpd", .main = httpd_main, .flags = .{} }) catch unreachable;
     map.put("telnet", Applet{ .name = "telnet", .main = telnet_main, .flags = .{} }) catch unreachable;

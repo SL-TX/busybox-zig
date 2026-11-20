@@ -16,4 +16,5 @@ test {
     _ = @import("coreutils/recursive_test.zig");
     _ = @import("coreutils/sed_test.zig");
     _ = @import("coreutils/awk_test.zig");
+    _ = @import("networking/network_test.zig");
 }
