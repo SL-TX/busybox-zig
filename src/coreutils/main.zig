@@ -2,6 +2,7 @@
 
 const std = @import("std");
 const linux = std.os.linux;
+const bb = @import("libbb_zig");
 
 pub const init = struct {
     pub fn init() void {}
@@ -178,11 +179,11 @@ pub fn ls_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         const n = linux.getdents64(fd, &buf, buf.len);
         if (linux.errno(n) != .SUCCESS or n == 0) break;
         var off: usize = 0;
-        while (off + @sizeOf(linux.dirent64) <= n) {
+        while (off + @offsetOf(linux.dirent64, "name") <= n) {
             const dent: *const linux.dirent64 = @ptrCast(@alignCast(buf[off..].ptr));
             if (dent.reclen == 0) break;
-            const name_len = dent.reclen - @sizeOf(linux.dirent64);
-            const name = buf[off + @sizeOf(linux.dirent64) ..][0..name_len];
+            const name_len = dent.reclen - @offsetOf(linux.dirent64, "name");
+            const name = buf[off + @offsetOf(linux.dirent64, "name") ..][0..name_len];
             const end = std.mem.indexOfScalar(u8, name, 0) orelse name.len;
             const nm = name[0..end];
             if (nm.len > 0 and !std.mem.eql(u8, nm, ".") and !std.mem.eql(u8, nm, "..") and (show_all or nm[0] != '.')) {
@@ -290,9 +291,12 @@ pub fn removePath(path: []const u8) !void {
 
 pub fn cp_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
-    // Skip option arguments; -r directories are not ported yet.
+    var recursive = false;
     var first: usize = 1;
-    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
+    while (first < args.len and args[first].len > 0 and args[first][0] == '-') {
+        if (std.mem.indexOfScalar(u8, args[first], 'r') != null) recursive = true;
+        first += 1;
+    }
     if (first + 1 >= args.len) return 1;
     const dst = args[args.len - 1];
     for (args[first .. args.len - 1]) |src| {
@@ -300,7 +304,11 @@ pub fn cp_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             std.fmt.allocPrint(std.heap.page_allocator, "{s}/{s}", .{ dst, std.fs.path.basename(src) }) catch return 1
         else
             dst;
-        copyFile(src, target) catch return 1;
+        if (recursive and pathIsDir(src)) {
+            copyDirRecursive(std.heap.page_allocator, src, target) catch return 1;
+        } else {
+            copyFile(src, target) catch return 1;
+        }
     }
     return 0;
 }
@@ -326,10 +334,20 @@ pub fn mv_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 
 pub fn rm_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
+    var recursive = false;
     var first: usize = 1;
-    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
+    while (first < args.len and args[first].len > 0 and args[first][0] == '-') {
+        if (std.mem.indexOfScalar(u8, args[first], 'r') != null or std.mem.indexOfScalar(u8, args[first], 'R') != null) recursive = true;
+        first += 1;
+    }
     if (first >= args.len) return 1;
-    for (args[first..]) |path| removePath(path) catch return 1;
+    for (args[first..]) |path| {
+        if (recursive and pathIsDir(path)) {
+            removeRecursive(std.heap.page_allocator, path) catch return 1;
+        } else {
+            removePath(path) catch return 1;
+        }
+    }
     return 0;
 }
 
@@ -595,6 +613,60 @@ pub fn cut_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     defer std.heap.page_allocator.free(out);
     writeAll(stdout, out);
     return 0;
+}
+
+const CopyCtx = struct {
+    src: []const u8,
+    dst: []const u8,
+    allocator: std.mem.Allocator,
+};
+
+fn copyCb(path: []const u8, is_dir: bool, ctx: ?*anyopaque) bb.util.Action {
+    const c: *CopyCtx = @ptrCast(@alignCast(ctx.?));
+    var rel = path[c.src.len..];
+    if (rel.len > 0 and rel[0] == '/') rel = rel[1..];
+    const target = std.fmt.allocPrint(c.allocator, "{s}/{s}", .{ c.dst, rel }) catch return .abort;
+    defer c.allocator.free(target);
+    if (is_dir) {
+        mkdirP(target) catch return .abort;
+    } else {
+        copyFile(path, target) catch return .abort;
+    }
+    return .continue_walk;
+}
+
+pub fn copyDirRecursive(a: std.mem.Allocator, src: []const u8, dst: []const u8) !void {
+    try mkdirP(dst);
+    var ctx = CopyCtx{ .src = src, .dst = dst, .allocator = a };
+    try bb.util.recursiveAction(a, src, copyCb, &ctx);
+}
+
+const RemoveCtx = struct {
+    paths: std.ArrayList([]const u8),
+    allocator: std.mem.Allocator,
+};
+
+fn collectCb(path: []const u8, is_dir: bool, ctx: ?*anyopaque) bb.util.Action {
+    const c: *RemoveCtx = @ptrCast(@alignCast(ctx.?));
+    _ = is_dir;
+    const copy = c.allocator.dupe(u8, path) catch return .abort;
+    c.paths.append(c.allocator, copy) catch return .abort;
+    return .continue_walk;
+}
+
+pub fn removeRecursive(a: std.mem.Allocator, path: []const u8) !void {
+    var ctx = RemoveCtx{ .paths = .empty, .allocator = a };
+    defer {
+        for (ctx.paths.items) |p| a.free(p);
+        ctx.paths.deinit(a);
+    }
+    try bb.util.recursiveAction(a, path, collectCb, &ctx);
+    var i = ctx.paths.items.len;
+    while (i > 0) {
+        i -= 1;
+        removePath(ctx.paths.items[i]) catch return error.RemoveFailed;
+    }
+    try removePath(path);
 }
 
 pub fn true_main(_: c_int, _: [*][*:0]const u8) c_int {

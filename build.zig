@@ -27,6 +27,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    coreutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("coreutils", coreutils);
 
     // Add util-linux module

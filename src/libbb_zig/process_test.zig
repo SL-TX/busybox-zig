@@ -1,5 +1,5 @@
 const std = @import("std");
-const p = @import("process.zig");
+const p = @import("libbb_zig").process;
 
 test "errno and optarg are visible from another module" {
     p.errno = 5;

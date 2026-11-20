@@ -1,5 +1,5 @@
 const std = @import("std");
-const io = @import("io.zig");
+const io = @import("libbb_zig").io;
 
 const path = "/tmp/opencode/bb-io-test.txt";
 

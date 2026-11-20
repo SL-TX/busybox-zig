@@ -105,3 +105,142 @@ pub fn signal_names(sig: u8) []const u8 {
 pub fn get_cpu_count() usize {
     return std.Thread.getCpuCount() catch 1;
 }
+
+// --- deferred libbb helpers -------------------------------------------------
+
+pub const Action = enum { continue_walk, skip_dir, abort };
+
+fn pathJoin(a: std.mem.Allocator, dir: []const u8, name: []const u8) ![]u8 {
+    if (std.mem.endsWith(u8, dir, "/")) return std.mem.concat(a, u8, &.{ dir, name });
+    return std.mem.concat(a, u8, &.{ dir, "/", name });
+}
+
+fn walk(a: std.mem.Allocator, dir: []const u8, cb: *const fn ([]const u8, bool, ?*anyopaque) Action, ctx: ?*anyopaque) !Action {
+    var zp: [4096:0]u8 = undefined;
+    if (dir.len >= zp.len) return error.NameTooLong;
+    @memcpy(zp[0..dir.len], dir);
+    zp[dir.len] = 0;
+    const rc = std.os.linux.open(@ptrCast(&zp), .{ .ACCMODE = .RDONLY, .DIRECTORY = true }, 0);
+    if (std.os.linux.errno(rc) != .SUCCESS) return error.OpenFailed;
+    const fd: std.os.linux.fd_t = @intCast(rc);
+    defer _ = std.os.linux.close(fd);
+
+    var buf: [16384]u8 align(8) = undefined;
+    while (true) {
+        const n = std.os.linux.getdents64(fd, &buf, buf.len);
+        if (std.os.linux.errno(n) != .SUCCESS or n == 0) break;
+        var off: usize = 0;
+        while (off + @offsetOf(std.os.linux.dirent64, "name") <= n) {
+            const dent: *const std.os.linux.dirent64 = @ptrCast(@alignCast(buf[off..].ptr));
+            if (dent.reclen == 0) break;
+            const raw = buf[off + @offsetOf(std.os.linux.dirent64, "name") ..][0 .. dent.reclen - @offsetOf(std.os.linux.dirent64, "name")];
+            const end = std.mem.indexOfScalar(u8, raw, 0) orelse raw.len;
+            const name = raw[0..end];
+            off += dent.reclen;
+            if (name.len == 0 or std.mem.eql(u8, name, ".") or std.mem.eql(u8, name, "..")) continue;
+
+            const child = try pathJoin(a, dir, name);
+            defer a.free(child);
+            const is_dir = dent.type == std.os.linux.DT.DIR;
+            const action = cb(child, is_dir, ctx);
+            if (is_dir and action == .continue_walk) {
+                const sub = try walk(a, child, cb, ctx);
+                if (sub == .abort) return .abort;
+            }
+            if (action == .abort) return .abort;
+        }
+    }
+    return .continue_walk;
+}
+
+pub fn recursiveAction(a: std.mem.Allocator, root: []const u8, cb: *const fn ([]const u8, bool, ?*anyopaque) Action, ctx: ?*anyopaque) !void {
+    _ = try walk(a, root, cb, ctx);
+}
+
+pub const GetoptResult = struct {
+    flags: u64 = 0,
+    optarg: ?[]const u8 = null,
+    args: [][]const u8 = &.{},
+};
+
+pub fn getopt32(a: std.mem.Allocator, argv: []const []const u8, optstring: []const u8) !GetoptResult {
+    var result = GetoptResult{};
+    var positional: std.ArrayList([]const u8) = .empty;
+    errdefer positional.deinit(a);
+    var i: usize = 1;
+    while (i < argv.len) : (i += 1) {
+        const s = argv[i];
+        if (s.len < 2 or s[0] != '-') {
+            try positional.append(a, s);
+            continue;
+        }
+        var j: usize = 1;
+        while (j < s.len) : (j += 1) {
+            const c = s[j];
+            const pos = std.mem.indexOfScalar(u8, optstring, c) orelse continue;
+            const takes_arg = pos + 1 < optstring.len and optstring[pos + 1] == ':';
+            if (takes_arg) {
+                if (j + 1 < s.len) {
+                    result.optarg = s[j + 1 ..];
+                } else if (i + 1 < argv.len) {
+                    i += 1;
+                    result.optarg = argv[i];
+                }
+                break;
+            }
+            var bit: u6 = 0;
+            for (optstring[0..pos]) |x| if (x != ':') { bit += 1; };
+            result.flags |= @as(u64, 1) << bit;
+        }
+    }
+    result.args = try positional.toOwnedSlice(a);
+    return result;
+}
+
+fn statPath(path: []const u8) ?std.os.linux.Statx {
+    var z: [4096:0]u8 = undefined;
+    if (path.len >= z.len) return null;
+    @memcpy(z[0..path.len], path);
+    z[path.len] = 0;
+    var stx: std.os.linux.Statx = undefined;
+    const rc = std.os.linux.statx(std.os.linux.AT.FDCWD, @ptrCast(&z), 0, .BASIC_STATS, &stx);
+    if (std.os.linux.errno(rc) != .SUCCESS) return null;
+    return stx;
+}
+
+pub fn is_directory(path: []const u8) bool {
+    const st = statPath(path) orelse return false;
+    return (st.mode & std.os.linux.S.IFMT) == std.os.linux.S.IFDIR;
+}
+
+pub fn executable(path: []const u8) bool {
+    const st = statPath(path) orelse return false;
+    return (st.mode & std.os.linux.S.IFMT) == std.os.linux.S.IFREG and (st.mode & 0o111) != 0;
+}
+
+pub fn find_mount_point(a: std.mem.Allocator, path: []const u8) ![]u8 {
+    const fd = std.os.linux.open("/proc/mounts", .{ .ACCMODE = .RDONLY }, 0);
+    if (std.os.linux.errno(fd) != .SUCCESS) return error.FileNotFound;
+    defer _ = std.os.linux.close(@intCast(fd));
+    var content: std.ArrayList(u8) = .empty;
+    defer content.deinit(a);
+    var buf: [4096]u8 = undefined;
+    while (true) {
+        const n = std.os.linux.read(@intCast(fd), &buf, buf.len);
+        if (std.os.linux.errno(n) != .SUCCESS or n == 0) break;
+        try content.appendSlice(a, buf[0..n]);
+    }
+    var best: []const u8 = "";
+    var lines = std.mem.splitScalar(u8, content.items, '\n');
+    while (lines.next()) |line| {
+        var fields = std.mem.splitScalar(u8, line, ' ');
+        _ = fields.next() orelse continue;
+        const mp = fields.next() orelse continue;
+        if (mp.len == 0) continue;
+        const matches = std.mem.eql(u8, mp, "/") or
+            (std.mem.startsWith(u8, path, mp) and (path.len == mp.len or path[mp.len] == '/'));
+        if (matches and mp.len > best.len) best = mp;
+    }
+    if (best.len == 0) return error.FileNotFound;
+    return a.dupe(u8, best);
+}

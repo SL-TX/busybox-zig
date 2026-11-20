@@ -1,5 +1,5 @@
 const std = @import("std");
-const net = @import("socket.zig");
+const net = @import("libbb_zig").socket;
 
 test "inet_pton parses IPv4" {
     try std.testing.expectEqual(@as(u32, 0x0100007f), net.inet_pton("127.0.0.1").?);

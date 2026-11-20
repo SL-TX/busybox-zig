@@ -1,5 +1,5 @@
 const std = @import("std");
-const s = @import("string.zig");
+const s = @import("libbb_zig").string;
 
 test "strlen counts bytes until NUL" {
     try std.testing.expectEqual(@as(usize, 5), s.strlen("hello"));

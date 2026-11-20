@@ -1,5 +1,5 @@
 const std = @import("std");
-const u = @import("util.zig");
+const u = @import("libbb_zig").util;
 
 test "isqrt floors the square root" {
     try std.testing.expectEqual(@as(u64, 4), u.isqrt(16));
