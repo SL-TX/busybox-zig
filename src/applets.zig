@@ -419,11 +419,11 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("lzopuncompress", Applet{ .name = "lzopuncompress", .main = lzopuncompress_main, .flags = .{} }) catch unreachable;
 
     // === Util-linux ===
-    map.put("dmesg", Applet{ .name = "dmesg", .main = dmesg_main, .flags = .{} }) catch unreachable;
-    map.put("mount", Applet{ .name = "mount", .main = mount_main, .flags = .{} }) catch unreachable;
-    map.put("umount", Applet{ .name = "umount", .main = umount_main, .flags = .{} }) catch unreachable;
+    map.put("dmesg", Applet{ .name = "dmesg", .main = @import("util_linux").dmesg_main, .flags = .{} }) catch unreachable;
+    map.put("mount", Applet{ .name = "mount", .main = @import("util_linux").mount_main, .flags = .{} }) catch unreachable;
+    map.put("umount", Applet{ .name = "umount", .main = @import("util_linux").umount_main, .flags = .{} }) catch unreachable;
     map.put("fdisk", Applet{ .name = "fdisk", .main = fdisk_main, .flags = .{} }) catch unreachable;
-    map.put("blkid", Applet{ .name = "blkid", .main = blkid_main, .flags = .{} }) catch unreachable;
+    map.put("blkid", Applet{ .name = "blkid", .main = @import("util_linux").blkid_main, .flags = .{} }) catch unreachable;
     map.put("fallocate", Applet{ .name = "fallocate", .main = fallocate_main, .flags = .{} }) catch unreachable;
     map.put("flock", Applet{ .name = "flock", .main = flock_main, .flags = .{} }) catch unreachable;
     map.put("fstrim", Applet{ .name = "fstrim", .main = fstrim_main, .flags = .{} }) catch unreachable;

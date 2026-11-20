@@ -36,6 +36,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    util_linux.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("util_linux", util_linux);
 
     // Add networking module

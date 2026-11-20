@@ -93,3 +93,31 @@ verified all six applets including options (-2, -u, -d/-f). Commit `ec097ab`.
 Ruling: sed and awk from Task 10's file list are deferred — each is a small
 language/interpreter needing its own spec and test suite; shipping a partial
 sed/awk would be worse than an honest gap. Cost: those applets remain stubs.
+
+--- Return to deferred items (user request) ---
+
+Deferred closed: util helpers recursiveAction, getopt32, is_directory,
+executable, find_mount_point — implemented with tests (commit `87d7420`).
+Also fixed a real bug found in the process: getdents64 name offset must be
+`@offsetOf(dirent64, "name")` (19), not `@sizeOf(dirent64)` (24); this had
+made directory walks silently skip every entry. Corrected both util.zig and
+coreutils ls.
+
+Deferred closed: `cp -r` and `rm -r` implemented on top of recursiveAction
+(commit `87d7420`), verified on a nested tree.
+
+Deferred closed: sed and awk subsets (commit `83f2734`). sed supports literal
+s/// with g, d, p, numeric/$/\/ addresses, -n. awk supports BEGIN/END,
+empty and /substring/ patterns, print with fields. Ruling: POSIX BRE regex
+and full awk expressions remain out of scope — they need a regex engine and
+an expression evaluator; cost: complex scripts will not work.
+
+Deferred closed: pw_encrypt_md5 (commit `07724c7`). Test vector taken from
+`openssl passwd -1 -salt 12345678 password` and cross-checked with Perl's
+crypt(). Bug found via RED: the FreeBSD algorithm feeds a single byte of the
+password in the length loop, not the whole password. cryptpw applet wired and
+verified byte-for-byte against openssl.
+Ruling: SHA-crypt ($5$/$6$) and DES crypt are still not implemented; cost:
+mkpasswd/chpasswd with those algorithms remain unsupported.
+
+Test total after deferred work: 88/88 via `zig build test`.
