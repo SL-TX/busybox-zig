@@ -1,0 +1,18 @@
+# Vendored toolchain and C reference sources (not part of the Zig port)
+/tools/
+/reference/
+
+# Build artifacts
+/.zig-cache/
+**/.zig-cache/
+zig-out/
+**/zig-out/
+
+# Scratch files from earlier build experiments
+/test_5less
+/src/test
+/src/test_*
+/src/test[0-9]*
+/src/applets.zig.nogetty
+/src/applets.zig.tmp
+/src/zig.build

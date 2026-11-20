@@ -1,0 +1,9 @@
+{
+    .name = "busybox",
+    .version = "0.0.0",
+    .paths = &.{},
+
+    .dependencies = {},
+
+    .links = "busybox"
+}

@@ -1,0 +1,12 @@
+//! Aggregate test entry point: `zig build test`.
+
+test {
+    _ = @import("libbb_zig/string_test.zig");
+    _ = @import("libbb_zig/process_test.zig");
+    _ = @import("libbb_zig/io_test.zig");
+    _ = @import("libbb_zig/hash_test.zig");
+    _ = @import("libbb_zig/socket_test.zig");
+    _ = @import("libbb_zig/util_test.zig");
+    _ = @import("applets_test.zig");
+    _ = @import("coreutils/coreutils_test.zig");
+}
