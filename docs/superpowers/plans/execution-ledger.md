@@ -226,3 +226,26 @@ Both exec the target shell with an empty envp. Cost: no PAM, no TTY prompts,
 no HOME/USER propagation.
 Minor: passwd's shadow rewrite drops a trailing newline on the file. It does
 not affect parsing; noted rather than fixed.
+
+Task 17: complete (partial) — ascii, dc, bbconfig in src/remaining/main.zig +
+remaining_test.zig; bbconfig implemented in applets.zig itself. Commit `7965e6d`.
+RED: 3 new tests failed while 122 existing passed; GREEN: 125/125 via
+`zig build test`. Binary integration verified ascii output, dc RPN arithmetic
+(`3 4 +` → 7, `3 4 *` → 12), and bbconfig emitting 295 CONFIG_* lines.
+The one failing assertion during GREEN was a wrong expected padding in the
+test ("  65" vs the correct " 65" for width 3) — the test was corrected, not
+the implementation.
+Ruling: nearly all of Task 17's categories have no applets in the default
+BusyBox 1.36.1 registry established in Task 7. Adding them would be adding new
+applets, a spec Non-Goal, so console-tools, e2fsprogs, editors, init,
+klibc-utils, mailutils, printutils, selinux, sysklogd, runit and most of
+debianutils/modutils stay deferred. The few that are registered (mke2fs,
+debugfs, crond, makedevs, etc.) are privileged, destructive, daemon or TTY
+bound and cannot be safely exercised here. Cost: those categories remain stubs.
+Ruling: implemented the three feasible registered applets in a single
+`remaining/` module instead of twelve category directories; bbconfig lives in
+applets.zig to avoid a module cycle with the registry. Cost: the spec's
+per-category directory layout is not followed for these three.
+Ruling: dc supports integer RPN with + - * / only (no stack commands or
+registers). Final verification shows 295 applets, not the plan's 350+ — this
+follows Task 7's ruling that the registry is the BusyBox default set.
