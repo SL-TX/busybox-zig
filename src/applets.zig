@@ -593,13 +593,13 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("debugfs", Applet{ .name = "debugfs", .main = debugfs_main, .flags = .{} }) catch unreachable;
 
     // === Procps ===
-    map.put("kill", Applet{ .name = "kill", .main = kill_main, .flags = .{} }) catch unreachable;
-    map.put("killall", Applet{ .name = "killall", .main = killall_main, .flags = .{} }) catch unreachable;
+    map.put("kill", Applet{ .name = "kill", .main = @import("procps").kill_main, .flags = .{} }) catch unreachable;
+    map.put("killall", Applet{ .name = "killall", .main = @import("procps").killall_main, .flags = .{} }) catch unreachable;
     map.put("killall5", Applet{ .name = "killall5", .main = killall5_main, .flags = .{} }) catch unreachable;
-    map.put("free", Applet{ .name = "free", .main = free_main, .flags = .{} }) catch unreachable;
+    map.put("free", Applet{ .name = "free", .main = @import("procps").free_main, .flags = .{} }) catch unreachable;
     map.put("pwdx", Applet{ .name = "pwdx", .main = pwdx_main, .flags = .{} }) catch unreachable;
-    map.put("ps", Applet{ .name = "ps", .main = ps_main, .flags = .{} }) catch unreachable;
-    map.put("top", Applet{ .name = "top", .main = top_main, .flags = .{} }) catch unreachable;
+    map.put("ps", Applet{ .name = "ps", .main = @import("procps").ps_main, .flags = .{} }) catch unreachable;
+    map.put("top", Applet{ .name = "top", .main = @import("procps").top_main, .flags = .{} }) catch unreachable;
     map.put("lsof", Applet{ .name = "lsof", .main = lsof_main, .flags = .{} }) catch unreachable;
     map.put("smemcap", Applet{ .name = "smemcap", .main = smemcap_main, .flags = .{} }) catch unreachable;
     map.put("powertop", Applet{ .name = "powertop", .main = powertop_main, .flags = .{} }) catch unreachable;

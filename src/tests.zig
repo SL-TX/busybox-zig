@@ -18,4 +18,5 @@ test {
     _ = @import("coreutils/awk_test.zig");
     _ = @import("networking/network_test.zig");
     _ = @import("miscutils/misc_test.zig");
+    _ = @import("procps/procps_test.zig");
 }
