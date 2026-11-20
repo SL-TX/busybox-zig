@@ -31,6 +31,12 @@ test "parseIoniceArgs separates options from the command" {
     try std.testing.expectEqual(@as(usize, 2), named.command_start);
 }
 
+test "resolveCommand searches PATH for ionice children" {
+    const path = try misc.resolveCommand(std.testing.allocator, "true", "/bin:/usr/bin");
+    defer if (path) |p| std.testing.allocator.free(p);
+    try std.testing.expectEqualStrings("/bin/true", path.?);
+}
+
 test "ioprioValue packs class and data into the syscall value" {
     try std.testing.expectEqual(@as(u16, (2 << 13) | 4), misc.ioprioValue(.{ .class = 2, .data = 4 }));
 }

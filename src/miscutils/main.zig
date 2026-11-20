@@ -24,9 +24,8 @@ fn argsFrom(argv: [*][*:0]const u8, argc: c_int) []const []const u8 {
     return result;
 }
 
-fn zstr(a: std.mem.Allocator, s: []const u8) ![*:0]const u8 {
-    const owned = try std.mem.concatWithSentinel(a, u8, &.{s}, 0);
-    return owned.ptr;
+fn zstr(a: std.mem.Allocator, s: []const u8) ![:0]u8 {
+    return std.mem.concatWithSentinel(a, u8, &.{s}, 0);
 }
 
 fn eq(a: []const u8, b: []const u8) bool {
@@ -128,6 +127,28 @@ pub fn ioprioValue(p: Ioprio) u16 {
     return (@as(u16, p.class) << 13) | (p.data & 0x1fff);
 }
 
+pub fn resolveCommand(a: std.mem.Allocator, name: []const u8, path_var: []const u8) !?[]u8 {
+    if (std.mem.indexOfScalar(u8, name, '/') != null) return try a.dupe(u8, name);
+    var dirs = std.mem.splitScalar(u8, path_var, ':');
+    while (dirs.next()) |dir| {
+        const candidate = if (dir.len == 0)
+            try a.dupe(u8, name)
+        else
+            try std.fmt.allocPrint(a, "{s}/{s}", .{ dir, name });
+        const z = try zstr(a, candidate);
+        const found = linux.errno(linux.access(z.ptr, linux.X_OK)) == .SUCCESS;
+        a.free(z);
+        if (found) return candidate;
+        a.free(candidate);
+    }
+    return null;
+}
+
+pub fn exitStatus(status: i32) u8 {
+    if ((status & 0x7f) != 0) return @intCast(128 + (status & 0x7f));
+    return @intCast((status >> 8) & 0xff);
+}
+
 fn setIoprio(pid: i32, value: u16) bool {
     // IOPRIO_WHO_PROCESS == 1
     const rc = linux.syscall3(.ioprio_set, 1, @bitCast(@as(i64, pid)), value);
@@ -145,17 +166,37 @@ pub const CronEntry = struct {
     command: []const u8,
 };
 
-fn validCronField(field: []const u8, max: u8) bool {
-    if (eq(field, "*")) return true;
-    if (std.mem.startsWith(u8, field, "*/")) {
-        const step = std.fmt.parseInt(u8, field[2..], 10) catch return false;
-        return step > 0 and step <= max;
+const month_names = [_][]const u8{ "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
+const day_names = [_][]const u8{ "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
+
+fn cronValue(token: []const u8, max: u8, names: []const []const u8) ?u8 {
+    if (std.fmt.parseInt(u8, token, 10)) |v| {
+        return if (v <= max) v else null;
+    } else |_| {}
+    for (names, 0..) |name, i| {
+        if (std.ascii.eqlIgnoreCase(token, name)) return @intCast(i + 1);
     }
-    var it = std.mem.splitScalar(u8, field, ',');
-    while (it.next()) |part| {
-        if (eq(part, "*")) continue;
-        const v = std.fmt.parseInt(u8, part, 10) catch return false;
-        if (v > max) return false;
+    return null;
+}
+
+fn validCronField(field: []const u8, max: u8, names: []const []const u8) bool {
+    var parts = std.mem.splitScalar(u8, field, ',');
+    while (parts.next()) |part| {
+        if (part.len == 0) return false;
+        var base = part;
+        if (std.mem.indexOfScalar(u8, part, '/')) |slash| {
+            const step = std.fmt.parseInt(u8, part[slash + 1 ..], 10) catch return false;
+            if (step == 0 or step > max) return false;
+            base = part[0..slash];
+        }
+        if (eq(base, "*")) continue;
+        if (std.mem.indexOfScalar(u8, base, '-')) |dash| {
+            const lo = cronValue(base[0..dash], max, names) orelse return false;
+            const hi = cronValue(base[dash + 1 ..], max, names) orelse return false;
+            if (lo > hi) return false;
+            continue;
+        }
+        if (cronValue(base, max, names) == null) return false;
     }
     return true;
 }
@@ -176,9 +217,9 @@ pub fn parseCrontabLine(line: []const u8) ?CronEntry {
         count += 1;
     }
     if (count < 5) return null;
-    if (!validCronField(fields[0], 59) or !validCronField(fields[1], 23) or
-        !validCronField(fields[2], 31) or !validCronField(fields[3], 12) or
-        !validCronField(fields[4], 7)) return null;
+    if (!validCronField(fields[0], 59, &.{}) or !validCronField(fields[1], 23, &.{}) or
+        !validCronField(fields[2], 31, &.{}) or !validCronField(fields[3], 12, &month_names) or
+        !validCronField(fields[4], 7, &day_names)) return null;
 
     while (idx < t.len and (t[idx] == ' ' or t[idx] == '\t')) idx += 1;
     if (idx >= t.len) return null;
@@ -264,9 +305,13 @@ pub fn ionice_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         const child = proc.fork() catch return 1;
         if (child == 0) {
             if (!setIoprio(0, ioprioValue(prio))) std.process.exit(1);
+            const command = args[command_start];
+            const path_var = env.get("PATH") orelse "/bin:/usr/bin";
+            const resolved = resolveCommand(a, command, path_var) catch std.process.exit(1) orelse std.process.exit(127);
             const argv_z = a.allocSentinel(?[*:0]const u8, args.len - command_start, null) catch std.process.exit(1);
-            for (args[command_start..], 0..) |word, k| {
-                argv_z[k] = zstr(a, word) catch std.process.exit(1);
+            argv_z[0] = zstr(a, resolved) catch std.process.exit(1);
+            for (args[command_start + 1 ..], 0..) |word, k| {
+                argv_z[k + 1] = zstr(a, word) catch std.process.exit(1);
             }
             const envp_z = a.allocSentinel(?[*:0]const u8, 0, null) catch std.process.exit(1);
             proc.execve(argv_z[0].?, argv_z, envp_z) catch std.process.exit(127);
@@ -274,7 +319,7 @@ pub fn ionice_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         }
         var status: i32 = 0;
         _ = proc.waitpid(child, &status, 0) catch return 1;
-        return 0;
+        return exitStatus(status);
     }
 
     return if (setIoprio(pid, ioprioValue(prio))) 0 else 1;

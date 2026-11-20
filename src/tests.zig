@@ -22,4 +22,5 @@ test {
     _ = @import("shell/shell_test.zig");
     _ = @import("loginutils/login_test.zig");
     _ = @import("remaining/remaining_test.zig");
+    _ = @import("final_review_test.zig");
 }

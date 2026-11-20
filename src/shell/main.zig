@@ -14,6 +14,30 @@ fn out(bytes: []const u8) void {
     _ = linux.write(1, bytes.ptr, bytes.len);
 }
 
+fn argsFrom(argv: [*][*:0]const u8, argc: c_int) []const []const u8 {
+    const a = std.heap.page_allocator;
+    const result = a.alloc([]const u8, @intCast(argc)) catch return &.{};
+    for (0..@as(usize, @intCast(argc))) |i| result[i] = std.mem.span(argv[i]);
+    return result;
+}
+
+fn readFile(a: std.mem.Allocator, path: []const u8) ?[]u8 {
+    const p = zstr(a, path) catch return null;
+    defer a.free(p);
+    const rc = linux.open(p.ptr, .{ .ACCMODE = .RDONLY }, 0);
+    if (linux.errno(rc) != .SUCCESS) return null;
+    const fd: linux.fd_t = @intCast(rc);
+    defer _ = linux.close(fd);
+    var result: std.ArrayList(u8) = .empty;
+    var buf: [8192]u8 = undefined;
+    while (true) {
+        const n = linux.read(fd, &buf, buf.len);
+        if (linux.errno(n) != .SUCCESS or n == 0) break;
+        result.appendSlice(a, buf[0..n]) catch return null;
+    }
+    return result.toOwnedSlice(a) catch null;
+}
+
 fn zstr(a: std.mem.Allocator, s: []const u8) ![:0]u8 {
     return std.mem.concatWithSentinel(a, u8, &.{s}, 0);
 }
@@ -168,7 +192,9 @@ pub const Context = struct {
     pub fn set(self: *Context, name: []const u8, value: []const u8) !void {
         for (self.vars.items) |*v| {
             if (eq(v.name, name)) {
-                v.value = try self.allocator.dupe(u8, value);
+                const owned = try self.allocator.dupe(u8, value);
+                self.allocator.free(v.value);
+                v.value = owned;
                 return;
             }
         }
@@ -246,7 +272,11 @@ fn runExternal(ctx: *Context, words: []const []u8) !u8 {
         for (words, 0..) |word, i| {
             argv_z[i] = (zstr(a, word) catch std.process.exit(127)).ptr;
         }
-        const envp_z = a.allocSentinel(?[*:0]const u8, 0, null) catch std.process.exit(127);
+        const envp_z = a.allocSentinel(?[*:0]const u8, ctx.vars.items.len, null) catch std.process.exit(127);
+        for (ctx.vars.items, 0..) |v, k| {
+            const kv = std.fmt.allocPrintSentinel(a, "{s}={s}", .{ v.name, v.value }, 0) catch std.process.exit(127);
+            envp_z[k] = kv.ptr;
+        }
         _ = linux.execve(path_z.ptr, argv_z.ptr, envp_z.ptr);
         std.process.exit(127);
     }
@@ -268,7 +298,8 @@ pub fn runLine(ctx: *Context, line: []const u8) !u8 {
     }
     if (words.len == 0) return 0;
 
-    // VAR=value assignment
+    // VAR=value prefix: set the variable, then keep processing the command.
+    var start: usize = 0;
     if (std.mem.indexOfScalar(u8, words[0], '=')) |pos| {
         if (pos > 0) {
             const name = words[0][0..pos];
@@ -276,32 +307,53 @@ pub fn runLine(ctx: *Context, line: []const u8) !u8 {
             const expanded = try expandVars(a, value, ctx.vars.items);
             defer a.free(expanded);
             try ctx.set(name, expanded);
-            return 0;
+            start = 1;
         }
     }
+    if (start == words.len) return 0;
 
     var expanded: std.ArrayList([]u8) = .empty;
     defer {
         for (expanded.items) |w| a.free(w);
         expanded.deinit(a);
     }
-    for (words) |word| try expanded.append(a, try expandVars(a, word, ctx.vars.items));
+    for (words[start..]) |word| try expanded.append(a, try expandVars(a, word, ctx.vars.items));
 
     if (try runBuiltin(ctx, expanded.items)) |code| return code;
     return runExternal(ctx, expanded.items);
 }
 
 pub fn runInput(ctx: *Context, input: []const u8) u8 {
+    var last: u8 = 0;
     var lines = std.mem.splitScalar(u8, input, '\n');
     while (lines.next()) |line| {
         var commands = std.mem.splitScalar(u8, line, ';');
         while (commands.next()) |command| {
-            const code = runLine(ctx, command) catch 1;
+            last = runLine(ctx, command) catch 1;
             if (ctx.should_exit) return ctx.exit_code;
-            _ = code;
         }
     }
-    return 0;
+    return last;
+}
+
+pub const AshInvocation = struct { command: ?[]const u8 = null, script_path: ?[]const u8 = null };
+
+pub fn parseAshArgs(args: []const []const u8) !AshInvocation {
+    var inv = AshInvocation{};
+    var i: usize = 1;
+    while (i < args.len) : (i += 1) {
+        const arg = args[i];
+        if (eq(arg, "-c") and i + 1 < args.len) {
+            i += 1;
+            inv.command = args[i];
+        } else if (arg.len > 0 and arg[0] == '-') {
+            // ignore unsupported flags
+        } else {
+            inv.script_path = arg;
+            break;
+        }
+    }
+    return inv;
 }
 
 fn readAll(a: std.mem.Allocator, fd: linux.fd_t) ![]u8 {
@@ -328,16 +380,15 @@ pub fn ash_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     }
     ctx.set("PATH", "/bin:/usr/bin") catch return 1;
 
-    var command: ?[]const u8 = null;
-    var i: usize = 1;
-    while (i < @as(usize, @intCast(argc))) : (i += 1) {
-        const arg = std.mem.span(argv[i]);
-        if (eq(arg, "-c") and i + 1 < @as(usize, @intCast(argc))) {
-            i += 1;
-            command = std.mem.span(argv[i]);
-        }
+    const args = argsFrom(argv, argc);
+    const invocation = parseAshArgs(args) catch return 1;
+    if (invocation.command) |cmd| return runInput(&ctx, cmd);
+
+    if (invocation.script_path) |path| {
+        const script = readFile(a, path) orelse return 1;
+        defer a.free(script);
+        return runInput(&ctx, script);
     }
-    if (command) |cmd| return runInput(&ctx, cmd);
 
     const input = readAll(a, 0) catch return 1;
     defer a.free(input);

@@ -16,224 +16,224 @@ pub const Applet = struct {
 
 // Stub main functions for all applets.
 // These will be replaced with actual implementations in future phases.
-pub fn cat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ls_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn echo_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn printf_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn cp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn rm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mkdir_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn touch_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn head_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tail_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn sort_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn uniq_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn wc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn cut_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn true_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn false_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn date_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn dd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pwd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ln_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn basename_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn dirname_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn du_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn find_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn grep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn readlink_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn seq_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tee_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn uptime_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn who_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn which_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn xargs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn bzip2_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn bunzip2_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn bzcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn gzip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn gunzip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn md5sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn sha1sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn sha256sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn cksum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn base64_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fold_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn join_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nproc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn od_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn paste_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn shred_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn shuf_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn split_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn stat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn strings_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tsort_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn unexpand_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn yes_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zcmp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zdiff_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zgrep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zless_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zmore_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn znew_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mkfifo_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mknod_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mktemp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn realpath_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nohup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn numfmt_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn crc32_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn sha512sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn xz_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn xzcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn unxz_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lzma_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lzop_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lzopcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn unlzma_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zlib_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zlib1g_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn uncompress_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lzopuncompress_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn cat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ls_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn echo_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn printf_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn cp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn rm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mkdir_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn touch_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn head_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tail_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn sort_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn uniq_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn wc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn cut_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn true_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn false_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn date_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn dd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pwd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ln_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn basename_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn dirname_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn du_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn find_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn grep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn readlink_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn seq_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tee_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn uptime_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn who_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn which_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn xargs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn bzip2_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn bunzip2_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn bzcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn gzip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn gunzip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn md5sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn sha1sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn sha256sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn cksum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn base64_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fold_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn join_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nproc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn od_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn paste_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn shred_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn shuf_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn split_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn stat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn strings_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tsort_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn unexpand_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn yes_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zcmp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zdiff_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zgrep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zless_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zmore_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn znew_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mkfifo_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mknod_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mktemp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn realpath_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nohup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn numfmt_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn crc32_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn sha512sum_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn xz_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn xzcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn unxz_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lzma_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lzop_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lzopcat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn unlzma_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zlib_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zlib1g_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn uncompress_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lzopuncompress_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 // Util-linux stubs
-pub fn dmesg_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mount_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn umount_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fdisk_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn blkid_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fallocate_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn flock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fstrim_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn hwclock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ionice_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn last_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lsblk_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mdev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mkhomedir_helper_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn more_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mountpoint_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nsenter_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pivot_root_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn readprofile_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn renice_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn switch_root_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn taskset_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn unshare_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn setsid_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn chrt_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lsusb_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn uevent_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn acpid_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn eject_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn swaplabel_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn rdate_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fbset_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fdformat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn script_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn scriptreplay_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn losetup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn freeramdisk_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mkswap_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn blkdiscard_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn cal_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fatlabel_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn rev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn rdev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fatattr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fsfreeze_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nologin_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn wall_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn findfs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn blockdev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ipcs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ipcrm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn hexdump_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lspci_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn last_fancy_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn uuidgen_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mesg_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn setpriv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn rtcwake_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn setarch_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn dmesg_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mount_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn umount_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fdisk_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn blkid_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fallocate_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn flock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fstrim_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn hwclock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ionice_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn last_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lsblk_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mdev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mkhomedir_helper_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn more_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mountpoint_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nsenter_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pivot_root_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn readprofile_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn renice_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn switch_root_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn taskset_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn unshare_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn setsid_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn chrt_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lsusb_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn uevent_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn acpid_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn eject_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn swaplabel_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn rdate_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fbset_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fdformat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn script_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn scriptreplay_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn losetup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn freeramdisk_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mkswap_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn blkdiscard_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn cal_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fatlabel_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn rev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn rdev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fatattr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fsfreeze_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nologin_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn wall_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn findfs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn blockdev_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ipcs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ipcrm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn hexdump_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lspci_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn last_fancy_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn uuidgen_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mesg_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn setpriv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn rtcwake_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn setarch_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 // Networking stubs
-pub fn ip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ping_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ifconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn route_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn wget_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tftp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn httpd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn telnet_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn hostname_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nslookup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ftpgetput_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn arping_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn netstat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ether_wake_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn whois_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nbd_client_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn zcip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ftpd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn isrv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn isrv_identd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nc_bloaty_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn dnsd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn inetd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ifenslave_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn vconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn brctl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ipcalc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn traceroute_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn telnetd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pscan_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn slattach_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tunctl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nameif_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ifplugd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ntpd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn arp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ifupdown_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn interface_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ssl_client_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ssl_server_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_aes_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_aesgcm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_fe_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_pstm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_pstm_mul_comba_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_pstm_sqr_comba_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_pstm_montgomery_reduce_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_rsa_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tls_sp_c32_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn httpd_indexcgi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn httpd_ssi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn httpd_ratelimit_cgi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tcpudp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tcpudp_perhost_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn parse_pasv_epsv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn ip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ping_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ifconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn route_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn wget_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tftp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn httpd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn telnet_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn hostname_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nslookup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ftpgetput_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn arping_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn netstat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ether_wake_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn whois_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nbd_client_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn zcip_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ftpd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn isrv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn isrv_identd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nc_bloaty_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn dnsd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn inetd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ifenslave_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn vconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn brctl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ipcalc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn traceroute_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn telnetd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pscan_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn slattach_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tunctl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nameif_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ifplugd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ntpd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn arp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ifupdown_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn interface_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ssl_client_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ssl_server_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_aes_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_aesgcm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_fe_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_pstm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_pstm_mul_comba_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_pstm_sqr_comba_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_pstm_montgomery_reduce_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_rsa_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tls_sp_c32_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn httpd_indexcgi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn httpd_ssi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn httpd_ratelimit_cgi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tcpudp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tcpudp_perhost_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn parse_pasv_epsv_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 // Miscutils stubs
-pub fn inotifyd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn watchdog_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn hexedit_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn dc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ubirename_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn time_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn setserial_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn microcom_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn rx_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mt_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn runlevel_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn readahead_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn seedrng_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn raidautorun_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn inotifyd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn watchdog_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn hexedit_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn dc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ubirename_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn time_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn setserial_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn microcom_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn rx_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mt_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn runlevel_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn readahead_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn seedrng_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn raidautorun_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 pub fn bbconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int {
     _ = _argc;
     _ = _argv;
@@ -250,95 +250,115 @@ pub fn bbconfig_main(_argc: c_int, _argv: [*][*:0]const u8) c_int {
     }
     return 0;
 }
-pub fn ascii_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn makedevs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn bc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn flash_eraseall_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tree_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lsscsi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn crontab_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn volname_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn flashcp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn flash_lock_unlock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn i2c_tools_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mim_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn beep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn partprobe_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fbsplash_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn hdparm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn devmem_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ts_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn adjtimex_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ttysize_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn getfattr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn rfkill_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn chat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn man_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn less_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ubi_tools_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nandwrite_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn conspy_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn crond_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn devfsd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn setfattr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn setconsole_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mke2fs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn tune2fs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn e2label_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn dump_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn restore_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn debugfs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn ascii_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn makedevs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn bc_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn flash_eraseall_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tree_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lsscsi_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn crontab_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn volname_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn flashcp_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn flash_lock_unlock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn i2c_tools_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mim_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn beep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn partprobe_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fbsplash_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn hdparm_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn devmem_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ts_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn adjtimex_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ttysize_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn getfattr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn rfkill_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn chat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn man_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn less_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ubi_tools_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nandwrite_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn conspy_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn crond_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn devfsd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn setfattr_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn setconsole_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mke2fs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn tune2fs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn e2label_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn dump_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn restore_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn debugfs_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 
 // Procps stubs
-pub fn kill_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn killall_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn killall5_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn free_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pwdx_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn ps_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn top_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn lsof_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn smemcap_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn powertop_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn watch_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn vmstat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn iostat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn fuser_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pidof_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pstree_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn nmeter_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pgrep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn pmap_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn sysctl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mpstat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn kill_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn killall_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn killall5_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn free_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pwdx_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn ps_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn top_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn lsof_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn smemcap_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn powertop_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn watch_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn vmstat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn iostat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn fuser_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pidof_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pstree_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn nmeter_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pgrep_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn pmap_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn sysctl_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mpstat_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 
 // Shell stubs
-pub fn ash_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn hush_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn random_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn match_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn cttyhack_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn math_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn ash_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn hush_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn random_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn match_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn cttyhack_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn math_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 
 // Loginutils stubs
-pub fn vlock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn deluser_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn adduser_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn login_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn addgroup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn passwd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn chpasswd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn add_remove_shell_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn su_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn sulogin_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn cryptpw_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn mkpasswd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
-pub fn getty_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; _ = _argv; std.process.exit(1); }
+pub fn vlock_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn deluser_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn adduser_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn login_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn addgroup_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn passwd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn chpasswd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn add_remove_shell_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn su_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn sulogin_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn cryptpw_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn mkpasswd_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
+pub fn getty_main(_argc: c_int, _argv: [*][*:0]const u8) c_int { _ = _argc; return stubNotImplemented(_argv); }
 
 // Registry — uses StringHashMap for runtime initialization.
 // StaticStringMap cannot handle function pointers in struct literals at comptime.
 
 var applets_map: ?std.StringHashMap(Applet) = null;
+
+const config = @import("config").config;
+const MainFn = *const fn (c_int, [*][*:0]const u8) c_int;
+
+/// Deferred applets fail loudly instead of exiting silently with no message.
+fn stubNotImplemented(argv: [*][*:0]const u8) c_int {
+    const name = std.mem.span(argv[0]);
+    var buf: [256]u8 = undefined;
+    const msg = std.fmt.bufPrint(&buf, "{s}: not implemented\n", .{name}) catch "not implemented\n";
+    _ = std.os.linux.write(2, msg.ptr, msg.len);
+    return 1;
+}
+
+/// Register an applet only when its Kconfig-style flag is enabled. This is the
+/// Zig equivalent of busybox's `#ifdef CONFIG_APPLET`.
+fn putIfEnabled(map: *std.StringHashMap(Applet), comptime name: []const u8, main: MainFn) void {
+    if (@field(config, "APPLET_" ++ name)) {
+        map.put(name, .{ .name = name, .main = main, .flags = .{} }) catch unreachable;
+    }
+}
 
 pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     if (applets_map) |*map| return map.*;
@@ -346,312 +366,312 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     const map = &applets_map.?;
 
     // === Coreutils ===
-    map.put("cat", Applet{ .name = "cat", .main = coreutils.cat_main, .flags = .{} }) catch unreachable;
-    map.put("ls", Applet{ .name = "ls", .main = coreutils.ls_main, .flags = .{} }) catch unreachable;
-    map.put("echo", Applet{ .name = "echo", .main = coreutils.echo_main, .flags = .{} }) catch unreachable;
-    map.put("printf", Applet{ .name = "printf", .main = coreutils.printf_main, .flags = .{} }) catch unreachable;
-    map.put("cp", Applet{ .name = "cp", .main = coreutils.cp_main, .flags = .{} }) catch unreachable;
-    map.put("mv", Applet{ .name = "mv", .main = coreutils.mv_main, .flags = .{} }) catch unreachable;
-    map.put("rm", Applet{ .name = "rm", .main = coreutils.rm_main, .flags = .{} }) catch unreachable;
-    map.put("mkdir", Applet{ .name = "mkdir", .main = coreutils.mkdir_main, .flags = .{} }) catch unreachable;
-    map.put("touch", Applet{ .name = "touch", .main = coreutils.touch_main, .flags = .{} }) catch unreachable;
-    map.put("head", Applet{ .name = "head", .main = coreutils.head_main, .flags = .{} }) catch unreachable;
-    map.put("tail", Applet{ .name = "tail", .main = coreutils.tail_main, .flags = .{} }) catch unreachable;
-    map.put("sort", Applet{ .name = "sort", .main = coreutils.sort_main, .flags = .{} }) catch unreachable;
-    map.put("uniq", Applet{ .name = "uniq", .main = coreutils.uniq_main, .flags = .{} }) catch unreachable;
-    map.put("wc", Applet{ .name = "wc", .main = coreutils.wc_main, .flags = .{} }) catch unreachable;
-    map.put("cut", Applet{ .name = "cut", .main = coreutils.cut_main, .flags = .{} }) catch unreachable;
-    map.put("sed", Applet{ .name = "sed", .main = coreutils.sed_main, .flags = .{} }) catch unreachable;
-    map.put("awk", Applet{ .name = "awk", .main = coreutils.awk_main, .flags = .{} }) catch unreachable;
-    map.put("true", Applet{ .name = "true", .main = coreutils.true_main, .flags = .{} }) catch unreachable;
-    map.put("false", Applet{ .name = "false", .main = coreutils.false_main, .flags = .{} }) catch unreachable;
-    map.put("date", Applet{ .name = "date", .main = date_main, .flags = .{} }) catch unreachable;
-    map.put("dd", Applet{ .name = "dd", .main = dd_main, .flags = .{} }) catch unreachable;
-    map.put("pwd", Applet{ .name = "pwd", .main = pwd_main, .flags = .{} }) catch unreachable;
-    map.put("ln", Applet{ .name = "ln", .main = ln_main, .flags = .{} }) catch unreachable;
-    map.put("basename", Applet{ .name = "basename", .main = basename_main, .flags = .{} }) catch unreachable;
-    map.put("dirname", Applet{ .name = "dirname", .main = dirname_main, .flags = .{} }) catch unreachable;
-    map.put("du", Applet{ .name = "du", .main = du_main, .flags = .{} }) catch unreachable;
-    map.put("find", Applet{ .name = "find", .main = find_main, .flags = .{} }) catch unreachable;
-    map.put("grep", Applet{ .name = "grep", .main = grep_main, .flags = .{} }) catch unreachable;
-    map.put("tr", Applet{ .name = "tr", .main = tr_main, .flags = .{} }) catch unreachable;
-    map.put("readlink", Applet{ .name = "readlink", .main = readlink_main, .flags = .{} }) catch unreachable;
-    map.put("seq", Applet{ .name = "seq", .main = seq_main, .flags = .{} }) catch unreachable;
-    map.put("tee", Applet{ .name = "tee", .main = tee_main, .flags = .{} }) catch unreachable;
-    map.put("uptime", Applet{ .name = "uptime", .main = uptime_main, .flags = .{} }) catch unreachable;
-    map.put("who", Applet{ .name = "who", .main = who_main, .flags = .{} }) catch unreachable;
-    map.put("which", Applet{ .name = "which", .main = which_main, .flags = .{} }) catch unreachable;
-    map.put("xargs", Applet{ .name = "xargs", .main = xargs_main, .flags = .{} }) catch unreachable;
-    map.put("bzip2", Applet{ .name = "bzip2", .main = bzip2_main, .flags = .{} }) catch unreachable;
-    map.put("bunzip2", Applet{ .name = "bunzip2", .main = bunzip2_main, .flags = .{} }) catch unreachable;
-    map.put("bzcat", Applet{ .name = "bzcat", .main = bzcat_main, .flags = .{} }) catch unreachable;
-    map.put("gzip", Applet{ .name = "gzip", .main = gzip_main, .flags = .{} }) catch unreachable;
-    map.put("gunzip", Applet{ .name = "gunzip", .main = gunzip_main, .flags = .{} }) catch unreachable;
-    map.put("md5sum", Applet{ .name = "md5sum", .main = md5sum_main, .flags = .{} }) catch unreachable;
-    map.put("sha1sum", Applet{ .name = "sha1sum", .main = sha1sum_main, .flags = .{} }) catch unreachable;
-    map.put("sha256sum", Applet{ .name = "sha256sum", .main = sha256sum_main, .flags = .{} }) catch unreachable;
-    map.put("cksum", Applet{ .name = "cksum", .main = cksum_main, .flags = .{} }) catch unreachable;
-    map.put("base64", Applet{ .name = "base64", .main = base64_main, .flags = .{} }) catch unreachable;
-    map.put("fold", Applet{ .name = "fold", .main = fold_main, .flags = .{} }) catch unreachable;
-    map.put("join", Applet{ .name = "join", .main = join_main, .flags = .{} }) catch unreachable;
-    map.put("nl", Applet{ .name = "nl", .main = nl_main, .flags = .{} }) catch unreachable;
-    map.put("nproc", Applet{ .name = "nproc", .main = nproc_main, .flags = .{} }) catch unreachable;
-    map.put("od", Applet{ .name = "od", .main = od_main, .flags = .{} }) catch unreachable;
-    map.put("paste", Applet{ .name = "paste", .main = paste_main, .flags = .{} }) catch unreachable;
-    map.put("shred", Applet{ .name = "shred", .main = shred_main, .flags = .{} }) catch unreachable;
-    map.put("shuf", Applet{ .name = "shuf", .main = shuf_main, .flags = .{} }) catch unreachable;
-    map.put("split", Applet{ .name = "split", .main = split_main, .flags = .{} }) catch unreachable;
-    map.put("stat", Applet{ .name = "stat", .main = stat_main, .flags = .{} }) catch unreachable;
-    map.put("strings", Applet{ .name = "strings", .main = strings_main, .flags = .{} }) catch unreachable;
-    map.put("tsort", Applet{ .name = "tsort", .main = tsort_main, .flags = .{} }) catch unreachable;
-    map.put("unexpand", Applet{ .name = "unexpand", .main = unexpand_main, .flags = .{} }) catch unreachable;
-    map.put("yes", Applet{ .name = "yes", .main = yes_main, .flags = .{} }) catch unreachable;
-    map.put("zcat", Applet{ .name = "zcat", .main = zcat_main, .flags = .{} }) catch unreachable;
-    map.put("zcmp", Applet{ .name = "zcmp", .main = zcmp_main, .flags = .{} }) catch unreachable;
-    map.put("zdiff", Applet{ .name = "zdiff", .main = zdiff_main, .flags = .{} }) catch unreachable;
-    map.put("zgrep", Applet{ .name = "zgrep", .main = zgrep_main, .flags = .{} }) catch unreachable;
-    map.put("zless", Applet{ .name = "zless", .main = zless_main, .flags = .{} }) catch unreachable;
-    map.put("zmore", Applet{ .name = "zmore", .main = zmore_main, .flags = .{} }) catch unreachable;
-    map.put("znew", Applet{ .name = "znew", .main = znew_main, .flags = .{} }) catch unreachable;
-    map.put("mkfifo", Applet{ .name = "mkfifo", .main = mkfifo_main, .flags = .{} }) catch unreachable;
-    map.put("mknod", Applet{ .name = "mknod", .main = mknod_main, .flags = .{} }) catch unreachable;
-    map.put("mktemp", Applet{ .name = "mktemp", .main = mktemp_main, .flags = .{} }) catch unreachable;
-    map.put("realpath", Applet{ .name = "realpath", .main = realpath_main, .flags = .{} }) catch unreachable;
-    map.put("nohup", Applet{ .name = "nohup", .main = nohup_main, .flags = .{} }) catch unreachable;
-    map.put("numfmt", Applet{ .name = "numfmt", .main = numfmt_main, .flags = .{} }) catch unreachable;
-    map.put("crc32", Applet{ .name = "crc32", .main = crc32_main, .flags = .{} }) catch unreachable;
-    map.put("sha512sum", Applet{ .name = "sha512sum", .main = sha512sum_main, .flags = .{} }) catch unreachable;
-    map.put("xz", Applet{ .name = "xz", .main = xz_main, .flags = .{} }) catch unreachable;
-    map.put("xzcat", Applet{ .name = "xzcat", .main = xzcat_main, .flags = .{} }) catch unreachable;
-    map.put("unxz", Applet{ .name = "unxz", .main = unxz_main, .flags = .{} }) catch unreachable;
-    map.put("lzma", Applet{ .name = "lzma", .main = lzma_main, .flags = .{} }) catch unreachable;
-    map.put("lzop", Applet{ .name = "lzop", .main = lzop_main, .flags = .{} }) catch unreachable;
-    map.put("lzopcat", Applet{ .name = "lzopcat", .main = lzopcat_main, .flags = .{} }) catch unreachable;
-    map.put("unlzma", Applet{ .name = "unlzma", .main = unlzma_main, .flags = .{} }) catch unreachable;
-    map.put("zlib", Applet{ .name = "zlib", .main = zlib_main, .flags = .{} }) catch unreachable;
-    map.put("zlib1g", Applet{ .name = "zlib1g", .main = zlib1g_main, .flags = .{} }) catch unreachable;
-    map.put("uncompress", Applet{ .name = "uncompress", .main = uncompress_main, .flags = .{} }) catch unreachable;
-    map.put("lzopuncompress", Applet{ .name = "lzopuncompress", .main = lzopuncompress_main, .flags = .{} }) catch unreachable;
+    putIfEnabled(map, "cat", coreutils.cat_main);
+    putIfEnabled(map, "ls", coreutils.ls_main);
+    putIfEnabled(map, "echo", coreutils.echo_main);
+    putIfEnabled(map, "printf", coreutils.printf_main);
+    putIfEnabled(map, "cp", coreutils.cp_main);
+    putIfEnabled(map, "mv", coreutils.mv_main);
+    putIfEnabled(map, "rm", coreutils.rm_main);
+    putIfEnabled(map, "mkdir", coreutils.mkdir_main);
+    putIfEnabled(map, "touch", coreutils.touch_main);
+    putIfEnabled(map, "head", coreutils.head_main);
+    putIfEnabled(map, "tail", coreutils.tail_main);
+    putIfEnabled(map, "sort", coreutils.sort_main);
+    putIfEnabled(map, "uniq", coreutils.uniq_main);
+    putIfEnabled(map, "wc", coreutils.wc_main);
+    putIfEnabled(map, "cut", coreutils.cut_main);
+    putIfEnabled(map, "sed", coreutils.sed_main);
+    putIfEnabled(map, "awk", coreutils.awk_main);
+    putIfEnabled(map, "true", coreutils.true_main);
+    putIfEnabled(map, "false", coreutils.false_main);
+    putIfEnabled(map, "date", date_main);
+    putIfEnabled(map, "dd", dd_main);
+    putIfEnabled(map, "pwd", pwd_main);
+    putIfEnabled(map, "ln", ln_main);
+    putIfEnabled(map, "basename", basename_main);
+    putIfEnabled(map, "dirname", dirname_main);
+    putIfEnabled(map, "du", du_main);
+    putIfEnabled(map, "find", find_main);
+    putIfEnabled(map, "grep", grep_main);
+    putIfEnabled(map, "tr", tr_main);
+    putIfEnabled(map, "readlink", readlink_main);
+    putIfEnabled(map, "seq", seq_main);
+    putIfEnabled(map, "tee", tee_main);
+    putIfEnabled(map, "uptime", uptime_main);
+    putIfEnabled(map, "who", who_main);
+    putIfEnabled(map, "which", which_main);
+    putIfEnabled(map, "xargs", xargs_main);
+    putIfEnabled(map, "bzip2", bzip2_main);
+    putIfEnabled(map, "bunzip2", bunzip2_main);
+    putIfEnabled(map, "bzcat", bzcat_main);
+    putIfEnabled(map, "gzip", gzip_main);
+    putIfEnabled(map, "gunzip", gunzip_main);
+    putIfEnabled(map, "md5sum", md5sum_main);
+    putIfEnabled(map, "sha1sum", sha1sum_main);
+    putIfEnabled(map, "sha256sum", sha256sum_main);
+    putIfEnabled(map, "cksum", cksum_main);
+    putIfEnabled(map, "base64", base64_main);
+    putIfEnabled(map, "fold", fold_main);
+    putIfEnabled(map, "join", join_main);
+    putIfEnabled(map, "nl", nl_main);
+    putIfEnabled(map, "nproc", nproc_main);
+    putIfEnabled(map, "od", od_main);
+    putIfEnabled(map, "paste", paste_main);
+    putIfEnabled(map, "shred", shred_main);
+    putIfEnabled(map, "shuf", shuf_main);
+    putIfEnabled(map, "split", split_main);
+    putIfEnabled(map, "stat", stat_main);
+    putIfEnabled(map, "strings", strings_main);
+    putIfEnabled(map, "tsort", tsort_main);
+    putIfEnabled(map, "unexpand", unexpand_main);
+    putIfEnabled(map, "yes", yes_main);
+    putIfEnabled(map, "zcat", zcat_main);
+    putIfEnabled(map, "zcmp", zcmp_main);
+    putIfEnabled(map, "zdiff", zdiff_main);
+    putIfEnabled(map, "zgrep", zgrep_main);
+    putIfEnabled(map, "zless", zless_main);
+    putIfEnabled(map, "zmore", zmore_main);
+    putIfEnabled(map, "znew", znew_main);
+    putIfEnabled(map, "mkfifo", mkfifo_main);
+    putIfEnabled(map, "mknod", mknod_main);
+    putIfEnabled(map, "mktemp", mktemp_main);
+    putIfEnabled(map, "realpath", realpath_main);
+    putIfEnabled(map, "nohup", nohup_main);
+    putIfEnabled(map, "numfmt", numfmt_main);
+    putIfEnabled(map, "crc32", crc32_main);
+    putIfEnabled(map, "sha512sum", sha512sum_main);
+    putIfEnabled(map, "xz", xz_main);
+    putIfEnabled(map, "xzcat", xzcat_main);
+    putIfEnabled(map, "unxz", unxz_main);
+    putIfEnabled(map, "lzma", lzma_main);
+    putIfEnabled(map, "lzop", lzop_main);
+    putIfEnabled(map, "lzopcat", lzopcat_main);
+    putIfEnabled(map, "unlzma", unlzma_main);
+    putIfEnabled(map, "zlib", zlib_main);
+    putIfEnabled(map, "zlib1g", zlib1g_main);
+    putIfEnabled(map, "uncompress", uncompress_main);
+    putIfEnabled(map, "lzopuncompress", lzopuncompress_main);
 
     // === Util-linux ===
-    map.put("dmesg", Applet{ .name = "dmesg", .main = @import("util_linux").dmesg_main, .flags = .{} }) catch unreachable;
-    map.put("mount", Applet{ .name = "mount", .main = @import("util_linux").mount_main, .flags = .{} }) catch unreachable;
-    map.put("umount", Applet{ .name = "umount", .main = @import("util_linux").umount_main, .flags = .{} }) catch unreachable;
-    map.put("fdisk", Applet{ .name = "fdisk", .main = fdisk_main, .flags = .{} }) catch unreachable;
-    map.put("blkid", Applet{ .name = "blkid", .main = @import("util_linux").blkid_main, .flags = .{} }) catch unreachable;
-    map.put("fallocate", Applet{ .name = "fallocate", .main = fallocate_main, .flags = .{} }) catch unreachable;
-    map.put("flock", Applet{ .name = "flock", .main = flock_main, .flags = .{} }) catch unreachable;
-    map.put("fstrim", Applet{ .name = "fstrim", .main = fstrim_main, .flags = .{} }) catch unreachable;
-    map.put("hwclock", Applet{ .name = "hwclock", .main = hwclock_main, .flags = .{} }) catch unreachable;
-    map.put("ionice", Applet{ .name = "ionice", .main = @import("miscutils").ionice_main, .flags = .{} }) catch unreachable;
-    map.put("last", Applet{ .name = "last", .main = last_main, .flags = .{} }) catch unreachable;
-    map.put("lsblk", Applet{ .name = "lsblk", .main = lsblk_main, .flags = .{} }) catch unreachable;
-    map.put("mdev", Applet{ .name = "mdev", .main = mdev_main, .flags = .{} }) catch unreachable;
-    map.put("mkhomedir_helper", Applet{ .name = "mkhomedir_helper", .main = mkhomedir_helper_main, .flags = .{} }) catch unreachable;
-    map.put("more", Applet{ .name = "more", .main = more_main, .flags = .{} }) catch unreachable;
-    map.put("mountpoint", Applet{ .name = "mountpoint", .main = mountpoint_main, .flags = .{} }) catch unreachable;
-    map.put("nsenter", Applet{ .name = "nsenter", .main = nsenter_main, .flags = .{} }) catch unreachable;
-    map.put("pivot_root", Applet{ .name = "pivot_root", .main = pivot_root_main, .flags = .{} }) catch unreachable;
-    map.put("readprofile", Applet{ .name = "readprofile", .main = readprofile_main, .flags = .{} }) catch unreachable;
-    map.put("renice", Applet{ .name = "renice", .main = @import("miscutils").renice_main, .flags = .{} }) catch unreachable;
-    map.put("switch_root", Applet{ .name = "switch_root", .main = switch_root_main, .flags = .{} }) catch unreachable;
-    map.put("taskset", Applet{ .name = "taskset", .main = taskset_main, .flags = .{} }) catch unreachable;
-    map.put("unshare", Applet{ .name = "unshare", .main = unshare_main, .flags = .{} }) catch unreachable;
-    map.put("setsid", Applet{ .name = "setsid", .main = setsid_main, .flags = .{} }) catch unreachable;
-    map.put("chrt", Applet{ .name = "chrt", .main = chrt_main, .flags = .{} }) catch unreachable;
-    map.put("lsusb", Applet{ .name = "lsusb", .main = lsusb_main, .flags = .{} }) catch unreachable;
-    map.put("uevent", Applet{ .name = "uevent", .main = uevent_main, .flags = .{} }) catch unreachable;
-    map.put("acpid", Applet{ .name = "acpid", .main = acpid_main, .flags = .{} }) catch unreachable;
-    map.put("eject", Applet{ .name = "eject", .main = eject_main, .flags = .{} }) catch unreachable;
-    map.put("swaplabel", Applet{ .name = "swaplabel", .main = swaplabel_main, .flags = .{} }) catch unreachable;
-    map.put("rdate", Applet{ .name = "rdate", .main = rdate_main, .flags = .{} }) catch unreachable;
-    map.put("fbset", Applet{ .name = "fbset", .main = fbset_main, .flags = .{} }) catch unreachable;
-    map.put("fdformat", Applet{ .name = "fdformat", .main = fdformat_main, .flags = .{} }) catch unreachable;
-    map.put("script", Applet{ .name = "script", .main = script_main, .flags = .{} }) catch unreachable;
-    map.put("scriptreplay", Applet{ .name = "scriptreplay", .main = scriptreplay_main, .flags = .{} }) catch unreachable;
-    map.put("losetup", Applet{ .name = "losetup", .main = losetup_main, .flags = .{} }) catch unreachable;
-    map.put("freeramdisk", Applet{ .name = "freeramdisk", .main = freeramdisk_main, .flags = .{} }) catch unreachable;
-    map.put("mkswap", Applet{ .name = "mkswap", .main = mkswap_main, .flags = .{} }) catch unreachable;
-    map.put("blkdiscard", Applet{ .name = "blkdiscard", .main = blkdiscard_main, .flags = .{} }) catch unreachable;
-    map.put("cal", Applet{ .name = "cal", .main = cal_main, .flags = .{} }) catch unreachable;
-    map.put("fatlabel", Applet{ .name = "fatlabel", .main = fatlabel_main, .flags = .{} }) catch unreachable;
-    map.put("rev", Applet{ .name = "rev", .main = rev_main, .flags = .{} }) catch unreachable;
-    map.put("rdev", Applet{ .name = "rdev", .main = rdev_main, .flags = .{} }) catch unreachable;
-    map.put("fatattr", Applet{ .name = "fatattr", .main = fatattr_main, .flags = .{} }) catch unreachable;
-    map.put("fsfreeze", Applet{ .name = "fsfreeze", .main = fsfreeze_main, .flags = .{} }) catch unreachable;
-    map.put("nologin", Applet{ .name = "nologin", .main = nologin_main, .flags = .{} }) catch unreachable;
-    map.put("wall", Applet{ .name = "wall", .main = wall_main, .flags = .{} }) catch unreachable;
-    map.put("findfs", Applet{ .name = "findfs", .main = findfs_main, .flags = .{} }) catch unreachable;
-    map.put("blockdev", Applet{ .name = "blockdev", .main = blockdev_main, .flags = .{} }) catch unreachable;
-    map.put("ipcs", Applet{ .name = "ipcs", .main = ipcs_main, .flags = .{} }) catch unreachable;
-    map.put("ipcrm", Applet{ .name = "ipcrm", .main = ipcrm_main, .flags = .{} }) catch unreachable;
-    map.put("hexdump", Applet{ .name = "hexdump", .main = hexdump_main, .flags = .{} }) catch unreachable;
-    map.put("lspci", Applet{ .name = "lspci", .main = lspci_main, .flags = .{} }) catch unreachable;
-    map.put("last_fancy", Applet{ .name = "last_fancy", .main = last_fancy_main, .flags = .{} }) catch unreachable;
-    map.put("uuidgen", Applet{ .name = "uuidgen", .main = uuidgen_main, .flags = .{} }) catch unreachable;
-    map.put("mesg", Applet{ .name = "mesg", .main = mesg_main, .flags = .{} }) catch unreachable;
-    map.put("setpriv", Applet{ .name = "setpriv", .main = setpriv_main, .flags = .{} }) catch unreachable;
-    map.put("rtcwake", Applet{ .name = "rtcwake", .main = rtcwake_main, .flags = .{} }) catch unreachable;
-    map.put("setarch", Applet{ .name = "setarch", .main = setarch_main, .flags = .{} }) catch unreachable;
+    putIfEnabled(map, "dmesg", @import("util_linux").dmesg_main);
+    putIfEnabled(map, "mount", @import("util_linux").mount_main);
+    putIfEnabled(map, "umount", @import("util_linux").umount_main);
+    putIfEnabled(map, "fdisk", fdisk_main);
+    putIfEnabled(map, "blkid", @import("util_linux").blkid_main);
+    putIfEnabled(map, "fallocate", fallocate_main);
+    putIfEnabled(map, "flock", flock_main);
+    putIfEnabled(map, "fstrim", fstrim_main);
+    putIfEnabled(map, "hwclock", hwclock_main);
+    putIfEnabled(map, "ionice", @import("miscutils").ionice_main);
+    putIfEnabled(map, "last", last_main);
+    putIfEnabled(map, "lsblk", lsblk_main);
+    putIfEnabled(map, "mdev", mdev_main);
+    putIfEnabled(map, "mkhomedir_helper", mkhomedir_helper_main);
+    putIfEnabled(map, "more", more_main);
+    putIfEnabled(map, "mountpoint", mountpoint_main);
+    putIfEnabled(map, "nsenter", nsenter_main);
+    putIfEnabled(map, "pivot_root", pivot_root_main);
+    putIfEnabled(map, "readprofile", readprofile_main);
+    putIfEnabled(map, "renice", @import("miscutils").renice_main);
+    putIfEnabled(map, "switch_root", switch_root_main);
+    putIfEnabled(map, "taskset", taskset_main);
+    putIfEnabled(map, "unshare", unshare_main);
+    putIfEnabled(map, "setsid", setsid_main);
+    putIfEnabled(map, "chrt", chrt_main);
+    putIfEnabled(map, "lsusb", lsusb_main);
+    putIfEnabled(map, "uevent", uevent_main);
+    putIfEnabled(map, "acpid", acpid_main);
+    putIfEnabled(map, "eject", eject_main);
+    putIfEnabled(map, "swaplabel", swaplabel_main);
+    putIfEnabled(map, "rdate", rdate_main);
+    putIfEnabled(map, "fbset", fbset_main);
+    putIfEnabled(map, "fdformat", fdformat_main);
+    putIfEnabled(map, "script", script_main);
+    putIfEnabled(map, "scriptreplay", scriptreplay_main);
+    putIfEnabled(map, "losetup", losetup_main);
+    putIfEnabled(map, "freeramdisk", freeramdisk_main);
+    putIfEnabled(map, "mkswap", mkswap_main);
+    putIfEnabled(map, "blkdiscard", blkdiscard_main);
+    putIfEnabled(map, "cal", cal_main);
+    putIfEnabled(map, "fatlabel", fatlabel_main);
+    putIfEnabled(map, "rev", rev_main);
+    putIfEnabled(map, "rdev", rdev_main);
+    putIfEnabled(map, "fatattr", fatattr_main);
+    putIfEnabled(map, "fsfreeze", fsfreeze_main);
+    putIfEnabled(map, "nologin", nologin_main);
+    putIfEnabled(map, "wall", wall_main);
+    putIfEnabled(map, "findfs", findfs_main);
+    putIfEnabled(map, "blockdev", blockdev_main);
+    putIfEnabled(map, "ipcs", ipcs_main);
+    putIfEnabled(map, "ipcrm", ipcrm_main);
+    putIfEnabled(map, "hexdump", hexdump_main);
+    putIfEnabled(map, "lspci", lspci_main);
+    putIfEnabled(map, "last_fancy", last_fancy_main);
+    putIfEnabled(map, "uuidgen", uuidgen_main);
+    putIfEnabled(map, "mesg", mesg_main);
+    putIfEnabled(map, "setpriv", setpriv_main);
+    putIfEnabled(map, "rtcwake", rtcwake_main);
+    putIfEnabled(map, "setarch", setarch_main);
 
     // === Networking ===
-    map.put("ip", Applet{ .name = "ip", .main = ip_main, .flags = .{} }) catch unreachable;
-    map.put("ping", Applet{ .name = "ping", .main = @import("networking").ping_main, .flags = .{} }) catch unreachable;
-    map.put("ifconfig", Applet{ .name = "ifconfig", .main = @import("networking").ifconfig_main, .flags = .{} }) catch unreachable;
-    map.put("route", Applet{ .name = "route", .main = route_main, .flags = .{} }) catch unreachable;
-    map.put("wget", Applet{ .name = "wget", .main = @import("networking").wget_main, .flags = .{} }) catch unreachable;
-    map.put("nc", Applet{ .name = "nc", .main = @import("networking").nc_main, .flags = .{} }) catch unreachable;
-    map.put("tftp", Applet{ .name = "tftp", .main = tftp_main, .flags = .{} }) catch unreachable;
-    map.put("httpd", Applet{ .name = "httpd", .main = httpd_main, .flags = .{} }) catch unreachable;
-    map.put("telnet", Applet{ .name = "telnet", .main = telnet_main, .flags = .{} }) catch unreachable;
-    map.put("hostname", Applet{ .name = "hostname", .main = hostname_main, .flags = .{} }) catch unreachable;
-    map.put("nslookup", Applet{ .name = "nslookup", .main = nslookup_main, .flags = .{} }) catch unreachable;
-    map.put("ftpgetput", Applet{ .name = "ftpgetput", .main = ftpgetput_main, .flags = .{} }) catch unreachable;
-    map.put("arping", Applet{ .name = "arping", .main = arping_main, .flags = .{} }) catch unreachable;
-    map.put("netstat", Applet{ .name = "netstat", .main = netstat_main, .flags = .{} }) catch unreachable;
-    map.put("ether_wake", Applet{ .name = "ether_wake", .main = ether_wake_main, .flags = .{} }) catch unreachable;
-    map.put("whois", Applet{ .name = "whois", .main = whois_main, .flags = .{} }) catch unreachable;
-    map.put("nbd_client", Applet{ .name = "nbd_client", .main = nbd_client_main, .flags = .{} }) catch unreachable;
-    map.put("zcip", Applet{ .name = "zcip", .main = zcip_main, .flags = .{} }) catch unreachable;
-    map.put("ftpd", Applet{ .name = "ftpd", .main = ftpd_main, .flags = .{} }) catch unreachable;
-    map.put("isrv", Applet{ .name = "isrv", .main = isrv_main, .flags = .{} }) catch unreachable;
-    map.put("isrv_identd", Applet{ .name = "isrv_identd", .main = isrv_identd_main, .flags = .{} }) catch unreachable;
-    map.put("nc_bloaty", Applet{ .name = "nc_bloaty", .main = nc_bloaty_main, .flags = .{} }) catch unreachable;
-    map.put("tc", Applet{ .name = "tc", .main = tc_main, .flags = .{} }) catch unreachable;
-    map.put("dnsd", Applet{ .name = "dnsd", .main = dnsd_main, .flags = .{} }) catch unreachable;
-    map.put("inetd", Applet{ .name = "inetd", .main = inetd_main, .flags = .{} }) catch unreachable;
-    map.put("ifenslave", Applet{ .name = "ifenslave", .main = ifenslave_main, .flags = .{} }) catch unreachable;
-    map.put("vconfig", Applet{ .name = "vconfig", .main = vconfig_main, .flags = .{} }) catch unreachable;
-    map.put("brctl", Applet{ .name = "brctl", .main = brctl_main, .flags = .{} }) catch unreachable;
-    map.put("ipcalc", Applet{ .name = "ipcalc", .main = ipcalc_main, .flags = .{} }) catch unreachable;
-    map.put("traceroute", Applet{ .name = "traceroute", .main = traceroute_main, .flags = .{} }) catch unreachable;
-    map.put("telnetd", Applet{ .name = "telnetd", .main = telnetd_main, .flags = .{} }) catch unreachable;
-    map.put("pscan", Applet{ .name = "pscan", .main = pscan_main, .flags = .{} }) catch unreachable;
-    map.put("slattach", Applet{ .name = "slattach", .main = slattach_main, .flags = .{} }) catch unreachable;
-    map.put("tunctl", Applet{ .name = "tunctl", .main = tunctl_main, .flags = .{} }) catch unreachable;
-    map.put("nameif", Applet{ .name = "nameif", .main = nameif_main, .flags = .{} }) catch unreachable;
-    map.put("ifplugd", Applet{ .name = "ifplugd", .main = ifplugd_main, .flags = .{} }) catch unreachable;
-    map.put("ntpd", Applet{ .name = "ntpd", .main = ntpd_main, .flags = .{} }) catch unreachable;
-    map.put("arp", Applet{ .name = "arp", .main = arp_main, .flags = .{} }) catch unreachable;
-    map.put("ifupdown", Applet{ .name = "ifupdown", .main = ifupdown_main, .flags = .{} }) catch unreachable;
-    map.put("interface", Applet{ .name = "interface", .main = interface_main, .flags = .{} }) catch unreachable;
-    map.put("ssl_client", Applet{ .name = "ssl_client", .main = ssl_client_main, .flags = .{} }) catch unreachable;
-    map.put("ssl_server", Applet{ .name = "ssl_server", .main = ssl_server_main, .flags = .{} }) catch unreachable;
-    map.put("tls", Applet{ .name = "tls", .main = tls_main, .flags = .{} }) catch unreachable;
-    map.put("tls_aes", Applet{ .name = "tls_aes", .main = tls_aes_main, .flags = .{} }) catch unreachable;
-    map.put("tls_aesgcm", Applet{ .name = "tls_aesgcm", .main = tls_aesgcm_main, .flags = .{} }) catch unreachable;
-    map.put("tls_fe", Applet{ .name = "tls_fe", .main = tls_fe_main, .flags = .{} }) catch unreachable;
-    map.put("tls_pstm", Applet{ .name = "tls_pstm", .main = tls_pstm_main, .flags = .{} }) catch unreachable;
-    map.put("tls_pstm_mul_comba", Applet{ .name = "tls_pstm_mul_comba", .main = tls_pstm_mul_comba_main, .flags = .{} }) catch unreachable;
-    map.put("tls_pstm_sqr_comba", Applet{ .name = "tls_pstm_sqr_comba", .main = tls_pstm_sqr_comba_main, .flags = .{} }) catch unreachable;
-    map.put("tls_pstm_montgomery_reduce", Applet{ .name = "tls_pstm_montgomery_reduce", .main = tls_pstm_montgomery_reduce_main, .flags = .{} }) catch unreachable;
-    map.put("tls_rsa", Applet{ .name = "tls_rsa", .main = tls_rsa_main, .flags = .{} }) catch unreachable;
-    map.put("tls_sp_c32", Applet{ .name = "tls_sp_c32", .main = tls_sp_c32_main, .flags = .{} }) catch unreachable;
-    map.put("httpd_indexcgi", Applet{ .name = "httpd_indexcgi", .main = httpd_indexcgi_main, .flags = .{} }) catch unreachable;
-    map.put("httpd_ssi", Applet{ .name = "httpd_ssi", .main = httpd_ssi_main, .flags = .{} }) catch unreachable;
-    map.put("httpd_ratelimit_cgi", Applet{ .name = "httpd_ratelimit_cgi", .main = httpd_ratelimit_cgi_main, .flags = .{} }) catch unreachable;
-    map.put("tcpudp", Applet{ .name = "tcpudp", .main = tcpudp_main, .flags = .{} }) catch unreachable;
-    map.put("tcpudp_perhost", Applet{ .name = "tcpudp_perhost", .main = tcpudp_perhost_main, .flags = .{} }) catch unreachable;
+    putIfEnabled(map, "ip", ip_main);
+    putIfEnabled(map, "ping", @import("networking").ping_main);
+    putIfEnabled(map, "ifconfig", @import("networking").ifconfig_main);
+    putIfEnabled(map, "route", route_main);
+    putIfEnabled(map, "wget", @import("networking").wget_main);
+    putIfEnabled(map, "nc", @import("networking").nc_main);
+    putIfEnabled(map, "tftp", tftp_main);
+    putIfEnabled(map, "httpd", httpd_main);
+    putIfEnabled(map, "telnet", telnet_main);
+    putIfEnabled(map, "hostname", hostname_main);
+    putIfEnabled(map, "nslookup", nslookup_main);
+    putIfEnabled(map, "ftpgetput", ftpgetput_main);
+    putIfEnabled(map, "arping", arping_main);
+    putIfEnabled(map, "netstat", netstat_main);
+    putIfEnabled(map, "ether_wake", ether_wake_main);
+    putIfEnabled(map, "whois", whois_main);
+    putIfEnabled(map, "nbd_client", nbd_client_main);
+    putIfEnabled(map, "zcip", zcip_main);
+    putIfEnabled(map, "ftpd", ftpd_main);
+    putIfEnabled(map, "isrv", isrv_main);
+    putIfEnabled(map, "isrv_identd", isrv_identd_main);
+    putIfEnabled(map, "nc_bloaty", nc_bloaty_main);
+    putIfEnabled(map, "tc", tc_main);
+    putIfEnabled(map, "dnsd", dnsd_main);
+    putIfEnabled(map, "inetd", inetd_main);
+    putIfEnabled(map, "ifenslave", ifenslave_main);
+    putIfEnabled(map, "vconfig", vconfig_main);
+    putIfEnabled(map, "brctl", brctl_main);
+    putIfEnabled(map, "ipcalc", ipcalc_main);
+    putIfEnabled(map, "traceroute", traceroute_main);
+    putIfEnabled(map, "telnetd", telnetd_main);
+    putIfEnabled(map, "pscan", pscan_main);
+    putIfEnabled(map, "slattach", slattach_main);
+    putIfEnabled(map, "tunctl", tunctl_main);
+    putIfEnabled(map, "nameif", nameif_main);
+    putIfEnabled(map, "ifplugd", ifplugd_main);
+    putIfEnabled(map, "ntpd", ntpd_main);
+    putIfEnabled(map, "arp", arp_main);
+    putIfEnabled(map, "ifupdown", ifupdown_main);
+    putIfEnabled(map, "interface", interface_main);
+    putIfEnabled(map, "ssl_client", ssl_client_main);
+    putIfEnabled(map, "ssl_server", ssl_server_main);
+    putIfEnabled(map, "tls", tls_main);
+    putIfEnabled(map, "tls_aes", tls_aes_main);
+    putIfEnabled(map, "tls_aesgcm", tls_aesgcm_main);
+    putIfEnabled(map, "tls_fe", tls_fe_main);
+    putIfEnabled(map, "tls_pstm", tls_pstm_main);
+    putIfEnabled(map, "tls_pstm_mul_comba", tls_pstm_mul_comba_main);
+    putIfEnabled(map, "tls_pstm_sqr_comba", tls_pstm_sqr_comba_main);
+    putIfEnabled(map, "tls_pstm_montgomery_reduce", tls_pstm_montgomery_reduce_main);
+    putIfEnabled(map, "tls_rsa", tls_rsa_main);
+    putIfEnabled(map, "tls_sp_c32", tls_sp_c32_main);
+    putIfEnabled(map, "httpd_indexcgi", httpd_indexcgi_main);
+    putIfEnabled(map, "httpd_ssi", httpd_ssi_main);
+    putIfEnabled(map, "httpd_ratelimit_cgi", httpd_ratelimit_cgi_main);
+    putIfEnabled(map, "tcpudp", tcpudp_main);
+    putIfEnabled(map, "tcpudp_perhost", tcpudp_perhost_main);
     // === Miscutils ===
-    map.put("inotifyd", Applet{ .name = "inotifyd", .main = inotifyd_main, .flags = .{} }) catch unreachable;
-    map.put("watchdog", Applet{ .name = "watchdog", .main = watchdog_main, .flags = .{} }) catch unreachable;
-    map.put("hexedit", Applet{ .name = "hexedit", .main = hexedit_main, .flags = .{} }) catch unreachable;
-    map.put("dc", Applet{ .name = "dc", .main = @import("remaining").dc_main, .flags = .{} }) catch unreachable;
-    map.put("ubirename", Applet{ .name = "ubirename", .main = ubirename_main, .flags = .{} }) catch unreachable;
-    map.put("time", Applet{ .name = "time", .main = time_main, .flags = .{} }) catch unreachable;
-    map.put("setserial", Applet{ .name = "setserial", .main = setserial_main, .flags = .{} }) catch unreachable;
-    map.put("microcom", Applet{ .name = "microcom", .main = microcom_main, .flags = .{} }) catch unreachable;
-    map.put("rx", Applet{ .name = "rx", .main = rx_main, .flags = .{} }) catch unreachable;
-    map.put("mt", Applet{ .name = "mt", .main = mt_main, .flags = .{} }) catch unreachable;
-    map.put("runlevel", Applet{ .name = "runlevel", .main = runlevel_main, .flags = .{} }) catch unreachable;
-    map.put("readahead", Applet{ .name = "readahead", .main = readahead_main, .flags = .{} }) catch unreachable;
-    map.put("seedrng", Applet{ .name = "seedrng", .main = seedrng_main, .flags = .{} }) catch unreachable;
-    map.put("raidautorun", Applet{ .name = "raidautorun", .main = raidautorun_main, .flags = .{} }) catch unreachable;
-    map.put("bbconfig", Applet{ .name = "bbconfig", .main = bbconfig_main, .flags = .{} }) catch unreachable;
-    map.put("ascii", Applet{ .name = "ascii", .main = @import("remaining").ascii_main, .flags = .{} }) catch unreachable;
-    map.put("makedevs", Applet{ .name = "makedevs", .main = makedevs_main, .flags = .{} }) catch unreachable;
-    map.put("bc", Applet{ .name = "bc", .main = bc_main, .flags = .{} }) catch unreachable;
-    map.put("flash_eraseall", Applet{ .name = "flash_eraseall", .main = flash_eraseall_main, .flags = .{} }) catch unreachable;
-    map.put("tree", Applet{ .name = "tree", .main = tree_main, .flags = .{} }) catch unreachable;
-    map.put("lsscsi", Applet{ .name = "lsscsi", .main = lsscsi_main, .flags = .{} }) catch unreachable;
-    map.put("crontab", Applet{ .name = "crontab", .main = @import("miscutils").crontab_main, .flags = .{} }) catch unreachable;
-    map.put("volname", Applet{ .name = "volname", .main = volname_main, .flags = .{} }) catch unreachable;
-    map.put("flashcp", Applet{ .name = "flashcp", .main = flashcp_main, .flags = .{} }) catch unreachable;
-    map.put("flash_lock_unlock", Applet{ .name = "flash_lock_unlock", .main = flash_lock_unlock_main, .flags = .{} }) catch unreachable;
-    map.put("i2c_tools", Applet{ .name = "i2c_tools", .main = i2c_tools_main, .flags = .{} }) catch unreachable;
-    map.put("mim", Applet{ .name = "mim", .main = mim_main, .flags = .{} }) catch unreachable;
-    map.put("beep", Applet{ .name = "beep", .main = beep_main, .flags = .{} }) catch unreachable;
-    map.put("partprobe", Applet{ .name = "partprobe", .main = partprobe_main, .flags = .{} }) catch unreachable;
-    map.put("fbsplash", Applet{ .name = "fbsplash", .main = fbsplash_main, .flags = .{} }) catch unreachable;
-    map.put("hdparm", Applet{ .name = "hdparm", .main = hdparm_main, .flags = .{} }) catch unreachable;
-    map.put("devmem", Applet{ .name = "devmem", .main = devmem_main, .flags = .{} }) catch unreachable;
-    map.put("ts", Applet{ .name = "ts", .main = ts_main, .flags = .{} }) catch unreachable;
-    map.put("adjtimex", Applet{ .name = "adjtimex", .main = adjtimex_main, .flags = .{} }) catch unreachable;
-    map.put("ttysize", Applet{ .name = "ttysize", .main = ttysize_main, .flags = .{} }) catch unreachable;
-    map.put("getfattr", Applet{ .name = "getfattr", .main = getfattr_main, .flags = .{} }) catch unreachable;
-    map.put("rfkill", Applet{ .name = "rfkill", .main = rfkill_main, .flags = .{} }) catch unreachable;
-    map.put("chat", Applet{ .name = "chat", .main = chat_main, .flags = .{} }) catch unreachable;
-    map.put("man", Applet{ .name = "man", .main = man_main, .flags = .{} }) catch unreachable;
-    map.put("less", Applet{ .name = "less", .main = less_main, .flags = .{} }) catch unreachable;
-    map.put("ubi_tools", Applet{ .name = "ubi_tools", .main = ubi_tools_main, .flags = .{} }) catch unreachable;
-    map.put("nandwrite", Applet{ .name = "nandwrite", .main = nandwrite_main, .flags = .{} }) catch unreachable;
-    map.put("conspy", Applet{ .name = "conspy", .main = conspy_main, .flags = .{} }) catch unreachable;
-    map.put("crond", Applet{ .name = "crond", .main = crond_main, .flags = .{} }) catch unreachable;
-    map.put("devfsd", Applet{ .name = "devfsd", .main = devfsd_main, .flags = .{} }) catch unreachable;
-    map.put("setfattr", Applet{ .name = "setfattr", .main = setfattr_main, .flags = .{} }) catch unreachable;
-    map.put("setconsole", Applet{ .name = "setconsole", .main = setconsole_main, .flags = .{} }) catch unreachable;
-    map.put("mke2fs", Applet{ .name = "mke2fs", .main = mke2fs_main, .flags = .{} }) catch unreachable;
-    map.put("tune2fs", Applet{ .name = "tune2fs", .main = tune2fs_main, .flags = .{} }) catch unreachable;
-    map.put("e2label", Applet{ .name = "e2label", .main = e2label_main, .flags = .{} }) catch unreachable;
-    map.put("dump", Applet{ .name = "dump", .main = dump_main, .flags = .{} }) catch unreachable;
-    map.put("restore", Applet{ .name = "restore", .main = restore_main, .flags = .{} }) catch unreachable;
-    map.put("debugfs", Applet{ .name = "debugfs", .main = debugfs_main, .flags = .{} }) catch unreachable;
+    putIfEnabled(map, "inotifyd", inotifyd_main);
+    putIfEnabled(map, "watchdog", watchdog_main);
+    putIfEnabled(map, "hexedit", hexedit_main);
+    putIfEnabled(map, "dc", @import("remaining").dc_main);
+    putIfEnabled(map, "ubirename", ubirename_main);
+    putIfEnabled(map, "time", time_main);
+    putIfEnabled(map, "setserial", setserial_main);
+    putIfEnabled(map, "microcom", microcom_main);
+    putIfEnabled(map, "rx", rx_main);
+    putIfEnabled(map, "mt", mt_main);
+    putIfEnabled(map, "runlevel", runlevel_main);
+    putIfEnabled(map, "readahead", readahead_main);
+    putIfEnabled(map, "seedrng", seedrng_main);
+    putIfEnabled(map, "raidautorun", raidautorun_main);
+    putIfEnabled(map, "bbconfig", bbconfig_main);
+    putIfEnabled(map, "ascii", @import("remaining").ascii_main);
+    putIfEnabled(map, "makedevs", makedevs_main);
+    putIfEnabled(map, "bc", bc_main);
+    putIfEnabled(map, "flash_eraseall", flash_eraseall_main);
+    putIfEnabled(map, "tree", tree_main);
+    putIfEnabled(map, "lsscsi", lsscsi_main);
+    putIfEnabled(map, "crontab", @import("miscutils").crontab_main);
+    putIfEnabled(map, "volname", volname_main);
+    putIfEnabled(map, "flashcp", flashcp_main);
+    putIfEnabled(map, "flash_lock_unlock", flash_lock_unlock_main);
+    putIfEnabled(map, "i2c_tools", i2c_tools_main);
+    putIfEnabled(map, "mim", mim_main);
+    putIfEnabled(map, "beep", beep_main);
+    putIfEnabled(map, "partprobe", partprobe_main);
+    putIfEnabled(map, "fbsplash", fbsplash_main);
+    putIfEnabled(map, "hdparm", hdparm_main);
+    putIfEnabled(map, "devmem", devmem_main);
+    putIfEnabled(map, "ts", ts_main);
+    putIfEnabled(map, "adjtimex", adjtimex_main);
+    putIfEnabled(map, "ttysize", ttysize_main);
+    putIfEnabled(map, "getfattr", getfattr_main);
+    putIfEnabled(map, "rfkill", rfkill_main);
+    putIfEnabled(map, "chat", chat_main);
+    putIfEnabled(map, "man", man_main);
+    putIfEnabled(map, "less", less_main);
+    putIfEnabled(map, "ubi_tools", ubi_tools_main);
+    putIfEnabled(map, "nandwrite", nandwrite_main);
+    putIfEnabled(map, "conspy", conspy_main);
+    putIfEnabled(map, "crond", crond_main);
+    putIfEnabled(map, "devfsd", devfsd_main);
+    putIfEnabled(map, "setfattr", setfattr_main);
+    putIfEnabled(map, "setconsole", setconsole_main);
+    putIfEnabled(map, "mke2fs", mke2fs_main);
+    putIfEnabled(map, "tune2fs", tune2fs_main);
+    putIfEnabled(map, "e2label", e2label_main);
+    putIfEnabled(map, "dump", dump_main);
+    putIfEnabled(map, "restore", restore_main);
+    putIfEnabled(map, "debugfs", debugfs_main);
 
     // === Procps ===
-    map.put("kill", Applet{ .name = "kill", .main = @import("procps").kill_main, .flags = .{} }) catch unreachable;
-    map.put("killall", Applet{ .name = "killall", .main = @import("procps").killall_main, .flags = .{} }) catch unreachable;
-    map.put("killall5", Applet{ .name = "killall5", .main = killall5_main, .flags = .{} }) catch unreachable;
-    map.put("free", Applet{ .name = "free", .main = @import("procps").free_main, .flags = .{} }) catch unreachable;
-    map.put("pwdx", Applet{ .name = "pwdx", .main = pwdx_main, .flags = .{} }) catch unreachable;
-    map.put("ps", Applet{ .name = "ps", .main = @import("procps").ps_main, .flags = .{} }) catch unreachable;
-    map.put("top", Applet{ .name = "top", .main = @import("procps").top_main, .flags = .{} }) catch unreachable;
-    map.put("lsof", Applet{ .name = "lsof", .main = lsof_main, .flags = .{} }) catch unreachable;
-    map.put("smemcap", Applet{ .name = "smemcap", .main = smemcap_main, .flags = .{} }) catch unreachable;
-    map.put("powertop", Applet{ .name = "powertop", .main = powertop_main, .flags = .{} }) catch unreachable;
-    map.put("watch", Applet{ .name = "watch", .main = watch_main, .flags = .{} }) catch unreachable;
-    map.put("vmstat", Applet{ .name = "vmstat", .main = vmstat_main, .flags = .{} }) catch unreachable;
-    map.put("iostat", Applet{ .name = "iostat", .main = iostat_main, .flags = .{} }) catch unreachable;
-    map.put("fuser", Applet{ .name = "fuser", .main = fuser_main, .flags = .{} }) catch unreachable;
-    map.put("pidof", Applet{ .name = "pidof", .main = pidof_main, .flags = .{} }) catch unreachable;
-    map.put("pstree", Applet{ .name = "pstree", .main = pstree_main, .flags = .{} }) catch unreachable;
-    map.put("nmeter", Applet{ .name = "nmeter", .main = nmeter_main, .flags = .{} }) catch unreachable;
-    map.put("pgrep", Applet{ .name = "pgrep", .main = pgrep_main, .flags = .{} }) catch unreachable;
-    map.put("pmap", Applet{ .name = "pmap", .main = pmap_main, .flags = .{} }) catch unreachable;
-    map.put("sysctl", Applet{ .name = "sysctl", .main = sysctl_main, .flags = .{} }) catch unreachable;
-    map.put("mpstat", Applet{ .name = "mpstat", .main = mpstat_main, .flags = .{} }) catch unreachable;
+    putIfEnabled(map, "kill", @import("procps").kill_main);
+    putIfEnabled(map, "killall", @import("procps").killall_main);
+    putIfEnabled(map, "killall5", killall5_main);
+    putIfEnabled(map, "free", @import("procps").free_main);
+    putIfEnabled(map, "pwdx", pwdx_main);
+    putIfEnabled(map, "ps", @import("procps").ps_main);
+    putIfEnabled(map, "top", @import("procps").top_main);
+    putIfEnabled(map, "lsof", lsof_main);
+    putIfEnabled(map, "smemcap", smemcap_main);
+    putIfEnabled(map, "powertop", powertop_main);
+    putIfEnabled(map, "watch", watch_main);
+    putIfEnabled(map, "vmstat", vmstat_main);
+    putIfEnabled(map, "iostat", iostat_main);
+    putIfEnabled(map, "fuser", fuser_main);
+    putIfEnabled(map, "pidof", pidof_main);
+    putIfEnabled(map, "pstree", pstree_main);
+    putIfEnabled(map, "nmeter", nmeter_main);
+    putIfEnabled(map, "pgrep", pgrep_main);
+    putIfEnabled(map, "pmap", pmap_main);
+    putIfEnabled(map, "sysctl", sysctl_main);
+    putIfEnabled(map, "mpstat", mpstat_main);
 
     // === Shell ===
-    map.put("ash", Applet{ .name = "ash", .main = @import("shell").ash_main, .flags = .{} }) catch unreachable;
-    map.put("hush", Applet{ .name = "hush", .main = @import("shell").hush_main, .flags = .{} }) catch unreachable;
-    map.put("random", Applet{ .name = "random", .main = random_main, .flags = .{} }) catch unreachable;
-    map.put("match", Applet{ .name = "match", .main = match_main, .flags = .{} }) catch unreachable;
-    map.put("cttyhack", Applet{ .name = "cttyhack", .main = cttyhack_main, .flags = .{} }) catch unreachable;
-    map.put("math", Applet{ .name = "math", .main = math_main, .flags = .{} }) catch unreachable;
+    putIfEnabled(map, "ash", @import("shell").ash_main);
+    putIfEnabled(map, "hush", @import("shell").hush_main);
+    putIfEnabled(map, "random", random_main);
+    putIfEnabled(map, "match", match_main);
+    putIfEnabled(map, "cttyhack", cttyhack_main);
+    putIfEnabled(map, "math", math_main);
 
     // === Loginutils ===
-    map.put("vlock", Applet{ .name = "vlock", .main = vlock_main, .flags = .{} }) catch unreachable;
-    map.put("deluser", Applet{ .name = "deluser", .main = deluser_main, .flags = .{} }) catch unreachable;
-    map.put("adduser", Applet{ .name = "adduser", .main = adduser_main, .flags = .{} }) catch unreachable;
-    map.put("login", Applet{ .name = "login", .main = @import("loginutils").login_main, .flags = .{} }) catch unreachable;
-    map.put("addgroup", Applet{ .name = "addgroup", .main = addgroup_main, .flags = .{} }) catch unreachable;
-    map.put("passwd", Applet{ .name = "passwd", .main = @import("loginutils").passwd_main, .flags = .{} }) catch unreachable;
-    map.put("chpasswd", Applet{ .name = "chpasswd", .main = chpasswd_main, .flags = .{} }) catch unreachable;
-    map.put("add_remove_shell", Applet{ .name = "add_remove_shell", .main = add_remove_shell_main, .flags = .{} }) catch unreachable;
-    map.put("su", Applet{ .name = "su", .main = @import("loginutils").su_main, .flags = .{} }) catch unreachable;
-    map.put("sulogin", Applet{ .name = "sulogin", .main = sulogin_main, .flags = .{} }) catch unreachable;
-    map.put("cryptpw", Applet{ .name = "cryptpw", .main = @import("loginutils").cryptpw_main, .flags = .{} }) catch unreachable;
-    map.put("mkpasswd", Applet{ .name = "mkpasswd", .main = mkpasswd_main, .flags = .{} }) catch unreachable;
-    map.put("getty", Applet{ .name = "getty", .main = getty_main, .flags = .{} }) catch unreachable;
+    putIfEnabled(map, "vlock", vlock_main);
+    putIfEnabled(map, "deluser", deluser_main);
+    putIfEnabled(map, "adduser", adduser_main);
+    putIfEnabled(map, "login", @import("loginutils").login_main);
+    putIfEnabled(map, "addgroup", addgroup_main);
+    putIfEnabled(map, "passwd", @import("loginutils").passwd_main);
+    putIfEnabled(map, "chpasswd", chpasswd_main);
+    putIfEnabled(map, "add_remove_shell", add_remove_shell_main);
+    putIfEnabled(map, "su", @import("loginutils").su_main);
+    putIfEnabled(map, "sulogin", sulogin_main);
+    putIfEnabled(map, "cryptpw", @import("loginutils").cryptpw_main);
+    putIfEnabled(map, "mkpasswd", mkpasswd_main);
+    putIfEnabled(map, "getty", getty_main);
 
     return map.*;
 }

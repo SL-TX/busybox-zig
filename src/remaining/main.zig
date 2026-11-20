@@ -45,7 +45,7 @@ pub fn dcEval(input: []const u8) !i64 {
             '+' => std.math.add(i64, a, b) catch return error.InvalidExpression,
             '-' => std.math.sub(i64, a, b) catch return error.InvalidExpression,
             '*' => std.math.mul(i64, a, b) catch return error.InvalidExpression,
-            '/' => if (b == 0) return error.InvalidExpression else @divTrunc(a, b),
+            '/' => std.math.divTrunc(i64, a, b) catch return error.InvalidExpression,
             else => return error.InvalidExpression,
         };
         stack[depth - 2] = result;

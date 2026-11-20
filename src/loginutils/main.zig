@@ -102,8 +102,12 @@ pub fn verifyPassword(a: std.mem.Allocator, hash: []const u8, password: []const 
     const end = std.mem.indexOfScalar(u8, after, '$') orelse return false;
     const computed = bb.pw.encryptMd5(a, password, after[0..end]) catch return false;
     defer a.free(computed);
-    // No timing-safe comparison helper in Zig 0.17.1 std.crypto.
-    return eq(computed, hash);
+    if (computed.len != hash.len or hash.len > 128) return false;
+    var left: [128]u8 = undefined;
+    var right: [128]u8 = undefined;
+    @memcpy(left[0..computed.len], computed);
+    @memcpy(right[0..hash.len], hash);
+    return std.crypto.timing_safe.eql([128]u8, left, right);
 }
 
 // ------------------------------------------------------------------ file I/O
@@ -256,7 +260,7 @@ fn lookupUser(a: std.mem.Allocator, name: []const u8) ?PasswdEntry {
     const entry = findPasswdEntry(data, name) orelse return null;
     return .{
         .name = a.dupe(u8, entry.name) catch return null,
-        .passwd = entry.passwd,
+        .passwd = a.dupe(u8, entry.passwd) catch return null,
         .uid = entry.uid,
         .gid = entry.gid,
         .gecos = entry.gecos,
@@ -265,12 +269,23 @@ fn lookupUser(a: std.mem.Allocator, name: []const u8) ?PasswdEntry {
     };
 }
 
+/// Drop supplementary groups, then gid, then uid. Any failure is fatal: the
+/// caller must never exec a shell with partially changed credentials.
+pub fn dropPrivileges(uid: u32, gid: u32) bool {
+    // Already the target identity: no privilege boundary to cross, and an
+    // unprivileged process cannot call setgroups(2) at all.
+    if (linux.geteuid() == uid and linux.getegid() == gid) return true;
+    if (linux.errno(linux.syscall2(.setgroups, 0, 0)) != .SUCCESS) return false;
+    if (linux.errno(linux.setgid(gid)) != .SUCCESS) return false;
+    if (linux.errno(linux.setuid(uid)) != .SUCCESS) return false;
+    return true;
+}
+
 fn execAsUser(a: std.mem.Allocator, user: PasswdEntry) c_int {
     const child = linux.fork();
     if (linux.errno(child) != .SUCCESS) return 1;
     if (child == 0) {
-        _ = linux.setgid(user.gid);
-        _ = linux.setuid(user.uid);
+        if (!dropPrivileges(user.uid, user.gid)) std.process.exit(1);
         const shell_z = zstr(a, user.shell) catch std.process.exit(127);
         const argv_z = a.allocSentinel(?[*:0]const u8, 2, null) catch std.process.exit(127);
         argv_z[0] = shell_z.ptr;

@@ -119,7 +119,14 @@ pub fn parseHttpResponse(raw: []const u8) ?[]const u8 {
     return raw[sep + 4 ..];
 }
 
+fn requireNumericV4(host: []const u8) !void {
+    // libbb_zig/socket.zig has no resolver; an unparsed host becomes 0.0.0.0,
+    // which would silently connect to localhost. Fail loudly instead.
+    if (sock.inet_pton(host) == null) return error.InvalidHost;
+}
+
 pub fn wgetFetch(host: []const u8, port: u16, path: []const u8, a: std.mem.Allocator) ![]u8 {
+    try requireNumericV4(host);
     const fd = try sock.socket(linux.AF.INET, linux.SOCK.STREAM, 0);
     defer sock.close(fd) catch {};
     const addr = sock.sockaddr_in(host, port);
@@ -145,6 +152,7 @@ pub fn ncRelay(fd: sock.fd_t, input: []const u8, a: std.mem.Allocator) ![]u8 {
 }
 
 pub fn ncExchange(host: []const u8, port: u16, input: []const u8, a: std.mem.Allocator) ![]u8 {
+    try requireNumericV4(host);
     const fd = try sock.socket(linux.AF.INET, linux.SOCK.STREAM, 0);
     defer sock.close(fd) catch {};
     const addr = sock.sockaddr_in(host, port);
@@ -225,6 +233,7 @@ pub fn pingHost(host: []const u8, count: u16, timeout_ms: u32) !PingStats {
         .avg_ms = 0,
     };
     if (count == 0) return stats;
+    try requireNumericV4(host);
 
     const ident: u16 = @truncate(@as(u32, @bitCast(linux.getpid())));
     const fd = try sock.socket(linux.AF.INET, linux.SOCK.DGRAM, linux.IPPROTO.ICMP);

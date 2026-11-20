@@ -98,5 +98,6 @@ pub fn main(init: Init) u8 {
     }
 
     const ret = entry.main(argc, &argv_c);
-    return @as(u8, @intCast(ret));
+    // Truncate the bit pattern rather than trapping on a negative c_int.
+    return @as(u8, @truncate(@as(u32, @bitCast(ret))));
 }

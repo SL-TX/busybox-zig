@@ -4,6 +4,13 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    // Kconfig-style applet flags (config.NAME gates registry entries).
+    const config_mod = b.addModule("config", .{
+        .root_source_file = b.path("src/config.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
     // Create the main executable
     const exe = b.addExecutable(.{
         .name = "busybox",
@@ -29,6 +36,7 @@ pub fn build(b: *std.Build) void {
     });
     coreutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("coreutils", coreutils);
+    exe.root_module.addImport("config", config_mod);
 
     // Add util-linux module
     const util_linux = b.addModule("util_linux", .{
@@ -107,6 +115,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     test_module.addImport("coreutils", coreutils);
+    test_module.addImport("config", config_mod);
     test_module.addImport("util_linux", util_linux);
     test_module.addImport("networking", networking);
     test_module.addImport("miscutils", miscutils);
