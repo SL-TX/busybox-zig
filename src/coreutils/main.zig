@@ -3,6 +3,8 @@
 const std = @import("std");
 const linux = std.os.linux;
 const bb = @import("libbb_zig");
+pub const sed = @import("sed.zig");
+pub const awk = @import("awk.zig");
 
 pub const init = struct {
     pub fn init() void {}
@@ -667,6 +669,64 @@ pub fn removeRecursive(a: std.mem.Allocator, path: []const u8) !void {
         removePath(ctx.paths.items[i]) catch return error.RemoveFailed;
     }
     try removePath(path);
+}
+
+pub fn awk_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var program: []const u8 = "";
+    var path: []const u8 = "-";
+    var i: usize = 1;
+    while (i < args.len) : (i += 1) {
+        const arg = args[i];
+        if (std.mem.startsWith(u8, arg, "-f") and arg.len > 2) {
+            const script = readInput(std.heap.page_allocator, arg[2..]) catch return 1;
+            defer std.heap.page_allocator.free(script);
+            program = script;
+        } else if (arg.len > 0 and arg[0] == '-') {
+            // ignore other options
+        } else if (program.len == 0) {
+            program = arg;
+        } else {
+            path = arg;
+        }
+    }
+    if (program.len == 0) return 1;
+    const data = readInput(std.heap.page_allocator, path) catch return 1;
+    defer std.heap.page_allocator.free(data);
+    const out = awk.renderAwk(std.heap.page_allocator, data, program) catch return 1;
+    defer std.heap.page_allocator.free(out);
+    writeAll(stdout, out);
+    return 0;
+}
+
+pub fn sed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const args = argsFrom(argv, argc);
+    var quiet = false;
+    var script: []const u8 = "";
+    var path: []const u8 = "-";
+    var i: usize = 1;
+    while (i < args.len) : (i += 1) {
+        const arg = args[i];
+        if (std.mem.eql(u8, arg, "-n")) {
+            quiet = true;
+        } else if (std.mem.eql(u8, arg, "-e")) {
+            i += 1;
+            if (i < args.len) script = args[i];
+        } else if (arg.len > 0 and arg[0] == '-') {
+            // ignore other options for now
+        } else if (script.len == 0) {
+            script = arg;
+        } else {
+            path = arg;
+        }
+    }
+    if (script.len == 0) return 1;
+    const data = readInput(std.heap.page_allocator, path) catch return 1;
+    defer std.heap.page_allocator.free(data);
+    const out = sed.renderSed(std.heap.page_allocator, data, script, quiet) catch return 1;
+    defer std.heap.page_allocator.free(out);
+    writeAll(stdout, out);
+    return 0;
 }
 
 pub fn true_main(_: c_int, _: [*][*:0]const u8) c_int {

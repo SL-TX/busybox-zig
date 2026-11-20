@@ -346,6 +346,8 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("uniq", Applet{ .name = "uniq", .main = coreutils.uniq_main, .flags = .{} }) catch unreachable;
     map.put("wc", Applet{ .name = "wc", .main = coreutils.wc_main, .flags = .{} }) catch unreachable;
     map.put("cut", Applet{ .name = "cut", .main = coreutils.cut_main, .flags = .{} }) catch unreachable;
+    map.put("sed", Applet{ .name = "sed", .main = coreutils.sed_main, .flags = .{} }) catch unreachable;
+    map.put("awk", Applet{ .name = "awk", .main = coreutils.awk_main, .flags = .{} }) catch unreachable;
     map.put("true", Applet{ .name = "true", .main = coreutils.true_main, .flags = .{} }) catch unreachable;
     map.put("false", Applet{ .name = "false", .main = coreutils.false_main, .flags = .{} }) catch unreachable;
     map.put("date", Applet{ .name = "date", .main = date_main, .flags = .{} }) catch unreachable;

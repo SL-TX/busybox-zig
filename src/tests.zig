@@ -13,4 +13,6 @@ test {
     _ = @import("coreutils/fileops_test.zig");
     _ = @import("coreutils/textops_test.zig");
     _ = @import("coreutils/recursive_test.zig");
+    _ = @import("coreutils/sed_test.zig");
+    _ = @import("coreutils/awk_test.zig");
 }
