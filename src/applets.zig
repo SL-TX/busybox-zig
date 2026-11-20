@@ -616,8 +616,8 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
     map.put("mpstat", Applet{ .name = "mpstat", .main = mpstat_main, .flags = .{} }) catch unreachable;
 
     // === Shell ===
-    map.put("ash", Applet{ .name = "ash", .main = ash_main, .flags = .{} }) catch unreachable;
-    map.put("hush", Applet{ .name = "hush", .main = hush_main, .flags = .{} }) catch unreachable;
+    map.put("ash", Applet{ .name = "ash", .main = @import("shell").ash_main, .flags = .{} }) catch unreachable;
+    map.put("hush", Applet{ .name = "hush", .main = @import("shell").hush_main, .flags = .{} }) catch unreachable;
     map.put("random", Applet{ .name = "random", .main = random_main, .flags = .{} }) catch unreachable;
     map.put("match", Applet{ .name = "match", .main = match_main, .flags = .{} }) catch unreachable;
     map.put("cttyhack", Applet{ .name = "cttyhack", .main = cttyhack_main, .flags = .{} }) catch unreachable;
