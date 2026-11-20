@@ -85,3 +85,11 @@ rm. Commit `3e61acd`.
 Ruling: `cp -r` and recursive `rm -r` are not implemented yet; directories
 are rejected by the current helpers. Cost: recursive use cases still need a
 dedicated recursive-walk task.
+
+Task 10: complete (partial set) — head, tail, wc, sort, uniq, cut in
+coreutils/main.zig + textops_test.zig, wired to the registry.
+RED: 7 new tests failed on stubs. GREEN: 72/72 total pass. Binary integration
+verified all six applets including options (-2, -u, -d/-f). Commit `ec097ab`.
+Ruling: sed and awk from Task 10's file list are deferred — each is a small
+language/interpreter needing its own spec and test suite; shipping a partial
+sed/awk would be worse than an honest gap. Cost: those applets remain stubs.
