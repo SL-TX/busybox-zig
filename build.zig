@@ -76,6 +76,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    loginutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("loginutils", loginutils);
 
     // Link libbb_zig to exe
@@ -100,6 +101,7 @@ pub fn build(b: *std.Build) void {
     test_module.addImport("miscutils", miscutils);
     test_module.addImport("procps", procps);
     test_module.addImport("shell", shell);
+    loginutils.addImport("libbb_zig", libbb_zig);
     test_module.addImport("loginutils", loginutils);
     test_module.addImport("libbb_zig", libbb_zig);
     const tests = b.addTest(.{ .root_module = test_module });

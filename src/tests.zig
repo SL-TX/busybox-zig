@@ -8,6 +8,7 @@ test {
     _ = @import("libbb_zig/socket_test.zig");
     _ = @import("libbb_zig/util_test.zig");
     _ = @import("libbb_zig/util_more_test.zig");
+    _ = @import("libbb_zig/pw_test.zig");
     _ = @import("applets_test.zig");
     _ = @import("coreutils/coreutils_test.zig");
     _ = @import("coreutils/fileops_test.zig");
