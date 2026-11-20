@@ -173,3 +173,17 @@ never touch system directories. Cost: no interactive editing, no cron daemon.
 Ruling: ionice child commands receive an empty envp because applets have no
 access to the startup environ block at exec time. Cost: commands depending on
 environment variables will not work under ionice.
+
+Task 14: complete — ps, top, kill, killall, free in src/procps/main.zig +
+procps_test.zig, wired to the registry. Commit `f127349`.
+RED: 5 new tests failed (4 assertion, 1 null deref) while 104 existing passed;
+GREEN: 110/110 via `zig build test`. Binary integration verified ps, top,
+free, kill -TERM on a spawned sleep, and killall sleep on two spawned sleeps.
+Bug found in binary verification: Zig renders positive signed pids with a
+leading '+' under right-alignment — extracted formatPsRow, RED→GREEN with a
+test asserting "    1     0 S    init\n".
+Ruling: top prints a one-shot batch listing sorted by utime+stime; interactive
+refresh/TTY handling is deferred because it cannot be safely exercised in this
+non-TTY container. Cost: no interactive process viewer.
+Ruling: parseProcCmdline returns a view into a module-level buffer; applets are
+single-threaded, so this is safe here. Cost: the helper is not thread-safe.
