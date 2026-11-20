@@ -121,3 +121,14 @@ Ruling: SHA-crypt ($5$/$6$) and DES crypt are still not implemented; cost:
 mkpasswd/chpasswd with those algorithms remain unsupported.
 
 Test total after deferred work: 88/88 via `zig build test`.
+
+Task 11: complete (partial set) — dmesg, mount, umount, blkid in
+util-linux/main.zig, wired to the registry. Commit `5329eb8`.
+Verified: `mount` lists /proc/mounts; `blkid` lists /dev/disk/by-uuid entries;
+`umount` with no args exits 1; `dmesg` handles an unreadable ring buffer
+without crashing (verified in this container).
+Bug found in verification: syslog READ_ALL returned an implausible length,
+causing an out-of-bounds slice; added a `rc > buf.len` guard.
+Ruling: fdisk from Task 11's list is deferred — it is an interactive,
+destructive partition editor that cannot be safely tested here. Cost: no
+disk-partitioning support yet.
