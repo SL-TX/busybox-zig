@@ -152,3 +152,24 @@ works without CAP_NET_RAW when ping_group_range permits it. Cost: hostnames
 and restricted ICMP environments are unsupported.
 Test-side ruling: local echo/HTTP servers use poll() with a 3s bound so the
 RED run cannot hang on a stub client that never connects.
+
+Task 13: complete (partial set) — renice, ionice, crontab in
+src/miscutils/main.zig + misc_test.zig, wired to the registry. Commit `45da560`.
+RED: 5 new tests failed (4 assertion, 1 null deref) while 97 existing passed;
+GREEN: 103/103 via `zig build test`. Binary integration verified renice (raised
+a sleep's nice to 5), ionice (class by name/number and command execution), and
+crontab install/list/remove against CRONTAB_DIR=/tmp/opencode/bb-cron.
+Added src/libbb_zig/env.zig: main() installs the startup Environ.Map so applets
+can read env vars; tests substitute a synthetic map.
+Two bugs found in binary verification, each fixed RED→GREEN: parseIonice
+rejected a bare numeric class (`-c 3`); and the ionice positional command was
+parsed as a class — extracted parseIoniceArgs with a test covering both.
+Ruling: nice and at are deferred — they are absent from the default BusyBox
+1.36.1 registry established in Task 7, and the spec's Non-Goals forbid adding
+new applets. Cost: no nice/at applets.
+Ruling: crontab -e (external editor) is deferred; crontab reads/writes the
+spool file only, with CRONTAB_DIR overriding /var/spool/cron/crontabs so tests
+never touch system directories. Cost: no interactive editing, no cron daemon.
+Ruling: ionice child commands receive an empty envp because applets have no
+access to the startup environ block at exec time. Cost: commands depending on
+environment variables will not work under ionice.
