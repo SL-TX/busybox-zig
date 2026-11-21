@@ -240,7 +240,8 @@ fn checkSuid(applet: applets.Applet, err: anytype) u8 {
     switch (applet.suid) {
         .require => {
             if (euid != 0) {
-                err.writeAll("must be suid to work properly\n");
+                err.writeAll(applet.name);
+                err.writeAll(": must be suid to work properly\n");
                 return 1;
             }
         },

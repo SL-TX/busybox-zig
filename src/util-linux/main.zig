@@ -2,6 +2,10 @@
 
 const std = @import("std");
 const linux = std.os.linux;
+const text = @import("text.zig");
+const files = @import("files.zig");
+const system = @import("system.zig");
+const sched = @import("sched.zig");
 
 pub const init = struct {
     pub fn init() void {}
@@ -91,46 +95,59 @@ pub fn umount_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn dmesg_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    _ = argc;
-    _ = argv;
-    // SYSLOG action 10 = READ_ALL
-    var buf: [65536]u8 = undefined;
-    const rc = linux.syscall3(.syslog, 10, @intFromPtr(&buf), buf.len);
-    if (linux.errno(rc) != .SUCCESS or rc > buf.len) {
-        // Kernel ring buffer is often unreadable in containers; stay quiet.
-        return 0;
-    }
-    out(buf[0..@intCast(rc)]);
-    return 0;
+    return system.dmesg_main(argc, argv);
 }
 
 pub fn blkid_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    _ = argc;
-    _ = argv;
-    const a = std.heap.page_allocator;
-    const rc = linux.open("/dev/disk/by-uuid", .{ .ACCMODE = .RDONLY, .DIRECTORY = true }, 0);
-    if (linux.errno(rc) != .SUCCESS) return 1;
-    const fd: linux.fd_t = @intCast(rc);
-    defer _ = linux.close(fd);
-    var buf: [16384]u8 align(8) = undefined;
-    const name_off = @offsetOf(linux.dirent64, "name");
-    while (true) {
-        const n = linux.getdents64(fd, &buf, buf.len);
-        if (linux.errno(n) != .SUCCESS or n == 0) break;
-        var off: usize = 0;
-        while (off + name_off <= n) {
-            const dent: *const linux.dirent64 = @ptrCast(@alignCast(buf[off..].ptr));
-            if (dent.reclen == 0) break;
-            const raw = buf[off + name_off ..][0 .. dent.reclen - name_off];
-            const end = std.mem.indexOfScalar(u8, raw, 0) orelse raw.len;
-            const name = raw[0..end];
-            off += dent.reclen;
-            if (name.len == 0 or name[0] == '.') continue;
-            const uuid = a.dupe(u8, name) catch continue;
-            defer a.free(uuid);
-            out(uuid);
-            out("\n");
-        }
-    }
-    return 0;
+    return files.blkid_main(argc, argv);
 }
+
+// ---------------------------------------------------------------------------
+// Task 10a — safe util-linux applets. Implementations live in sibling files;
+// these are the single canonical <name>_main entry points in this module.
+// ---------------------------------------------------------------------------
+pub const acpid_main = system.acpid_main;
+pub const blkdiscard_main = files.blkdiscard_main;
+pub const blockdev_main = system.blockdev_main;
+pub const cal_main = text.cal_main;
+pub const eject_main = files.eject_main;
+pub const fallocate_main = files.fallocate_main;
+pub const fatattr_main = files.fatattr_main;
+pub const fatlabel_main = files.fatlabel_main;
+pub const fdflush_main = files.fdflush_main;
+pub const flock_main = files.flock_main;
+pub const freeramdisk_main = files.freeramdisk_main;
+pub const fsfreeze_main = files.fsfreeze_main;
+pub const fstrim_main = files.fstrim_main;
+pub const getopt_main = text.getopt_main;
+pub const hd_main = text.hd_main;
+pub const hexdump_main = text.hexdump_main;
+pub const hwclock_main = system.hwclock_main;
+pub const ionice_main = sched.ionice_main;
+pub const ipcrm_main = system.ipcrm_main;
+pub const ipcs_main = system.ipcs_main;
+pub const last_main = system.last_main;
+pub const linux32_main = sched.linux32_main;
+pub const linux64_main = sched.linux64_main;
+pub const lsblk_main = system.lsblk_main;
+pub const lspci_main = system.lspci_main;
+pub const lsusb_main = system.lsusb_main;
+pub const mesg_main = system.mesg_main;
+pub const more_main = text.more_main;
+pub const mountpoint_main = files.mountpoint_main;
+pub const nologin_main = system.nologin_main;
+pub const readprofile_main = system.readprofile_main;
+pub const renice_main = sched.renice_main;
+pub const rev_main = text.rev_main;
+pub const rtcwake_main = system.rtcwake_main;
+pub const script_main = system.script_main;
+pub const scriptreplay_main = system.scriptreplay_main;
+pub const setarch_main = sched.setarch_main;
+pub const setpriv_main = sched.setpriv_main;
+pub const setsid_main = sched.setsid_main;
+pub const swaplabel_main = files.swaplabel_main;
+pub const taskset_main = sched.taskset_main;
+pub const uevent_main = system.uevent_main;
+pub const uuidgen_main = sched.uuidgen_main;
+pub const wall_main = system.wall_main;
+pub const xxd_main = text.xxd_main;
