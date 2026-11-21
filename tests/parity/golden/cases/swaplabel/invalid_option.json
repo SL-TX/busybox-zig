@@ -1,0 +1,8 @@
+{
+  "applet": "swaplabel",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "swaplabel: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: swaplabel [-L LBL] BLOCKDEV\n\nShow or set swap label on BLOCKDEV\n\n\t-L LBL\tLabel\n",
+  "exit": 1,
+  "tree": {}
+}

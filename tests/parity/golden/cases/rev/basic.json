@@ -1,0 +1,8 @@
+{
+  "applet": "rev",
+  "name": "basic",
+  "stdout": "cba\nfed\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

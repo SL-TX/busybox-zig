@@ -1,0 +1,8 @@
+{
+  "applet": "acpid",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: acpid [-df] [-c CONFDIR] [-l LOGFILE] [-a ACTIONFILE] [-M MAPFILE] [-e PROC_EVENT_FILE] [-p PIDFILE]\n\nListen to ACPI events and spawn specific helpers on event arrival\n\n\t-d\tLog to stderr, not log file (implies -f)\n\t-f\tRun in foreground\n\t-c DIR\tConfig directory [/etc/acpi]\n\t-e FILE\t/proc event file [/proc/acpi/event]\n\t-l FILE\tLog file [/var/log/acpid.log]\n\t-p FILE\tPid file [/var/run/acpid.pid]\n\t-a FILE\tAction file [/etc/acpid.conf]\n\t-M FILE Map file [/etc/acpi.map]\n\nAccept and ignore compatibility options -g -m -s -S -v\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

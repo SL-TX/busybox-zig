@@ -1,0 +1,8 @@
+{
+  "applet": "lsusb",
+  "name": "no_args",
+  "stdout": "Bus 005 Device 001: ID 1d6b:0002 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 003 Device 001: ID 1d6b:0002 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 001 Device 001: ID 1d6b:0002 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 008 Device 001: ID 1d6b:0002 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 006 Device 001: ID 1d6b:0002 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 004 Device 001: ID 1d6b:0003 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 002 Device 001: ID 1d6b:0003 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 003 Device 002: ID 8087:0029 \nBus 009 Device 001: ID 1d6b:0003 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\nBus 007 Device 001: ID 1d6b:0003 Linux 6.12.111+deb13-amd64 xhci-hcd xHCI Host Controller\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "setsid",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "setsid: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: setsid [-c] PROG ARGS\n\nRun PROG in a new session. PROG will have no controlling terminal\nand will not be affected by keyboard signals (^C etc).\n\n\t-c\tSet controlling terminal to stdin\n",
+  "exit": 1,
+  "tree": {}
+}

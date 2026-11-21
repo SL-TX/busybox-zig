@@ -1,0 +1,8 @@
+{
+  "applet": "getopt",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "getopt: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: getopt [OPTIONS] [--] OPTSTRING PARAMS\n\n\t-a\t\tAllow long options starting with single -\n\t-l LOPT[,...]\tLong options to recognize\n\t-n PROGNAME\tThe name under which errors are reported\n\t-o OPTSTRING\tShort options to recognize\n\t-q\t\tNo error messages on unrecognized options\n\t-Q\t\tNo normal output\n\t-s SHELL\tSet shell quoting conventions\n\t-T\t\tVersion test (exits with 4)\n\t-u\t\tDon't quote output\n\nExample:\n\nO=`getopt -l bb: -- ab:c:: \"$@\"` || exit 1\neval set -- \"$O\"\nwhile true; do\n\tcase \"$1\" in\n\t-a)\techo A; shift;;\n\t-b|--bb) echo \"B:'$2'\"; shift 2;;\n\t-c)\tcase \"$2\" in\n\t\t\"\")\techo C; shift 2;;\n\t\t*)\techo \"C:'$2'\"; shift 2;;\n\t\tesac;;\n\t--)\tshift; break;;\n\t*)\techo Error; exit 1;;\n\tesac\ndone\n",
+  "exit": 1,
+  "tree": {}
+}

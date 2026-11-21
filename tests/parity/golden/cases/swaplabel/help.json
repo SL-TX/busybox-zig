@@ -1,0 +1,8 @@
+{
+  "applet": "swaplabel",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: swaplabel [-L LBL] BLOCKDEV\n\nShow or set swap label on BLOCKDEV\n\n\t-L LBL\tLabel\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

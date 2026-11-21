@@ -1,0 +1,8 @@
+{
+  "applet": "dmesg",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "dmesg: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: dmesg [-cr] [-n LEVEL] [-s SIZE]\n\nPrint or control the kernel ring buffer\n\n\t-c\t\tClear ring buffer after printing\n\t-n LEVEL\tSet console logging level\n\t-s SIZE\t\tBuffer size\n\t-r\t\tPrint raw message buffer\n",
+  "exit": 1,
+  "tree": {}
+}

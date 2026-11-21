@@ -1,0 +1,8 @@
+{
+  "applet": "getopt",
+  "name": "basic",
+  "stdout": " -a -b 'val' -- 'foo'\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

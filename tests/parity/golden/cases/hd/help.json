@@ -1,0 +1,8 @@
+{
+  "applet": "hd",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: hd FILE...\n\nhd is an alias for hexdump -C\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

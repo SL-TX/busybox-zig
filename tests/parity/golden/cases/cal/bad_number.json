@@ -1,0 +1,8 @@
+{
+  "applet": "cal",
+  "name": "bad_number",
+  "stdout": "",
+  "stderr": "cal: invalid number 'foo'\n",
+  "exit": 1,
+  "tree": {}
+}

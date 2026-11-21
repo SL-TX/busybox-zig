@@ -1,0 +1,8 @@
+{
+  "applet": "hexdump",
+  "name": "octal",
+  "stdout": "0000000 110 151                                                        \n0000002\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

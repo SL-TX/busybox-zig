@@ -1,0 +1,8 @@
+{
+  "applet": "taskset",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: taskset [-ap] [HEXMASK | -c LIST] { PID | PROG ARGS }\n\nSet or get CPU affinity\n\n\t-p\tOperate on PID\n\t-a\tOperate on all threads\n\t-c\tAffinity is a list, not mask\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

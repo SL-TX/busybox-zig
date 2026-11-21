@@ -1,0 +1,8 @@
+{
+  "applet": "setsid",
+  "name": "run_command",
+  "stdout": "hello\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ipcs",
+  "name": "queues",
+  "stdout": "\n------ Message Queues --------\nkey        msqid      owner      perms      used-bytes   messages    \n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

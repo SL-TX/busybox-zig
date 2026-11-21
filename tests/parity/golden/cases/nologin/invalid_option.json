@@ -1,0 +1,8 @@
+{
+  "applet": "nologin",
+  "name": "invalid_option",
+  "stdout": "This account is not available\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

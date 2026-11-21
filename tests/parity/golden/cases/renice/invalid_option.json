@@ -1,0 +1,8 @@
+{
+  "applet": "renice",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "renice: invalid number 'z'\n",
+  "exit": 1,
+  "tree": {}
+}

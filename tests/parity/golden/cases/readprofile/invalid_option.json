@@ -1,0 +1,8 @@
+{
+  "applet": "readprofile",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "readprofile: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: readprofile [OPTIONS]\n\n\t-m MAPFILE\t(Default: /boot/System.map)\n\t-p PROFILE\t(Default: /proc/profile)\n\t-M NUM\t\tSet the profiling multiplier to NUM\n\t-i\t\tPrint only info about the sampling step\n\t-v\t\tVerbose\n\t-a\t\tPrint all symbols, even if count is 0\n\t-b\t\tPrint individual histogram-bin counts\n\t-s\t\tPrint individual counters within functions\n\t-r\t\tReset all the counters (root only)\n\t-n\t\tDisable byte order auto-detection\n",
+  "exit": 1,
+  "tree": {}
+}

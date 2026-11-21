@@ -1,0 +1,8 @@
+{
+  "applet": "hexdump",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "hexdump: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: hexdump [-bcdoxCv] [-e FMT] [-f FMT_FILE] [-n LEN] [-s OFS] [FILE]...\n\nDisplay FILEs (or stdin) in a user specified format\n\n\t-b\t\t1-byte octal display\n\t-c\t\t1-byte character display\n\t-d\t\t2-byte decimal display\n\t-o\t\t2-byte octal display\n\t-x\t\t2-byte hex display\n\t-C\t\thex+ASCII 16 bytes per line\n\t-v\t\tShow all (no dup folding)\n\t-e FORMAT_STR\tExample: '16/1 \"%02x|\"\"\\n\"'\n\t-f FORMAT_FILE\n\t-n LENGTH\tShow only first LENGTH bytes\n\t-s OFFSET\tSkip OFFSET bytes\n",
+  "exit": 1,
+  "tree": {}
+}

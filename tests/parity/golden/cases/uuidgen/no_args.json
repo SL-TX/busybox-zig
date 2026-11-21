@@ -1,0 +1,8 @@
+{
+  "applet": "uuidgen",
+  "name": "no_args",
+  "stdout": "<MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

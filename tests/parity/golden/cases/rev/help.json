@@ -1,0 +1,8 @@
+{
+  "applet": "rev",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: rev [FILE]...\n\nReverse lines of FILE\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

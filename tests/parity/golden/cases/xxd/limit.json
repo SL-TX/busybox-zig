@@ -1,0 +1,8 @@
+{
+  "applet": "xxd",
+  "name": "limit",
+  "stdout": "00000000: 6162 6364                                abcd\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "rtcwake",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "rtcwake: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: rtcwake [-a | -l | -u] [-d DEV] [-m MODE] [-s SEC | -t TIME]\n\nEnter a system sleep state until specified wakeup time\n\n\t-a\tRead clock mode from /etc/adjtime (default)\n\t-l\tClock is set to local time\n\t-u\tClock is set to UTC time\n\t-d DEV\tSpecify the RTC device\n\t-m MODE\tSet sleep state (default: standby)\n\t-s SEC\tSet timeout in SEC seconds from now\n\t-t TIME\tSet timeout to TIME seconds from epoch\n",
+  "exit": 1,
+  "tree": {}
+}

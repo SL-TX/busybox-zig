@@ -1,0 +1,8 @@
+{
+  "applet": "flock",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: flock [-sxun] FD | { FILE [-c] PROG ARGS }\n\n[Un]lock file descriptor, or lock FILE, run PROG\n\n\t-s\tShared lock\n\t-x\tExclusive lock (default)\n\t-u\tUnlock FD\n\t-n\tFail rather than wait\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

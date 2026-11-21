@@ -1,0 +1,8 @@
+{
+  "applet": "cal",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "cal: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: cal [-jmy] [[MONTH] YEAR]\n\nDisplay a calendar\n\n\t-j\tUse julian dates\n\t-m\tWeek starts on Monday\n\t-y\tDisplay the entire year\n",
+  "exit": 1,
+  "tree": {}
+}

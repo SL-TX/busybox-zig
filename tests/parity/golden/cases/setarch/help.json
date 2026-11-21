@@ -1,0 +1,8 @@
+{
+  "applet": "setarch",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: setarch PERSONALITY [-R] PROG ARGS\n\nPERSONALITY may be:\n\tlinux32\tSet 32bit uname emulation\n\tlinux64\tSet 64bit uname emulation\n\n\t-R\tDisable address space randomization\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "blockdev",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: blockdev OPTION BLOCKDEV\n\n\t--setro\t\tSet ro\n\t--setrw\t\tSet rw\n\t--getro\t\tGet ro\n\t--getss\t\tGet sector size\n\t--getbsz\tGet block size\n\t--setbsz BYTES\tSet block size\n\t--getsz\t\tGet device size in 512-byte sectors\n\t--getsize64\tGet device size in bytes\n\t--getra\t\tGet readahead in 512-byte sectors\n\t--setra SECTORS\tSet readahead\n\t--flushbufs\tFlush buffers\n\t--rereadpt\tReread partition table\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "linux64",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "linux64: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nNo help available\n",
+  "exit": 1,
+  "tree": {}
+}

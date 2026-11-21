@@ -1,0 +1,8 @@
+{
+  "applet": "scriptreplay",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: scriptreplay TIMINGFILE [TYPESCRIPT [DIVISOR]]\n\nPlay back typescripts, using timing information\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

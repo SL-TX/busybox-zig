@@ -1,0 +1,8 @@
+{
+  "applet": "lspci",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "lspci: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: lspci [-mk]\n\nList all PCI devices\n\n\t-m\tParsable output\n\t-k\tShow driver\n",
+  "exit": 1,
+  "tree": {}
+}

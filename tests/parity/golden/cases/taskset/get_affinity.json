@@ -1,0 +1,8 @@
+{
+  "applet": "taskset",
+  "name": "get_affinity",
+  "stdout": "<MATCH>'s current affinity mask: ffff\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

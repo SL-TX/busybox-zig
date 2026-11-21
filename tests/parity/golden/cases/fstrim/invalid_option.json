@@ -1,0 +1,8 @@
+{
+  "applet": "fstrim",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "fstrim: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fstrim [OPTIONS] MOUNTPOINT\n\n\t-o OFFSET\tOffset in bytes to discard from\n\t-l LEN\t\tBytes to discard\n\t-m MIN\t\tMinimum extent length\n\t-v\t\tPrint number of discarded bytes\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "getopt",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "getopt: missing optstring argument\n",
+  "exit": 1,
+  "tree": {}
+}

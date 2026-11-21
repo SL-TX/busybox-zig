@@ -1,0 +1,8 @@
+{
+  "applet": "script",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "script: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: script [-afq] [-t[FILE]] [-c PROG] [OUTFILE]\n\nDefault OUTFILE is 'typescript'\n\n\t-a\tAppend output\n\t-c PROG\tRun PROG, not shell\n\t-q\tQuiet\n\t-t[FILE] Send timing to stderr or FILE\n",
+  "exit": 1,
+  "tree": {}
+}

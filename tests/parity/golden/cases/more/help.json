@@ -1,0 +1,8 @@
+{
+  "applet": "more",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: more [FILE]...\n\nView FILE (or stdin) one screenful at a time\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

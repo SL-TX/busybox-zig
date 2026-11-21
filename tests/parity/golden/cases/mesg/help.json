@@ -1,0 +1,8 @@
+{
+  "applet": "mesg",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mesg [y|n]\n\nControl write access to your terminal\n\ty\tAllow write access to your terminal\n\tn\tDisallow write access to your terminal\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

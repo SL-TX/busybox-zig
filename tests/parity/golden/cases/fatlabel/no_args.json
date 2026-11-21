@@ -1,0 +1,8 @@
+{
+  "applet": "fatlabel",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fatlabel BLOCKDEV [LABEL]\n\nShow or set FAT32 label (11 bytes at offset 0x47) on BLOCKDEV\n",
+  "exit": 1,
+  "tree": {}
+}

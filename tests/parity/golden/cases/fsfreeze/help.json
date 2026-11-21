@@ -1,0 +1,8 @@
+{
+  "applet": "fsfreeze",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fsfreeze --[un]freeze MOUNTPOINT\n\nFlush and halt writes to MOUNTPOINT\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

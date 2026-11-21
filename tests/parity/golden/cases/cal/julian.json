@@ -1,0 +1,8 @@
+{
+  "applet": "cal",
+  "name": "julian",
+  "stdout": "       February 2000\n Su  Mo  Tu  We  Th  Fr  Sa\n         32  33  34  35  36\n 37  38  39  40  41  42  43\n 44  45  46  47  48  49  50\n 51  52  53  54  55  56  57\n 58  59  60\n                            \n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

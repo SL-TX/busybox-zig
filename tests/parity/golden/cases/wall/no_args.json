@@ -1,0 +1,8 @@
+{
+  "applet": "wall",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "wall: must be suid to work properly\n",
+  "exit": 1,
+  "tree": {}
+}

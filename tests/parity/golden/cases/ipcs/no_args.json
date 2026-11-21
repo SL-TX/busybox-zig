@@ -1,0 +1,8 @@
+{
+  "applet": "ipcs",
+  "name": "no_args",
+  "stdout": "\n------ Message Queues --------\nkey        msqid      owner      perms      used-bytes   messages    \n\n------ Shared Memory Segments --------\nkey        shmid      owner      perms      bytes      nattch     status      \n\n------ Semaphore Arrays --------\nkey        semid      owner      perms      nsems     \n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

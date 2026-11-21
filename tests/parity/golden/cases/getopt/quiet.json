@@ -1,0 +1,8 @@
+{
+  "applet": "getopt",
+  "name": "quiet",
+  "stdout": " -- '-x'\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

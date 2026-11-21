@@ -1,0 +1,8 @@
+{
+  "applet": "xxd",
+  "name": "group1",
+  "stdout": "00000000: 48 65 6c 6c 6f 20 57 6f 72 6c 64 21              Hello World!\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

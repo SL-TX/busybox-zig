@@ -1,0 +1,8 @@
+{
+  "applet": "xxd",
+  "name": "plain",
+  "stdout": "48656c6c6f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

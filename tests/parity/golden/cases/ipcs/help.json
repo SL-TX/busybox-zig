@@ -1,0 +1,8 @@
+{
+  "applet": "ipcs",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ipcs [[-smq] -i SHMID] | [[-asmq] [-tcplu]]\n\n\t-i ID\tShow specific resource\nResource specification:\n\t-m\tShared memory segments\n\t-q\tMessage queues\n\t-s\tSemaphore arrays\n\t-a\tAll (default)\nOutput format:\n\t-t\tTime\n\t-c\tCreator\n\t-p\tPid\n\t-l\tLimits\n\t-u\tSummary\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

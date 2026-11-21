@@ -1,0 +1,8 @@
+{
+  "applet": "hwclock",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "hwclock: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: hwclock [-ul] [-f DEV] [-s|-w|--systz|--param-get PARAM|--param-set PARAM=VAL]\n\nShow or set hardware clock (RTC)\n\n\t-f DEV\tUse this device (e.g. /dev/rtc2)\n\t-u\tAssume RTC is kept in UTC\n\t-l\tAssume RTC is kept in local time\n\t\t(if neither is given, read from /etc/adjtime)\n\t-s\tSet system time from RTC\n\t-w\tSet RTC from system time\n\t--systz\tSet in-kernel timezone, correct system time\n\t\tif RTC is kept in local time\n\t--param-get PARAM\tGet RTC parameter\n\t--param-set PARAM=VAL\tSet RTC parameter\n",
+  "exit": 1,
+  "tree": {}
+}
