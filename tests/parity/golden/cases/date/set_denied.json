@@ -1,0 +1,8 @@
+{
+  "applet": "date",
+  "name": "set_denied",
+  "stdout": "",
+  "stderr": "date: can't set date: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

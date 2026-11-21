@@ -1,0 +1,23 @@
+{
+  "applet": "ln",
+  "name": "exists",
+  "stdout": "",
+  "stderr": "ln: b: File exists\n",
+  "exit": 1,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eQ=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

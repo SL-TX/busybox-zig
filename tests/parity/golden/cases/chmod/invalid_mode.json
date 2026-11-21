@@ -1,0 +1,16 @@
+{
+  "applet": "chmod",
+  "name": "invalid_mode",
+  "stdout": "",
+  "stderr": "chmod: invalid mode 'xyz'\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

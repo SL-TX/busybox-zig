@@ -1,0 +1,8 @@
+{
+  "applet": "date",
+  "name": "no_args",
+  "stdout": "Sat Nov 21 <TIMESTAMP> UTC 2026\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "date",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "date: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: date [OPTIONS] [+FMT] [[-s] TIME]\n\nDisplay time (using +FMT), or set time\n\n\t-u\t\tWork in UTC (don't convert to local time)\n\t[-s] TIME\tSet time to TIME\n\t-d TIME\t\tDisplay TIME, not 'now'\n\t-D FMT\t\tFMT (strptime format) for -s/-d TIME conversion\n\t-r FILE\t\tDisplay last modification time of FILE\n\t-R\t\tOutput RFC-2822 date\n\t-I[SPEC]\tOutput ISO-8601 date\n\t\t\tSPEC=date (default), hours, minutes, seconds or ns\n\nRecognized TIME formats:\n\t@seconds_since_1970\n\thh:mm[:ss]\n\t[YYYY.]MM.DD-hh:mm[:ss]\n\tYYYY-MM-DD hh:mm[:ss]\n\t[[[[[YY]YY]MM]DD]hh]mm[.ss]\n\t'date TIME' form accepts MMDDhhmm[[YY]YY][.ss] instead\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,20 @@
+{
+  "applet": "chmod",
+  "name": "recursive_sym",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 365
+    },
+    "d/f": {
+      "type": "file",
+      "mode": 292,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

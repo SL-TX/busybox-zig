@@ -1,0 +1,8 @@
+{
+  "applet": "df",
+  "name": "inodes",
+  "stdout": "Filesystem              Inodes      Used Available Use% Mounted on\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

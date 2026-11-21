@@ -1,0 +1,16 @@
+{
+  "applet": "chmod",
+  "name": "symbolic_remove",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

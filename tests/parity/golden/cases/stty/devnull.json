@@ -1,0 +1,8 @@
+{
+  "applet": "stty",
+  "name": "devnull",
+  "stdout": "",
+  "stderr": "stty: /dev/null: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {}
+}

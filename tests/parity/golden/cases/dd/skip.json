@@ -1,0 +1,23 @@
+{
+  "applet": "dd",
+  "name": "skip",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "YmM="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjZGVm"
+      }
+    }
+  }
+}

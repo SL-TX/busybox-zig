@@ -1,0 +1,8 @@
+{
+  "applet": "df",
+  "name": "human",
+  "stdout": "Filesystem                Size      Used Available Use% Mounted on\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

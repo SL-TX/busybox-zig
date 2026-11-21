@@ -1,0 +1,8 @@
+{
+  "applet": "df",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: df [-PkmhTai] [-B SIZE] [-t TYPE] [FILESYSTEM]...\n\nPrint filesystem usage statistics\n\n\t-P\tPOSIX output format\n\t-k\t1024-byte blocks (default)\n\t-m\t1M-byte blocks\n\t-h\tHuman readable (e.g. 1K 243M 2G)\n\t-T\tPrint filesystem type\n\t-t TYPE\tPrint only mounts of this type\n\t-a\tShow all filesystems\n\t-i\tInodes\n\t-B SIZE\tBlocksize\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

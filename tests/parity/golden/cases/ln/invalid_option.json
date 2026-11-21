@@ -1,0 +1,16 @@
+{
+  "applet": "ln",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "ln: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ln [-sfnbtv] [-S SUF] TARGET... LINK|DIR\n\nCreate a link LINK or DIR/TARGET to the specified TARGET(s)\n\n\t-s\tMake symlinks instead of hardlinks\n\t-f\tRemove existing destinations\n\t-n\tDon't dereference symlinks - treat like normal file\n\t-b\tMake a backup of the target (if exists) before link operation\n\t-S SUF\tUse suffix instead of ~ when making backup files\n\t-T\tTreat LINK as a file, not DIR\n\t-v\tVerbose\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

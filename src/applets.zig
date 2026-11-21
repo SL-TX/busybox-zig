@@ -72,6 +72,19 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "uniq")) return coreutils.uniq_main;
     if (std.mem.eql(u8, name, "wc")) return coreutils.wc_main;
     if (std.mem.eql(u8, name, "cut")) return coreutils.cut_main;
+    // Task 7c — file-and-metadata coreutils wave
+    if (std.mem.eql(u8, name, "ln")) return coreutils.ln_main;
+    if (std.mem.eql(u8, name, "du")) return coreutils.du_main;
+    if (std.mem.eql(u8, name, "df")) return coreutils.df_main;
+    if (std.mem.eql(u8, name, "chmod")) return coreutils.chmod_main;
+    if (std.mem.eql(u8, name, "chown")) return coreutils.chown_main;
+    if (std.mem.eql(u8, name, "chgrp")) return coreutils.chgrp_main;
+    if (std.mem.eql(u8, name, "chroot")) return coreutils.chroot_main;
+    if (std.mem.eql(u8, name, "stat")) return coreutils.stat_main;
+    if (std.mem.eql(u8, name, "dd")) return coreutils.dd_main;
+    if (std.mem.eql(u8, name, "date")) return coreutils.date_main;
+    if (std.mem.eql(u8, name, "stty")) return coreutils.stty_main;
+    if (std.mem.eql(u8, name, "shred")) return coreutils.shred_main;
     // Task 7b — text-and-number coreutils wave
     if (std.mem.eql(u8, name, "fold")) return coreutils.fold_main;
     if (std.mem.eql(u8, name, "expand")) return coreutils.expand_main;

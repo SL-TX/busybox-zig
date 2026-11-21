@@ -1,0 +1,16 @@
+{
+  "applet": "chmod",
+  "name": "verbose",
+  "stdout": "mode of 'a' changed to 0700 (rwx------)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 448,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

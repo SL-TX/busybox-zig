@@ -1,0 +1,25 @@
+{
+  "applet": "ln",
+  "name": "into_dir",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    },
+    "d": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/a": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "a"
+    }
+  }
+}

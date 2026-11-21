@@ -1,0 +1,14 @@
+{
+  "applet": "ln",
+  "name": "symlink_missing",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "missing"
+    }
+  }
+}

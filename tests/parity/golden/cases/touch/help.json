@@ -1,0 +1,8 @@
+{
+  "applet": "touch",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: touch [-cham] [-d DATE] [-t DATE] [-r FILE] FILE...\n\nUpdate mtime of FILEs\n\n\t-c\tDon't create files\n\t-h\tDon't follow links\n\t-a\tChange only atime\n\t-m\tChange only mtime\n\t-d DT\tDate/time to use\n\t-t DT\tDate/time to use\n\t-r FILE\tUse FILE's date/time\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

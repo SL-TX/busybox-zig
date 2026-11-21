@@ -5,6 +5,7 @@ const linux = std.os.linux;
 const bb = @import("libbb_zig");
 const simple = @import("simple.zig");
 const textnum = @import("textnum.zig");
+const filemeta = @import("filemeta.zig");
 pub const sed = @import("sed.zig");
 pub const awk = @import("awk.zig");
 
@@ -124,51 +125,7 @@ pub fn cat_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn ls_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var path: []const u8 = ".";
-    var show_all = false;
-    for (args[1..]) |arg| {
-        if (std.mem.eql(u8, arg, "-a")) show_all = true else if (arg.len > 0 and arg[0] != '-') path = arg;
-    }
-    var z: [4096:0]u8 = undefined;
-    if (path.len >= z.len) return 1;
-    @memcpy(z[0..path.len], path);
-    z[path.len] = 0;
-    const rc = linux.open(@ptrCast(&z), .{ .ACCMODE = .RDONLY, .DIRECTORY = true }, 0);
-    if (linux.errno(rc) != .SUCCESS) return 1;
-    const fd: linux.fd_t = @intCast(rc);
-    defer _ = linux.close(fd);
-
-    var buf: [16384]u8 align(8) = undefined;
-    var names: std.ArrayList([]const u8) = .empty;
-    defer names.deinit(std.heap.page_allocator);
-    while (true) {
-        const n = linux.getdents64(fd, &buf, buf.len);
-        if (linux.errno(n) != .SUCCESS or n == 0) break;
-        var off: usize = 0;
-        while (off + @offsetOf(linux.dirent64, "name") <= n) {
-            const dent: *const linux.dirent64 = @ptrCast(@alignCast(buf[off..].ptr));
-            if (dent.reclen == 0) break;
-            const name_len = dent.reclen - @offsetOf(linux.dirent64, "name");
-            const name = buf[off + @offsetOf(linux.dirent64, "name") ..][0..name_len];
-            const end = std.mem.indexOfScalar(u8, name, 0) orelse name.len;
-            const nm = name[0..end];
-            if (nm.len > 0 and !std.mem.eql(u8, nm, ".") and !std.mem.eql(u8, nm, "..") and (show_all or nm[0] != '.')) {
-                names.append(std.heap.page_allocator, std.heap.page_allocator.dupe(u8, nm) catch break) catch break;
-            }
-            off += dent.reclen;
-        }
-    }
-    std.mem.sort([]const u8, names.items, {}, struct {
-        fn less(_: void, a: []const u8, b: []const u8) bool {
-            return std.mem.order(u8, a, b) == .lt;
-        }
-    }.less);
-    for (names.items) |nm| {
-        writeAll(stdout, nm);
-        writeAll(stdout, "\n");
-    }
-    return 0;
+    return filemeta.lsMain(argc, argv);
 }
 
 pub fn printf_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -252,65 +209,15 @@ pub fn removePath(path: []const u8) !void {
 // --- more applets -----------------------------------------------------------
 
 pub fn cp_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var recursive = false;
-    var first: usize = 1;
-    while (first < args.len and args[first].len > 0 and args[first][0] == '-') {
-        if (std.mem.indexOfScalar(u8, args[first], 'r') != null) recursive = true;
-        first += 1;
-    }
-    if (first + 1 >= args.len) return 1;
-    const dst = args[args.len - 1];
-    for (args[first .. args.len - 1]) |src| {
-        const target = if (pathIsDir(dst))
-            std.fmt.allocPrint(std.heap.page_allocator, "{s}/{s}", .{ dst, std.fs.path.basename(src) }) catch return 1
-        else
-            dst;
-        if (recursive and pathIsDir(src)) {
-            copyDirRecursive(std.heap.page_allocator, src, target) catch return 1;
-        } else {
-            copyFile(src, target) catch return 1;
-        }
-    }
-    return 0;
+    return filemeta.cpMain(argc, argv);
 }
 
 pub fn mv_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var first: usize = 1;
-    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
-    if (first + 1 >= args.len) return 1;
-    const dst = args[args.len - 1];
-    for (args[first .. args.len - 1]) |src| {
-        const target = if (pathIsDir(dst))
-            std.fmt.allocPrint(std.heap.page_allocator, "{s}/{s}", .{ dst, std.fs.path.basename(src) }) catch return 1
-        else
-            dst;
-        renamePath(src, target) catch {
-            copyFile(src, target) catch return 1;
-            removePath(src) catch return 1;
-        };
-    }
-    return 0;
+    return filemeta.mvMain(argc, argv);
 }
 
 pub fn rm_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var recursive = false;
-    var first: usize = 1;
-    while (first < args.len and args[first].len > 0 and args[first][0] == '-') {
-        if (std.mem.indexOfScalar(u8, args[first], 'r') != null or std.mem.indexOfScalar(u8, args[first], 'R') != null) recursive = true;
-        first += 1;
-    }
-    if (first >= args.len) return 1;
-    for (args[first..]) |path| {
-        if (recursive and pathIsDir(path)) {
-            removeRecursive(std.heap.page_allocator, path) catch return 1;
-        } else {
-            removePath(path) catch return 1;
-        }
-    }
-    return 0;
+    return filemeta.rmMain(argc, argv);
 }
 
 pub fn mkdir_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -318,18 +225,7 @@ pub fn mkdir_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn touch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var first: usize = 1;
-    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
-    if (first >= args.len) return 1;
-    for (args[first..]) |path| {
-        var buf: [4096:0]u8 = undefined;
-        const p = toZ(path, &buf) catch return 1;
-        const rc = linux.open(p, .{ .ACCMODE = .WRONLY, .CREAT = true, .APPEND = true }, 0o644);
-        if (linux.errno(rc) != .SUCCESS) return 1;
-        _ = linux.close(@intCast(rc));
-    }
-    return 0;
+    return filemeta.touchMain(argc, argv);
 }
 
 // --- line-oriented text helpers --------------------------------------------
@@ -703,3 +599,17 @@ pub fn tr_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.trMai
 pub fn tsort_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.tsortMain(argc, argv); }
 pub fn dos2unix_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.dos2unixMain(argc, argv); }
 pub fn unix2dos_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.unix2dosMain(argc, argv); }
+
+// --- Task 7c: file-and-metadata coreutils wrappers -------------------------
+pub fn ln_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.lnMain(argc, argv); }
+pub fn du_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.duMain(argc, argv); }
+pub fn df_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.dfMain(argc, argv); }
+pub fn chmod_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.chmodMain(argc, argv); }
+pub fn chown_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.chownMain(argc, argv); }
+pub fn chgrp_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.chgrpMain(argc, argv); }
+pub fn chroot_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.chrootMain(argc, argv); }
+pub fn stat_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.statMain(argc, argv); }
+pub fn dd_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.ddMain(argc, argv); }
+pub fn date_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.dateMain(argc, argv); }
+pub fn stty_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.sttyMain(argc, argv); }
+pub fn shred_main(argc: c_int, argv: [*][*:0]const u8) c_int { return filemeta.shredMain(argc, argv); }

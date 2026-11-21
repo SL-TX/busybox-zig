@@ -1,0 +1,13 @@
+{
+  "applet": "ls",
+  "name": "list_dirs",
+  "stdout": "d\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

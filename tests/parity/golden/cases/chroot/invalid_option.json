@@ -1,0 +1,8 @@
+{
+  "applet": "chroot",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "chroot: can't change root directory to '-Z': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

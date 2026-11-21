@@ -1,0 +1,16 @@
+{
+  "applet": "chown",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "chown: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: chown [-RhLHPcvf]... USER[:[GRP]] FILE...\n\nChange the owner and/or group of FILEs to USER and/or GRP\n\n\t-h\tAffect symlinks instead of symlink targets\n\t-L\tTraverse all symlinks to directories\n\t-H\tTraverse symlinks on command line only\n\t-P\tDon't traverse symlinks (default)\n\t-R\tRecurse\n\t-c\tList changed files\n\t-v\tVerbose\n\t-f\tHide errors\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

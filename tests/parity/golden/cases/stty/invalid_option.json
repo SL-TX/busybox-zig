@@ -1,0 +1,8 @@
+{
+  "applet": "stty",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "stty: invalid argument '-Z'\n",
+  "exit": 1,
+  "tree": {}
+}

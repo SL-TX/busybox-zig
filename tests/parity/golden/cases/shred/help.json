@@ -1,0 +1,8 @@
+{
+  "applet": "shred",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: shred [-fuz] [-n N] [-s SIZE] FILE...\n\nOverwrite/delete FILEs\n\n\t-f\tChmod to ensure writability\n\t-s SIZE\tSize to write\n\t-n N\tOverwrite N times (default 3)\n\t-z\tFinal overwrite with zeros\n\t-u\tRemove file\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

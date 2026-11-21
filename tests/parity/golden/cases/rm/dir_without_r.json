@@ -1,0 +1,13 @@
+{
+  "applet": "rm",
+  "name": "dir_without_r",
+  "stdout": "",
+  "stderr": "rm: 'd' is a directory\n",
+  "exit": 1,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "date",
+  "name": "rfc2822",
+  "stdout": "Thu, 01 Jan 1970 00:00:00 +0000\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

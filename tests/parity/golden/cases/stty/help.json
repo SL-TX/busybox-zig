@@ -1,0 +1,8 @@
+{
+  "applet": "stty",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: stty [-a|g] [-F DEVICE] [SETTING]...\n\nWithout arguments, prints baud rate, line discipline,\nand deviations from stty sane\n\n\t-F DEVICE\tOpen device instead of stdin\n\t-a\t\tPrint all current settings in human-readable form\n\t-g\t\tPrint in stty-readable form\n\t[SETTING]\tSee manpage\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

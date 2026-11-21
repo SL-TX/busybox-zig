@@ -1,0 +1,8 @@
+{
+  "applet": "dd",
+  "name": "missing_input",
+  "stdout": "",
+  "stderr": "dd: can't open 'missing': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}
