@@ -1,0 +1,8 @@
+{
+  "applet": "unexpand",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "unexpand: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: unexpand [-fa][-t N] [FILE]...\n\nConvert spaces to tabs, writing to stdout\n\n\t-a\tConvert all blanks\n\t-f\tConvert only leading blanks\n\t-t N\tTabstops every N chars\n",
+  "exit": 1,
+  "tree": {}
+}

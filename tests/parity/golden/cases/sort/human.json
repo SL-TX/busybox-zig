@@ -1,0 +1,8 @@
+{
+  "applet": "sort",
+  "name": "human",
+  "stdout": "500\n1K\n2M\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

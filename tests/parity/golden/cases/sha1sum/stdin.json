@@ -1,0 +1,8 @@
+{
+  "applet": "sha1sum",
+  "name": "stdin",
+  "stdout": "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d  -\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: expr EXPRESSION\n\nPrint the value of EXPRESSION\n\nEXPRESSION may be:\n\tARG1 | ARG2\tARG1 if it is neither null nor 0, otherwise ARG2\n\tARG1 & ARG2\tARG1 if neither argument is null or 0, otherwise 0\n\tARG1 < ARG2\t1 if ARG1 is less than ARG2, else 0. Similarly:\n\tARG1 <= ARG2\n\tARG1 = ARG2\n\tARG1 != ARG2\n\tARG1 >= ARG2\n\tARG1 > ARG2\n\tARG1 + ARG2\tSum of ARG1 and ARG2. Similarly:\n\tARG1 - ARG2\n\tARG1 * ARG2\n\tARG1 / ARG2\n\tARG1 % ARG2\n\tSTRING : REGEXP\t\tAnchored pattern match of REGEXP in STRING\n\tmatch STRING REGEXP\tSame as STRING : REGEXP\n\tsubstr STRING POS LEN\tSubstring of STRING, POS counts from 1\n\tindex STRING CHARS\tIndex in STRING where any CHARS is found, or 0\n\tlength STRING\t\tLength of STRING\n\tquote TOKEN\t\tInterpret TOKEN as a string, even if\n\t\t\t\tit is a keyword like 'match' or an\n\t\t\t\toperator like '/'\n\t(EXPRESSION)\t\tValue of EXPRESSION\n\nBeware that many operators need to be escaped or quoted for shells.\nComparisons are arithmetic if both ARGs are numbers, else\nlexicographical. Pattern matches return the string matched between\n\\( and \\) or null; if \\( and \\) are not used, they return the number\nof characters matched or 0.\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

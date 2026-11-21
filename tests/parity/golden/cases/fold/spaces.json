@@ -1,0 +1,8 @@
+{
+  "applet": "fold",
+  "name": "spaces",
+  "stdout": "ab \ncd \nef \ngh \nij\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

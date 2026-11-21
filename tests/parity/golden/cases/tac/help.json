@@ -1,0 +1,8 @@
+{
+  "applet": "tac",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: tac [FILE]...\n\nConcatenate FILEs and print them in reverse\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

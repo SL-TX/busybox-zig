@@ -1,0 +1,8 @@
+{
+  "applet": "paste",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: paste [-d LIST] [-s] [FILE]...\n\nPaste lines from each input file, separated with tab\n\n\t-d LIST\tUse delimiters from LIST, not tab\n\t-s      Serial: one file at a time\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

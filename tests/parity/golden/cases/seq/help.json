@@ -1,0 +1,8 @@
+{
+  "applet": "seq",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: seq [-w] [-s SEP] [FIRST [INC]] LAST\n\nPrint numbers from FIRST to LAST, in steps of INC.\nFIRST, INC default to 1.\n\n\t-w\tPad with leading zeros\n\t-s SEP\tString separator\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

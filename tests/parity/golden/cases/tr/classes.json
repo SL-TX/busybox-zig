@@ -1,0 +1,8 @@
+{
+  "applet": "tr",
+  "name": "classes",
+  "stdout": "HELLO\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

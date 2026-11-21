@@ -1,0 +1,8 @@
+{
+  "applet": "unix2dos",
+  "name": "to_unix",
+  "stdout": "a\nb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

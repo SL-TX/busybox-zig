@@ -1,0 +1,201 @@
+{
+  "applet": "join",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "default",
+      "argv": [
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a 1\nb 2\n",
+        "g": "a X\nb Y\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "delim",
+      "argv": [
+        "-t",
+        ",",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a,1\nb,2\n",
+        "g": "a,X\nb,Y\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "all1",
+      "argv": [
+        "-a",
+        "1",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a 1\nc 3\n",
+        "g": "a X\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "only2",
+      "argv": [
+        "-v",
+        "2",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a 1\n",
+        "g": "a X\nb Y\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "output",
+      "argv": [
+        "-o",
+        "0,1.2,2.2",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a 1\n",
+        "g": "a X\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "empty",
+      "argv": [
+        "-e",
+        "NA",
+        "-o",
+        "0,1.2,2.2",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a \n",
+        "g": "a X\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "missing",
+      "argv": [
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a 1\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a 1\n",
+        "g": "a X\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    }
+  ]
+}

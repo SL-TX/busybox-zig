@@ -1,0 +1,8 @@
+{
+  "applet": "tr",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "tr: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: tr [-cds] STRING1 [STRING2]\n\nTranslate, squeeze, or delete characters from stdin, writing to stdout\n\n\t-c\tTake complement of STRING1\n\t-d\tDelete input characters coded STRING1\n\t-s\tSqueeze multiple output characters of STRING2 into one character\n",
+  "exit": 1,
+  "tree": {}
+}

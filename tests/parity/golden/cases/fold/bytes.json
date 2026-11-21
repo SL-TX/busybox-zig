@@ -1,0 +1,8 @@
+{
+  "applet": "fold",
+  "name": "bytes",
+  "stdout": "abc\ndef\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

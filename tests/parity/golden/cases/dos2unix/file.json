@@ -1,0 +1,16 @@
+{
+  "applet": "dos2unix",
+  "name": "file",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiCg=="
+      }
+    }
+  }
+}

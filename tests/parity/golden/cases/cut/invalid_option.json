@@ -1,0 +1,8 @@
+{
+  "applet": "cut",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "cut: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: cut {-b|c LIST | -f|F LIST [-d SEP] [-s]} [-D] [-O SEP] [FILE]...\n\nPrint selected fields from FILEs to stdout\n\n\t-b LIST\tOutput only bytes from LIST\n\t-c LIST\tOutput only characters from LIST\n\t-d SEP\tInput field delimiter (default -f TAB, -F run of whitespace)\n\t-f LIST\tPrint only these fields (-d is single char)\n\t-F LIST\tPrint only these fields (-d is regex)\n\t-s\tDrop lines with no delimiter (else print them in full)\n\t-D\tDon't sort ranges; line without delimiters has one field\n\t--output-delimiter SEP\tOutput field delimeter\n\t-n\tIgnored\n",
+  "exit": 1,
+  "tree": {}
+}

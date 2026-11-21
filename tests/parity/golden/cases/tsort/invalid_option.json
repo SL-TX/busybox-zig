@@ -1,0 +1,8 @@
+{
+  "applet": "tsort",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "tsort: can't open '-Z': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

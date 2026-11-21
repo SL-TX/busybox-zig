@@ -1,0 +1,23 @@
+{
+  "applet": "join",
+  "name": "default",
+  "stdout": "a 1 X\nb 2 Y\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YSBYCmIgWQo="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YSAxCmIgMgo="
+      }
+    }
+  }
+}

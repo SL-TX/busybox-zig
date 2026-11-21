@@ -1,0 +1,8 @@
+{
+  "applet": "od",
+  "name": "hex_noaddr",
+  "stdout": " 61 62 63 0a\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

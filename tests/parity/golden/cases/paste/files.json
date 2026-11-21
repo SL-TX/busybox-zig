@@ -1,0 +1,23 @@
+{
+  "applet": "paste",
+  "name": "files",
+  "stdout": "a\t1\nb\t2\nc\t\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQoyCg=="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiCmMK"
+      }
+    }
+  }
+}

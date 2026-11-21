@@ -1,0 +1,8 @@
+{
+  "applet": "shuf",
+  "name": "echo",
+  "stdout": "a\na\na\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sha3sum",
+  "name": "default",
+  "stdout": "b87f88c72702fff1748e58b87e9141a42c0dbedc29a78cb0d4a5cd81  -\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "uudecode",
+  "name": "decode",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQK"
+      }
+    }
+  }
+}

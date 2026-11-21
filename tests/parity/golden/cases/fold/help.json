@@ -1,0 +1,8 @@
+{
+  "applet": "fold",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fold [-bs] [-w WIDTH] [FILE]...\n\nWrap input lines in FILEs (or stdin), writing to stdout\n\n\t-b\tCount bytes rather than columns\n\t-s\tBreak at spaces\n\t-w\tUse WIDTH columns instead of 80\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

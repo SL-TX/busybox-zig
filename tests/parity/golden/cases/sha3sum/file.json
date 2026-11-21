@@ -1,0 +1,16 @@
+{
+  "applet": "sha3sum",
+  "name": "file",
+  "stdout": "b87f88c72702fff1748e58b87e9141a42c0dbedc29a78cb0d4a5cd81  f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

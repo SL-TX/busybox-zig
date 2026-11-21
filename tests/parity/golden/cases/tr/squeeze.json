@@ -1,0 +1,8 @@
+{
+  "applet": "tr",
+  "name": "squeeze",
+  "stdout": "abc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

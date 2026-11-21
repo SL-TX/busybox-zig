@@ -1,0 +1,8 @@
+{
+  "applet": "sum",
+  "name": "default",
+  "stdout": "36979     1 \n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

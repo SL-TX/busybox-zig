@@ -1,0 +1,8 @@
+{
+  "applet": "tr",
+  "name": "range",
+  "stdout": "xyzxyz\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

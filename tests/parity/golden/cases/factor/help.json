@@ -1,0 +1,8 @@
+{
+  "applet": "factor",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: factor [NUMBER]...\n\nPrint prime factors\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

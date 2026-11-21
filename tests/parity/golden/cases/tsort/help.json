@@ -1,0 +1,8 @@
+{
+  "applet": "tsort",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: tsort [FILE]\n\nTopological sort\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

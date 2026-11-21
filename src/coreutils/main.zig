@@ -4,6 +4,7 @@ const std = @import("std");
 const linux = std.os.linux;
 const bb = @import("libbb_zig");
 const simple = @import("simple.zig");
+const textnum = @import("textnum.zig");
 pub const sed = @import("sed.zig");
 pub const awk = @import("awk.zig");
 
@@ -497,49 +498,15 @@ pub fn wc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn sort_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var reverse = false;
-    var unique = false;
-    var path: []const u8 = "-";
-    for (args[1..]) |arg| {
-        if (std.mem.eql(u8, arg, "-r")) reverse = true else if (std.mem.eql(u8, arg, "-u")) unique = true else if (arg.len == 0 or arg[0] != '-') path = arg;
-    }
-    const data = readInput(std.heap.page_allocator, path) catch return 1;
-    defer std.heap.page_allocator.free(data);
-    const out = sortLines(std.heap.page_allocator, data, reverse, unique) catch return 1;
-    defer std.heap.page_allocator.free(out);
-    writeAll(stdout, out);
-    return 0;
+    return textnum.sortMain(argc, argv);
 }
 
 pub fn uniq_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    const data = readInput(std.heap.page_allocator, if (args.len > 1) args[1] else "-") catch return 1;
-    defer std.heap.page_allocator.free(data);
-    const out = uniqLines(std.heap.page_allocator, data) catch return 1;
-    defer std.heap.page_allocator.free(out);
-    writeAll(stdout, out);
-    return 0;
+    return textnum.uniqMain(argc, argv);
 }
 
 pub fn cut_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var delim: u8 = '\t';
-    var field: usize = 1;
-    var path: []const u8 = "-";
-    for (args[1..]) |arg| {
-        if (std.mem.startsWith(u8, arg, "-d") and arg.len > 2) {
-            delim = arg[2];
-        } else if (std.mem.startsWith(u8, arg, "-f")) {
-            field = std.fmt.parseInt(usize, arg[2..], 10) catch 1;
-        } else if (arg.len == 0 or arg[0] != '-') path = arg;
-    }
-    const data = readInput(std.heap.page_allocator, path) catch return 1;
-    defer std.heap.page_allocator.free(data);
-    const out = cutFields(std.heap.page_allocator, data, delim, field) catch return 1;
-    defer std.heap.page_allocator.free(out);
-    writeAll(stdout, out);
-    return 0;
+    return textnum.cutMain(argc, argv);
 }
 
 const CopyCtx = struct {
@@ -703,3 +670,36 @@ pub fn nice_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.nice
 pub fn nohup_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.nohupMain(argc, argv); }
 pub fn timeout_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.timeoutMain(argc, argv); }
 
+
+// --- Task 7b: text-and-number coreutils wrappers --------------------------
+pub fn fold_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.foldMain(argc, argv); }
+pub fn expand_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.expandMain(argc, argv); }
+pub fn unexpand_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.unexpandMain(argc, argv); }
+pub fn join_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.joinMain(argc, argv); }
+pub fn nl_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.nlMain(argc, argv); }
+pub fn od_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.odMain(argc, argv); }
+pub fn paste_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.pasteMain(argc, argv); }
+pub fn split_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.splitMain(argc, argv); }
+pub fn shuf_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.shufMain(argc, argv); }
+pub fn comm_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.commMain(argc, argv); }
+pub fn sum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.sumMain(argc, argv); }
+pub fn cksum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.cksumMain(argc, argv); }
+pub fn crc32_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.cksumMain(argc, argv); }
+pub fn base32_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.base32Main(argc, argv); }
+pub fn base64_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.base64Main(argc, argv); }
+pub fn md5sum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.md5Main(argc, argv); }
+pub fn sha1sum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.sha1Main(argc, argv); }
+pub fn sha256sum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.sha256Main(argc, argv); }
+pub fn sha384sum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.sha384Main(argc, argv); }
+pub fn sha3sum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.sha3Main(argc, argv); }
+pub fn sha512sum_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.sha512Main(argc, argv); }
+pub fn uudecode_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.uudecodeMain(argc, argv); }
+pub fn uuencode_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.uuencodeMain(argc, argv); }
+pub fn factor_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.factorMain(argc, argv); }
+pub fn expr_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.exprMain(argc, argv); }
+pub fn seq_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.seqMain(argc, argv); }
+pub fn tac_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.tacMain(argc, argv); }
+pub fn tr_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.trMain(argc, argv); }
+pub fn tsort_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.tsortMain(argc, argv); }
+pub fn dos2unix_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.dos2unixMain(argc, argv); }
+pub fn unix2dos_main(argc: c_int, argv: [*][*:0]const u8) c_int { return textnum.unix2dosMain(argc, argv); }

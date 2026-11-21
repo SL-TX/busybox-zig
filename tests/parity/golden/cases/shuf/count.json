@@ -1,0 +1,8 @@
+{
+  "applet": "shuf",
+  "name": "count",
+  "stdout": "x\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

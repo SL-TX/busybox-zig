@@ -1,0 +1,8 @@
+{
+  "applet": "od",
+  "name": "decimal",
+  "stdout": "0000000 25185  2659\n0000004\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

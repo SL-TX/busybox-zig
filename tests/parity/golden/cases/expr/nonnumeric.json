@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "nonnumeric",
+  "stdout": "",
+  "stderr": "expr: non-numeric argument\n",
+  "exit": 2,
+  "tree": {}
+}

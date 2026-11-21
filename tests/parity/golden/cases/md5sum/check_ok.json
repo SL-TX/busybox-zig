@@ -1,0 +1,23 @@
+{
+  "applet": "md5sum",
+  "name": "check_ok",
+  "stdout": "f: OK\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    },
+    "sums": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "NWQ0MTQwMmFiYzRiMmE3NmI5NzE5ZDkxMTAxN2M1OTIgIGYK"
+      }
+    }
+  }
+}

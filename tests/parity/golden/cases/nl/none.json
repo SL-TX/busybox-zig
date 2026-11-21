@@ -1,0 +1,8 @@
+{
+  "applet": "nl",
+  "name": "none",
+  "stdout": "       a\n       b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

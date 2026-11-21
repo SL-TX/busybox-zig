@@ -1,0 +1,8 @@
+{
+  "applet": "factor",
+  "name": "numbers",
+  "stdout": "12: 2 2 3\n17: 17\n100: 2 2 5 5\n1:\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

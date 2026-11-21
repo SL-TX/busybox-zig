@@ -1,0 +1,8 @@
+{
+  "applet": "uuencode",
+  "name": "stdin",
+  "stdout": "begin 664 hello.txt\n,:&5L;&\\@=V]R;&0*\n`\nend\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

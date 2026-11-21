@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "and",
+  "stdout": "0\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

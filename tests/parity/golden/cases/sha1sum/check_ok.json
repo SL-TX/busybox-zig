@@ -1,0 +1,23 @@
+{
+  "applet": "sha1sum",
+  "name": "check_ok",
+  "stdout": "f: OK\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    },
+    "sums": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWFmNGM2MWRkY2M1ZThhMmRhYmVkZTBmM2I0ODJjZDlhZWE5NDM0ZCAgZgo="
+      }
+    }
+  }
+}

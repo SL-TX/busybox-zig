@@ -1,0 +1,30 @@
+{
+  "applet": "split",
+  "name": "lines",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "xac": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "ZQo="
+      }
+    },
+    "xab": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "YwpkCg=="
+      }
+    },
+    "xaa": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "YQpiCg=="
+      }
+    }
+  }
+}
