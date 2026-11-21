@@ -109,24 +109,33 @@ pub fn ipcrm_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     c.setProg(argv);
     if (args.len < 2) return 0;
     var errors: u8 = 0;
+    var leftover = false;
     var i: usize = 1;
-    while (i < args.len) : (i += 1) {
+    while (i < args.len) {
         const a = args[i];
-        if (a.len != 2 or a[0] != '-' or std.mem.indexOfScalar(u8, "qmsQMS", a[1]) == null) {
-            c.plain("invalid option -- '{c}'", .{if (a.len > 1) a[1] else '?'});
-            c.usageDie("ipcrm");
+        if (a.len == 0 or a[0] != '-') {
+            // GNU getopt permutes non-options to the end; ipcrm shows usage
+            // for any leftover operands after processing all options.
+            leftover = true;
+            i += 1;
+            continue;
+        }
+        if (a.len != 2 or std.mem.indexOfScalar(u8, "qmsQMS", a[1]) == null) {
+            c.plain("invalid option -- '{c}'", .{a[1]});
+            c.usageDie("ipcrm"); // reference: getopt '?' -> bb_show_usage()
         }
         i += 1;
         if (i >= args.len) c.usageDie("ipcrm");
         const val = args[i];
+        i += 1;
         const num = std.fmt.parseInt(u64, val, 10) catch {
             c.plain("invalid number '{s}'", .{val});
-            errors += 1;
+            errors +|= 1;
             continue;
         };
         if (num > std.math.maxInt(i32)) {
             c.plain("invalid number '{s}'", .{val});
-            errors += 1;
+            errors +|= 1;
             continue;
         }
         const kind = ipcKind(a[1]);
@@ -137,13 +146,13 @@ pub fn ipcrm_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         if (is_key) {
             if (num == 0) {
                 c.plain("illegal key ({s})", .{val});
-                errors += 1;
+                errors +|= 1;
                 continue;
             }
             const got = linux.syscall3(@enumFromInt(get_nr), num, 0, 0);
             if (linux.errno(got) != .SUCCESS) {
                 c.plain("invalid key ({s})", .{val});
-                errors += 1;
+                errors +|= 1;
                 continue;
             }
             id = @intCast(got);
@@ -151,9 +160,10 @@ pub fn ipcrm_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         const rc = linux.syscall3(@enumFromInt(ctl_nr), @as(usize, @bitCast(id)), IPC_RMID, 0);
         if (linux.errno(rc) != .SUCCESS) {
             c.plain("{s} {s} ({s})", .{ if (@intFromEnum(linux.errno(rc)) == 22) "invalid" else "unknown error in", if (is_key) "key" else "id", val });
-            errors += 1;
+            errors +|= 1;
         }
     }
+    if (leftover) c.usageDie("ipcrm");
     return errors;
 }
 
@@ -365,9 +375,13 @@ fn lsblkMounts(majmin: []const u8) []const u8 {
     return result.toOwnedSlice(c.A) catch "";
 }
 
-fn padRight(buf: []u8, text: []const u8, width: usize) void {
+/// Right-pad `text` with spaces into a fixed-width field. Overlong input is
+/// truncated to `width`; undersized buffers are left untouched (never panic).
+pub fn padRight(buf: []u8, text: []const u8, width: usize) void {
+    if (buf.len < width) return;
     @memset(buf[0..width], ' ');
-    @memcpy(buf[0..text.len], text);
+    const n = @min(text.len, width);
+    @memcpy(buf[0..n], text[0..n]);
 }
 
 pub fn lsblk_main(argc: c_int, argv: [*][*:0]const u8) c_int {

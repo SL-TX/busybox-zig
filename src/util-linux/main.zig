@@ -102,6 +102,10 @@ pub fn blkid_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return files.blkid_main(argc, argv);
 }
 
+pub const blkidDetect = files.blkidDetect;
+pub const BlkidInfo = files.BlkidInfo;
+pub const padRight = system.padRight;
+
 // ---------------------------------------------------------------------------
 // Task 10a — safe util-linux applets. Implementations live in sibling files;
 // these are the single canonical <name>_main entry points in this module.

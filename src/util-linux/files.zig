@@ -265,6 +265,46 @@ pub fn fstrim_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 
 /// Probe an opened block device for a filesystem superblock. Returns true and
 /// prints a cache line when a known signature is found; closes `fd` either way.
+pub const BlkidInfo = struct {
+    uuid: [36]u8 = undefined,
+    kind: []const u8 = "",
+    has_uuid: bool = false,
+};
+
+/// Pure superblock detector, public so it can be unit-tested with a synthetic
+/// buffer without needing a real block device. The ext2/3/4 superblock starts
+/// at byte 1024 of the device: magic 0xEF53 at 1024+0x38 (absolute 0x438) and
+/// the 16-byte s_uuid at 1024+0x68 (absolute 0x468).
+pub fn blkidDetect(data: []const u8) ?BlkidInfo {
+    if (data.len < 1024) return null;
+    if (data[1024 + 0x38] == 0x53 and data[1024 + 0x39] == 0xEF) {
+        var info = BlkidInfo{ .kind = "ext4", .has_uuid = true };
+        const hex = "0123456789abcdef";
+        var pos: usize = 0;
+        for (0..16) |i| {
+            if (i == 4 or i == 6 or i == 8 or i == 10) { info.uuid[pos] = '-'; pos += 1; }
+            const b = data[1024 + 0x68 + i];
+            info.uuid[pos] = hex[b >> 4]; pos += 1;
+            info.uuid[pos] = hex[b & 0xf]; pos += 1;
+        }
+        return info;
+    }
+    if (data.len >= 0x7fc + 10 and std.mem.eql(u8, data[0x7fc .. 0x7fc + 10], "SWAPSPACE2")) {
+        return BlkidInfo{ .kind = "swap" };
+    }
+    return null;
+}
+
+/// Print one cache line for a detected filesystem; returns false if unknown.
+pub fn blkidReport(data: []const u8, devname: []const u8) bool {
+    const info = blkidDetect(data) orelse return false;
+    if (info.has_uuid)
+        c.put("{s}: UUID=\"{s}\" TYPE=\"{s}\"\n", .{ devname, info.uuid, info.kind })
+    else
+        c.put("{s}: TYPE=\"{s}\"\n", .{ devname, info.kind });
+    return true;
+}
+
 fn blkidProbe(fd: linux.fd_t, devname: []const u8) bool {
     defer _ = linux.close(fd);
     var sb: [4096]u8 align(8) = undefined;
@@ -275,27 +315,7 @@ fn blkidProbe(fd: linux.fd_t, devname: []const u8) bool {
         if (linux.errno(n) != .SUCCESS or n == 0) break;
         got += @intCast(n);
     }
-    if (got < 1024) return false;
-    // ext2/3/4 superblock: magic 0xEF53 at 0x38, UUID at 0x68 (16 bytes).
-    if (sb[0x38] == 0x53 and sb[0x39] == 0xEF) {
-        var uuid: [36]u8 = undefined;
-        const hex = "0123456789abcdef";
-        var pos: usize = 0;
-        for (0..16) |i| {
-            if (i == 4 or i == 6 or i == 8 or i == 10) { uuid[pos] = '-'; pos += 1; }
-            const b = sb[0x68 + i];
-            uuid[pos] = hex[b >> 4]; pos += 1;
-            uuid[pos] = hex[b & 0xf]; pos += 1;
-        }
-        c.put("{s}: UUID=\"{s}\" TYPE=\"ext4\"\n", .{ devname, uuid });
-        return true;
-    }
-    // swap signature at offset 0x7fc ("SWAPSPACE2").
-    if (std.mem.eql(u8, sb[0x7fc .. 0x7fc + 9], "SWAPSPACE2")) {
-        c.put("{s}: TYPE=\"swap\"\n", .{devname});
-        return true;
-    }
-    return false;
+    return blkidReport(sb[0..got], devname);
 }
 
 fn blkidTryDevice(path: []const u8) void {
