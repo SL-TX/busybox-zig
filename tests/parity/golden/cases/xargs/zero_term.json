@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "zero_term",
+  "stdout": "a b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

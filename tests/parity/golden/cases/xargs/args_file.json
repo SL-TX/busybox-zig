@@ -1,0 +1,16 @@
+{
+  "applet": "xargs",
+  "name": "args_file",
+  "stdout": "x y\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "words.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eCB5Cg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "lpd",
+  "name": "unsupported_command",
+  "stdout": "Command 01 is not supported\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

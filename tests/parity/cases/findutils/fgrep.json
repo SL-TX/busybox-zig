@@ -1,0 +1,91 @@
+{
+  "applet": "fgrep",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "a{2}",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "literal_dot",
+      "argv": [
+        "a.b",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_match",
+      "argv": [
+        "zzz",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

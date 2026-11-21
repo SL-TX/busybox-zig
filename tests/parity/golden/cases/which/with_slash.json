@@ -1,0 +1,14 @@
+{
+  "applet": "which",
+  "name": "with_slash",
+  "stdout": "./tool\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "tool": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "/usr/bin/sh"
+    }
+  }
+}

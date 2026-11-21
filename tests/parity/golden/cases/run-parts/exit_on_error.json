@@ -1,0 +1,18 @@
+{
+  "applet": "run-parts",
+  "name": "exit_on_error",
+  "stdout": "",
+  "stderr": "run-parts: rp/01false: exit status 1\n",
+  "exit": 1,
+  "tree": {
+    "rp": {
+      "type": "dir",
+      "mode": 493
+    },
+    "rp/01false": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "/bin/false"
+    }
+  }
+}

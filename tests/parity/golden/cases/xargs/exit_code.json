@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "exit_code",
+  "stdout": "",
+  "stderr": "",
+  "exit": 123,
+  "tree": {}
+}

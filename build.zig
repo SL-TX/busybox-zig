@@ -95,6 +95,39 @@ pub fn build(b: *std.Build) void {
     loginutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("loginutils", loginutils);
 
+    // Task 8 — findutils / debianutils / printutils / klibc applets.
+    const findutils = b.addModule("findutils", .{
+        .root_source_file = b.path("src/findutils/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    findutils.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("findutils", findutils);
+
+    const debianutils = b.addModule("debianutils", .{
+        .root_source_file = b.path("src/debianutils/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    debianutils.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("debianutils", debianutils);
+
+    const printutils = b.addModule("printutils", .{
+        .root_source_file = b.path("src/printutils/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    printutils.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("printutils", printutils);
+
+    const klibc = b.addModule("klibc", .{
+        .root_source_file = b.path("src/klibc/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    klibc.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("klibc", klibc);
+
     // Small applets from the remaining categories that are in the registry.
     const remaining = b.addModule("remaining", .{
         .root_source_file = b.path("src/remaining/main.zig"),
@@ -129,6 +162,10 @@ pub fn build(b: *std.Build) void {
     loginutils.addImport("libbb_zig", libbb_zig);
     test_module.addImport("loginutils", loginutils);
     test_module.addImport("libbb_zig", libbb_zig);
+    test_module.addImport("findutils", findutils);
+    test_module.addImport("debianutils", debianutils);
+    test_module.addImport("printutils", printutils);
+    test_module.addImport("klibc", klibc);
     test_module.addImport("remaining", remaining);
     const tests = b.addTest(.{ .root_module = test_module });
     const run_tests = b.addRunArtifact(tests);

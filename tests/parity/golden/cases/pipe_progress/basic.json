@@ -1,0 +1,8 @@
+{
+  "applet": "pipe_progress",
+  "name": "basic",
+  "stdout": "hello\nworld\n",
+  "stderr": "\n",
+  "exit": 0,
+  "tree": {}
+}

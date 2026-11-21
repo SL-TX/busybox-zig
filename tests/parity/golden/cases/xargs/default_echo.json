@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "default_echo",
+  "stdout": "a b c\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

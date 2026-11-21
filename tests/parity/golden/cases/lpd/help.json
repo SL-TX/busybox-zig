@@ -1,0 +1,8 @@
+{
+  "applet": "lpd",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: lpd SPOOLDIR [HELPER [ARGS]]\n\nSPOOLDIR must contain (symlinks to) device nodes or directories\nwith names matching print queue names. In the first case, jobs are\nsent directly to the device. Otherwise each job is stored in queue\ndirectory and HELPER program is called. Name of file to print\nis passed in $DATAFILE variable.\nExample:\n\ttcpsvd -E 0 515 softlimit -m 999999 lpd /var/spool ./print\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

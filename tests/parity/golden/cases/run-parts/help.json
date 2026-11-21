@@ -1,0 +1,8 @@
+{
+  "applet": "run-parts",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: run-parts [-a ARG]... [-u UMASK] [--reverse] [--test] [--exit-on-error] [--list] DIRECTORY\n\nRun a bunch of scripts in DIRECTORY\n\n\t-a ARG\t\tPass ARG as argument to scripts\n\t-u UMASK\tSet UMASK before running scripts\n\t--reverse\tReverse execution order\n\t--test\t\tDry run\n\t--exit-on-error\tExit if a script exits with non-zero\n\t--list\t\tPrint names of matching files even if they are not executable\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

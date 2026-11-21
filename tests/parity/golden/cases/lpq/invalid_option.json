@@ -1,0 +1,8 @@
+{
+  "applet": "lpq",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "lpq: unrecognized option '--bogus'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: lpq [-P queue[@host[:port]]] [-U USERNAME] [-d JOBID]... [-fs]\n\n\t-P\tlp service to connect to (else uses $PRINTER)\n\t-d\tDelete jobs\n\t-f\tForce any waiting job to be printed\n\t-s\tShort display\n",
+  "exit": 1,
+  "tree": {}
+}

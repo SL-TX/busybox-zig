@@ -1,0 +1,945 @@
+{
+  "applet": "find",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "tree"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "name_glob",
+      "argv": [
+        "tree",
+        "-name",
+        "*.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "name_question",
+      "argv": [
+        "tree",
+        "-name",
+        "?.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "iname",
+      "argv": [
+        "tree",
+        "-iname",
+        "A.TXT"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "type_f",
+      "argv": [
+        "tree",
+        "-type",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "type_d",
+      "argv": [
+        "tree",
+        "-type",
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "type_l",
+      "argv": [
+        "tree",
+        "-type",
+        "l"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "maxdepth",
+      "argv": [
+        "tree",
+        "-maxdepth",
+        "1"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "mindepth",
+      "argv": [
+        "tree",
+        "-mindepth",
+        "2"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "print0",
+      "argv": [
+        "tree",
+        "-maxdepth",
+        "1",
+        "-type",
+        "f",
+        "-print0"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "exec",
+      "argv": [
+        "tree",
+        "-maxdepth",
+        "1",
+        "-type",
+        "f",
+        "-exec",
+        "echo",
+        "X{}Y",
+        ";"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "exec_plus",
+      "argv": [
+        "tree",
+        "-type",
+        "f",
+        "-exec",
+        "printf",
+        "[%s]",
+        "X{}Y",
+        "+"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "depth",
+      "argv": [
+        "tree",
+        "-depth"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "prune",
+      "argv": [
+        "tree",
+        "-name",
+        "sub",
+        "-prune",
+        "-o",
+        "-type",
+        "f",
+        "-print"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "negate",
+      "argv": [
+        "tree",
+        "!",
+        "-name",
+        "*.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "and",
+      "argv": [
+        "tree",
+        "-name",
+        "*.txt",
+        "-a",
+        "-type",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "or",
+      "argv": [
+        "tree",
+        "-name",
+        "*.txt",
+        "-o",
+        "-name",
+        "empty"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "parens",
+      "argv": [
+        "tree",
+        "(",
+        "-name",
+        "*.txt",
+        "-o",
+        "-name",
+        "empty",
+        ")"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "size_zero",
+      "argv": [
+        "tree",
+        "-size",
+        "0"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "size_plus",
+      "argv": [
+        "tree",
+        "-size",
+        "+0c"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "perm_exact",
+      "argv": [
+        "tree",
+        "-perm",
+        "644"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "perm_all",
+      "argv": [
+        "tree",
+        "-perm",
+        "-644"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "newer",
+      "argv": [
+        "tree",
+        "-newer",
+        "tree/a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "empty",
+      "argv": [
+        "tree",
+        "-empty"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "mtime_old",
+      "argv": [
+        "tree",
+        "-mtime",
+        "+100"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "perm_any",
+      "argv": [
+        "tree",
+        "-perm",
+        "+111"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "tree",
+        "-bogus"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "missing_arg",
+      "argv": [
+        "tree",
+        "-name"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    },
+    {
+      "name": "no_such_path",
+      "argv": [
+        "/nonexistent"
+      ],
+      "stdin": null,
+      "files": {
+        "tree/a.txt": "aaa",
+        "tree/b.txt": "bbb",
+        "tree/empty": "",
+        "tree/sub/c.txt": "ccc"
+      },
+      "dirs": [
+        "tree/sub"
+      ],
+      "symlinks": {
+        "tree/link": "a.txt"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "tree/a.txt": 1577836800000000000,
+        "tree/b.txt": 1609459200000000000
+      }
+    }
+  ]
+}

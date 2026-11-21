@@ -1,0 +1,8 @@
+{
+  "applet": "start-stop-daemon",
+  "name": "test_exec",
+  "stdout": "no /nonexistent found; none killed\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "nuke",
+  "name": "help",
+  "stdout": "",
+  "stderr": "nuke: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

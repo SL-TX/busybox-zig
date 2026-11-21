@@ -1,0 +1,8 @@
+{
+  "applet": "which",
+  "name": "multiple",
+  "stdout": "/usr/bin/ls\n/usr/bin/cat\n/usr/bin/echo\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "quotes",
+  "stdout": "a b\nc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

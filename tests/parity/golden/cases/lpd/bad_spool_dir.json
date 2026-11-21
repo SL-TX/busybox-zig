@@ -1,0 +1,8 @@
+{
+  "applet": "lpd",
+  "name": "bad_spool_dir",
+  "stdout": "",
+  "stderr": "lpd: can't change directory to '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

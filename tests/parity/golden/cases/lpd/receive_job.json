@@ -1,0 +1,8 @@
+{
+  "applet": "lpd",
+  "name": "receive_job",
+  "stdout": "\u0000",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

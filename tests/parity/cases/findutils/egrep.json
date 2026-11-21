@@ -1,0 +1,116 @@
+{
+  "applet": "egrep",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "a|hello",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "leftmost_longest",
+      "argv": [
+        "-o",
+        "a|ab",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_match",
+      "argv": [
+        "zzz",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ignore_case",
+      "argv": [
+        "-i",
+        "HELLO",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

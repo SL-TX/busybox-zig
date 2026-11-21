@@ -1,0 +1,8 @@
+{
+  "applet": "resume",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: resume BLOCKDEV [OFFSET]\n\nRestore system state from 'suspend-to-disk' data in BLOCKDEV\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

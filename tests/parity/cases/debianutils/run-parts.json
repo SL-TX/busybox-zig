@@ -1,0 +1,208 @@
+{
+  "applet": "run-parts",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "test",
+      "argv": [
+        "--test",
+        "rp"
+      ],
+      "stdin": null,
+      "files": {
+        "rp/03skip": "notexec\n"
+      },
+      "dirs": [
+        "rp"
+      ],
+      "symlinks": {
+        "rp/01echo": "/bin/echo",
+        "rp/02true": "/bin/true"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "list",
+      "argv": [
+        "--list",
+        "rp"
+      ],
+      "stdin": null,
+      "files": {
+        "rp/03skip": "notexec\n"
+      },
+      "dirs": [
+        "rp"
+      ],
+      "symlinks": {
+        "rp/01echo": "/bin/echo",
+        "rp/02true": "/bin/true"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "execute",
+      "argv": [
+        "rp"
+      ],
+      "stdin": null,
+      "files": {
+        "rp/03skip": "notexec\n"
+      },
+      "dirs": [
+        "rp"
+      ],
+      "symlinks": {
+        "rp/01echo": "/bin/echo",
+        "rp/02true": "/bin/true"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "arg",
+      "argv": [
+        "-a",
+        "HELLO",
+        "rp"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "rp"
+      ],
+      "symlinks": {
+        "rp/01echo": "/bin/echo"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "reverse_test",
+      "argv": [
+        "--reverse",
+        "--test",
+        "rp"
+      ],
+      "stdin": null,
+      "files": {
+        "rp/03skip": "notexec\n"
+      },
+      "dirs": [
+        "rp"
+      ],
+      "symlinks": {
+        "rp/01echo": "/bin/echo",
+        "rp/02true": "/bin/true"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-v",
+        "rp"
+      ],
+      "stdin": null,
+      "files": {
+        "rp/03skip": "notexec\n"
+      },
+      "dirs": [
+        "rp"
+      ],
+      "symlinks": {
+        "rp/01echo": "/bin/echo",
+        "rp/02true": "/bin/true"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_such_dir",
+      "argv": [
+        "/nonexistent"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "exit_on_error",
+      "argv": [
+        "--exit-on-error",
+        "rp"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "rp"
+      ],
+      "symlinks": {
+        "rp/01false": "/bin/false"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

@@ -190,6 +190,24 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "passwd")) return @import("loginutils").passwd_main;
     if (std.mem.eql(u8, name, "su")) return @import("loginutils").su_main;
     if (std.mem.eql(u8, name, "cryptpw")) return @import("loginutils").cryptpw_main;
+    // Task 8 — findutils
+    if (std.mem.eql(u8, name, "find")) return @import("findutils").find_main;
+    if (std.mem.eql(u8, name, "grep")) return @import("findutils").grep_main;
+    if (std.mem.eql(u8, name, "egrep")) return @import("findutils").egrep_main;
+    if (std.mem.eql(u8, name, "fgrep")) return @import("findutils").fgrep_main;
+    if (std.mem.eql(u8, name, "xargs")) return @import("findutils").xargs_main;
+    // Task 8 — debianutils
+    if (std.mem.eql(u8, name, "which")) return @import("debianutils").which_main;
+    if (std.mem.eql(u8, name, "pipe_progress")) return @import("debianutils").pipe_progress_main;
+    if (std.mem.eql(u8, name, "run-parts")) return @import("debianutils").run_parts_main;
+    if (std.mem.eql(u8, name, "start-stop-daemon")) return @import("debianutils").start_stop_daemon_main;
+    // Task 8 — printutils
+    if (std.mem.eql(u8, name, "lpd")) return @import("printutils").lpd_main;
+    if (std.mem.eql(u8, name, "lpq")) return @import("printutils").lpq_main;
+    if (std.mem.eql(u8, name, "lpr")) return @import("printutils").lpr_main;
+    // Task 8 — klibc
+    if (std.mem.eql(u8, name, "nuke")) return @import("klibc").nuke_main;
+    if (std.mem.eql(u8, name, "resume")) return @import("klibc").resume_main;
     // remaining
     if (std.mem.eql(u8, name, "ascii")) return @import("remaining").ascii_main;
     if (std.mem.eql(u8, name, "dc")) return @import("remaining").dc_main;

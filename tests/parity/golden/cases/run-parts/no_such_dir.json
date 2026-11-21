@@ -1,0 +1,8 @@
+{
+  "applet": "run-parts",
+  "name": "no_such_dir",
+  "stdout": "",
+  "stderr": "run-parts: /nonexistent: No such file or directory\n",
+  "exit": 0,
+  "tree": {}
+}

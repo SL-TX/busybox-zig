@@ -1,0 +1,8 @@
+{
+  "applet": "which",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "which: unrecognized option '--bogus'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: which [-a] COMMAND...\n\nLocate COMMAND\n\n\t-a\tShow all matches\n",
+  "exit": 1,
+  "tree": {}
+}
