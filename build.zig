@@ -129,4 +129,24 @@ pub fn build(b: *std.Build) void {
     const run_tests = b.addRunArtifact(tests);
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_tests.step);
+
+    // Compile the generated applet manifest and check its self-test too.
+    const manifest_mod = b.createModule(.{
+        .root_source_file = b.path("src/generated/applet_manifest.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const manifest_tests = b.addTest(.{ .root_module = manifest_mod });
+    const run_manifest_tests = b.addRunArtifact(manifest_tests);
+    test_step.dependOn(&run_manifest_tests.step);
+
+    // Freshness gate: compare the committed Zig manifest with its JSON mirror.
+    // This needs no reference checkout, so it also runs in CI.
+    const manifest_check = b.addSystemCommand(&.{
+        "python3",
+        b.pathResolve(&.{"scripts/parity/extract_manifest.py"}),
+        "--check-json",
+    });
+    const manifest_step = b.step("manifest", "Check applet manifest freshness");
+    manifest_step.dependOn(&manifest_check.step);
 }

@@ -23,4 +23,5 @@ test:
   image: $ZIG_IMAGE
   stage: test
   script:
+    - zig build manifest
     - zig build test

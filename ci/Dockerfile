@@ -17,6 +17,11 @@ WORKDIR /workspace
 # The test suite uses /tmp/opencode/... as its scratch directory.
 RUN mkdir -p /tmp/opencode && chmod 1777 /tmp/opencode
 
+# The manifest freshness gate (`zig build manifest`) runs the Python extractor.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN zig version
 
 CMD ["zig", "version"]
