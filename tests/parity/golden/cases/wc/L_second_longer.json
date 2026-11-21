@@ -1,0 +1,30 @@
+{
+  "applet": "wc",
+  "name": "L_second_longer",
+  "stdout": "        2 f1\n        5 f2\n        5 total\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f3": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ego="
+      }
+    },
+    "f2": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Y2NjY2MKeAo="
+      }
+    },
+    "f1": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiYgo="
+      }
+    }
+  }
+}

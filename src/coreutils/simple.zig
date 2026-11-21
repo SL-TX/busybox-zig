@@ -866,11 +866,11 @@ pub fn wcMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         data_store = readFd(fd) catch &.{};
         if (fd != 0) _ = linux.close(fd);
         const c = countData(data_store);
-        if (c.longest > totals.longest) totals.longest = c.longest else totals.longest -= c.longest;
+        if (c.longest > totals.longest) totals.longest = c.longest;
         totals.lines += c.lines; totals.words += c.words; totals.chars += c.chars; totals.bytes += c.bytes;
         printCounts(print_type, c, name, one_opt and one_file, stdin_mode);
     }
-    if (files.len > 1) printCounts(print_type, totals, "total", one_opt, false);
+    if (files.len > 1) printCounts(print_type, totals, "total", one_opt and one_file, false);
     return status;
 }
 
@@ -1849,9 +1849,14 @@ pub fn ttyMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         bb.usage.show("tty", 2);
         return 2;
     };
+    // /proc/self/fd/0 is a symlink even for redirected input (e.g. /dev/null),
+    // so probe for a real terminal first, as ttyname(3) does.
+    var tbuf: [256]u8 align(8) = undefined;
+    const tcgets: u32 = 0x5401;
+    const is_tty = linux.errno(linux.ioctl(0, tcgets, @intFromPtr(&tbuf))) == .SUCCESS;
     var buf: [4096]u8 = undefined;
-    const n = linux.readlink("/proc/self/fd/0", &buf, buf.len);
-    const tty = if (linux.errno(n) != .SUCCESS and n > 0) buf[0..n] else null;
+    const n = if (is_tty) linux.readlink("/proc/self/fd/0", &buf, buf.len) else 0;
+    const tty = if (is_tty and linux.errno(n) == .SUCCESS and n > 0 and n < buf.len) buf[0..n] else null;
     if (tty == null) {
         if (!flagged(o, 0)) out("not a tty\n");
         return 1;

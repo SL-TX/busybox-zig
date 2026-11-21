@@ -60,6 +60,44 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "no_tty_expect",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "exit": 1,
+        "stdout": "not a tty\n",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "s_expect",
+      "argv": [
+        "-s"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "exit": 1,
+        "stdout": "",
+        "stderr": ""
+      }
     }
   ]
 }

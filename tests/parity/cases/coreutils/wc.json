@@ -189,6 +189,86 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "L_second_longer",
+      "argv": [
+        "-L",
+        "f1",
+        "f2"
+      ],
+      "stdin": null,
+      "files": {
+        "f1": "a\nbb\n",
+        "f2": "ccccc\nx\n",
+        "f3": "z\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "exit": 0,
+        "stdout": "        2 f1\n        5 f2\n        5 total\n",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "L_third_not_longer",
+      "argv": [
+        "-L",
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "stdin": null,
+      "files": {
+        "f1": "a\nbb\n",
+        "f2": "ccccc\nx\n",
+        "f3": "z\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "exit": 0,
+        "stdout": "        2 f1\n        5 f2\n        1 f3\n        5 total\n",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "lwcL_third_not_longer",
+      "argv": [
+        "-lwcL",
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "stdin": null,
+      "files": {
+        "f1": "a\nbb\n",
+        "f2": "ccccc\nx\n",
+        "f3": "z\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "exit": 0,
+        "stdout": "        2         2         5         2 f1\n        2         2         8         5 f2\n        1         1         2         1 f3\n        5         5        15         5 total\n",
+        "stderr": ""
+      }
     }
   ]
 }

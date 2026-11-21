@@ -1,0 +1,8 @@
+{
+  "applet": "tty",
+  "name": "no_tty_expect",
+  "stdout": "not a tty\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}
