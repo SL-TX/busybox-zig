@@ -13,13 +13,19 @@ from scripts.parity.extract_usage import (
     compose_body,
     eval_condition,
     eval_usage_expr,
+    fallback_document,
+    generate_offline,
     load_config,
+    load_fallback_names,
+    load_goldens,
     load_manifest,
     parse_macros,
+    reference_available,
     render_source_usage,
     resolve_conditionals,
     usage_lines,
     zig_string,
+    zig_text,
 )
 
 
@@ -96,6 +102,46 @@ class ExtractUsageTest(unittest.TestCase):
 
     def test_zig_string_escapes(self):
         self.assertEqual(zig_string(b'a"b\\c\n\t\x01'), '"a\\"b\\\\c\\n\\t\\x01"')
+
+    def test_reference_available_detection(self):
+        executable = "/bin/true"
+        if not (os.path.isfile(executable) and os.access(executable, os.X_OK)):
+            self.skipTest("/bin/true is not available")
+        self.assertFalse(reference_available(None, executable))
+        self.assertFalse(reference_available("/definitely/not/a/busybox", "/definitely/not/a/src"))
+        self.assertFalse(reference_available(executable, "/definitely/not/a/src"))
+        with tempfile.TemporaryDirectory() as src:
+            self.assertTrue(reference_available(executable, src))
+
+    def test_offline_generation_matches_committed_artifacts(self):
+        root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+        golden_dir = os.path.join(root, "tests", "parity", "usage")
+        manifest = os.path.join(root, "tests", "parity", "manifest.json")
+        fallback_path = os.path.join(root, "tests", "parity", "usage_fallback.json")
+        zig_path = os.path.join(root, "src", "generated", "usage.zig")
+
+        bodies, fallback = generate_offline(golden_dir, manifest, fallback_path)
+        self.assertEqual(len(bodies), 443)
+        self.assertEqual(len(fallback), 32)
+        self.assertIn("tc", fallback)
+        self.assertEqual(load_goldens(golden_dir, sorted(bodies)), bodies)
+        with open(zig_path, encoding="utf-8", newline="") as fh:
+            self.assertEqual(fh.read(), zig_text(sorted(bodies), bodies, fallback))
+
+    def test_fallback_metadata_has_no_machine_paths(self):
+        root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+        fallback_path = os.path.join(root, "tests", "parity", "usage_fallback.json")
+        names = load_fallback_names(fallback_path)
+        doc = fallback_document(names)
+        for fragment in ("/tmp", "/home", "bb-ref2", "busybox-zig"):
+            self.assertNotIn(fragment, doc)
+        with open(fallback_path, encoding="utf-8", newline="") as fh:
+            self.assertEqual(fh.read(), doc)
+
+    def test_offline_generation_requires_all_goldens(self):
+        with tempfile.TemporaryDirectory() as golden_dir:
+            with self.assertRaises(FileNotFoundError):
+                load_goldens(golden_dir, ["cat"])
 
 
 if __name__ == "__main__":

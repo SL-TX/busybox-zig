@@ -1,6 +1,6 @@
 {
-  "reference": "/tmp/opencode/bb-ref2/busybox",
-  "source": "/home/sl/OpenCodeProjects/busybox-zig/reference/busybox",
+  "reference": "tests/parity/usage/*.txt",
+  "source": "reference/busybox/**/*.c",
   "count": 32,
   "names": [
     "ar",
