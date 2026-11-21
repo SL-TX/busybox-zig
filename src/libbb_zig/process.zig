@@ -138,3 +138,53 @@ pub fn setsid() !pid_t {
     try check(rc);
     return @intCast(rc);
 }
+
+// --- additional process primitives added for libbb parity -------------------
+
+/// vfork-style process creation. Implemented with fork() rather than the raw
+/// CLONE_VM|CLONE_VFORK syscall: a real vfork shares the stack with the
+/// parent, which is unsafe once Zig code runs in the child before exec/exit.
+/// The observable contract (0 in child, child pid in parent) is identical.
+pub fn vfork() !pid_t {
+    const rc = linux.fork();
+    try check(rc);
+    return @intCast(rc);
+}
+
+pub fn setgroups(size: usize, list: [*]const gid_t) !void {
+    try check(linux.setgroups(size, list));
+}
+
+pub fn prctl(option: c_int, arg2: usize, arg3: usize, arg4: usize, arg5: usize) !usize {
+    const rc = linux.prctl(option, arg2, arg3, arg4, arg5);
+    try check(rc);
+    return rc;
+}
+
+pub fn wait4(pid: pid_t, status: *i32, flags: u32) !pid_t {
+    const rc = linux.wait4(pid, status, flags, null);
+    try check(rc);
+    return @intCast(rc);
+}
+
+pub fn execv(path: [*:0]const u8, argv: [*:null]const ?[*:0]const u8) !noreturn {
+    const envp = [_]?[*:0]const u8{null};
+    const rc = linux.execve(path, argv, &envp);
+    try check(rc);
+    return error.ExecFailed;
+}
+
+/// Slice-based convenience wrapper around the zero-terminated chdir().
+pub fn chdirPath(path: []const u8) !void {
+    var buf: [4096:0]u8 = undefined;
+    if (path.len >= buf.len) return error.NameTooLong;
+    @memcpy(buf[0..path.len], path);
+    buf[path.len] = 0;
+    try chdir(@ptrCast(&buf));
+}
+
+pub fn getcwd(buf: []u8) ![]const u8 {
+    const rc = linux.getcwd(buf.ptr, buf.len);
+    try check(rc);
+    return buf[0..@intCast(rc)];
+}

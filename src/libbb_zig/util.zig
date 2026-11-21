@@ -97,6 +97,17 @@ pub fn process_escape_sequence(a: std.mem.Allocator, s: []const u8) ![]u8 {
 pub const humanReadable = human_readable;
 pub const processEscapeSequence = process_escape_sequence;
 
+// Filesystem/process helpers added in Task 9. The legacy helpers above
+// (recursiveAction, find_mount_point, getopt32, ...) are kept unchanged.
+pub const copyFile = @import("copy.zig").copyFile;
+pub const copyFd = @import("copy.zig").copyFd;
+pub const makeDirectory = @import("file.zig").makeDirectory;
+pub const removeFile = @import("file.zig").removeFile;
+pub const findMountPoint = @import("file.zig").findMountPoint;
+pub const changeIdentity = @import("identity.zig").changeIdentity;
+pub const setupEnvironment = @import("identity.zig").setupEnvironment;
+pub const vforkDaemon = @import("process_more.zig").vforkDaemon;
+
 /// Strict decimal number parsers. BusyBox's xatou/xatoi/xatol terminate the
 /// process on bad input; these return an error so callers can decide.
 pub fn xatou(s: []const u8) !u64 {

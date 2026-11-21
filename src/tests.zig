@@ -13,6 +13,13 @@ test {
     _ = @import("libbb_zig/getopt_test.zig");
     _ = @import("libbb_zig/path_test.zig");
     _ = @import("libbb_zig/regex_test.zig");
+    _ = @import("libbb_zig/file_test.zig");
+    _ = @import("libbb_zig/copy_test.zig");
+    _ = @import("libbb_zig/recursive_test.zig");
+    _ = @import("libbb_zig/process_more_test.zig");
+    _ = @import("libbb_zig/identity_test.zig");
+    _ = @import("libbb_zig/utmp_test.zig");
+    _ = @import("libbb_zig/mtab_test.zig");
     _ = @import("applets_test.zig");
     _ = @import("meta_test.zig");
     _ = @import("usage_test.zig");
