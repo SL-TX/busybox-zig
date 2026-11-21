@@ -185,6 +185,40 @@ pub fn get_last_path_component(path: []const u8) []const u8 {
     return s;
 }
 
+/// Collapse redundant separators, "." and ".." components. Leading ".."
+/// components are preserved for relative paths; an absolute path stays rooted.
+pub fn simplifyPath(a: std.mem.Allocator, p: []const u8) ![]u8 {
+    const absolute = p.len > 0 and p[0] == '/';
+    var parts: std.ArrayList([]const u8) = .empty;
+    defer parts.deinit(a);
+    var it = std.mem.splitScalar(u8, p, '/');
+    while (it.next()) |part| {
+        if (part.len == 0 or std.mem.eql(u8, part, ".")) continue;
+        if (std.mem.eql(u8, part, "..")) {
+            if (parts.items.len > 0 and !std.mem.eql(u8, parts.items[parts.items.len - 1], "..")) {
+                _ = parts.pop();
+            } else if (!absolute) {
+                try parts.append(a, part);
+            }
+            continue;
+        }
+        try parts.append(a, part);
+    }
+    var out: std.ArrayList(u8) = .empty;
+    errdefer out.deinit(a);
+    if (absolute) try out.append(a, '/');
+    for (parts.items, 0..) |part, i| {
+        if (i > 0) try out.append(a, '/');
+        try out.appendSlice(a, part);
+    }
+    if (out.items.len == 0) try out.append(a, '.');
+    return out.toOwnedSlice(a);
+}
+
+/// camelCase aliases matching the shared libbb interface.
+pub const concatPathFile = concat_path_file;
+pub const getLastPathComponent = get_last_path_component;
+
 pub fn match_fstype(mnt_type: []const u8, fstype: []const u8) bool {
     var types = std.mem.splitScalar(u8, mnt_type, ',');
     while (types.next()) |t| {

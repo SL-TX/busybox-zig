@@ -56,6 +56,20 @@ pub fn writeAll(fd: fd_t, bytes: []const u8) !void {
     }
 }
 
+/// Full-write: keep going until every byte is accepted (handles short writes).
+pub const fullWrite = writeAll;
+
+/// Full-read: read until the buffer is full or EOF is reached.
+pub fn fullRead(fd: fd_t, buf: []u8) !usize {
+    var done: usize = 0;
+    while (done < buf.len) {
+        const n = try read(fd, buf[done..]);
+        if (n == 0) break;
+        done += n;
+    }
+    return done;
+}
+
 pub fn lseek(fd: fd_t, offset: i64, whence: u32) !u64 {
     const rc = linux.lseek(fd, offset, whence);
     const signed: i64 = @bitCast(rc);

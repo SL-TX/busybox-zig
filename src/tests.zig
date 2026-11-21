@@ -9,6 +9,10 @@ test {
     _ = @import("libbb_zig/util_test.zig");
     _ = @import("libbb_zig/util_more_test.zig");
     _ = @import("libbb_zig/pw_test.zig");
+    _ = @import("libbb_zig/xfuncs_test.zig");
+    _ = @import("libbb_zig/getopt_test.zig");
+    _ = @import("libbb_zig/path_test.zig");
+    _ = @import("libbb_zig/regex_test.zig");
     _ = @import("applets_test.zig");
     _ = @import("meta_test.zig");
     _ = @import("usage_test.zig");

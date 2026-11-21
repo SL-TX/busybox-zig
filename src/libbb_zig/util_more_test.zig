@@ -65,7 +65,9 @@ test "recursiveAction visits every entry" {
 }
 
 test "getopt32 parses flags and arguments" {
-    const argv = [_][]const u8{ "prog", "-n", "5", "-e", "file" };
+    // Put the argument-taking option last: reference getopt32 clears optarg
+    // when a following option has no argument.
+    const argv = [_][]const u8{ "prog", "-e", "-n", "5", "file" };
     const res = try u.getopt32(std.testing.allocator, &argv, "n:e");
     defer std.testing.allocator.free(res.args);
     // 'e' is the second flag char -> bit 1

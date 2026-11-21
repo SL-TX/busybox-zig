@@ -93,6 +93,25 @@ pub fn process_escape_sequence(a: std.mem.Allocator, s: []const u8) ![]u8 {
     return out.toOwnedSlice(a);
 }
 
+/// camelCase aliases matching the shared libbb interface.
+pub const humanReadable = human_readable;
+pub const processEscapeSequence = process_escape_sequence;
+
+/// Strict decimal number parsers. BusyBox's xatou/xatoi/xatol terminate the
+/// process on bad input; these return an error so callers can decide.
+pub fn xatou(s: []const u8) !u64 {
+    if (s.len == 0 or s[0] == '-') return error.InvalidCharacter;
+    return std.fmt.parseInt(u64, s, 10);
+}
+
+pub fn xatoi(s: []const u8) !i64 {
+    return std.fmt.parseInt(i64, s, 10);
+}
+
+pub fn xatol(s: []const u8) !i64 {
+    return std.fmt.parseInt(i64, s, 10);
+}
+
 pub fn signal_names(sig: u8) []const u8 {
     return switch (sig) {
         1 => "HUP", 2 => "INT", 3 => "QUIT", 4 => "ILL", 6 => "ABRT",
@@ -163,38 +182,16 @@ pub const GetoptResult = struct {
     args: [][]const u8 = &.{},
 };
 
+/// Legacy convenience wrapper kept for existing callers. The canonical
+/// implementation (with long options, permutation and reference-compatible
+/// error messages) lives in getopt.zig; this just adapts its result shape.
 pub fn getopt32(a: std.mem.Allocator, argv: []const []const u8, optstring: []const u8) !GetoptResult {
-    var result = GetoptResult{};
-    var positional: std.ArrayList([]const u8) = .empty;
-    errdefer positional.deinit(a);
-    var i: usize = 1;
-    while (i < argv.len) : (i += 1) {
-        const s = argv[i];
-        if (s.len < 2 or s[0] != '-') {
-            try positional.append(a, s);
-            continue;
-        }
-        var j: usize = 1;
-        while (j < s.len) : (j += 1) {
-            const c = s[j];
-            const pos = std.mem.indexOfScalar(u8, optstring, c) orelse continue;
-            const takes_arg = pos + 1 < optstring.len and optstring[pos + 1] == ':';
-            if (takes_arg) {
-                if (j + 1 < s.len) {
-                    result.optarg = s[j + 1 ..];
-                } else if (i + 1 < argv.len) {
-                    i += 1;
-                    result.optarg = argv[i];
-                }
-                break;
-            }
-            var bit: u6 = 0;
-            for (optstring[0..pos]) |x| if (x != ':') { bit += 1; };
-            result.flags |= @as(u64, 1) << bit;
-        }
-    }
-    result.args = try positional.toOwnedSlice(a);
-    return result;
+    const opts = try @import("getopt.zig").getopt32(argv, optstring, &.{});
+    return .{
+        .flags = opts.flags,
+        .optarg = opts.optarg,
+        .args = try a.dupe([]const u8, opts.args),
+    };
 }
 
 fn statPath(path: []const u8) ?std.os.linux.Statx {
