@@ -64,11 +64,17 @@ test "registry carries SUID and location metadata for privileged applets" {
     const ping = applets.findAppletByName("ping").?;
     try std.testing.expectEqual(applets.Suid.maybe, ping.suid);
 
-    // The busybox entry exists for tab completion / --list, but meta dispatch
-    // in main.zig takes precedence when invoked under that name.
-    const busybox = applets.findAppletByName("busybox").?;
-    try std.testing.expectEqualStrings("bin", busybox.location);
-    try std.testing.expectEqual(applets.Suid.maybe, busybox.suid);
+    // Reference gates the busybox applet on FEATURE_SH_STANDALONE &&
+    // FEATURE_TAB_COMPLETION, so it is absent in the committed defconfig.
+    if (@import("config").CONFIG_FEATURE_SH_STANDALONE and
+        @import("config").CONFIG_FEATURE_TAB_COMPLETION)
+    {
+        const busybox = applets.findAppletByName("busybox").?;
+        try std.testing.expectEqualStrings("bin", busybox.location);
+        try std.testing.expectEqual(applets.Suid.maybe, busybox.suid);
+    } else {
+        try std.testing.expect(applets.findAppletByName("busybox") == null);
+    }
 }
 
 test "dirent64 layout matches the kernel ABI" {

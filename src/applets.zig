@@ -134,15 +134,17 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
             break :blk buf[0..n];
         };
         const enabled = @field(config, alias);
-        // "unit" only exists in unit-test builds. "busybox" stays in the
-        // registry whenever CONFIG_BUSYBOX is on (412 applets in defconfig);
-        // main.zig gives the meta-CLI precedence when invoked as busybox, so
-        // the entry is never dispatched as a normal applet from that path.
-        // FEATURE_SH_STANDALONE only changes how the shell reaches applet
-        // mains, not the registry population.
+        // "unit" only exists in unit-test builds. The reference gates the
+        // busybox applet with IF_BUSYBOX(IF_FEATURE_SH_STANDALONE(
+        // IF_FEATURE_TAB_COMPLETION(...))), so with the committed defconfig
+        // (FEATURE_SH_STANDALONE=n) it is absent from the registry and from
+        // --list / --list-full (411 applets).
         const register = comptime blk2: {
             if (std.mem.eql(u8, entry.name, "unit"))
                 break :blk2 cfg.CONFIG_UNIT_TEST and enabled;
+            if (std.mem.eql(u8, entry.name, "busybox"))
+                break :blk2 cfg.CONFIG_FEATURE_SH_STANDALONE and
+                    cfg.CONFIG_FEATURE_TAB_COMPLETION and enabled;
             break :blk2 enabled;
         };
         if (!register) continue;

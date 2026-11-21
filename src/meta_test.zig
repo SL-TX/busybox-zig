@@ -53,13 +53,19 @@ fn freeResult(r: Result) void {
 test "list has no internal helper names" {
     const names = try applets.appletNames(std.testing.allocator);
     defer std.testing.allocator.free(names);
-    try std.testing.expectEqual(@as(usize, 412), names.len);
+    try std.testing.expectEqual(@as(usize, 411), names.len);
     for (names) |n| try std.testing.expect(!std.mem.eql(u8, n, "tls_aes"));
     var has_bracket = false;
+    var has_busybox = false;
     for (names) |n| {
         if (std.mem.eql(u8, n, "[")) has_bracket = true;
+        if (std.mem.eql(u8, n, "busybox")) has_busybox = true;
     }
     try std.testing.expect(has_bracket);
+    // Reference gates the busybox applet on FEATURE_SH_STANDALONE, which is
+    // disabled in the committed defconfig.
+    if (!@import("config").CONFIG_FEATURE_SH_STANDALONE)
+        try std.testing.expect(!has_busybox);
 }
 
 test "version is 1.39.0 banner only" {
@@ -74,7 +80,7 @@ test "version is 1.39.0 banner only" {
 test "list-full format has no leading slash" {
     const full = try applets.appletNamesFull(std.testing.allocator);
     defer std.testing.allocator.free(full);
-    try std.testing.expectEqual(@as(usize, 412), full.len);
+    try std.testing.expectEqual(@as(usize, 411), full.len);
     try std.testing.expectEqualStrings("usr/bin/[", full[0]);
     var has_cat = false;
     for (full) |f| {
