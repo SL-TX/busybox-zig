@@ -1,0 +1,8 @@
+{
+  "applet": "printenv",
+  "name": "two",
+  "stdout": "<TMP>\nUTC\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

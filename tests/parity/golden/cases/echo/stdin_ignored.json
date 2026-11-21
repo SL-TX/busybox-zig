@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "stdin_ignored",
+  "stdout": "\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

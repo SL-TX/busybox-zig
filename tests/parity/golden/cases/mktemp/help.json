@@ -1,0 +1,8 @@
+{
+  "applet": "mktemp",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mktemp [-dt] [-p DIR] [TEMPLATE]\n\nCreate a temporary file with name based on TEMPLATE and print its name.\nTEMPLATE must end with XXXXXX (e.g. [/dir/]nameXXXXXX).\nWithout TEMPLATE, -t tmp.XXXXXX is assumed.\n\n\t-d\tMake directory, not file\n\t-q\tFail silently on errors\n\t-t\tPrepend base directory name to TEMPLATE\n\t-p DIR\tUse DIR as a base directory (implies -t)\n\t-u\tDo not create anything; print a name\n\nBase directory is: -p DIR, else $TMPDIR, else /tmp\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

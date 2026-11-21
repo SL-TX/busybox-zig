@@ -1,0 +1,8 @@
+{
+  "applet": "mktemp",
+  "name": "quiet_bad",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "c_stop",
+  "stdout": "abc",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

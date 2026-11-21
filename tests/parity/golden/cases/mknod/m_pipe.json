@@ -1,0 +1,13 @@
+{
+  "applet": "mknod",
+  "name": "m_pipe",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "p6": {
+      "type": "other",
+      "mode": 384
+    }
+  }
+}

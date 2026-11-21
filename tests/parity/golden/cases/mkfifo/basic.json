@@ -1,0 +1,13 @@
+{
+  "applet": "mkfifo",
+  "name": "basic",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "fifo": {
+      "type": "other",
+      "mode": 436
+    }
+  }
+}

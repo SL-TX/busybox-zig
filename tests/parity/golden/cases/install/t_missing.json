@@ -1,0 +1,16 @@
+{
+  "applet": "install",
+  "name": "t_missing",
+  "stdout": "",
+  "stderr": "install: can't create 'missing/src': No such file or directory\n",
+  "exit": 1,
+  "tree": {
+    "src": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

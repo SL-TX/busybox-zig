@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "b_escape",
+  "stdout": "x\ty\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

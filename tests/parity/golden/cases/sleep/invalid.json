@@ -1,0 +1,8 @@
+{
+  "applet": "sleep",
+  "name": "invalid",
+  "stdout": "",
+  "stderr": "sleep: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

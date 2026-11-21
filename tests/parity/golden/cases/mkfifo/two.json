@@ -1,0 +1,17 @@
+{
+  "applet": "mkfifo",
+  "name": "two",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "p2": {
+      "type": "other",
+      "mode": 436
+    },
+    "p1": {
+      "type": "other",
+      "mode": 436
+    }
+  }
+}

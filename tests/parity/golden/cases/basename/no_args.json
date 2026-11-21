@@ -1,0 +1,8 @@
+{
+  "applet": "basename",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: basename FILE [SUFFIX] | -a FILE... | -s SUFFIX FILE...\n\nStrip directory path and SUFFIX from FILE\n\n\t-a\t\tAll arguments are FILEs\n\t-s SUFFIX\tRemove SUFFIX (implies -a)\n",
+  "exit": 1,
+  "tree": {}
+}

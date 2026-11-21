@@ -1,0 +1,8 @@
+{
+  "applet": "dirname",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: dirname FILENAME\n\nStrip non-directory suffix from FILENAME\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

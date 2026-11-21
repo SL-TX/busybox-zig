@@ -1,0 +1,13 @@
+{
+  "applet": "install",
+  "name": "dir",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "newdir": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

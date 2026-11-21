@@ -1,0 +1,23 @@
+{
+  "applet": "install",
+  "name": "mode",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "dst": {
+      "type": "file",
+      "mode": 448,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    },
+    "src": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

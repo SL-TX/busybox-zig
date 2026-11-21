@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "hex_octal",
+  "stdout": "AA\u0000X\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

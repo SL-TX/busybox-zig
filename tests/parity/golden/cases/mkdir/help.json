@@ -1,0 +1,8 @@
+{
+  "applet": "mkdir",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mkdir [-m MODE] [-p] DIRECTORY...\n\nCreate DIRECTORY\n\n\t-m MODE\tMode\n\t-p\tNo error if exists; make parent directories as needed\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

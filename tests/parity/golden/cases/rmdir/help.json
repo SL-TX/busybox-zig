@@ -1,0 +1,8 @@
+{
+  "applet": "rmdir",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: rmdir [-p] DIRECTORY...\n\nRemove DIRECTORY if it is empty\n\n\t-p\tInclude parents\n\t--ignore-fail-on-non-empty\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

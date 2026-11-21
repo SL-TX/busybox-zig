@@ -1,0 +1,105 @@
+{
+  "applet": "pwd",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "sub"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "from_subdir",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "sub"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": "sub",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "bad_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "logical",
+      "argv": [
+        "-L"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "physical",
+      "argv": [
+        "-P"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    }
+  ]
+}

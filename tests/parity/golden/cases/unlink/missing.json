@@ -1,0 +1,8 @@
+{
+  "applet": "unlink",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "unlink: can't remove file 'nope': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

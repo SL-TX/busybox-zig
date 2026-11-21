@@ -1,0 +1,8 @@
+{
+  "applet": "fsync",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fsync [-d] FILE...\n\nWrite all buffered blocks in FILEs to disk\n\n\t-d\tAvoid syncing metadata\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

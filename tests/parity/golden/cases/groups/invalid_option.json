@@ -1,0 +1,8 @@
+{
+  "applet": "groups",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "groups: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: groups [USER]\n\nPrint the groups USER is in\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "basename",
+  "name": "s_opt",
+  "stdout": "a\nb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

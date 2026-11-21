@@ -1,0 +1,8 @@
+{
+  "applet": "mknod",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mknod [-m MODE] NAME TYPE [MAJOR MINOR]\n\nCreate a special file (block, character, or pipe)\n\n\t-m MODE\tCreation mode (default a=rw)\nTYPE:\n\tb\tBlock device\n\tc or u\tCharacter device\n\tp\tNamed pipe (MAJOR MINOR must be omitted)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

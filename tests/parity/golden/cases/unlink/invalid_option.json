@@ -1,0 +1,16 @@
+{
+  "applet": "unlink",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "unlink: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: unlink FILE\n\nDelete FILE by calling unlink()\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "uname",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "uname: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: uname [-amnrspvio]\n\nPrint system information\n\n\t-a\tPrint all\n\t-m\tMachine (hardware) type\n\t-n\tHostname\n\t-r\tKernel release\n\t-s\tKernel name (default)\n\t-p\tProcessor type\n\t-v\tKernel version\n\t-i\tHardware platform\n\t-o\tOS name\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "realpath",
+  "name": "invalid_option",
+  "stdout": "<TMP>/f\n",
+  "stderr": "realpath: -Z: No such file or directory\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

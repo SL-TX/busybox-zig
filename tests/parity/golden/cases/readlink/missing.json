@@ -1,0 +1,8 @@
+{
+  "applet": "readlink",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

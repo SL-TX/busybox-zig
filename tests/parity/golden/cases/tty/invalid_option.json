@@ -1,0 +1,8 @@
+{
+  "applet": "tty",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "tty: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: tty [-s]\n\nPrint file name of stdin's terminal\n\n\t-s\tPrint nothing, only return exit status\n",
+  "exit": 2,
+  "tree": {}
+}

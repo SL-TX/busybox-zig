@@ -1,0 +1,21 @@
+{
+  "applet": "realpath",
+  "name": "symlink",
+  "stdout": "<TMP>/f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "s": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "f"
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

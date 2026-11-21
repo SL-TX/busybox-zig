@@ -1,0 +1,13 @@
+{
+  "applet": "mkdir",
+  "name": "m",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "m7": {
+      "type": "dir",
+      "mode": 448
+    }
+  }
+}

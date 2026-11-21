@@ -1,0 +1,8 @@
+{
+  "applet": "uname",
+  "name": "o",
+  "stdout": "GNU/Linux\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

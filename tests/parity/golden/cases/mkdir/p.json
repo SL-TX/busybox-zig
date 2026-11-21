@@ -1,0 +1,21 @@
+{
+  "applet": "mkdir",
+  "name": "p",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "dir",
+      "mode": 509
+    },
+    "a/b": {
+      "type": "dir",
+      "mode": 509
+    },
+    "a/b/c": {
+      "type": "dir",
+      "mode": 509
+    }
+  }
+}

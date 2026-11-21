@@ -1,0 +1,8 @@
+{
+  "applet": "nice",
+  "name": "invalid_adjust",
+  "stdout": "",
+  "stderr": "nice: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

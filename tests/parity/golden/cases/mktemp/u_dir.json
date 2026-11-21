@@ -1,0 +1,8 @@
+{
+  "applet": "mktemp",
+  "name": "u_dir",
+  "stdout": "dir.<MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

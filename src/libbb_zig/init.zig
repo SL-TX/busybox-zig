@@ -12,6 +12,7 @@ pub fn init() void {}
 pub const string = @import("string.zig");
 pub const process = @import("process.zig");
 pub const io = @import("io.zig");
+pub const usage = @import("usage.zig");
 pub const hash = @import("hash.zig");
 pub const socket = @import("socket.zig");
 pub const util = @import("util.zig");

@@ -1,0 +1,23 @@
+{
+  "applet": "head",
+  "name": "two_files",
+  "stdout": "==> f <==\na\n\n==> g <==\nb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Ygo="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQo="
+      }
+    }
+  }
+}

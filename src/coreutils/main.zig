@@ -3,6 +3,7 @@
 const std = @import("std");
 const linux = std.os.linux;
 const bb = @import("libbb_zig");
+const simple = @import("simple.zig");
 pub const sed = @import("sed.zig");
 pub const awk = @import("awk.zig");
 
@@ -104,24 +105,7 @@ pub fn renderPrintf(a: std.mem.Allocator, fmt: []const u8, args: []const []const
 // --- applets ----------------------------------------------------------------
 
 pub fn echo_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var no_nl = false;
-    var escapes = false;
-    var first: usize = 1;
-    while (first < args.len and args[first].len > 1 and args[first][0] == '-') {
-        var valid = true;
-        for (args[first][1..]) |c| switch (c) {
-            'n' => no_nl = true,
-            'e' => escapes = true,
-            else => valid = false,
-        };
-        if (!valid) break;
-        first += 1;
-    }
-    const out = renderEcho(std.heap.page_allocator, args[first..], no_nl, escapes) catch return 1;
-    defer std.heap.page_allocator.free(out);
-    writeAll(stdout, out);
-    return 0;
+    return simple.echoMain(argc, argv);
 }
 
 fn catFd(fd: linux.fd_t) void {
@@ -135,27 +119,7 @@ fn catFd(fd: linux.fd_t) void {
 }
 
 pub fn cat_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    if (args.len <= 1) {
-        catFd(stdin);
-        return 0;
-    }
-    for (args[1..]) |name| {
-        if (std.mem.eql(u8, name, "-")) {
-            catFd(stdin);
-            continue;
-        }
-        var z: [4096:0]u8 = undefined;
-        if (name.len >= z.len) return 1;
-        @memcpy(z[0..name.len], name);
-        z[name.len] = 0;
-        const rc = linux.open(@ptrCast(&z), .{ .ACCMODE = .RDONLY }, 0);
-        if (linux.errno(rc) != .SUCCESS) return 1;
-        const fd: linux.fd_t = @intCast(rc);
-        catFd(fd);
-        _ = linux.close(fd);
-    }
-    return 0;
+    return simple.catMain(argc, argv);
 }
 
 pub fn ls_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -207,12 +171,7 @@ pub fn ls_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn printf_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    if (args.len < 2) return 0;
-    const out = renderPrintf(std.heap.page_allocator, args[1], args[2..]) catch return 1;
-    defer std.heap.page_allocator.free(out);
-    writeAll(stdout, out);
-    return 0;
+    return simple.printfMain(argc, argv);
 }
 
 // --- file operations --------------------------------------------------------
@@ -354,12 +313,7 @@ pub fn rm_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn mkdir_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var first: usize = 1;
-    while (first < args.len and args[first].len > 0 and args[first][0] == '-') first += 1;
-    if (first >= args.len) return 1;
-    for (args[first..]) |path| mkdirP(path) catch return 1;
-    return 0;
+    return simple.mkdirMain(argc, argv);
 }
 
 pub fn touch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -531,44 +485,15 @@ fn readInput(a: std.mem.Allocator, path: []const u8) ![]u8 {
 }
 
 pub fn head_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var n: usize = 10;
-    var path: []const u8 = "-";
-    var first: usize = 1;
-    if (args.len > 1 and args[1].len > 1 and args[1][0] == '-') {
-        n = std.fmt.parseInt(usize, args[1][1..], 10) catch 10;
-        first = 2;
-    }
-    if (args.len > first) path = args[args.len - 1];
-    const data = readInput(std.heap.page_allocator, path) catch return 1;
-    defer std.heap.page_allocator.free(data);
-    writeAll(stdout, headLines(data, n));
-    return 0;
+    return simple.headMain(argc, argv);
 }
 
 pub fn tail_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var n: usize = 10;
-    var path: []const u8 = "-";
-    var first: usize = 1;
-    if (args.len > 1 and args[1].len > 1 and args[1][0] == '-') {
-        n = std.fmt.parseInt(usize, args[1][1..], 10) catch 10;
-        first = 2;
-    }
-    if (args.len > first) path = args[args.len - 1];
-    const data = readInput(std.heap.page_allocator, path) catch return 1;
-    defer std.heap.page_allocator.free(data);
-    writeAll(stdout, tailLines(data, n));
-    return 0;
+    return simple.tailMain(argc, argv);
 }
 
 pub fn wc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    const data = readInput(std.heap.page_allocator, if (args.len > 1) args[1] else "-") catch return 1;
-    defer std.heap.page_allocator.free(data);
-    const c = wordCount(data);
-    writeAll(stdout, std.fmt.allocPrint(std.heap.page_allocator, "{d: >7} {d: >7} {d: >7}\n", .{ c.lines, c.words, c.bytes }) catch return 1);
-    return 0;
+    return simple.wcMain(argc, argv);
 }
 
 pub fn sort_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -736,3 +661,45 @@ pub fn true_main(_: c_int, _: [*][*:0]const u8) c_int {
 pub fn false_main(_: c_int, _: [*][*:0]const u8) c_int {
     return 1;
 }
+
+// --- Task 7a wrappers -------------------------------------------------------
+// One canonical `<name>_main` symbol per applet. The implementations live in
+// simple.zig so this module root stays the single registry entry point.
+
+pub fn pwd_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.pwdMain(argc, argv); }
+pub fn basename_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.basenameMain(argc, argv); }
+pub fn dirname_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.dirnameMain(argc, argv); }
+pub fn tee_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.teeMain(argc, argv); }
+pub fn yes_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.yesMain(argc, argv); }
+pub fn sleep_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.sleepMain(argc, argv); }
+pub fn usleep_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.usleepMain(argc, argv); }
+pub fn nproc_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.nprocMain(argc, argv); }
+pub fn sync_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.syncMain(argc, argv); }
+pub fn fsync_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.fsyncMain(argc, argv); }
+pub fn link_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.linkMain(argc, argv); }
+pub fn unlink_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.unlinkMain(argc, argv); }
+pub fn rmdir_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.rmdirMain(argc, argv); }
+pub fn mkfifo_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.mkfifoMain(argc, argv); }
+pub fn mknod_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.mknodMain(argc, argv); }
+pub fn mktemp_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.mktempMain(argc, argv); }
+pub fn readlink_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.readlinkMain(argc, argv); }
+pub fn realpath_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.realpathMain(argc, argv); }
+pub fn truncate_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.truncateMain(argc, argv); }
+pub fn install_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.installMain(argc, argv); }
+pub fn printenv_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.printenvMain(argc, argv); }
+pub fn env_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.envMain(argc, argv); }
+pub fn id_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.idMain(argc, argv); }
+pub fn whoami_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.whoamiMain(argc, argv); }
+pub fn logname_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.lognameMain(argc, argv); }
+pub fn groups_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.idMain(argc, argv); }
+pub fn users_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.usersMain(argc, argv); }
+pub fn who_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.whoMain(argc, argv); }
+pub fn w_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.whoMain(argc, argv); }
+pub fn tty_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.ttyMain(argc, argv); }
+pub fn hostid_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.hostidMain(argc, argv); }
+pub fn uname_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.unameMain(argc, argv); }
+pub fn arch_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.unameMain(argc, argv); }
+pub fn nice_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.niceMain(argc, argv); }
+pub fn nohup_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.nohupMain(argc, argv); }
+pub fn timeout_main(argc: c_int, argv: [*][*:0]const u8) c_int { return simple.timeoutMain(argc, argv); }
+

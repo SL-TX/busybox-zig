@@ -1,0 +1,16 @@
+{
+  "applet": "wc",
+  "name": "w",
+  "stdout": "3 f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b25lCnR3bwp0aHJlZQo="
+      }
+    }
+  }
+}

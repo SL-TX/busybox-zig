@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "extra_args",
+  "stdout": "a\nb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "invalid_option",
+  "stdout": "-Z foo\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

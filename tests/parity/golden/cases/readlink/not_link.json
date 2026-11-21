@@ -1,0 +1,16 @@
+{
+  "applet": "readlink",
+  "name": "not_link",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

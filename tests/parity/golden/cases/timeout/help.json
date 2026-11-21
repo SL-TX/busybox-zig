@@ -1,0 +1,8 @@
+{
+  "applet": "timeout",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: timeout [-s SIG] [-k KILL_SECS] SECS PROG ARGS\n\nRun PROG. Send SIG to it if it is not gone in SECS seconds.\nDefault SIG: TERM.If it still exists in KILL_SECS seconds, send KILL.\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

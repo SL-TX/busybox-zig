@@ -1,0 +1,8 @@
+{
+  "applet": "hostid",
+  "name": "basic",
+  "stdout": "007f0101\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

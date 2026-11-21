@@ -1,0 +1,27 @@
+{
+  "applet": "install",
+  "name": "into_dir",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "src": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    },
+    "dir": {
+      "type": "dir",
+      "mode": 493
+    },
+    "dir/src": {
+      "type": "file",
+      "mode": 493,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "link",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: link FILE LINK\n\nCreate hard LINK to FILE\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "dirname",
+  "name": "relative",
+  "stdout": ".\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

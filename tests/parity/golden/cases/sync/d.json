@@ -1,0 +1,16 @@
+{
+  "applet": "sync",
+  "name": "d",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ZGF0YQ=="
+      }
+    }
+  }
+}

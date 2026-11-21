@@ -1,0 +1,23 @@
+{
+  "applet": "tee",
+  "name": "two_files",
+  "stdout": "one\ntwo\nthree\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "b25lCnR3bwp0aHJlZQo="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "b25lCnR3bwp0aHJlZQo="
+      }
+    }
+  }
+}

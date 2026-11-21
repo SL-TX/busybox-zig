@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "E",
+  "stdout": "a\\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

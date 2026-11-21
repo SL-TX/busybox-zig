@@ -1,0 +1,17 @@
+{
+  "applet": "mkdir",
+  "name": "pm",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "x": {
+      "type": "dir",
+      "mode": 509
+    },
+    "x/y": {
+      "type": "dir",
+      "mode": 448
+    }
+  }
+}

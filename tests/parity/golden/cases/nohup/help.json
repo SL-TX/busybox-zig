@@ -1,0 +1,8 @@
+{
+  "applet": "nohup",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: nohup PROG ARGS\n\nRun PROG immune to hangups, with output to a non-tty\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

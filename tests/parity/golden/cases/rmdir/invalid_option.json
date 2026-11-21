@@ -1,0 +1,13 @@
+{
+  "applet": "rmdir",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "rmdir: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: rmdir [-p] DIRECTORY...\n\nRemove DIRECTORY if it is empty\n\n\t-p\tInclude parents\n\t--ignore-fail-on-non-empty\n",
+  "exit": 1,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

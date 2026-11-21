@@ -1,0 +1,8 @@
+{
+  "applet": "rmdir",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "rmdir: 'nope': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

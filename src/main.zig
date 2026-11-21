@@ -331,9 +331,28 @@ pub fn run(allocator: std.mem.Allocator, argv: []const []const u8, out: anytype,
     return @as(u8, @truncate(@as(u32, @bitCast(ret))));
 }
 
+fn appletUsageToFd(name: []const u8, fd: linux.fd_t) void {
+    const w = FdWriter{ .fd = fd };
+    w.writeAll(meta.first_line);
+    const applet = applets.findAppletByName(name) orelse {
+        w.writeAll("\nUsage: ");
+        w.writeAll(name);
+        w.writeAll("\n");
+        return;
+    };
+    if (applet.usage.len != 0) {
+        w.writeAll(applet.usage);
+    } else {
+        w.writeAll("\nUsage: ");
+        w.writeAll(name);
+        w.writeAll("\n");
+    }
+}
+
 pub fn main(init: Init) u8 {
     libbb_zig.init();
     libbb_zig.env.map = init.environ_map;
+    libbb_zig.usage.showFn = appletUsageToFd;
 
     const vec = init.minimal.args.vector;
     const args = init.arena.allocator().alloc([]const u8, vec.len) catch return 1;

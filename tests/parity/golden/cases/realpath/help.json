@@ -1,0 +1,8 @@
+{
+  "applet": "realpath",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: realpath FILE...\n\nPrint absolute pathnames of FILEs\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

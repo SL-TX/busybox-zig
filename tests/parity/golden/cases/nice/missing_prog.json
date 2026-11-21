@@ -1,0 +1,8 @@
+{
+  "applet": "nice",
+  "name": "missing_prog",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: nice [-n ADJUST] [PROG ARGS]\n\nChange scheduling priority, run PROG\n\n\t-n ADJUST\tAdjust priority by ADJUST\n",
+  "exit": 1,
+  "tree": {}
+}
