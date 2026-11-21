@@ -172,7 +172,7 @@ Status: `missing` = not in the Zig registry; `stub` = registered but returns "no
 | 165 | init | `reboot` | CONFIG_REBOOT | yes | sbin | drop | missing | — |
 | 166 | klibc-utils | `nuke` | CONFIG_NUKE | no | bin | drop | missing | — |
 | 167 | klibc-utils | `resume` | CONFIG_RESUME | yes | bin | drop | missing | — |
-| 168 | libbb | `busybox` | CONFIG_BUSYBOX | yes | bin | maybe | missing | — |
+| 168 | libbb | `busybox` | CONFIG_BUSYBOX (+FEATURE_SH_STANDALONE) | no | bin | maybe | missing | — |
 | 169 | libbb | `unit` | CONFIG_UNIT_TEST | no | usr/bin | drop | missing | — |
 | 170 | loginutils | `add-shell` | CONFIG_ADD_SHELL | yes | usr/sbin | drop | missing | — |
 | 171 | loginutils | `addgroup` | CONFIG_ADDGROUP | yes | usr/sbin | drop | stub | APPLET_addgroup |
@@ -452,6 +452,6 @@ Status: `missing` = not in the Zig registry; `stub` = registered but returns "no
 ## Totals
 
 - Reference applet names: **443**
-- Default-enabled in reference defconfig: **412**
+- Default-enabled in reference defconfig: **411**
 - Zig registry applet names: **249** (partial 43, stub 206, missing 194)
 - Zig registry entries that are not applets: **46** (internal helper names; must be removed)
