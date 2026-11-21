@@ -115,7 +115,10 @@ fn writeList(allocator: std.mem.Allocator, out: anytype, full: bool) void {
 fn printAppletHelp(name: []const u8, out: anytype, err: anytype) u8 {
     if (applets.findAppletByName(name) != null) {
         // Task 4 replaces this with the generated per-applet usage text.
-        out.writeAll(banner ++ " multi-call binary.\n\nUsage: ");
+        // Use the golden's composed first line: `banner` already ends in '\n',
+        // so concatenating it directly would split banner and " multi-call
+        // binary." onto separate lines.
+        out.writeAll(meta.first_line ++ "\nUsage: ");
         out.writeAll(name);
         out.writeAll("\n");
         return 0;

@@ -152,6 +152,9 @@ test "--help with an applet prints usage and does not run it" {
     const r = invoke(&.{ "busybox", "--help", "cat" });
     defer freeResult(r);
     try std.testing.expectEqual(@as(u8, 0), r.code);
-    try std.testing.expect(std.mem.startsWith(u8, r.out, "BusyBox v1.39.0"));
+    // Exact first line from the golden, with the build-specific timestamp
+    // isolated in `version`. A spurious newline after the banner (banner now
+    // ends with '\n') would fail this assertion.
+    try std.testing.expect(std.mem.startsWith(u8, r.out, meta.first_line ++ "\nUsage: "));
     try std.testing.expect(std.mem.indexOf(u8, r.out, "Usage: cat") != null);
 }
