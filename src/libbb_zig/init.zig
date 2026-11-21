@@ -31,3 +31,9 @@ pub const process_more = @import("process_more.zig");
 pub const identity = @import("identity.zig");
 pub const utmp = @import("utmp.zig");
 pub const mtab = @import("mtab.zig");
+
+// Wave 3 networking helpers.
+pub const dns = @import("net/dns.zig");
+pub const http = @import("net/http.zig");
+pub const dhcp = @import("net/dhcp.zig");
+pub const tls = @import("net/tls/tls.zig");

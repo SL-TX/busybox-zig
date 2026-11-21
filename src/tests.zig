@@ -6,6 +6,13 @@ test {
     _ = @import("libbb_zig/io_test.zig");
     _ = @import("libbb_zig/hash_test.zig");
     _ = @import("libbb_zig/socket_test.zig");
+    // Task 12 — libbb networking helpers (Wave 3 prerequisites).
+    _ = @import("libbb_zig/net/inet_test.zig");
+    _ = @import("libbb_zig/net/socket_test.zig");
+    _ = @import("libbb_zig/net/dns_test.zig");
+    _ = @import("libbb_zig/net/http_test.zig");
+    _ = @import("libbb_zig/net/tls_test.zig");
+    _ = @import("libbb_zig/net/dhcp_test.zig");
     _ = @import("libbb_zig/util_test.zig");
     _ = @import("libbb_zig/util_more_test.zig");
     _ = @import("libbb_zig/pw_test.zig");

@@ -99,3 +99,45 @@ pub fn recv(fd: fd_t, buf: []u8, flags: u32) !usize {
     try check(rc);
     return @intCast(rc);
 }
+
+// ---- Wave 3 networking helpers (see net/socket.zig, net/inet.zig) ----
+// The legacy API above is preserved verbatim; the helpers below re-export the
+// richer implementations so existing applets keep compiling unchanged.
+
+pub const net = @import("net/socket.zig");
+pub const inet = @import("net/inet.zig");
+pub const Address = net.Address;
+
+pub fn createAndConnect(addr: Address) !fd_t {
+    return net.createAndConnect(addr);
+}
+pub fn createAndBind(addr: Address) !fd_t {
+    return net.createAndBind(addr);
+}
+pub fn createAndListen(addr: Address, backlog: u32) !fd_t {
+    return net.createAndListen(addr, backlog);
+}
+pub fn sendAll(fd: fd_t, bytes: []const u8, flags: u32) !void {
+    return net.sendAll(fd, bytes, flags);
+}
+pub fn recvAll(fd: fd_t, buf: []u8, flags: u32) !usize {
+    return net.recvAll(fd, buf, flags);
+}
+pub fn setRecvTimeout(fd: fd_t, ms: u32) !void {
+    return net.setRecvTimeout(fd, ms);
+}
+pub fn setSendTimeout(fd: fd_t, ms: u32) !void {
+    return net.setSendTimeout(fd, ms);
+}
+pub fn setNonBlocking(fd: fd_t) !void {
+    return net.setNonBlocking(fd);
+}
+pub fn setReuseAddr(fd: fd_t) !void {
+    return net.setReuseAddr(fd);
+}
+pub fn wait(fd: fd_t, readable: bool, writable: bool, timeout_ms: i32) !bool {
+    return net.wait(fd, readable, writable, timeout_ms);
+}
+pub fn inet6_pton(text: []const u8) ?[16]u8 {
+    return inet.parseV6(text);
+}
