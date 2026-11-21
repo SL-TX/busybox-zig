@@ -1,0 +1,8 @@
+{
+  "applet": "fsck.minix",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fsck.minix [-larvsmf] BLOCKDEV\n\nCheck MINIX filesystem\n\n\t-l\tList all filenames\n\t-r\tPerform interactive repairs\n\t-a\tPerform automatic repairs\n\t-v\tVerbose\n\t-s\tOutput superblock information\n\t-m\tShow \"mode not cleared\" warnings\n\t-f\tForce file system check\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "swapon",
+  "name": "existing_ok",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

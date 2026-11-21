@@ -1,0 +1,8 @@
+{
+  "applet": "umount",
+  "name": "type_mismatch",
+  "stdout": "",
+  "stderr": "umount: can't unmount /nonexistent: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

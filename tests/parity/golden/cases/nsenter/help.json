@@ -1,0 +1,8 @@
+{
+  "applet": "nsenter",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: nsenter [OPTIONS] [PROG ARGS]\n\n\t-t PID\t\tTarget process to get namespaces from\n\t-m[FILE]\tEnter mount namespace\n\t-u[FILE]\tEnter UTS namespace (hostname etc)\n\t-i[FILE]\tEnter System V IPC namespace\n\t-n[FILE]\tEnter network namespace\n\t-p[FILE]\tEnter pid namespace\n\t-U[FILE]\tEnter user namespace\n\t-S UID\t\tSet uid in entered namespace\n\t-G GID\t\tSet gid in entered namespace\n\t--preserve-credentials\tDon't touch uids or gids\n\t-r[DIR]\t\tSet root directory\n\t-w[DIR]\t\tSet working directory\n\t-F\t\tDon't fork before exec'ing PROG\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

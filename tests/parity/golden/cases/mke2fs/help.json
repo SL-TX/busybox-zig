@@ -1,0 +1,8 @@
+{
+  "applet": "mke2fs",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mke2fs [-Fn] [-b BLK_SIZE] [-i INODE_RATIO] [-I INODE_SIZE] [-m RESERVED_PERCENT] [-L LABEL] BLOCKDEV [KBYTES]\n\n\t-b BLK_SIZE\tBlock size, bytes\n\t-F\t\tForce\n\t-i RATIO\tMax number of files is filesystem_size / RATIO\n\t-I BYTES\tInode size (min 128)\n\t-L LBL\t\tVolume label\n\t-m PERCENT\tPercent of blocks to reserve for admin\n\t-n\t\tDry run\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

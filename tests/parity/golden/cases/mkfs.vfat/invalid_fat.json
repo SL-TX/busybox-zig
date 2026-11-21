@@ -1,0 +1,8 @@
+{
+  "applet": "mkfs.vfat",
+  "name": "invalid_fat",
+  "stdout": "",
+  "stderr": "mkfs.vfat: can't open 'disk.img': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

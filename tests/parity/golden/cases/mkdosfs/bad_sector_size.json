@@ -1,0 +1,8 @@
+{
+  "applet": "mkdosfs",
+  "name": "bad_sector_size",
+  "stdout": "",
+  "stderr": "mkdosfs: can't open 'disk.img': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

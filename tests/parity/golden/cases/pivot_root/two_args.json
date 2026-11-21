@@ -1,0 +1,8 @@
+{
+  "applet": "pivot_root",
+  "name": "two_args",
+  "stdout": "",
+  "stderr": "pivot_root: : Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

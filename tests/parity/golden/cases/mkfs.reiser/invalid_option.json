@@ -1,0 +1,8 @@
+{
+  "applet": "mkfs.reiser",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "mkfs.reiser: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

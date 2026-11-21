@@ -1,0 +1,8 @@
+{
+  "applet": "mkfs.vfat",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: mkfs.vfat [-Cv] [-n LABEL] [-F12|16|32] [-b NUM] [-R NUM] [-S SECTSIZE] [-s SECTCLUST] FILE|BLOCKDEV [KBYTES]\n\nMake FAT filesystem\n\n\t-C\tCreate new FILE\n\t-F 12|16|32\n\t-b BACKUP_SECT\n\t-R FAT_START\tFAT start sector\n\t-S SECTOR_SIZE\n\t-s SECTORS_PER_CLUSTER\n\t-n LBL\tVolume label\n\t-v\tVerbose\n",
+  "exit": 1,
+  "tree": {}
+}

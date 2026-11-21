@@ -1,0 +1,8 @@
+{
+  "applet": "rdev",
+  "name": "no_args",
+  "stdout": "/dev/nvme0n1p3 /\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "findfs",
+  "name": "bad_form",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: findfs LABEL=label | UUID=uuid\n\nFind filesystem device based on label or UUID\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "fdisk",
+  "name": "bad_sector_size",
+  "stdout": "0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "disk.img": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QQ=="
+      }
+    }
+  }
+}

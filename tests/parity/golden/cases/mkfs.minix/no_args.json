@@ -1,0 +1,8 @@
+{
+  "applet": "mkfs.minix",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: mkfs.minix [-c | -l FILE] [-nXX] [-iXX] BLOCKDEV [KBYTES]\n\nMake MINIX filesystem\n\n\t-c\t\tCheck device for bad blocks\n\t-n [14|30]\tMaximum length of filenames\n\t-i INODES\tNumber of inodes for the filesystem\n\t-l FILE\t\tRead bad blocks list from FILE\n\t-v\t\tMake version 2 filesystem\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "mkswap",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mkswap [-L LBL] BLOCKDEV [KBYTES]\n\nPrepare BLOCKDEV to be used as swap partition\n\n\t-L LBL\tLabel\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

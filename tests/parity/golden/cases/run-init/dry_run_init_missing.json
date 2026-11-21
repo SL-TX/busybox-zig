@@ -1,0 +1,8 @@
+{
+  "applet": "run-init",
+  "name": "dry_run_init_missing",
+  "stdout": "",
+  "stderr": "run-init: '/init' is not a regular file\n",
+  "exit": 1,
+  "tree": {}
+}

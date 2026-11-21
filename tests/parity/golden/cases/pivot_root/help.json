@@ -1,0 +1,8 @@
+{
+  "applet": "pivot_root",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: pivot_root NEW_ROOT PUT_OLD\n\nMove the current root file system to PUT_OLD and make NEW_ROOT\nthe new root file system\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

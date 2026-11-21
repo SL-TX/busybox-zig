@@ -1,0 +1,8 @@
+{
+  "applet": "rdate",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: rdate [-s/-p] HOST\n\nSet and print time from HOST using RFC 868\n\n\t-s\tOnly set system time\n\t-p\tOnly print time\n",
+  "exit": 1,
+  "tree": {}
+}

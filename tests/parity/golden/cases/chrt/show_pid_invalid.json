@@ -1,0 +1,8 @@
+{
+  "applet": "chrt",
+  "name": "show_pid_invalid",
+  "stdout": "",
+  "stderr": "chrt: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

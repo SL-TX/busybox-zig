@@ -1,0 +1,8 @@
+{
+  "applet": "mkfs.minix",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "mkfs.minix: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mkfs.minix [-c | -l FILE] [-nXX] [-iXX] BLOCKDEV [KBYTES]\n\nMake MINIX filesystem\n\n\t-c\t\tCheck device for bad blocks\n\t-n [14|30]\tMaximum length of filenames\n\t-i INODES\tNumber of inodes for the filesystem\n\t-l FILE\t\tRead bad blocks list from FILE\n\t-v\t\tMake version 2 filesystem\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "swapon",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: swapon [-a] [-e] [-d[POL]] [-p PRI] [DEVICE]\n\nStart swapping on DEVICE\n\n\t-a\tStart swapping on all swap devices\n\t-d[POL]\tDiscard blocks at swapon (POL=once),\n\t\tas freed (POL=pages), or both (POL omitted)\n\t-e\tSilently skip devices that do not exist\n\t-p PRI\tSet swap device priority\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

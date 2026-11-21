@@ -1,0 +1,8 @@
+{
+  "applet": "mkdosfs",
+  "name": "missing_device",
+  "stdout": "",
+  "stderr": "mkdosfs: can't open '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

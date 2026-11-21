@@ -1,0 +1,8 @@
+{
+  "applet": "nsenter",
+  "name": "target_mount_denied",
+  "stdout": "",
+  "stderr": "nsenter: can't open '/proc/1/ns/mnt': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

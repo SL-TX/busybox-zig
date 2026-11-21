@@ -1,0 +1,8 @@
+{
+  "applet": "mkfs.reiser",
+  "name": "create",
+  "stdout": "",
+  "stderr": "mkfs.reiser: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

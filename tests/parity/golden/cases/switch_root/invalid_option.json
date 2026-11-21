@@ -1,0 +1,8 @@
+{
+  "applet": "switch_root",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "switch_root: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: switch_root [-c CONSOLE_DEV] NEW_ROOT NEW_INIT [ARGS]\n\nFree initramfs and switch to another root fs:\nchroot to NEW_ROOT, delete all in /, move NEW_ROOT to /,\nexecute NEW_INIT. PID must be 1. NEW_ROOT must be a mountpoint.\n\n\t-c DEV\tReopen stdio to DEV after switch\n",
+  "exit": 1,
+  "tree": {}
+}

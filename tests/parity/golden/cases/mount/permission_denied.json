@@ -1,0 +1,8 @@
+{
+  "applet": "mount",
+  "name": "permission_denied",
+  "stdout": "",
+  "stderr": "mount: permission denied (are you root?)\n",
+  "exit": 1,
+  "tree": {}
+}

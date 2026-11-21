@@ -1,0 +1,8 @@
+{
+  "applet": "chrt",
+  "name": "policy_other_pid",
+  "stdout": "pid 1's current scheduling policy: SCHED_OTHER\npid 1's current scheduling priority: 0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

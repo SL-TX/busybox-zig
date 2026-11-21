@@ -1,0 +1,8 @@
+{
+  "applet": "fdisk",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fdisk [-uls] [-C CYLINDERS] [-H HEADS] [-S SECTORS] [-b SSZ] [-t PARTTYPE] DISK\n\nChange partition table\n\n\t-u\t\tStart and End are in cylinders (instead of sectors)\n\t\t\tAlso enable rounding of sizes to cylinders\n\t-l\t\tShow partition table for each DISK and exit\n\t-s\t\tShow size in kb for each DISK and exit\n\t-b 2048\t\t(for certain MO disks) use 2048-byte sectors\n\t-t PARTTYPE\tForce 'dos' partition if 'gpt' also present\n\t-C CYLINDERS\tSet number of cylinders/heads/sectors\n\t-H HEADS\tTypically 255\n\t-S SECTORS\tTypically 63\n",
+  "exit": 1,
+  "tree": {}
+}

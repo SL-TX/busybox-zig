@@ -1,0 +1,8 @@
+{
+  "applet": "swapon",
+  "name": "no_args",
+  "stdout": "Filename\t\t\t\tType\t\tSize\t\tUsed\t\tPriority\n/dev/nvme<MATCH>n<MATCH>p<MATCH>                          partition\t<MATCH>\t\t<MATCH>\t\t-<MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

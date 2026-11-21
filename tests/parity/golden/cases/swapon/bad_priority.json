@@ -1,0 +1,8 @@
+{
+  "applet": "swapon",
+  "name": "bad_priority",
+  "stdout": "",
+  "stderr": "swapon: /nonexistent: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}
