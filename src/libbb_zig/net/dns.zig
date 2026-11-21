@@ -297,7 +297,7 @@ pub const Resolver = struct {
     /// Issue a CNAME query and return the first target name, if present.
     fn firstCname(self: *Resolver, name: []const u8) ?[]const u8 {
         const servers = self.loadServers() catch return null;
-        defer self.allocator.free(servers);
+        defer if (self.servers == null) self.allocator.free(servers);
         const id: u16 = randomId();
         var qbuf: [512]u8 = undefined;
         const qlen = buildQuery(name, TYPE_CNAME, id, &qbuf) orelse return null;

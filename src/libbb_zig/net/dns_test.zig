@@ -276,6 +276,25 @@ test "DNS CNAME chase" {
     try std.testing.expectEqual([4]u8{ 10, 9, 8, 7 }, got[0].ip.v4);
 }
 
+test "DNS CNAME chase with caller-owned servers slice (no invalid free)" {
+    var srv = try startServer(handlerCname);
+    defer {
+        net.close(srv.fd);
+        srv.thread.join();
+    }
+    // Caller-owned, stack-allocated slice: Resolver must not free it. This
+    // exercises firstCname(), which used to free it unconditionally.
+    const servers = [_]net.Address{srv.addr};
+    var r = dns.Resolver.init(std.testing.allocator);
+    r.servers = &servers;
+    r.hosts_path = tmp ++ "/task12_no_such_hosts";
+    const got = try r.lookupHost("alias.test", 8080);
+    defer std.testing.allocator.free(got);
+    try std.testing.expectEqual(@as(usize, 1), got.len);
+    try std.testing.expectEqual([4]u8{ 10, 9, 8, 7 }, got[0].ip.v4);
+    try std.testing.expectEqual(@as(u16, 8080), got[0].port);
+}
+
 test "DNS NXDOMAIN" {
     var srv = try startServer(handlerNx);
     defer {
