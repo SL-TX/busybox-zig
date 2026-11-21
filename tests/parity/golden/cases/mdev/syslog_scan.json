@@ -1,0 +1,8 @@
+{
+  "applet": "mdev",
+  "name": "syslog_scan",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

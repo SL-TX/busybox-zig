@@ -1,7 +1,7 @@
 {
   "applet": "rdev",
   "name": "invalid_option",
-  "stdout": "/dev/nvme0n1p3 /\n",
+  "stdout": "<MATCH> /\n",
   "stderr": "",
   "exit": 0,
   "tree": {}

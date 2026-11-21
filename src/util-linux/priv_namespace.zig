@@ -141,34 +141,201 @@ pub fn pivot_root_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return 0;
 }
 
+
+const SockIn4 = extern struct {
+    family: u16,
+    port: u16,
+    addr: [4]u8,
+    zero: [8]u8,
+};
+
+fn ipv4Literal(s: []const u8) ?[4]u8 {
+    var out: [4]u8 = undefined;
+    var it = std.mem.splitScalar(u8, s, '.');
+    var i: usize = 0;
+    while (it.next()) |part| {
+        if (i >= 4 or part.len == 0) return null;
+        out[i] = std.fmt.parseInt(u8, part, 10) catch return null;
+        i += 1;
+    }
+    return if (i == 4) out else null;
+}
+
+/// Read-only /etc/hosts lookup, then a minimal DNS A query. Both are standard
+/// resolver inputs; nothing under /etc is modified.
+fn resolveHost(host: []const u8) ?[4]u8 {
+    if (ipv4Literal(host)) |a| return a;
+    if (c.readFile("/etc/hosts")) |txt| {
+        defer c.A.free(txt);
+        var lines = std.mem.splitScalar(u8, txt, '\n');
+        while (lines.next()) |line| {
+            const trimmed = std.mem.trim(u8, line, " \t\r");
+            if (trimmed.len == 0 or trimmed[0] == '#') continue;
+            var fields = std.mem.tokenizeAny(u8, trimmed, " \t");
+            const ip = fields.next() orelse continue;
+            while (fields.next()) |alias| {
+                if (std.mem.eql(u8, alias, host)) return ipv4Literal(ip);
+            }
+        }
+    } else |_| {}
+
+    var ns: [4]u8 = .{ 127, 0, 0, 1 };
+    if (c.readFile("/etc/resolv.conf")) |txt| {
+        defer c.A.free(txt);
+        var lines = std.mem.splitScalar(u8, txt, '\n');
+        while (lines.next()) |line| {
+            var fields = std.mem.tokenizeAny(u8, line, " \t");
+            const key = fields.next() orelse continue;
+            if (std.mem.eql(u8, key, "nameserver")) {
+                const val = fields.next() orelse continue;
+                if (ipv4Literal(val)) |a| { ns = a; break; }
+            }
+        }
+    } else |_| {}
+
+    const fd = linux.syscall3(.socket, 2, 2, 0); // AF_INET / SOCK_DGRAM
+    if (linux.errno(fd) != .SUCCESS) return null;
+    defer _ = linux.close(@intCast(fd));
+    var query: [512]u8 = std.mem.zeroes([512]u8);
+    var n: usize = 12;
+    std.mem.writeInt(u16, query[0..2], 0x4d52, .big);
+    std.mem.writeInt(u16, query[2..4], 0x0100, .big); // recursion desired
+    std.mem.writeInt(u16, query[4..6], 1, .big); // one question
+    var labels = std.mem.splitScalar(u8, host, '.');
+    while (labels.next()) |label| {
+        if (label.len == 0 or label.len > 63 or n + label.len + 3 >= query.len) return null;
+        query[n] = @intCast(label.len);
+        n += 1;
+        @memcpy(query[n..][0..label.len], label);
+        n += label.len;
+    }
+    query[n] = 0;
+    n += 1;
+    std.mem.writeInt(u16, query[n..][0..2], 1, .big); // A
+    n += 2;
+    std.mem.writeInt(u16, query[n..][0..2], 1, .big); // IN
+    n += 2;
+    var addr = SockIn4{ .family = 2, .port = @byteSwap(@as(u16, 53)), .addr = ns, .zero = std.mem.zeroes([8]u8) };
+    const sent = linux.sendto(@intCast(fd), &query, n, 0, @ptrCast(&addr), @sizeOf(SockIn4));
+    if (linux.errno(sent) != .SUCCESS) return null;
+    var reply: [1024]u8 = std.mem.zeroes([1024]u8);
+    const got = linux.recvfrom(@intCast(fd), &reply, reply.len, 0, null, null);
+    if (linux.errno(got) != .SUCCESS or got < 32) return null;
+    const total: usize = @intCast(got);
+    // Skip the header and the question section.
+    var p: usize = 12;
+    const qd = std.mem.readInt(u16, reply[4..6], .big);
+    var qi: usize = 0;
+    while (qi < qd and p < total) : (qi += 1) {
+        while (p < total and reply[p] != 0) p += reply[p] + 1;
+        p += 5; // NUL + QTYPE + QCLASS
+    }
+    const an = std.mem.readInt(u16, reply[6..8], .big);
+    var ai: usize = 0;
+    while (ai < an and p + 10 <= total) : (ai += 1) {
+        if (reply[p] & 0xc0 == 0xc0) {
+            p += 2;
+        } else {
+            while (p < total and reply[p] != 0) p += reply[p] + 1;
+            p += 1;
+        }
+        if (p + 10 > total) return null;
+        const typ = std.mem.readInt(u16, reply[p..][0..2], .big);
+        const cls = std.mem.readInt(u16, reply[p + 2 ..][0..2], .big);
+        const rdlen = std.mem.readInt(u16, reply[p + 8 ..][0..2], .big);
+        p += 10;
+        if (typ == 1 and cls == 1 and rdlen == 4 and p + 4 <= total)
+            return reply[p..][0..4].*;
+        p += rdlen;
+    }
+    return null;
+}
+
+fn ipString(ip: [4]u8, buf: []u8) []const u8 {
+    return std.fmt.bufPrint(buf, "{d}.{d}.{d}.{d}", .{ ip[0], ip[1], ip[2], ip[3] }) catch "";
+}
+
+fn ctimeString(secs: u64, buf: []u8) []const u8 {
+    const wdays = [_][]const u8{ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+    const months = [_][]const u8{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    const days: i64 = @intCast(secs / 86400);
+    const sod: i64 = @intCast(secs % 86400);
+    const z = days + 719468;
+    const era = @divFloor(z, 146097);
+    const doe = z - era * 146097;
+    const yoe = @divFloor(doe - @divFloor(doe, 1460) + @divFloor(doe, 36524) - @divFloor(doe, 146096), 365);
+    var year = yoe + era * 400;
+    const doy = doe - (365 * yoe + @divFloor(yoe, 4) - @divFloor(yoe, 100));
+    const mp = @divFloor(5 * doy + 2, 153);
+    const day = doy - @divFloor(153 * mp + 2, 5) + 1;
+    const month = mp + (if (mp < 10) @as(i64, 3) else -9);
+    if (month <= 2) year += 1;
+    const wd = @mod(days + 4, 7);
+    return std.fmt.bufPrint(buf, "{s} {s} {d: >2} {d:0>2}:{d:0>2}:{d:0>2} {d}\n", .{
+        wdays[@intCast(wd)], months[@intCast(month - 1)], day,
+        @divFloor(sod, 3600), @divFloor(@mod(sod, 3600), 60), @mod(sod, 60), year,
+    }) catch "";
+}
+
 pub fn rdate_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = c.argsFrom(argv, argc);
     c.setProg(argv);
     const o = c.opts("rdate", args, "sp", &.{});
     if (o.args.len == 0) c.usageDie("rdate");
+    const set_only = has(o, 0); // -s
+    const print_only = has(o, 1); // -p
     const host = o.args[0];
-    // RFC 868 uses TCP port 37. A connection failure is reported verbatim.
-    const fd = linux.syscall3(.socket, 2, 1, 0);
-    if (linux.errno(fd) == .SUCCESS) {
-        const SockIn = extern struct { family: u16, port: u16, addr: [4]u8, zero: [8]u8 };
-        var addr = SockIn{ .family = 2, .port = @byteSwap(@as(u16, 37)), .addr = .{ 127, 0, 0, 1 }, .zero = std.mem.zeroes([8]u8) };
-        // Numeric localhost avoids a DNS lookup; names fall back to the
-        // resolver-free failure path used in sandboxes.
-        if (!std.mem.eql(u8, host, "127.0.0.1")) addr.addr = .{ 0, 0, 0, 0 };
-        const rc = linux.syscall3(.connect, fd, @intFromPtr(&addr), @sizeOf(SockIn));
-        if (linux.errno(rc) == .SUCCESS) {
-            // Read the 32-bit RFC 868 timestamp.
-            var t: [4]u8 = undefined;
-            _ = linux.read(@intCast(fd), &t, 4);
-            _ = linux.close(@intCast(fd));
-            const secs: u32 = std.mem.readInt(u32, &t, .big) - 2208988800;
-            c.put("{d}\n", .{secs});
-            return 0;
-        }
-        _ = linux.close(@intCast(fd));
+
+    const addr4 = resolveHost(host) orelse {
+        c.msg(2, "can't resolve remote host ({s})", .{host});
+        return 1;
+    };
+    const fd = linux.syscall3(.socket, 2, 1, 0); // AF_INET / SOCK_STREAM
+    if (linux.errno(fd) != .SUCCESS) {
+        c.msg(err(fd), "can't create socket", .{});
+        return 1;
     }
-    c.msg(111, "can't connect to remote host ({s})", .{host});
-    return 1;
+    defer _ = linux.close(@intCast(fd));
+    var addr = SockIn4{ .family = 2, .port = @byteSwap(@as(u16, 37)), .addr = addr4, .zero = std.mem.zeroes([8]u8) };
+    const rc = linux.syscall3(.connect, fd, @intFromPtr(&addr), @sizeOf(SockIn4));
+    if (linux.errno(rc) != .SUCCESS) {
+        var ipbuf: [16]u8 = undefined;
+        c.msg(err(rc), "can't connect to remote host ({s})", .{ipString(addr4, &ipbuf)});
+        return 1;
+    }
+    var raw: [4]u8 = std.mem.zeroes([4]u8);
+    var got: usize = 0;
+    while (got < 4) {
+        const n = linux.read(@intCast(fd), raw[got..].ptr, 4 - got);
+        if (linux.errno(n) != .SUCCESS or n == 0) break;
+        got += @intCast(n);
+    }
+    if (got < 4) {
+        c.msg(2, "can't read time from remote host ({s})", .{host});
+        return 1;
+    }
+    const remote: u64 = @as(u64, std.mem.readInt(u32, &raw, .big)) - 2208988800;
+    if (!print_only) {
+        var tv: linux.timeval = undefined;
+        _ = linux.gettimeofday(&tv, null);
+        if (@as(u64, @intCast(tv.sec)) == remote) {
+            c.plain("{s}", .{"current time matches remote time"});
+        } else {
+            var now = linux.timeval{ .sec = @intCast(remote), .usec = 0 };
+            var tz = linux.timezone{ .minuteswest = 0, .dsttime = 0 };
+            const sr = linux.settimeofday(&now, &tz);
+            if (linux.errno(sr) != .SUCCESS) {
+                c.msg(err(sr), "can't set time", .{});
+                return 1;
+            }
+        }
+    }
+    // A lone -s suppresses the print; every other mode prints ctime().
+    if (!(set_only and !print_only)) {
+        var buf: [64]u8 = undefined;
+        c.out(ctimeString(remote, &buf));
+    }
+    return 0;
 }
 
 fn switchRootCommon(argc: c_int, argv: [*][*:0]const u8, name: []const u8, is_run_init: bool) c_int {

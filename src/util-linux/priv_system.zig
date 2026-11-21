@@ -4,6 +4,7 @@ const std = @import("std");
 fn err(rc: usize) c_int { return @intFromEnum(linux.errno(rc)); }
 const linux = std.os.linux;
 const c = @import("common.zig");
+const bb = @import("libbb_zig");
 
 fn has(o: c.Options, bit: u5) bool {
     return c.flagged(o, bit);
@@ -242,17 +243,248 @@ pub fn swapoff_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return 0;
 }
 
+
+var mdev_verbose: u8 = 0;
+var mdev_subsystem: []const u8 = "";
+
+fn mdevDbg(comptime fmt: []const u8, args: anytype) void {
+    if (mdev_verbose == 0) return;
+    c.plain(fmt, args);
+}
+
+fn mdevCurtime(buf: []u8) []const u8 {
+    var tv: linux.timeval = undefined;
+    _ = linux.gettimeofday(&tv, null);
+    const sec: i64 = @mod(@as(i64, @intCast(tv.sec)), 86400);
+    const hh: u64 = @intCast(@divFloor(sec, 3600));
+    const mm: u64 = @intCast(@divFloor(@mod(sec, 3600), 60));
+    const ss: u64 = @intCast(@mod(sec, 60));
+    const us: u64 = @intCast(tv.usec);
+    return std.fmt.bufPrint(buf, "{d:0>2}:{d:0>2}:{d:0>2}.{d:0>6}", .{ hh, mm, ss, us }) catch "";
+}
+
+/// glibc's makedev() encoding, used for the Linux device-node number.
+fn makedev(major: u32, minor: u32) linux.dev_t {
+    return @as(linux.dev_t, major & 0xfff) << 8 |
+        @as(linux.dev_t, minor & 0xff) |
+        (@as(linux.dev_t, minor & ~@as(u32, 0xff)) << 12);
+}
+
+/// Port of mdev.c:make_device(): read the sysfs "dev" file, derive the node
+/// name (from uevent's DEVNAME or the basename), then create/remove the node.
+fn mdevMakeDevice(device_name_opt: ?[]const u8, sys_path: []const u8, remove: bool) void {
+    const devfile = c.fmtAlloc("{s}/dev", .{sys_path}) catch return;
+    defer c.A.free(devfile);
+    const devtxt = c.readFile(devfile) catch return;
+    defer c.A.free(devtxt);
+    const colon = std.mem.indexOfScalar(u8, devtxt, ':') orelse return;
+    const major = std.fmt.parseInt(u32, std.mem.trim(u8, devtxt[0..colon], " \t\r\n"), 10) catch return;
+    const minor = std.fmt.parseInt(u32, std.mem.trim(u8, devtxt[colon + 1 ..], " \t\r\n"), 10) catch return;
+    mdevDbg("dev {d},{d}", .{ major, minor });
+
+    const derived = c.fmtAlloc("{s}/uevent", .{sys_path}) catch return;
+    defer c.A.free(derived);
+    const uevent_opt = c.readFile(derived) catch null;
+    defer if (uevent_opt) |u| c.A.free(u);
+    var derived_name: []const u8 = std.fs.path.basename(sys_path);
+    if (device_name_opt == null) {
+        if (uevent_opt) |uevent| {
+            if (std.mem.indexOf(u8, uevent, "\nDEVNAME=")) |at| {
+                const rest = uevent[at + 9 ..];
+                const stop = std.mem.indexOfScalar(u8, rest, '\n') orelse rest.len;
+                derived_name = rest[0..stop];
+            }
+        }
+    }
+    const node_name = device_name_opt orelse derived_name;
+
+    const is_block = std.mem.indexOf(u8, sys_path, "/block/") != null or
+        std.mem.startsWith(u8, mdev_subsystem, "block");
+    const base_mode: linux.mode_t = if (is_block) linux.S.IFBLK else linux.S.IFCHR;
+    const mode: linux.mode_t = base_mode | 0o660;
+    mdevDbg("mknod {s} ({d},{d}) {o} 0:0", .{ node_name, major, minor, mode });
+
+    const np = c.zstr(node_name) catch return;
+    defer c.A.free(np);
+    if (remove) {
+        _ = linux.unlink(np);
+        mdevDbg("unlink: {s}", .{node_name});
+        return;
+    }
+    if (std.mem.lastIndexOfScalar(u8, node_name, '/')) |slash| {
+        const dir = c.A.dupe(u8, node_name[0..slash]) catch return;
+        defer c.A.free(dir);
+        var i: usize = 1;
+        while (i < dir.len) : (i += 1) {
+            if (dir[i] != '/') continue;
+            const part = c.A.dupe(u8, dir[0..i]) catch return;
+            defer c.A.free(part);
+            const zp = c.zstr(part) catch return;
+            defer c.A.free(zp);
+            _ = linux.mkdir(zp, 0o755);
+        }
+    }
+    const rc = linux.mknod(np, mode, makedev(major, minor));
+    if (linux.errno(rc) != .SUCCESS and linux.errno(rc) != .EXIST)
+        c.msg(err(rc), "can't create '{s}'", .{node_name});
+}
+
+fn mdevScanDir(path: []const u8, depth: u32) void {
+    if (depth >= 3) return;
+    const zp = c.zstr(path) catch return;
+    defer c.A.free(zp);
+    const fd = linux.open(zp, .{ .ACCMODE = .RDONLY, .DIRECTORY = true }, 0);
+    if (linux.errno(fd) != .SUCCESS) return;
+    defer _ = linux.close(@intCast(fd));
+    var buf: [8192]u8 = undefined;
+    while (true) {
+        const got = linux.getdents64(@intCast(fd), &buf, buf.len);
+        if (linux.errno(got) != .SUCCESS or got == 0) break;
+        var off: usize = 0;
+        const total: usize = @intCast(got);
+        while (off + @sizeOf(linux.dirent64) <= total) {
+            const ent: *const linux.dirent64 = @ptrCast(@alignCast(buf[off..].ptr));
+            if (ent.reclen == 0) break;
+            const name = std.mem.sliceTo(@as([*:0]const u8, @ptrCast(&ent.name)), 0);
+            off += ent.reclen;
+            if (std.mem.eql(u8, name, ".") or std.mem.eql(u8, name, "..")) continue;
+            const full = c.fmtAlloc("{s}/{s}", .{ path, name }) catch continue;
+            defer c.A.free(full);
+            var st: linux.Statx = undefined;
+            if (linux.errno(linux.statx(linux.AT.FDCWD, c.zstr(full) catch continue, 0, .BASIC_STATS, &st)) != .SUCCESS) continue;
+            if (std.mem.eql(u8, name, "dev") and (st.mode & linux.S.IFMT) == linux.S.IFREG) {
+                const parent = full[0 .. full.len - 4];
+                // Derive SUBSYSTEM from the "subsystem" symlink next to "dev".
+                mdev_subsystem = "";
+                const sub = c.fmtAlloc("{s}/subsystem", .{parent}) catch parent;
+                defer if (sub.ptr != parent.ptr) c.A.free(sub);
+                var sbuf: [512]u8 = undefined;
+                const subz = c.zstr(sub) catch parent;
+                defer c.A.free(subz);
+                const sl = linux.readlink(@as([*:0]const u8, @ptrCast(subz.ptr)), &sbuf, sbuf.len);
+                if (linux.errno(sl) != .SUCCESS) {
+                    // fall back: no subsystem symlink
+                } else {
+                    const link: usize = @intCast(sl);
+                    mdev_subsystem = std.fs.path.basename(sbuf[0..link]);
+                }
+                mdevMakeDevice(null, parent, false);
+            } else if ((st.mode & linux.S.IFMT) == linux.S.IFDIR) {
+                mdevScanDir(full, depth + 1);
+            }
+        }
+    }
+}
+
+fn mdevInitialScan() void {
+    mdevScanDir("/sys/dev", 0);
+}
+
+/// Shared event dispatcher for both the hotplug-helper and netlink daemon.
+fn mdevDispatch(action: []const u8, devpath: []const u8, subsys_opt: ?[]const u8, devname_opt: ?[]const u8, seq_opt: ?[]const u8, fw_opt: ?[]const u8) void {
+    const seq = seq_opt orelse "(null)";
+    const subsys = subsys_opt orelse "(null)";
+    const devname = devname_opt orelse "(null)";
+    mdev_subsystem = subsys_opt orelse "";
+    var tbuf: [40]u8 = undefined;
+    mdevDbg("{s} ACTION:{s} SEQNUM:{s} SUBSYSTEM:{s} DEVNAME:{s} DEVPATH:{s}{s}{s}", .{
+        mdevCurtime(&tbuf), action, seq, subsys, devname, devpath,
+        if (fw_opt != null) " FW:" else "", if (fw_opt) |f| f else "",
+    });
+    const sys_path = c.fmtAlloc("/sys{s}", .{devpath}) catch return;
+    defer c.A.free(sys_path);
+    const is_remove = std.mem.eql(u8, action, "remove");
+    if (is_remove and fw_opt == null) {
+        mdevMakeDevice(devname_opt, sys_path, true);
+    } else if (!is_remove) {
+        mdevMakeDevice(devname_opt, sys_path, false);
+    }
+}
+
+/// Hotplug-helper invocation: ACTION/DEVPATH come from the environment.
+fn mdevProcessAction() void {
+    const action = bb.env.get("ACTION") orelse c.usageDie("mdev");
+    const devpath = bb.env.get("DEVPATH") orelse c.usageDie("mdev");
+    mdevDispatch(action, devpath, bb.env.get("SUBSYSTEM"), bb.env.get("DEVNAME"), bb.env.get("SEQNUM"), bb.env.get("FIRMWARE"));
+}
+
+/// Netlink daemon: subscribe to kernel uevents and dispatch each one. Only
+/// entered by -d; no test drives the infinite loop.
+fn mdevDaemon(foreground: bool) c_int {
+    const fd = linux.syscall3(.socket, 16, 2, 9); // AF_NETLINK, SOCK_DGRAM, KOBJECT_UEVENT
+    if (linux.errno(fd) != .SUCCESS) {
+        c.msg(err(fd), "can't open netlink socket", .{});
+        return 1;
+    }
+    const Nl = extern struct { family: u16, pad: u16, pid: u32, groups: u32 };
+    var addr = Nl{ .family = 16, .pad = 0, .pid = 0, .groups = 1 };
+    const brc = linux.syscall3(.bind, fd, @intFromPtr(&addr), @sizeOf(Nl));
+    if (linux.errno(brc) != .SUCCESS) {
+        c.msg(err(brc), "can't bind netlink socket", .{});
+        _ = linux.close(@intCast(fd));
+        return 1;
+    }
+    if (!foreground) {
+        const pid = linux.fork();
+        if (linux.errno(pid) != .SUCCESS) return 1;
+        if (pid != 0) return 0;
+    }
+    var buf: [4096]u8 = undefined;
+    while (true) {
+        const n = linux.recvfrom(@intCast(fd), &buf, buf.len, 0, null, null);
+        if (linux.errno(n) != .SUCCESS or n == 0) break;
+        // Uevent messages are NUL-separated "KEY=value" strings. Dispatch
+        // the same way the kernel hotplug helper would.
+        const total: usize = @intCast(n);
+        var i: usize = 0;
+        var action: ?[]const u8 = null;
+        var devpath: ?[]const u8 = null;
+        var subsys: ?[]const u8 = null;
+        var devname: ?[]const u8 = null;
+        var seq: ?[]const u8 = null;
+        var fw: ?[]const u8 = null;
+        while (i < total) {
+            const msg = std.mem.sliceTo(buf[i..total].ptr, 0);
+            i += msg.len + 1;
+            if (std.mem.startsWith(u8, msg, "ACTION=")) action = msg[7..];
+            if (std.mem.startsWith(u8, msg, "DEVPATH=")) devpath = msg[8..];
+            if (std.mem.startsWith(u8, msg, "SUBSYSTEM=")) subsys = msg[10..];
+            if (std.mem.startsWith(u8, msg, "DEVNAME=")) devname = msg[8..];
+            if (std.mem.startsWith(u8, msg, "SEQNUM=")) seq = msg[7..];
+            if (std.mem.startsWith(u8, msg, "FIRMWARE=")) fw = msg[9..];
+        }
+        if (action) |a| {
+            if (devpath) |d| mdevDispatch(a, d, subsys, devname, seq, fw);
+        }
+    }
+    _ = linux.close(@intCast(fd));
+    return 0;
+}
+
 pub fn mdev_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = c.argsFrom(argv, argc);
     c.setProg(argv);
     const o = c.opts("mdev", args, "sSdfv", &.{});
-    if (!has(o, 0) and !has(o, 2)) c.usageDie("mdev");
-    // -s scans /sys and populates /dev; -d opens a netlink socket. Both need
-    // privileges and are only exercised through requires:root cases.
-    if (has(o, 0)) {
-        c.plain("{s}", .{"can't open '/sys': Permission denied"});
+    const scan = has(o, 0);
+    const daemon = has(o, 2);
+    mdev_verbose = if (has(o, 4)) 1 else 0;
+    mdev_subsystem = "";
+
+    // mdev.c:xchdir("/dev") is unconditional.
+    const devz = c.zstr("/dev") catch return 1;
+    defer c.A.free(devz);
+    if (linux.errno(linux.chdir(devz)) != .SUCCESS) {
+        c.msg(err(linux.chdir(devz)), "can't chdir to /dev", .{});
         return 1;
     }
-    c.plain("{s}", .{"can't open netlink socket: Operation not permitted"});
-    return 1;
+
+    if (daemon) return mdevDaemon(has(o, 3));
+    if (scan) {
+        mdevInitialScan();
+    } else {
+        mdevProcessAction();
+        var tbuf: [40]u8 = undefined;
+        mdevDbg("{s} exiting", .{mdevCurtime(&tbuf)});
+    }
+    return 0;
 }

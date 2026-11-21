@@ -48,6 +48,8 @@ fn strerror(errnum: c_int) []const u8 {
         34 => "Numerical result out of range",
         36 => "File name too long",
         39 => "Directory not empty",
+        110 => "Connection timed out",
+        111 => "Connection refused",
         40 => "Too many levels of symbolic links",
         else => "Unknown error",
     };

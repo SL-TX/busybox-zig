@@ -28,7 +28,9 @@
       "env": {},
       "cwd": ".",
       "timeout_ms": 5000,
-      "normalize": [],
+      "normalize": [
+        "regex:/dev/[^\\s]+(?= /)"
+      ],
       "requires": []
     },
     {
@@ -44,6 +46,7 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [
+        "regex:/dev/[^\\s]+(?= /)",
         "timestamp"
       ],
       "requires": []
@@ -61,6 +64,7 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [
+        "regex:/dev/[^\\s]+(?= /)",
         "timestamp"
       ],
       "requires": []

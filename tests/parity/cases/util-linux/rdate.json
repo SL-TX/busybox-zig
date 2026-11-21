@@ -64,9 +64,7 @@
       "normalize": [
         "timestamp"
       ],
-      "requires": [
-        "network"
-      ]
+      "requires": []
     },
     {
       "name": "set_refused",
@@ -84,9 +82,79 @@
       "normalize": [
         "timestamp"
       ],
-      "requires": [
-        "network"
-      ]
+      "requires": []
+    },
+    {
+      "name": "default_refused",
+      "argv": [
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "both_flags_refused",
+      "argv": [
+        "-s",
+        "-p",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "other_ipv4_refused",
+      "argv": [
+        "-p",
+        "127.0.0.2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "hostname_refused",
+      "argv": [
+        "-p",
+        "localhost"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
     }
   ]
 }
