@@ -83,6 +83,14 @@ def materialize(case: dict, root: str) -> None:
             os.remove(path)
         os.symlink(target, path)
 
+    # Optional per-file mtimes, in nanoseconds since the epoch. Snapshots do
+    # not record timestamps, so this only affects tests that inspect mtime
+    # (e.g. test's -nt/-ot). Values are applied identically to both roots.
+    for raw, ns in (case.get("mtimes", {}) or {}).items():
+        rel = _safe_relative(raw)
+        _check_no_symlink_parents(root, rel)
+        os.utime(os.path.join(root, rel), ns=(int(ns), int(ns)))
+
 
 def snapshot(root: str) -> Tree:
     """Return a relative-path -> node map describing the tree under ``root``."""

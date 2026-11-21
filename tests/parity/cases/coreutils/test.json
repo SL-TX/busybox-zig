@@ -1463,6 +1463,102 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "nt_subsecond_equal_sec",
+      "argv": [
+        "b",
+        "-nt",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000000900000000
+      }
+    },
+    {
+      "name": "ot_subsecond_equal_sec",
+      "argv": [
+        "a",
+        "-ot",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000000900000000
+      }
+    },
+    {
+      "name": "nt_whole_second",
+      "argv": [
+        "b",
+        "-nt",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000002000000000
+      }
+    },
+    {
+      "name": "ot_whole_second",
+      "argv": [
+        "a",
+        "-ot",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000002000000000
+      }
     }
   ]
 }

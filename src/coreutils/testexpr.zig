@@ -114,7 +114,6 @@ const Info = struct {
     ino: u64,
     dev: u64,
     mtime_sec: i64,
-    mtime_nsec: i64,
 };
 
 fn statInfo(path: []const u8, follow: bool) ?Info {
@@ -132,7 +131,6 @@ fn statInfo(path: []const u8, follow: bool) ?Info {
         .ino = stx.ino,
         .dev = (@as(u64, stx.dev_major) << 32) | stx.dev_minor,
         .mtime_sec = stx.mtime.sec,
-        .mtime_nsec = stx.mtime.nsec,
     };
 }
 
@@ -326,6 +324,38 @@ const Class = struct {
     negated: bool,
 };
 
+/// `[:name:]` starts at `i`; return the index just past its closing `:]`,
+/// or null when there is no complete named class here.
+fn namedClassEnd(p: []const u8, i: usize, limit: usize) ?usize {
+    if (i + 1 >= limit or p[i] != '[' or p[i + 1] != ':') return null;
+    var j = i + 2;
+    while (j + 1 < limit) : (j += 1) {
+        if (p[j] == ':' and p[j + 1] == ']') return j + 2;
+        if (p[j] == '[' and j + 1 < limit and p[j + 1] == ':') return null;
+    }
+    return null;
+}
+
+fn namedClassMatches(name: []const u8, c: u8) bool {
+    const upper = c >= 'A' and c <= 'Z';
+    const lower = c >= 'a' and c <= 'z';
+    const digit = c >= '0' and c <= '9';
+    if (std.mem.eql(u8, name, "alpha")) return upper or lower;
+    if (std.mem.eql(u8, name, "digit")) return digit;
+    if (std.mem.eql(u8, name, "alnum")) return upper or lower or digit;
+    if (std.mem.eql(u8, name, "upper")) return upper;
+    if (std.mem.eql(u8, name, "lower")) return lower;
+    if (std.mem.eql(u8, name, "xdigit")) return digit or (c >= 'a' and c <= 'f') or (c >= 'A' and c <= 'F');
+    if (std.mem.eql(u8, name, "space")) return isSpace(c);
+    if (std.mem.eql(u8, name, "blank")) return c == ' ' or c == '\t';
+    if (std.mem.eql(u8, name, "cntrl")) return c < 0x20 or c == 0x7f;
+    if (std.mem.eql(u8, name, "print")) return c >= 0x20 and c <= 0x7e;
+    if (std.mem.eql(u8, name, "graph")) return c >= 0x21 and c <= 0x7e;
+    if (std.mem.eql(u8, name, "punct")) return c >= 0x21 and c <= 0x7e and
+        !(upper or lower or digit);
+    return false; // unknown class: matches nothing, as with libc fnmatch
+}
+
 fn parseClass(p: []const u8, at: usize) ?Class {
     var i = at + 1;
     if (i >= p.len) return null;
@@ -336,7 +366,14 @@ fn parseClass(p: []const u8, at: usize) ?Class {
     }
     const first = i;
     if (i < p.len and p[i] == ']') i += 1; // ']' as first member is literal
-    while (i < p.len and p[i] != ']') i += 1;
+    while (i < p.len) {
+        if (namedClassEnd(p, i, p.len)) |end| {
+            i = end; // the ']' here closes the class name, not the bracket
+            continue;
+        }
+        if (p[i] == ']') break;
+        i += 1;
+    }
     if (i >= p.len) return null;
     if (i == first) return null;
     return .{ .text = p, .start = first, .end = i, .negated = neg };
@@ -346,6 +383,11 @@ fn classMatches(cls: Class, c: u8) bool {
     var i = cls.start;
     var hit = false;
     while (i < cls.end) {
+        if (namedClassEnd(cls.text, i, cls.end + 1)) |end| {
+            if (namedClassMatches(cls.text[i + 2 .. end - 2], c)) hit = true;
+            i = end;
+            continue;
+        }
         var lo = cls.text[i];
         if (lo == '\\' and i + 1 < cls.end) {
             i += 1;
@@ -484,16 +526,15 @@ const Parser = struct {
                 if (op.num == .FILNT) {
                     if (s1 == null) return 0;
                     if (s2 == null) return 1;
-                    const newer = s1.?.mtime_sec > s2.?.mtime_sec or
-                        (s1.?.mtime_sec == s2.?.mtime_sec and s1.?.mtime_nsec > s2.?.mtime_nsec);
-                    return if (newer) 1 else 0;
+                    // The reference compares st_mtime (whole seconds) only:
+                    // test.c:628 uses `b1.st_mtime > b2.st_mtime`.
+                    return if (s1.?.mtime_sec > s2.?.mtime_sec) 1 else 0;
                 }
                 if (op.num == .FILOT) {
                     if (s2 == null) return 0;
                     if (s1 == null) return 1;
-                    const older = s1.?.mtime_sec < s2.?.mtime_sec or
-                        (s1.?.mtime_sec == s2.?.mtime_sec and s1.?.mtime_nsec < s2.?.mtime_nsec);
-                    return if (older) 1 else 0;
+                    // test.c:630 uses `b1.st_mtime < b2.st_mtime` (seconds).
+                    return if (s1.?.mtime_sec < s2.?.mtime_sec) 1 else 0;
                 }
                 if (s1 == null or s2 == null) return 0;
                 return if (s1.?.dev == s2.?.dev and s1.?.ino == s2.?.ino) 1 else 0;

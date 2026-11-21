@@ -588,6 +588,128 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "nt_subsecond_equal_sec",
+      "argv": [
+        "b",
+        "-nt",
+        "a",
+        "]]"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000000900000000
+      }
+    },
+    {
+      "name": "nt_whole_second",
+      "argv": [
+        "b",
+        "-nt",
+        "a",
+        "]]"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000002000000000
+      }
+    },
+    {
+      "name": "pattern_named_alpha",
+      "argv": [
+        "a",
+        "==",
+        "[[:alpha:]]",
+        "]]"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pattern_named_digit",
+      "argv": [
+        "5",
+        "==",
+        "[[:digit:]]",
+        "]]"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pattern_named_alpha_false",
+      "argv": [
+        "5",
+        "==",
+        "[[:alpha:]]",
+        "]]"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pattern_named_negated",
+      "argv": [
+        "5",
+        "==",
+        "[![:alpha:]]",
+        "]]"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

@@ -105,6 +105,18 @@ class HarnessSelfTest(unittest.TestCase):
             self.assertEqual(tree["link"]["type"], "symlink")
             self.assertEqual(tree["link"]["target"], "file.txt")
 
+    def test_sandbox_mtimes(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as tmp:
+            root = os.path.join(tmp, "sandbox")
+            ns = 1_000_000_000_900_000_000
+            materialize(
+                {"files": {"a": "x"}, "mtimes": {"a": ns}},
+                root,
+            )
+            self.assertEqual(os.stat(os.path.join(root, "a")).st_mtime_ns, ns)
+            # mtimes do not perturb the normalized filesystem snapshot.
+            self.assertEqual(snapshot(root)["a"]["content"], b"x")
+
     def test_sandbox_rejects_path_traversal(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as tmp:
             with self.assertRaises(ValueError):
