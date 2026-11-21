@@ -1,0 +1,6 @@
+# Known differential failures. Format: applet/case: reason.
+# One line per failing case; blank lines and lines starting with '#' are ignored.
+# The parity-golden CI job tolerates this list until wave 9, then requires it
+# to be empty (Task 27).
+pwd/basic: Zig pwd is still a stub ("pwd: not implemented", exit 1); the reference prints the sandbox cwd. Coreutils pwd lands in Wave 1 (Task 7).
+pwd/from_subdir: Same unimplemented pwd applet; the reference prints <TMP>/sub.

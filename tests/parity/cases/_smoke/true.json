@@ -1,0 +1,19 @@
+{
+  "applet": "true",
+  "cases": [
+    {
+      "name": "basic",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": { "exit": 0, "stdout": "", "stderr": "" }
+    }
+  ]
+}

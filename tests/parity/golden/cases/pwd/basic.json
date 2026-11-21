@@ -1,0 +1,13 @@
+{
+  "applet": "pwd",
+  "name": "basic",
+  "stdout": "<TMP>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "sub": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

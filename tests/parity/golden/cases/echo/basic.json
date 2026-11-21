@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "basic",
+  "stdout": "hello world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

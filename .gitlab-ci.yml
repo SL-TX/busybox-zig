@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - parity-golden
 
 variables:
   ZIG_IMAGE: "$CI_REGISTRY_IMAGE/zig:0.17.1"
@@ -26,3 +27,21 @@ test:
     - zig build manifest
     - zig build config-check
     - zig build test
+
+# Differential cases against committed reference goldens.  No reference binary
+# is needed in CI: goldens are produced ahead of time with --update-golden.
+parity-golden:
+  image: $ZIG_IMAGE
+  stage: parity-golden
+  needs: [build]
+  variables:
+    # Known failures are tolerated until wave 9; flip this to "1" when wave 9
+    # starts, at which point known-failures.txt must be empty.
+    PARITY_KNOWN_FAILURES_STRICT: "0"
+  script:
+    - python3 scripts/parity/run.py --all --golden tests/parity/golden --zig zig-out/bin/busybox --cases tests/parity/cases
+    - |
+      if [ "$PARITY_KNOWN_FAILURES_STRICT" = "1" ] && [ -s tests/parity/known-failures.txt ]; then
+        echo "known-failures.txt must be empty from wave 9 onwards" >&2
+        exit 1
+      fi
