@@ -213,6 +213,30 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "uuidgen")) return @import("util_linux").uuidgen_main;
     if (std.mem.eql(u8, name, "wall")) return @import("util_linux").wall_main;
     if (std.mem.eql(u8, name, "xxd")) return @import("util_linux").xxd_main;
+    // Task 10b — privileged/destructive util-linux sub-wave
+    if (std.mem.eql(u8, name, "chrt")) return @import("util_linux").chrt_main;
+    if (std.mem.eql(u8, name, "fbset")) return @import("util_linux").fbset_main;
+    if (std.mem.eql(u8, name, "fdformat")) return @import("util_linux").fdformat_main;
+    if (std.mem.eql(u8, name, "fdisk")) return @import("util_linux").fdisk_main;
+    if (std.mem.eql(u8, name, "findfs")) return @import("util_linux").findfs_main;
+    if (std.mem.eql(u8, name, "fsck.minix")) return @import("util_linux").fsck_minix_main;
+    if (std.mem.eql(u8, name, "losetup")) return @import("util_linux").losetup_main;
+    if (std.mem.eql(u8, name, "mdev")) return @import("util_linux").mdev_main;
+    if (std.mem.eql(u8, name, "mkdosfs")) return @import("util_linux").mkdosfs_main;
+    if (std.mem.eql(u8, name, "mke2fs")) return @import("util_linux").mke2fs_main;
+    if (std.mem.eql(u8, name, "mkfs.ext2")) return @import("util_linux").mkfs_ext2_main;
+    if (std.mem.eql(u8, name, "mkfs.minix")) return @import("util_linux").mkfs_minix_main;
+    if (std.mem.eql(u8, name, "mkfs.vfat")) return @import("util_linux").mkfs_vfat_main;
+    if (std.mem.eql(u8, name, "mkswap")) return @import("util_linux").mkswap_main;
+    if (std.mem.eql(u8, name, "nsenter")) return @import("util_linux").nsenter_main;
+    if (std.mem.eql(u8, name, "pivot_root")) return @import("util_linux").pivot_root_main;
+    if (std.mem.eql(u8, name, "rdate")) return @import("util_linux").rdate_main;
+    if (std.mem.eql(u8, name, "rdev")) return @import("util_linux").rdev_main;
+    if (std.mem.eql(u8, name, "run-init")) return @import("util_linux").run_init_main;
+    if (std.mem.eql(u8, name, "swapoff")) return @import("util_linux").swapoff_main;
+    if (std.mem.eql(u8, name, "swapon")) return @import("util_linux").swapon_main;
+    if (std.mem.eql(u8, name, "switch_root")) return @import("util_linux").switch_root_main;
+    if (std.mem.eql(u8, name, "unshare")) return @import("util_linux").unshare_main;
     // networking
     if (std.mem.eql(u8, name, "ifconfig")) return @import("networking").ifconfig_main;
     if (std.mem.eql(u8, name, "ping")) return @import("networking").ping_main;

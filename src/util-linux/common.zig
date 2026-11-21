@@ -81,6 +81,10 @@ pub fn zstr(s: []const u8) ![:0]u8 {
     return std.mem.concatWithSentinel(A, u8, &.{s}, 0);
 }
 
+pub fn fmtAlloc(comptime fmt: []const u8, args: anytype) ![]u8 {
+    return std.fmt.allocPrint(A, fmt, args);
+}
+
 pub fn num(s: []const u8) !u64 {
     if (s.len == 0) return error.InvalidCharacter;
     return std.fmt.parseInt(u64, s, 10);
