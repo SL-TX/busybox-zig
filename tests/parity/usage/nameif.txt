@@ -1,0 +1,13 @@
+
+Usage: nameif [-s] [-c FILE] [IFNAME SELECTOR]...
+
+Rename network interface while it in the down state.
+The device matched by SELECTOR is renamed to IFNAME.
+SELECTOR can be a combination of:
+	driver=STRING
+	bus=STRING
+	phy_address=NUM
+	[mac=]XX:XX:XX:XX:XX:XX
+
+	-c FILE	Configuration file (default: /etc/mactab)
+	-s	Log to syslog

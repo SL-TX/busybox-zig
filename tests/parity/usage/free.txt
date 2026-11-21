@@ -1,0 +1,4 @@
+
+Usage: free [-bkmgh]
+
+Display free and used memory

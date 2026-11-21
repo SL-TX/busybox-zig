@@ -1,0 +1,4 @@
+
+Usage: bbconfig
+
+Print the config file used by busybox build

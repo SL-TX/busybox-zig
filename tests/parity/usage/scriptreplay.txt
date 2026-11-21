@@ -1,0 +1,4 @@
+
+Usage: scriptreplay TIMINGFILE [TYPESCRIPT [DIVISOR]]
+
+Play back typescripts, using timing information

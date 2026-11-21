@@ -1,0 +1,10 @@
+
+Usage: ar x|p|t [-ov] ARCHIVE [FILE]...
+
+Extract or list FILEs from an ar archive
+
+	x	Extract
+	p	Extract to stdout
+	t	List
+	-o	Restore mtime
+	-v	Verbose

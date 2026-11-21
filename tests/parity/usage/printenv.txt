@@ -1,0 +1,5 @@
+
+Usage: printenv [VARIABLE]...
+
+Print environment VARIABLEs.
+If no VARIABLE specified, print all.

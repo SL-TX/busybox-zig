@@ -1,0 +1,5 @@
+
+Usage: flash_lock MTD_DEVICE OFFSET SECTORS
+
+Lock part or all of an MTD device. If SECTORS is -1, then all sectors
+will be locked, regardless of the value of OFFSET

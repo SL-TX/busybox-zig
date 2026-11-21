@@ -1,0 +1,6 @@
+
+Usage: which [-a] COMMAND...
+
+Locate COMMAND
+
+	-a	Show all matches

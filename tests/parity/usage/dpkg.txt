@@ -1,0 +1,14 @@
+
+Usage: dpkg -i|P|r|--unpack|--configure [--force-OPT] PACKAGE | -l [PATTERN]
+
+Manage Debian packages
+
+	-i,--install	Install PACKAGE.deb
+	-P,--purge	Purge all files of PACKAGE
+	-r,--remove	Remove all but configuration files of PACKAGE
+	--unpack	Unpack PACKAGE.deb relative to /, don't configure
+	--configure	Configure unpacked PACKAGE
+	--force-depends	Ignore dependency problems
+	--force-confnew	Overwrite existing config files when installing
+	--force-confold	Keep old config files when installing
+	-l,--list	List installed packages

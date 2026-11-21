@@ -1,0 +1,4 @@
+
+Usage: deluser [--remove-home] USER
+
+Delete USER from the system

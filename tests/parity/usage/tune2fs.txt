@@ -1,0 +1,4 @@
+
+Usage: tune2fs [-c MAX_MOUNT_COUNT] [-i DAYS] [-C MOUNT_COUNT] [-L LABEL] BLOCKDEV
+
+Adjust filesystem options on ext[23] filesystems

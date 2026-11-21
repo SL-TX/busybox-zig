@@ -1,0 +1,5 @@
+
+Usage: modprobe [-rq] MODULE [SYMBOL=VALUE]...
+
+	-r	Remove MODULE
+	-q	Quiet

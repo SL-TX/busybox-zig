@@ -1,0 +1,4 @@
+
+Usage: nologin
+
+Politely refuse a login

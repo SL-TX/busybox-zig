@@ -1,0 +1,4 @@
+
+Usage: groups [USER]
+
+Print the groups USER is in

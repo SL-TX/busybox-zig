@@ -1,0 +1,7 @@
+
+Usage: runsvdir [-P] [-s SCRIPT] DIR
+
+Start a runsv process for each subdirectory. If it exits, restart it.
+
+	-P		Put each runsv in a new session
+	-s SCRIPT	Run SCRIPT <signo> after signal is processed

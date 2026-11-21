@@ -1,0 +1,4 @@
+
+Usage: add-shell SHELL...
+
+Add SHELLs to /etc/shells

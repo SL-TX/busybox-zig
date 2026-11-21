@@ -1,0 +1,8 @@
+
+Usage: flash_eraseall [-jNq] MTD_DEVICE
+
+Erase an MTD device
+
+	-j	Format the device for jffs2
+	-N	Don't skip bad blocks
+	-q	Don't display progress messages

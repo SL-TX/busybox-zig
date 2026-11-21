@@ -113,19 +113,24 @@ fn writeList(allocator: std.mem.Allocator, out: anytype, full: bool) void {
 }
 
 fn printAppletHelp(name: []const u8, out: anytype, err: anytype) u8 {
-    if (applets.findAppletByName(name) != null) {
-        // Task 4 replaces this with the generated per-applet usage text.
-        // Use the golden's composed first line: `banner` already ends in '\n',
-        // so concatenating it directly would split banner and " multi-call
-        // binary." onto separate lines.
-        out.writeAll(meta.first_line ++ "\nUsage: ");
+    const applet = applets.findAppletByName(name) orelse {
+        err.writeAll(name);
+        err.writeAll(": applet not found\n");
+        return 127;
+    };
+    // `meta.first_line` already ends in '\n'; the golden body starts with the
+    // blank line that separates the banner from `Usage:`, so concatenating the
+    // two reproduces bb_show_usage() byte for byte.
+    out.writeAll(meta.first_line);
+    if (applet.usage.len != 0) {
+        out.writeAll(applet.usage);
+    } else {
+        // Defensive fallback: every registered applet has a generated golden.
+        out.writeAll("\nUsage: ");
         out.writeAll(name);
         out.writeAll("\n");
-        return 0;
     }
-    err.writeAll(name);
-    err.writeAll(": applet not found\n");
-    return 127;
+    return 0;
 }
 
 fn showScript(argv: []const []const u8, out: anytype, err: anytype) u8 {

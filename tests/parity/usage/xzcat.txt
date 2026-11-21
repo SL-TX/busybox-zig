@@ -1,0 +1,4 @@
+
+Usage: xzcat [FILE]...
+
+Decompress to stdout

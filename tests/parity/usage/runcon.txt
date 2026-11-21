@@ -1,0 +1,13 @@
+
+Usage: runcon [-c] [-u USER] [-r ROLE] [-t TYPE] [-l RANGE] PROG ARGS
+runcon CONTEXT PROG ARGS
+
+Run PROG in a different security context
+
+	CONTEXT		Complete security context
+
+	-c	Compute process transition context before modifying
+	-t TYPE	Type (for same role as parent)
+	-u USER	User identity
+	-r ROLE	Role
+	-l RNG	Levelrange

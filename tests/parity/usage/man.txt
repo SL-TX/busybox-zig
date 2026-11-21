@@ -1,0 +1,9 @@
+
+Usage: man [-aw] [SECTION] MANPAGE[.SECTION]...
+
+Display manual page
+
+	-a	Display all pages
+	-w	Show page locations
+
+$COLUMNS overrides output width

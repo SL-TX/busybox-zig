@@ -1,0 +1,4 @@
+
+Usage: uptime
+
+Display the time since the last boot

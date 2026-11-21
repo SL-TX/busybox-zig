@@ -1,0 +1,7 @@
+
+Usage: seedrng [-d DIR] [-n]
+
+Seed the kernel RNG from seed files
+
+	-d DIR	Use seed files in DIR (default: /var/lib/seedrng)
+	-n	Do not credit randomness, even if creditable

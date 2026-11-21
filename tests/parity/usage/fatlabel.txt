@@ -1,0 +1,4 @@
+
+Usage: fatlabel BLOCKDEV [LABEL]
+
+Show or set FAT32 label (11 bytes at offset 0x47) on BLOCKDEV

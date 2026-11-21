@@ -1,0 +1,4 @@
+
+Usage: getsebool -a or getsebool boolean...
+
+	-a	Show all selinux booleans

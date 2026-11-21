@@ -1,0 +1,7 @@
+
+Usage: mkfs.reiser [-f] [-l LABEL] BLOCKDEV [4K-BLOCKS]
+
+Make ReiserFS V3 filesystem
+
+	-f	Force
+	-l LBL	Volume label

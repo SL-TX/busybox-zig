@@ -1,0 +1,14 @@
+
+Usage: join [-a 1|2 | -v 1|2] [-e STR] [-o LIST] [-t SEP_CHAR] [-1 NUM] [-2 NUM] FILE1 FILE2
+
+Join FILE1 and FILE2, writing to stdout
+
+	-a 1|2	Also write unpaired lines from FILE1/2
+	-v 1|2	Only write unpaired lines from FILE1/2
+	-e STR	Replace empty fields with STR
+	-o LIST	Write the fields in LIST
+	-t CHAR	Use a different field separator
+	-1 NUM	Join on field NUM from FILE1
+	-2 NUM	Join on field NUM from FILE2
+
+LIST is a space or comma separated list of 1/2.FIELD or 0 (the join field)

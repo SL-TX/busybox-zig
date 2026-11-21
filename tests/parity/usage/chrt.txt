@@ -1,0 +1,13 @@
+
+Usage: chrt -m | [-rfobiR] { -p [PRIO] PID | PRIO PROG ARGS }
+
+Change scheduling priority and class (default RR) for a process
+
+	-m	Show min/max priorities
+	-p	Operate on PID
+	-r	Set SCHED_RR class
+	-f	Set SCHED_FIFO class
+	-o	Set SCHED_OTHER class
+	-b	Set SCHED_BATCH class
+	-i	Set SCHED_IDLE class
+	-R	Set SCHED_RESET_ON_FORK

@@ -1,0 +1,8 @@
+
+Usage: taskset [-ap] [HEXMASK | -c LIST] { PID | PROG ARGS }
+
+Set or get CPU affinity
+
+	-p	Operate on PID
+	-a	Operate on all threads
+	-c	Affinity is a list, not mask

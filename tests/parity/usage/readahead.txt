@@ -1,0 +1,4 @@
+
+Usage: readahead [FILE]...
+
+Preload FILEs to RAM

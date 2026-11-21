@@ -1,0 +1,4 @@
+
+Usage: volname [DEVICE]
+
+Show CD volume name of the DEVICE (default /dev/cdrom)

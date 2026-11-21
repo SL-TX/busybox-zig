@@ -1,0 +1,6 @@
+
+Usage: swaplabel [-L LBL] BLOCKDEV
+
+Show or set swap label on BLOCKDEV
+
+	-L LBL	Label

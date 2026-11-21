@@ -1,0 +1,4 @@
+
+Usage: chroot NEWROOT [PROG ARGS]
+
+Run PROG with root directory set to NEWROOT

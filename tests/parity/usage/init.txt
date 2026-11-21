@@ -1,0 +1,10 @@
+
+Usage: init
+
+Init is the first process started during boot. It never exits.
+It (re)spawns children according to /etc/inittab.
+Signals:
+HUP: reload /etc/inittab
+TSTP: stop respawning until CONT
+QUIT: re-exec another init
+USR1/TERM/USR2/INT: run halt/reboot/poweroff/Ctrl-Alt-Del script

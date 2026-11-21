@@ -1,0 +1,4 @@
+
+Usage: rx FILE
+
+Receive a file using the xmodem protocol

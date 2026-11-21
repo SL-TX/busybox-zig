@@ -1,0 +1,10 @@
+
+Usage: wc [-cmlwL] [FILE]...
+
+Count lines, words, and bytes for FILEs (or stdin)
+
+	-c	Count bytes
+	-m	Count characters
+	-l	Count newlines
+	-w	Count words
+	-L	Print longest line length

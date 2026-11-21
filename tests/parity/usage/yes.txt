@@ -1,0 +1,4 @@
+
+Usage: yes [STRING]
+
+Repeatedly print a line with STRING, or 'y'

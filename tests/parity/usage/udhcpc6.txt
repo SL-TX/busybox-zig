@@ -1,0 +1,33 @@
+
+Usage: udhcpc6 [-fbqvR] [-t N] [-T SEC] [-A SEC|-n] [-i IFACE] [-s PROG]
+	[-p PIDFILE] [-mldo] [-r IPv6] [-x OPT:VAL]... [-O OPT]...
+
+	-i IFACE	Interface to use (default eth0)
+	-p FILE		Create pidfile
+	-s PROG		Run PROG at DHCP events (default /usr/share/udhcpc/default6.script)
+	-t N		Send up to N discover packets
+	-T SEC		Pause between packets (default 3)
+	-A SEC		Wait if lease is not obtained (default 20)
+	-b		Background if lease is not obtained
+	-n		Exit if lease is not obtained
+	-q		Exit after obtaining lease
+	-R		Release IP on exit
+	-f		Run in foreground
+	-S		Log to syslog too
+	-m		Send multicast renew requests rather than unicast ones
+	-l		Send 'information request' instead of 'solicit'
+			(used for servers which do not assign IPv6 addresses)
+	-r IPv6		Request this address ('no' to not request any IP)
+	-d		Request prefix
+	-o		Don't request any options (unless -O is given)
+	-O OPT		Request option OPT from server (cumulative)
+	-x OPT:VAL	Include option OPT in sent packets (cumulative)
+			Examples of string, numeric, and hex byte opts:
+			-x hostname:bbox - option 12
+			-x lease:3600 - option 51 (lease time)
+			-x 0x3d:0100BEEFC0FFEE - option 61 (client id)
+			-x 14:'"dumpfile"' - option 14 (shell-quoted)
+	-v		Verbose
+Signals:
+	USR1	Renew lease
+	USR2	Release lease

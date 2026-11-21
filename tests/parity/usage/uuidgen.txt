@@ -1,0 +1,4 @@
+
+Usage: uuidgen
+
+Generate a random UUID

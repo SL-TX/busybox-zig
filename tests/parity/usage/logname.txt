@@ -1,0 +1,4 @@
+
+Usage: logname
+
+Print the name of the current user

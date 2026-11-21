@@ -1,0 +1,4 @@
+
+Usage: partprobe DEVICE...
+
+Ask kernel to rescan partition table

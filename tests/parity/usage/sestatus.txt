@@ -1,0 +1,5 @@
+
+Usage: sestatus [-vb]
+
+	-v	Verbose
+	-b	Display current state of booleans

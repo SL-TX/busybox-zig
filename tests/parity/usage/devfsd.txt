@@ -1,0 +1,8 @@
+
+Usage: devfsd mntpnt [-v]
+
+Manage devfs permissions and old device name symlinks
+
+	mntpnt	The mount point where devfs is mounted
+	-v	Print the protocol version numbers for devfsd
+		and the kernel-side protocol version and exit

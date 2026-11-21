@@ -1,0 +1,7 @@
+
+Usage: uncompress [-cf] [FILE]...
+
+Decompress FILEs (or stdin)
+
+	-c	Write to stdout
+	-f	Overwrite

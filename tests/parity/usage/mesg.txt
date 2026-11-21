@@ -1,0 +1,6 @@
+
+Usage: mesg [y|n]
+
+Control write access to your terminal
+	y	Allow write access to your terminal
+	n	Disallow write access to your terminal

@@ -1,0 +1,7 @@
+
+Usage: who [-aH]
+
+Show who is logged on
+
+	-a	Show all
+	-H	Print column headers

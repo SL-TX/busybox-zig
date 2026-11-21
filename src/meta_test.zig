@@ -148,13 +148,20 @@ test "special-case applets keep their own exit status" {
     }
 }
 
-test "--help with an applet prints usage and does not run it" {
+test "--help with an applet prints the exact reference usage" {
     const r = invoke(&.{ "busybox", "--help", "cat" });
     defer freeResult(r);
     try std.testing.expectEqual(@as(u8, 0), r.code);
-    // Exact first line from the golden, with the build-specific timestamp
-    // isolated in `version`. A spurious newline after the banner (banner now
-    // ends with '\n') would fail this assertion.
-    try std.testing.expect(std.mem.startsWith(u8, r.out, meta.first_line ++ "\nUsage: "));
-    try std.testing.expect(std.mem.indexOf(u8, r.out, "Usage: cat") != null);
+    // Compose the expected bytes from the committed golden body and the split
+    // banner constant. This pins the whole output, not just its first line.
+    const body = try std.Io.Dir.cwd().readFileAlloc(
+        std.testing.io,
+        "tests/parity/usage/cat.txt",
+        std.testing.allocator,
+        @as(std.Io.Limit, @enumFromInt(1 << 20)),
+    );
+    defer std.testing.allocator.free(body);
+    const expected = try std.mem.concat(std.testing.allocator, u8, &.{ meta.first_line, body });
+    defer std.testing.allocator.free(expected);
+    try std.testing.expectEqualStrings(expected, r.out);
 }

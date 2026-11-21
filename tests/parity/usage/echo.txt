@@ -1,0 +1,8 @@
+
+Usage: echo [-neE] [ARG]...
+
+Print ARGs to stdout
+
+	-n	No trailing newline
+	-e	Interpret backslash escapes (\t=tab etc)
+	-E	Don't interpret backslash escapes (default)

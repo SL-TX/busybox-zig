@@ -1,0 +1,4 @@
+
+Usage: pwdx PID...
+
+Show current directory for PIDs

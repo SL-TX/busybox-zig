@@ -1,0 +1,4 @@
+
+Usage: lsmod
+
+List loaded kernel modules

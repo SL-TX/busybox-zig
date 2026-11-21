@@ -1,0 +1,8 @@
+
+Usage: setarch PERSONALITY [-R] PROG ARGS
+
+PERSONALITY may be:
+	linux32	Set 32bit uname emulation
+	linux64	Set 64bit uname emulation
+
+	-R	Disable address space randomization

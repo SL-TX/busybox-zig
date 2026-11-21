@@ -1,0 +1,4 @@
+
+Usage: remove-shell SHELL...
+
+Remove SHELLs from /etc/shells

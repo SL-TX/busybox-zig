@@ -11,6 +11,7 @@ const coreutils = @import("coreutils");
 const cfg = @import("config");
 const config = cfg.config;
 const manifest = @import("generated/applet_manifest.zig");
+const usage = @import("generated/usage.zig");
 
 pub const Suid = manifest.Suid;
 
@@ -30,6 +31,9 @@ pub const Applet = struct {
     nofork: bool,
     scripted: bool,
     category: []const u8,
+    /// Exact `APPLET --help` body (everything after the banner line), from the
+    /// reference-generated `src/generated/usage.zig`.
+    usage: []const u8,
     /// Kconfig symbol, e.g. "CONFIG_CAT".
     config: []const u8,
     /// Alias of `config`, kept for callers that call this field `flag`.
@@ -158,6 +162,7 @@ pub fn initApplets(allocator: std.mem.Allocator) std.StringHashMap(Applet) {
             .nofork = entry.nofork,
             .scripted = entry.scripted,
             .category = entry.category,
+            .usage = usage.usageFor(entry.name) orelse "",
             .config = entry.config,
             .flag = entry.config,
             .default_enabled = entry.default_enabled,

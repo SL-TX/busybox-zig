@@ -1,0 +1,4 @@
+
+Usage: fdflush DEVICE
+
+Force floppy disk drive to detect disk change
