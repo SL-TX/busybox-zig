@@ -24,4 +24,5 @@ test:
   stage: test
   script:
     - zig build manifest
+    - zig build config-check
     - zig build test
