@@ -1,0 +1,8 @@
+{
+  "applet": "test",
+  "name": "missing_paren",
+  "stdout": "",
+  "stderr": "test: closing paren expected\n",
+  "exit": 2,
+  "tree": {}
+}

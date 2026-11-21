@@ -121,6 +121,10 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "awk")) return coreutils.awk_main;
     if (std.mem.eql(u8, name, "true")) return coreutils.true_main;
     if (std.mem.eql(u8, name, "false")) return coreutils.false_main;
+    // Task 7d — test builtins share one POSIX expression parser.
+    if (std.mem.eql(u8, name, "test")) return coreutils.test_main;
+    if (std.mem.eql(u8, name, "[")) return coreutils.lbracket_main;
+    if (std.mem.eql(u8, name, "[[")) return coreutils.dbracket_main;
     // Task 7a — simple coreutils wave
     if (std.mem.eql(u8, name, "pwd")) return coreutils.pwd_main;
     if (std.mem.eql(u8, name, "basename")) return coreutils.basename_main;

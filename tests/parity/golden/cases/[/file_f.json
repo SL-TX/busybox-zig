@@ -1,0 +1,32 @@
+{
+  "applet": "[",
+  "name": "file_f",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "link": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "file"
+    },
+    "empty": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "file": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    },
+    "dir": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

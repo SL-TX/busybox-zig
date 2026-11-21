@@ -1,0 +1,8 @@
+{
+  "applet": "test",
+  "name": "bad_number",
+  "stdout": "",
+  "stderr": "test: x: bad number\n",
+  "exit": 2,
+  "tree": {}
+}

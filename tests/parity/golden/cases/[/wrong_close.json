@@ -1,0 +1,8 @@
+{
+  "applet": "[",
+  "name": "wrong_close",
+  "stdout": "",
+  "stderr": "[: missing ]\n",
+  "exit": 2,
+  "tree": {}
+}

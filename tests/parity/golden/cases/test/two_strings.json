@@ -1,0 +1,8 @@
+{
+  "applet": "test",
+  "name": "two_strings",
+  "stdout": "",
+  "stderr": "test: b: unknown operand\n",
+  "exit": 2,
+  "tree": {}
+}

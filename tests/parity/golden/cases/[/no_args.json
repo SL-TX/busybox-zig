@@ -1,0 +1,8 @@
+{
+  "applet": "[",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "[: missing ]\n",
+  "exit": 2,
+  "tree": {}
+}

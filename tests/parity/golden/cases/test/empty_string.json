@@ -1,0 +1,8 @@
+{
+  "applet": "test",
+  "name": "empty_string",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

@@ -6,6 +6,7 @@ const bb = @import("libbb_zig");
 const simple = @import("simple.zig");
 const textnum = @import("textnum.zig");
 const filemeta = @import("filemeta.zig");
+const testexpr = @import("testexpr.zig");
 pub const sed = @import("sed.zig");
 pub const awk = @import("awk.zig");
 
@@ -523,6 +524,17 @@ pub fn true_main(_: c_int, _: [*][*:0]const u8) c_int {
 
 pub fn false_main(_: c_int, _: [*][*:0]const u8) c_int {
     return 1;
+}
+
+// --- Task 7d wrappers: one shared expression parser for test/[ /[[ --------
+pub fn test_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    return testexpr.testMain(argc, argv);
+}
+pub fn lbracket_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    return testexpr.bracketMain(argc, argv);
+}
+pub fn dbracket_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    return testexpr.dblBracketMain(argc, argv);
 }
 
 // --- Task 7a wrappers -------------------------------------------------------

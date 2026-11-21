@@ -1,0 +1,8 @@
+{
+  "applet": "[",
+  "name": "bad_number",
+  "stdout": "",
+  "stderr": "[: x: bad number\n",
+  "exit": 2,
+  "tree": {}
+}

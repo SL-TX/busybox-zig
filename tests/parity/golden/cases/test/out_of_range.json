@@ -1,0 +1,8 @@
+{
+  "applet": "test",
+  "name": "out_of_range",
+  "stdout": "",
+  "stderr": "test: 999999999999999999999999: out of range\n",
+  "exit": 2,
+  "tree": {}
+}
