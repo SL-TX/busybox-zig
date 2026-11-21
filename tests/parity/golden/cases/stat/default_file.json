@@ -1,0 +1,16 @@
+{
+  "applet": "stat",
+  "name": "default_file",
+  "stdout": "  File: a\n  Size: 5         \tBlocks: 8          IO Block: 4096   regular file\nDevice: 22h/34d\t<MATCH>      Links: 1\nAccess: (0644/-rw-r--r--)  Uid: ( 1000/      sl)   Gid: ( 1000/      sl)\nAccess: <TIMESTAMP> +0000\nModify: <TIMESTAMP> +0000\nChange: <TIMESTAMP> +0000\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

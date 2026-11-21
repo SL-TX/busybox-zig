@@ -1,0 +1,16 @@
+{
+  "applet": "stat",
+  "name": "format_mods",
+  "stdout": "5         |0644|-rw-r--r--| 1000|      sl|34|22|81a4<MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

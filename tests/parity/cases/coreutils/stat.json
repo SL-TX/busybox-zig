@@ -205,6 +205,180 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "default_file",
+      "argv": [
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp",
+        "regex:\\.\\d{9}",
+        "regex:Inode: \\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "default_dir",
+      "argv": [
+        "d"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp",
+        "regex:\\.\\d{9}",
+        "regex:Inode: \\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "default_symlink",
+      "argv": [
+        "l"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {
+        "l": "a"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp",
+        "regex:\\.\\d{9}",
+        "regex:Inode: \\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "terse_default",
+      "argv": [
+        "-t",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp",
+        "regex:\\.\\d{9}",
+        "regex:\\d{5,} "
+      ],
+      "requires": []
+    },
+    {
+      "name": "format_ids",
+      "argv": [
+        "-c",
+        "n=%n a=%a A=%A F=%F h=%h u=%u U=%U g=%g G=%G d=%d D=%D f=%f t=%t T=%T s=%s b=%b B=%B o=%o i=%i",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:i=\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "format_times",
+      "argv": [
+        "-c",
+        "X=%X Y=%Y Z=%Z x=%x y=%y z=%z",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp",
+        "regex:\\.\\d{9}",
+        "regex:[XYZ]=\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "format_mods",
+      "argv": [
+        "-c",
+        "%-10s|%04a|%10.10A|%5u|%8U|%d|%D|%f|%i",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\|\\d+$"
+      ],
+      "requires": []
+    },
+    {
+      "name": "fs_format_all",
+      "argv": [
+        "-f",
+        "-c",
+        "n=%n i=%i l=%l t=%t T=%T s=%s S=%S b=%b f=%f a=%a c=%c d=%d",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:=\\d+"
+      ],
+      "requires": []
     }
   ]
 }

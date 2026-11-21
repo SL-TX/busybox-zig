@@ -144,7 +144,7 @@ class HarnessSelfTest(unittest.TestCase):
 
     @unittest.skipUnless(os.path.exists("/dev/ptmx"), "no pseudo-terminal available")
     def test_pty_helper(self):
-        from scripts.parity.pty import run_pty
+        from scripts.parity.pty_helper import run_pty
 
         out, code = run_pty(
             [sys.executable, "-u", "-c", "print('pty-ok')"],

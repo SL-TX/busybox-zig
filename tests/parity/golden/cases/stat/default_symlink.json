@@ -1,0 +1,21 @@
+{
+  "applet": "stat",
+  "name": "default_symlink",
+  "stdout": "  File: 'l' -> 'a'\n  Size: 1         \tBlocks: 0          IO Block: 4096   symbolic link\nDevice: 22h/34d\t<MATCH>      Links: 1\nAccess: (0777/lrwxrwxrwx)  Uid: ( 1000/      sl)   Gid: ( 1000/      sl)\nAccess: <TIMESTAMP> +0000\nModify: <TIMESTAMP> +0000\nChange: <TIMESTAMP> +0000\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "l": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "a"
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

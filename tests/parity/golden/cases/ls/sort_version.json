@@ -1,0 +1,30 @@
+{
+  "applet": "ls",
+  "name": "sort_version",
+  "stdout": "a1\na2\na10\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a2": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mw=="
+      }
+    },
+    "a10": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mg=="
+      }
+    },
+    "a1": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQ=="
+      }
+    }
+  }
+}

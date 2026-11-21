@@ -1,0 +1,8 @@
+{
+  "applet": "stty",
+  "name": "mutually_exclusive",
+  "stdout": "",
+  "stderr": "stty: -a and -g are mutually exclusive\n",
+  "exit": 1,
+  "tree": {}
+}

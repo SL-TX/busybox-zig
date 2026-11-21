@@ -501,18 +501,92 @@ pub fn lnMain(argc: c_int, argv: [*][*:0]const u8) c_int {
 
 // ---------------------------------------------------------------- ls
 
-fn listNames(a: std.mem.Allocator, path: []const u8, all: bool, almost_all: bool) ![][]u8 {
+fn ctimeString(sec: i64, buf: []u8) []const u8 {
+    const wd = [_][]const u8{ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+    const mo = [_][]const u8{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    const d = makeDate(sec);
+    return std.fmt.bufPrint(buf, "{s} {s} {d: >2} {d:0>2}:{d:0>2}:{d:0>2} {d}", .{
+        wd[@intCast(@mod(d.weekday, 7))], mo[@intCast(d.month - 1)],
+        @as(u64, @intCast(d.day)), @as(u64, @intCast(d.hour)),
+        @as(u64, @intCast(d.minute)), @as(u64, @intCast(d.second)), d.year,
+    }) catch "";
+}
+
+const LsEntry = struct {
+    name: []u8,
+    full: []u8,
+    st: FullStat,
+};
+
+fn versionCompare(a: []const u8, b: []const u8) i32 {
+    var i: usize = 0;
+    var j: usize = 0;
+    while (i < a.len and j < b.len) {
+        if (std.ascii.isDigit(a[i]) and std.ascii.isDigit(b[j])) {
+            var ei = i;
+            var ej = j;
+            while (ei < a.len and a[ei] == '0') ei += 1;
+            while (ej < b.len and b[ej] == '0') ej += 1;
+            const si = ei;
+            const sj = ej;
+            while (ei < a.len and std.ascii.isDigit(a[ei])) ei += 1;
+            while (ej < b.len and std.ascii.isDigit(b[ej])) ej += 1;
+            if (ei - si != ej - sj) return if (ei - si < ej - sj) -1 else 1;
+            const cmp = std.mem.order(u8, a[si..ei], b[sj..ej]);
+            if (cmp != .eq) return if (cmp == .lt) -1 else 1;
+            i = ei;
+            j = ej;
+            continue;
+        }
+        if (a[i] != b[j]) return if (a[i] < b[j]) -1 else 1;
+        i += 1;
+        j += 1;
+    }
+    if (a.len == b.len) return 0;
+    return if (a.len < b.len) -1 else 1;
+}
+
+fn lsLess(o: Options, x: LsEntry, y: LsEntry) bool {
+    var dif: i32 = 0;
+    if (flagged(o, 17)) { // -S
+        const xs = x.st.size;
+        const ys = y.st.size;
+        dif = if (xs > ys) -1 else if (xs < ys) 1 else 0;
+    } else if (flagged(o, 21) or flagged(o, 20) or flagged(o, 22)) { // -t / -c / -u
+        const xt = if (flagged(o, 20)) x.st.ctim.sec else if (flagged(o, 22)) x.st.atim.sec else x.st.mtim.sec;
+        const yt = if (flagged(o, 20)) y.st.ctim.sec else if (flagged(o, 22)) y.st.atim.sec else y.st.mtim.sec;
+        dif = if (xt > yt) -1 else if (xt < yt) 1 else 0;
+    } else if (flagged(o, 19)) { // -v
+        dif = versionCompare(x.name, y.name);
+    } else if (flagged(o, 18)) { // -X
+        const xe = std.mem.indexOfScalar(u8, x.name, '.') orelse x.name.len;
+        const ye = std.mem.indexOfScalar(u8, y.name, '.') orelse y.name.len;
+        dif = switch (std.mem.order(u8, x.name[xe..], y.name[ye..])) {
+            .lt => -1, .eq => 0, .gt => 1,
+        };
+    }
+    if (dif == 0) {
+        dif = switch (std.mem.order(u8, x.name, y.name)) {
+            .lt => -1, .eq => 0, .gt => 1,
+        };
+    }
+    if (flagged(o, 16)) dif = -dif; // -r
+    return dif < 0;
+}
+
+fn listEntries(a: std.mem.Allocator, path: []const u8, o: Options) ![]LsEntry {
     var zbuf: [4096:0]u8 = undefined;
     const z = zs(path, &zbuf) orelse return error.NameTooLong;
     const fd: linux.fd_t = @intCast(linux.open(z, .{ .ACCMODE = .RDONLY, .DIRECTORY = true }, 0));
     if (linux.errno(@as(usize, @intCast(fd))) != .SUCCESS) return error.OpenFailed;
     defer _ = linux.close(fd);
     var buf: [16384]u8 align(8) = undefined;
-    var names: std.ArrayList([]u8) = .empty;
+    var list: std.ArrayList(LsEntry) = .empty;
     errdefer {
-        for (names.items) |n| a.free(n);
-        names.deinit(a);
+        for (list.items) |e| { a.free(e.name); a.free(e.full); }
+        list.deinit(a);
     }
+    const follow = flagged(o, 6) or flagged(o, 7);
     while (true) {
         const n = linux.getdents64(fd, &buf, buf.len);
         if (linux.errno(n) != .SUCCESS or n == 0) break;
@@ -526,48 +600,99 @@ fn listNames(a: std.mem.Allocator, path: []const u8, all: bool, almost_all: bool
             const nm = raw[0..end];
             if (nm.len > 0) {
                 const keep = if (std.mem.eql(u8, nm, ".") or std.mem.eql(u8, nm, ".."))
-                    all
+                    flagged(o, 2)
                 else if (nm[0] == '.')
-                    all or almost_all
+                    flagged(o, 2) or flagged(o, 1)
                 else
                     true;
-                if (keep) try names.append(a, try a.dupe(u8, nm));
+                if (keep) {
+                    const full = joinPath(a, path, nm) catch break;
+                    if (fullStat(full, follow)) |st| {
+                        try list.append(a, .{
+                            .name = try a.dupe(u8, nm),
+                            .full = full,
+                            .st = st,
+                        });
+                    } else a.free(full);
+                }
             }
             off += dent.reclen;
         }
     }
-    std.mem.sort([]u8, names.items, {}, struct {
-        fn less(_: void, x: []u8, y: []u8) bool {
-            return std.mem.order(u8, x, y) == .lt;
-        }
+    std.mem.sort(LsEntry, list.items, o, struct {
+        fn less(ctx: Options, x: LsEntry, y: LsEntry) bool { return lsLess(ctx, x, y); }
     }.less);
-    return names.toOwnedSlice(a);
+    return list.toOwnedSlice(a);
 }
 
-fn printLsName(name: []const u8, full_path: []const u8, classify: bool, slashes: bool) void {
-    out(name);
-    if (classify or slashes) {
-        const i = info(full_path, false);
-        if (i != null and (i.?.mode & linux.S.IFMT) == linux.S.IFDIR) out("/");
+fn classifyChar(st: FullStat) u8 {
+    return switch (st.mode & linux.S.IFMT) {
+        linux.S.IFDIR => '/',
+        linux.S.IFLNK => '@',
+        linux.S.IFIFO => '|',
+        linux.S.IFSOCK => '=',
+        linux.S.IFCHR, linux.S.IFBLK => '*',
+        else => if ((st.mode & 0o111) != 0) '*' else 0,
+    };
+}
+
+fn printLsEntry(e: LsEntry, o: Options) void {
+    if (flagged(o, 11)) put("{d: >7} ", .{e.st.ino});
+    if (flagged(o, 14)) put("{d: >6} ", .{@as(u64, @intCast(@max(e.st.blocks >> 1, 0)))});
+    if (flagged(o, 12)) {
+        var mb: [16]u8 = undefined;
+        const ms = bb.util.mode_string(e.st.mode, &mb);
+        put("{s: <10} ", .{ms});
+        put("{d: >4} ", .{e.st.nlink});
+        var ub: [64]u8 = undefined;
+        var gb: [64]u8 = undefined;
+        const uname = if (flagged(o, 13))
+            std.fmt.bufPrint(&ub, "{d}", .{e.st.uid}) catch "0"
+        else
+            lookupName("/etc/passwd", e.st.uid, &ub);
+        const gname = if (flagged(o, 13))
+            std.fmt.bufPrint(&gb, "{d}", .{e.st.gid}) catch "0"
+        else
+            lookupName("/etc/group", e.st.gid, &gb);
+        put("{s: <8} {s: <8} ", .{ uname, gname });
+        put("{d: >9} ", .{@as(u64, @intCast(@max(e.st.size, 0)))});
+        var tb: [64]u8 = undefined;
+        const tsec = if (flagged(o, 20)) e.st.ctim.sec else if (flagged(o, 22)) e.st.atim.sec else e.st.mtim.sec;
+        const ts = ctimeString(tsec, &tb);
+        put("{s} ", .{if (ts.len >= 16) ts[4..16] else ts});
+    }
+    out(e.name);
+    if (flagged(o, 9)) {
+        const c = classifyChar(e.st);
+        if (c != 0) out(&[_]u8{c});
+    } else if (flagged(o, 10) and (e.st.mode & linux.S.IFMT) == linux.S.IFDIR) {
+        out("/");
+    }
+    if ((e.st.mode & linux.S.IFMT) == linux.S.IFLNK and flagged(o, 12)) {
+        if (readLinkTarget(e.full)) |t| {
+            put(" -> {s}", .{t});
+            A.free(t);
+        }
     }
     out("\n");
 }
 
 fn listDir(a: std.mem.Allocator, path: []const u8, o: Options, status: *c_int) void {
-    const names = listNames(a, path, flagged(o, 2), flagged(o, 1)) catch {
+    const entries = listEntries(a, path, o) catch {
         msg(errOf(1), "{s}", .{path});
         status.* = 1;
         return;
     };
     defer {
-        for (names) |n| a.free(n);
-        a.free(names);
+        for (entries) |e| { a.free(e.name); a.free(e.full); }
+        a.free(entries);
     }
-    for (names) |name| {
-        const full = joinPath(a, path, name) catch continue;
-        defer a.free(full);
-        printLsName(name, full, flagged(o, 9), flagged(o, 10));
+    if (flagged(o, 12) or flagged(o, 14)) {
+        var total: i64 = 0;
+        for (entries) |e| total += @max(e.st.blocks >> 1, 0);
+        put("total {d}\n", .{total});
     }
+    for (entries) |e| printLsEntry(e, o);
 }
 
 fn listRecursive(a: std.mem.Allocator, path: []const u8, o: Options, first: *bool, status: *c_int, depth: usize) void {
@@ -575,23 +700,23 @@ fn listRecursive(a: std.mem.Allocator, path: []const u8, o: Options, first: *boo
     if (!first.*) out("\n");
     first.* = false;
     put("{s}:\n", .{path});
-    const names = listNames(a, path, flagged(o, 2), flagged(o, 1)) catch {
+    const entries = listEntries(a, path, o) catch {
         status.* = 1;
         return;
     };
     defer {
-        for (names) |n| a.free(n);
-        a.free(names);
+        for (entries) |e| { a.free(e.name); a.free(e.full); }
+        a.free(entries);
     }
-    for (names) |name| {
-        const full = joinPath(a, path, name) catch continue;
-        defer a.free(full);
-        printLsName(name, full, flagged(o, 9), flagged(o, 10));
+    if (flagged(o, 12) or flagged(o, 14)) {
+        var total: i64 = 0;
+        for (entries) |e| total += @max(e.st.blocks >> 1, 0);
+        put("total {d}\n", .{total});
     }
-    for (names) |name| {
-        const full = joinPath(a, path, name) catch continue;
-        defer a.free(full);
-        if (isDir(full)) listRecursive(a, full, o, first, status, depth + 1);
+    for (entries) |e| printLsEntry(e, o);
+    for (entries) |e| {
+        if ((e.st.mode & linux.S.IFMT) == linux.S.IFDIR)
+            listRecursive(a, e.full, o, first, status, depth + 1);
     }
 }
 
@@ -605,24 +730,25 @@ pub fn lsMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     });
     const dirs_only = flagged(o, 5);
     const recursive = flagged(o, 8);
+    const follow = flagged(o, 6) or flagged(o, 7);
     var files = o.args;
     if (files.len == 0) files = &.{"."};
     var status: c_int = 0;
     var first = true;
     for (files) |name| {
-        const i = info(name, flagged(o, 6) or flagged(o, 7));
-        if (i == null) {
+        const st = fullStat(name, follow) orelse {
             msg(@intFromEnum(linux.E.NOENT), "{s}", .{name});
             status = 1;
             continue;
-        }
-        const is_dir = (i.?.mode & linux.S.IFMT) == linux.S.IFDIR;
+        };
+        const is_dir = (st.mode & linux.S.IFMT) == linux.S.IFDIR;
         if (recursive and is_dir) {
             listRecursive(A, name, o, &first, &status, 0);
         } else if (is_dir and !dirs_only) {
             listDir(A, name, o, &status);
         } else {
-            printLsName(name, name, flagged(o, 9), flagged(o, 10));
+            const nm = A.dupe(u8, name) catch return 1;
+            printLsEntry(.{ .name = nm, .full = nm, .st = st }, o);
         }
     }
     return status;
@@ -1109,6 +1235,61 @@ pub fn touchMain(argc: c_int, argv: [*][*:0]const u8) c_int {
 
 // ---------------------------------------------------------------- stat
 
+/// x86_64 Linux `struct stat`, filled by the newfstatat syscall. Unlike
+/// statx this exposes st_dev/st_rdev and nanosecond timestamps, which the
+/// reference `stat` default format needs.
+const FullStat = extern struct {
+    dev: u64,
+    ino: u64,
+    nlink: u64,
+    mode: u32,
+    uid: u32,
+    gid: u32,
+    pad0: i32,
+    rdev: u64,
+    size: i64,
+    blksize: i64,
+    blocks: i64,
+    atim: linux.timespec,
+    mtim: linux.timespec,
+    ctim: linux.timespec,
+    unused: [3]i64,
+};
+
+fn fullStat(path: []const u8, follow: bool) ?FullStat {
+    const p = Path.init(path) catch return null;
+    var st: FullStat = undefined;
+    const flags: u32 = if (follow) 0 else linux.AT.SYMLINK_NOFOLLOW;
+    const rc = linux.syscall4(.newfstatat, @as(u32, @bitCast(@as(i32, linux.AT.FDCWD))),
+        @intFromPtr(p.z()), @intFromPtr(&st), flags);
+    if (linux.errno(rc) != .SUCCESS) return null;
+    return st;
+}
+
+/// Read-only /etc lookup so %U/%G and the default Uid/Gid fields match the
+/// reference. Never writes to /etc.
+fn lookupName(path: []const u8, id: u32, buf: []u8) []const u8 {
+    var zpath: [4096:0]u8 = undefined;
+    const zp = zs(path, &zpath) orelse return "UNKNOWN";
+    const fd = openFd(zp, .{ .ACCMODE = .RDONLY }, 0) orelse return "UNKNOWN";
+    defer _ = linux.close(fd);
+    const data = readFd(fd) catch return "UNKNOWN";
+    defer A.free(data);
+    var lines = std.mem.splitScalar(u8, data, '\n');
+    while (lines.next()) |line| {
+        var fields = std.mem.splitScalar(u8, line, ':');
+        const name = fields.next() orelse continue;
+        _ = fields.next();
+        const idstr = fields.next() orelse continue;
+        const n = std.fmt.parseInt(u32, idstr, 10) catch continue;
+        if (n == id and name.len <= buf.len) {
+            @memcpy(buf[0..name.len], name);
+            return buf[0..name.len];
+        }
+    }
+    return "UNKNOWN";
+}
+
 const Statfs = extern struct {
     f_type: i64,
     f_bsize: i64,
@@ -1131,14 +1312,40 @@ fn statFs(path: []const u8, out_buf: *Statfs) ?c_int {
     return null;
 }
 
+// ---------------------------------------------------------------- stat
+
 fn fsTypeName(t: i64) []const u8 {
     return switch (t) {
-        0x858458f6 => "tmpfs",
+        0xadff => "affs",
+        0x1cd1 => "devpts",
+        0x137d => "ext",
+        0xef51 => "ext2",
+        0xef53 => "ext2/ext3",
+        0x3153464a => "jfs",
+        0x58465342 => "xfs",
+        0xf995e849 => "hpfs",
+        0x9660, 0x4000, 0x4004 => "isofs",
+        0x137f, 0x138f, 0x2468, 0x2478 => "minix",
+        0x4d44 => "msdos",
+        0x4006 => "fat",
+        0x564c => "novell",
         0x6969 => "nfs",
-        0x517b => "smbfs",
-        0x62646576 => "bdev",
-        0x01021994 => "tmpfs",
-        else => "unknown",
+        0x9fa0 => "proc",
+        0x517b => "smb",
+        0x012ff7b4 => "xenix",
+        0x012ff7b5 => "sysv4",
+        0x012ff7b6 => "sysv2",
+        0x012ff7b7 => "coh",
+        0x00011954 => "ufs",
+        0x012fd16d => "xia",
+        0x5346544e => "ntfs",
+        0x1021994 => "tmpfs",
+        0x52654973 => "reiserfs",
+        0x28cd3d45 => "cramfs",
+        0x7275 => "romfs",
+        0x858458f6 => "ramfs",
+        0x62656572 => "sysfs",
+        else => "UNKNOWN",
     };
 }
 
@@ -1151,7 +1358,7 @@ fn typeName(mode: u32) []const u8 {
         linux.S.IFSOCK => "socket",
         linux.S.IFCHR => "character device",
         linux.S.IFBLK => "block device",
-        else => "unknown",
+        else => "weird file",
     };
 }
 
@@ -1163,13 +1370,111 @@ fn readLinkTarget(path: []const u8) ?[]u8 {
     return A.dupe(u8, buf[0..n]) catch null;
 }
 
-fn printStatFormat(fmt: []const u8, path: []const u8, st: Info, fs: ?*const Statfs) void {
+/// C-printf-style modifiers accepted by busybox stat's print_it().
+const FmtMods = struct {
+    left: bool = false,
+    zero: bool = false,
+    plus: bool = false,
+    space: bool = false,
+    alt: bool = false,
+    width: usize = 0,
+    prec: ?usize = null,
+};
+
+fn parseMods(fmt: []const u8, i: *usize) FmtMods {
+    var m = FmtMods{};
+    while (i.* < fmt.len) {
+        switch (fmt[i.*]) {
+            '-' => m.left = true,
+            '+' => m.plus = true,
+            ' ' => m.space = true,
+            '#' => m.alt = true,
+            '0' => m.zero = true,
+            else => break,
+        }
+        i.* += 1;
+    }
+    while (i.* < fmt.len and std.ascii.isDigit(fmt[i.*])) : (i.* += 1)
+        m.width = m.width * 10 + (fmt[i.*] - '0');
+    if (i.* < fmt.len and fmt[i.*] == '.') {
+        i.* += 1;
+        var p: usize = 0;
+        while (i.* < fmt.len and std.ascii.isDigit(fmt[i.*])) : (i.* += 1)
+            p = p * 10 + (fmt[i.*] - '0');
+        m.prec = p;
+    }
+    while (i.* < fmt.len and fmt[i.*] == 'I') i.* += 1; // coreutils flag, ignored
+    return m;
+}
+
+fn writeRepeat(c: u8, n: usize) void {
+    var buf: [64]u8 = undefined;
+    @memset(buf[0..@min(n, buf.len)], c);
+    var left = n;
+    while (left > 0) {
+        const chunk = @min(left, buf.len);
+        out(buf[0..chunk]);
+        left -= chunk;
+    }
+}
+
+fn emitField(text: []const u8, m: FmtMods, numeric: bool) void {
+    var s = text;
+    var sign: []const u8 = "";
+    if (numeric and s.len > 0 and (s[0] == '-' or s[0] == '+' or s[0] == ' ')) {
+        sign = s[0..1];
+        s = s[1..];
+    } else if (numeric and m.plus) {
+        sign = "+";
+    } else if (numeric and m.space) {
+        sign = " ";
+    }
+    if (m.prec) |p| {
+        if (s.len > p) s = s[0..p];
+    }
+    const used = sign.len + s.len;
+    if (used >= m.width) {
+        out(sign);
+        out(s);
+        return;
+    }
+    const pad = m.width - used;
+    if (m.left) {
+        out(sign);
+        out(s);
+        writeRepeat(' ', pad);
+    } else if (m.zero and m.prec == null) {
+        out(sign);
+        writeRepeat('0', pad);
+        out(s);
+    } else {
+        writeRepeat(' ', pad);
+        out(sign);
+        out(s);
+    }
+}
+
+fn humanTime(ts: linux.timespec, buf: []u8) []const u8 {
+    const d = makeDate(ts.sec);
+    const nsec: u32 = @intCast(@max(ts.nsec, 0));
+    return std.fmt.bufPrint(buf, "{d}-{d:0>2}-{d:0>2} {d:0>2}:{d:0>2}:{d:0>2}.{d:0>9} +0000", .{
+        d.year, @as(u64, @intCast(d.month)), @as(u64, @intCast(d.day)),
+        @as(u64, @intCast(d.hour)), @as(u64, @intCast(d.minute)), @as(u64, @intCast(d.second)), nsec,
+    }) catch "";
+}
+
+fn fsFsid(f: *const Statfs) u64 {
+    const hi: u64 = @as(u32, @bitCast(f.f_fsid[0]));
+    const lo: u64 = @as(u32, @bitCast(f.f_fsid[1]));
+    return (hi << 32) | lo;
+}
+
+fn printStatFormat(fmt: []const u8, path: []const u8, st: ?FullStat, fs: ?*const Statfs) void {
     var i: usize = 0;
     while (i < fmt.len) {
         if (fmt[i] == '\\' and i + 1 < fmt.len) {
             i += 1;
-            const c = fmt[i];
-            out(switch (c) {
+            out(switch (fmt[i]) {
                 'n' => "\n", 't' => "\t", else => fmt[i .. i + 1],
             });
             i += 1;
@@ -1181,68 +1486,101 @@ fn printStatFormat(fmt: []const u8, path: []const u8, st: Info, fs: ?*const Stat
             continue;
         }
         i += 1;
+        if (fmt[i] == '%') {
+            out("%");
+            i += 1;
+            continue;
+        }
+        const mods = parseMods(fmt, &i);
+        if (i >= fmt.len) break;
         const spec = fmt[i];
         i += 1;
-        if (spec == '%') {
-            out("%");
-            continue;
-        }
+
+        var b: [256]u8 = undefined;
+        var unknown: [1]u8 = undefined;
+        unknown[0] = spec;
+        var val: []const u8 = "";
+        var numeric = false;
         if (fs) |f| {
             switch (spec) {
-                'T' => out(fsTypeName(f.f_type)),
-                's' => put("{d}", .{f.f_bsize}),
-                'S' => put("{d}", .{f.f_frsize}),
-                'b' => put("{d}", .{f.f_blocks}),
-                'f' => put("{d}", .{f.f_bfree}),
-                'a' => put("{d}", .{f.f_bavail}),
-                'c' => put("{d}", .{f.f_files}),
-                'd' => put("{d}", .{f.f_ffree}),
-                'l' => put("{d}", .{f.f_namelen}),
-                'n' => out(path),
-                else => {},
+                'n' => val = path,
+                'i' => { val = std.fmt.bufPrint(&b, "{x}", .{fsFsid(f)}) catch ""; numeric = true; },
+                'l' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(f.f_namelen, 0)))}) catch ""; numeric = true; },
+                't' => { val = std.fmt.bufPrint(&b, "{x}", .{@as(u64, @bitCast(f.f_type))}) catch ""; numeric = true; },
+                'T' => val = fsTypeName(f.f_type),
+                's', 'S' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(f.f_bsize, 0)))}) catch ""; numeric = true; },
+                'b' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(f.f_blocks, 0)))}) catch ""; numeric = true; },
+                'f' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(f.f_bfree, 0)))}) catch ""; numeric = true; },
+                'a' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(f.f_bavail, 0)))}) catch ""; numeric = true; },
+                'c' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(f.f_files, 0)))}) catch ""; numeric = true; },
+                'd' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(f.f_ffree, 0)))}) catch ""; numeric = true; },
+                else => val = unknown[0..1],
             }
+            emitField(val, mods, numeric);
             continue;
         }
+        const s = st orelse {
+            emitField(unknown[0..1], mods, false);
+            continue;
+        };
+        var ubuf: [64]u8 = undefined;
+        var gbuf: [64]u8 = undefined;
         switch (spec) {
-            'a' => put("{o}", .{st.mode & 0o7777}),
-            'A' => {
-                var b: [16]u8 = undefined;
-                out(bb.util.mode_string(st.mode, &b));
-            },
-            'F' => out(typeName(st.mode)),
-            'h' => put("{d}", .{st.nlink}),
-            's' => put("{d}", .{st.size}),
-            'n' => out(path),
+            'n' => val = path,
             'N' => {
-                if ((st.mode & linux.S.IFMT) == linux.S.IFLNK) {
-                    put("'{s}' -> ", .{path});
+                if ((s.mode & linux.S.IFMT) == linux.S.IFLNK) {
                     if (readLinkTarget(path)) |t| {
-                        put("'{s}'", .{t});
+                        val = std.fmt.bufPrint(&b, "'{s}' -> '{s}'", .{ path, t }) catch "";
                         A.free(t);
-                    }
-                } else put("'{s}'", .{path});
+                    } else val = path;
+                } else val = path;
             },
-            'u' => put("{d}", .{st.uid}),
-            'g' => put("{d}", .{st.gid}),
-            'i' => put("{d}", .{st.ino}),
-            'b' => put("{d}", .{st.blocks}),
-            'B' => out("512"),
-            'o' => put("{d}", .{st.blksize}),
-            else => {},
+            'd' => { val = std.fmt.bufPrint(&b, "{d}", .{s.dev}) catch ""; numeric = true; },
+            'D' => { val = std.fmt.bufPrint(&b, "{x}", .{s.dev}) catch ""; numeric = true; },
+            'i' => { val = std.fmt.bufPrint(&b, "{d}", .{s.ino}) catch ""; numeric = true; },
+            'a' => { val = std.fmt.bufPrint(&b, "{o}", .{s.mode & 0o7777}) catch ""; numeric = true; },
+            'A' => val = bb.util.mode_string(s.mode, &b),
+            'f' => { val = std.fmt.bufPrint(&b, "{x}", .{s.mode}) catch ""; numeric = true; },
+            'F' => val = typeName(s.mode),
+            'h' => { val = std.fmt.bufPrint(&b, "{d}", .{s.nlink}) catch ""; numeric = true; },
+            'u' => { val = std.fmt.bufPrint(&b, "{d}", .{s.uid}) catch ""; numeric = true; },
+            'U' => val = lookupName("/etc/passwd", s.uid, &ubuf),
+            'g' => { val = std.fmt.bufPrint(&b, "{d}", .{s.gid}) catch ""; numeric = true; },
+            'G' => val = lookupName("/etc/group", s.gid, &gbuf),
+            't' => { val = std.fmt.bufPrint(&b, "{x}", .{@as(u64, @intCast((s.rdev >> 8) & 0xfff))}) catch ""; numeric = true; },
+            'T' => { val = std.fmt.bufPrint(&b, "{x}", .{@as(u64, @intCast(s.rdev & 0xff))}) catch ""; numeric = true; },
+            's' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(s.size, 0)))}) catch ""; numeric = true; },
+            'B' => { val = "512"; numeric = true; },
+            'b' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(s.blocks, 0)))}) catch ""; numeric = true; },
+            'o' => { val = std.fmt.bufPrint(&b, "{d}", .{@as(u64, @intCast(@max(s.blksize, 0)))}) catch ""; numeric = true; },
+            'x' => val = humanTime(s.atim, &b),
+            'X' => { val = std.fmt.bufPrint(&b, "{d}", .{s.atim.sec}) catch ""; numeric = true; },
+            'y' => val = humanTime(s.mtim, &b),
+            'Y' => { val = std.fmt.bufPrint(&b, "{d}", .{s.mtim.sec}) catch ""; numeric = true; },
+            'z' => val = humanTime(s.ctim, &b),
+            'Z' => { val = std.fmt.bufPrint(&b, "{d}", .{s.ctim.sec}) catch ""; numeric = true; },
+            else => val = unknown[0..1],
         }
+        emitField(val, mods, numeric);
     }
+    // print_it() always terminates its output with a newline.
     out("\n");
 }
 
-fn printStatDefault(path: []const u8, st: Info) void {
-    var mbuf: [16]u8 = undefined;
-    const ms = bb.util.mode_string(st.mode, &mbuf);
-    put("  File: {s}\n", .{path});
-    put("  Size: {d: <10}\tBlocks: {d: <10}IO Block: {d}   {s}\n", .{ st.size, st.blocks, st.blksize, typeName(st.mode) });
-    put("Device: 0h/0d\tInode: {d}      Links: {d}\n", .{ st.ino, st.nlink });
-    put("Access: ({o:0>4}/{s})  Uid: ({d}/      -)   Gid: ({d}/      -)\n", .{ st.mode & 0o7777, ms[1..], st.uid, st.gid });
-    put("Modify: <TIMESTAMP> +0000\n", .{});
-}
+const STAT_FILE_DEFAULT =
+    "  File: %N\n" ++
+    "  Size: %-10s\tBlocks: %-10b IO Block: %-6o %F\n" ++
+    "Device: %Dh/%dd\tInode: %-10i  Links: %h\n" ++
+    "Access: (%04a/%10.10A)  Uid: (%5u/%8U)   Gid: (%5g/%8G)\n" ++
+    "Access: %x\n" ++ "Modify: %y\n" ++ "Change: %z";
+const STAT_FILE_TERSE = "%n %s %b %f %u %g %D %i %h %t %T %X %Y %Z %o";
+const STAT_FS_DEFAULT =
+    "  File: \"%n\"\n" ++
+    "    ID: %-8i Namelen: %-7l Type: %T\n" ++
+    "Block size: %-10s\n" ++
+    "Blocks: Total: %-10b Free: %-10f Available: %a\n" ++
+    "Inodes: Total: %-10c Free: %d";
+const STAT_FS_TERSE = "%n %i %l %t %s %b %f %a %c %d";
 
 pub fn statMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     setProg(argv);
@@ -1250,26 +1588,32 @@ pub fn statMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     const o = opts("stat", av, "tLfc:", &.{});
     if (o.args.len == 0) usageDie("stat");
     const fmt: ?[]const u8 = if (flagged(o, 3)) (o.optarg orelse "") else null;
+    const terse = flagged(o, 0);
     var status: c_int = 0;
     for (o.args) |path| {
         if (flagged(o, 2)) {
             var fsb: Statfs = undefined;
             if (statFs(path, &fsb)) |e| {
-                msg(e, "can't stat '{s}'", .{path});
+                msg(e, "can't read file system information for '{s}'", .{path});
                 status = 1;
                 continue;
             }
-            if (fmt) |f| printStatFormat(f, path, undefined, &fsb) else {
-                out(fsTypeName(fsb.f_type));
-                out("\n");
+            if (fmt) |f| {
+                printStatFormat(f, path, null, &fsb);
+            } else {
+                printStatFormat(if (terse) STAT_FS_TERSE else STAT_FS_DEFAULT, path, null, &fsb);
             }
         } else {
-            const st = info(path, flagged(o, 1)) orelse {
+            const st = fullStat(path, flagged(o, 1)) orelse {
                 msg(@intFromEnum(linux.E.NOENT), "can't stat '{s}'", .{path});
                 status = 1;
                 continue;
             };
-            if (fmt) |f| printStatFormat(f, path, st, null) else printStatDefault(path, st);
+            if (fmt) |f| {
+                printStatFormat(f, path, st, null);
+            } else {
+                printStatFormat(if (terse) STAT_FILE_TERSE else STAT_FILE_DEFAULT, path, st, null);
+            }
         }
     }
     return status;
@@ -1586,7 +1930,284 @@ pub fn dateMain(argc: c_int, argv: [*][*:0]const u8) c_int {
 
 // ---------------------------------------------------------------- stty
 
+const SttyGroup = enum { control, input, output, local, combination };
+const SttyMode = struct {
+    name: []const u8,
+    group: SttyGroup,
+    flags: u8,
+    bits: u32,
+    mask: u32,
+};
+const SANE_SET: u8 = 1;
+const SANE_UNSET: u8 = 2;
+const REV: u8 = 4;
+const OMIT: u8 = 8;
+
+const stty_modes = [_]SttyMode{
+    .{ .name = "evenp", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "parity", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "oddp", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "nl", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "ek", .group = .combination, .flags = 0x8, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "sane", .group = .combination, .flags = 0x8, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "cooked", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "raw", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "pass8", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "litout", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "cbreak", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "crt", .group = .combination, .flags = 0x8, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "dec", .group = .combination, .flags = 0x8, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "decctlq", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "tabs", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "lcase", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "LCASE", .group = .combination, .flags = 0xc, .bits = 0x0, .mask = 0x0 },
+    .{ .name = "parenb", .group = .control, .flags = 0x4, .bits = 0x100, .mask = 0x0 },
+    .{ .name = "parodd", .group = .control, .flags = 0x4, .bits = 0x200, .mask = 0x0 },
+    .{ .name = "cmspar", .group = .control, .flags = 0x4, .bits = 0x40000000, .mask = 0x0 },
+    .{ .name = "cs5", .group = .control, .flags = 0x0, .bits = 0x0, .mask = 0x30 },
+    .{ .name = "cs6", .group = .control, .flags = 0x0, .bits = 0x10, .mask = 0x30 },
+    .{ .name = "cs7", .group = .control, .flags = 0x0, .bits = 0x20, .mask = 0x30 },
+    .{ .name = "cs8", .group = .control, .flags = 0x0, .bits = 0x30, .mask = 0x30 },
+    .{ .name = "hupcl", .group = .control, .flags = 0x4, .bits = 0x400, .mask = 0x0 },
+    .{ .name = "hup", .group = .control, .flags = 0xc, .bits = 0x400, .mask = 0x0 },
+    .{ .name = "cstopb", .group = .control, .flags = 0x4, .bits = 0x40, .mask = 0x0 },
+    .{ .name = "cread", .group = .control, .flags = 0x5, .bits = 0x80, .mask = 0x0 },
+    .{ .name = "clocal", .group = .control, .flags = 0x4, .bits = 0x800, .mask = 0x0 },
+    .{ .name = "crtscts", .group = .control, .flags = 0x4, .bits = 0x80000000, .mask = 0x0 },
+    .{ .name = "ignbrk", .group = .input, .flags = 0x6, .bits = 0x1, .mask = 0x0 },
+    .{ .name = "brkint", .group = .input, .flags = 0x5, .bits = 0x2, .mask = 0x0 },
+    .{ .name = "ignpar", .group = .input, .flags = 0x4, .bits = 0x4, .mask = 0x0 },
+    .{ .name = "parmrk", .group = .input, .flags = 0x4, .bits = 0x8, .mask = 0x0 },
+    .{ .name = "inpck", .group = .input, .flags = 0x4, .bits = 0x10, .mask = 0x0 },
+    .{ .name = "istrip", .group = .input, .flags = 0x4, .bits = 0x20, .mask = 0x0 },
+    .{ .name = "inlcr", .group = .input, .flags = 0x6, .bits = 0x40, .mask = 0x0 },
+    .{ .name = "igncr", .group = .input, .flags = 0x6, .bits = 0x80, .mask = 0x0 },
+    .{ .name = "icrnl", .group = .input, .flags = 0x5, .bits = 0x100, .mask = 0x0 },
+    .{ .name = "ixon", .group = .input, .flags = 0x4, .bits = 0x400, .mask = 0x0 },
+    .{ .name = "ixoff", .group = .input, .flags = 0x6, .bits = 0x1000, .mask = 0x0 },
+    .{ .name = "tandem", .group = .input, .flags = 0xc, .bits = 0x1000, .mask = 0x0 },
+    .{ .name = "iuclc", .group = .input, .flags = 0x6, .bits = 0x200, .mask = 0x0 },
+    .{ .name = "ixany", .group = .input, .flags = 0x6, .bits = 0x800, .mask = 0x0 },
+    .{ .name = "imaxbel", .group = .input, .flags = 0x5, .bits = 0x2000, .mask = 0x0 },
+    .{ .name = "iutf8", .group = .input, .flags = 0x6, .bits = 0x4000, .mask = 0x0 },
+    .{ .name = "opost", .group = .output, .flags = 0x5, .bits = 0x1, .mask = 0x0 },
+    .{ .name = "olcuc", .group = .output, .flags = 0x6, .bits = 0x2, .mask = 0x0 },
+    .{ .name = "ocrnl", .group = .output, .flags = 0x6, .bits = 0x8, .mask = 0x0 },
+    .{ .name = "onlcr", .group = .output, .flags = 0x5, .bits = 0x4, .mask = 0x0 },
+    .{ .name = "onocr", .group = .output, .flags = 0x6, .bits = 0x10, .mask = 0x0 },
+    .{ .name = "onlret", .group = .output, .flags = 0x6, .bits = 0x20, .mask = 0x0 },
+    .{ .name = "ofill", .group = .output, .flags = 0x6, .bits = 0x40, .mask = 0x0 },
+    .{ .name = "ofdel", .group = .output, .flags = 0x6, .bits = 0x80, .mask = 0x0 },
+    .{ .name = "nl1", .group = .output, .flags = 0x2, .bits = 0x100, .mask = 0x100 },
+    .{ .name = "nl0", .group = .output, .flags = 0x1, .bits = 0x0, .mask = 0x100 },
+    .{ .name = "cr3", .group = .output, .flags = 0x2, .bits = 0x600, .mask = 0x600 },
+    .{ .name = "cr2", .group = .output, .flags = 0x2, .bits = 0x400, .mask = 0x600 },
+    .{ .name = "cr1", .group = .output, .flags = 0x2, .bits = 0x200, .mask = 0x600 },
+    .{ .name = "cr0", .group = .output, .flags = 0x1, .bits = 0x0, .mask = 0x600 },
+    .{ .name = "tab3", .group = .output, .flags = 0x2, .bits = 0x1800, .mask = 0x1800 },
+    .{ .name = "tab2", .group = .output, .flags = 0x2, .bits = 0x1000, .mask = 0x1800 },
+    .{ .name = "tab1", .group = .output, .flags = 0x2, .bits = 0x800, .mask = 0x1800 },
+    .{ .name = "tab0", .group = .output, .flags = 0x1, .bits = 0x0, .mask = 0x1800 },
+    .{ .name = "bs1", .group = .output, .flags = 0x2, .bits = 0x2000, .mask = 0x2000 },
+    .{ .name = "bs0", .group = .output, .flags = 0x1, .bits = 0x0, .mask = 0x2000 },
+    .{ .name = "vt1", .group = .output, .flags = 0x2, .bits = 0x4000, .mask = 0x4000 },
+    .{ .name = "vt0", .group = .output, .flags = 0x1, .bits = 0x0, .mask = 0x4000 },
+    .{ .name = "ff1", .group = .output, .flags = 0x2, .bits = 0x8000, .mask = 0x8000 },
+    .{ .name = "ff0", .group = .output, .flags = 0x1, .bits = 0x0, .mask = 0x8000 },
+    .{ .name = "isig", .group = .local, .flags = 0x5, .bits = 0x1, .mask = 0x0 },
+    .{ .name = "icanon", .group = .local, .flags = 0x5, .bits = 0x2, .mask = 0x0 },
+    .{ .name = "iexten", .group = .local, .flags = 0x5, .bits = 0x8000, .mask = 0x0 },
+    .{ .name = "echo", .group = .local, .flags = 0x5, .bits = 0x8, .mask = 0x0 },
+    .{ .name = "echoe", .group = .local, .flags = 0x5, .bits = 0x10, .mask = 0x0 },
+    .{ .name = "crterase", .group = .local, .flags = 0xc, .bits = 0x10, .mask = 0x0 },
+    .{ .name = "echok", .group = .local, .flags = 0x5, .bits = 0x20, .mask = 0x0 },
+    .{ .name = "echonl", .group = .local, .flags = 0x6, .bits = 0x40, .mask = 0x0 },
+    .{ .name = "noflsh", .group = .local, .flags = 0x6, .bits = 0x80, .mask = 0x0 },
+    .{ .name = "xcase", .group = .local, .flags = 0x6, .bits = 0x4, .mask = 0x0 },
+    .{ .name = "tostop", .group = .local, .flags = 0x6, .bits = 0x100, .mask = 0x0 },
+    .{ .name = "echoprt", .group = .local, .flags = 0x6, .bits = 0x400, .mask = 0x0 },
+    .{ .name = "prterase", .group = .local, .flags = 0xc, .bits = 0x400, .mask = 0x0 },
+    .{ .name = "echoctl", .group = .local, .flags = 0x5, .bits = 0x200, .mask = 0x0 },
+    .{ .name = "ctlecho", .group = .local, .flags = 0xc, .bits = 0x200, .mask = 0x0 },
+    .{ .name = "echoke", .group = .local, .flags = 0x5, .bits = 0x800, .mask = 0x0 },
+    .{ .name = "crtkill", .group = .local, .flags = 0xc, .bits = 0x800, .mask = 0x0 },
+    .{ .name = "flusho", .group = .local, .flags = 0x6, .bits = 0x1000, .mask = 0x0 },
+    .{ .name = "extproc", .group = .local, .flags = 0x6, .bits = 0x10000, .mask = 0x0 },
+
+};
+
+const SttyChar = struct { name: []const u8, offset: usize, sane: u8 };
+const stty_chars = [_]SttyChar{
+    .{ .name = "intr", .offset = 0, .sane = 3 },
+    .{ .name = "quit", .offset = 1, .sane = 28 },
+    .{ .name = "erase", .offset = 2, .sane = 127 },
+    .{ .name = "kill", .offset = 3, .sane = 21 },
+    .{ .name = "eof", .offset = 4, .sane = 4 },
+    .{ .name = "eol", .offset = 11, .sane = 0 },
+    .{ .name = "eol2", .offset = 16, .sane = 0 },
+    .{ .name = "swtch", .offset = 7, .sane = 0 },
+    .{ .name = "start", .offset = 8, .sane = 17 },
+    .{ .name = "stop", .offset = 9, .sane = 19 },
+    .{ .name = "susp", .offset = 10, .sane = 26 },
+    .{ .name = "rprnt", .offset = 12, .sane = 18 },
+    .{ .name = "werase", .offset = 14, .sane = 23 },
+    .{ .name = "lnext", .offset = 15, .sane = 22 },
+    .{ .name = "flush", .offset = 13, .sane = 15 },
+};
+
 const TCGETS: u32 = 0x5401;
+const TCSETS: u32 = 0x5402;
+const TIOCGWINSZ: u32 = 0x5413;
+
+fn sttyFlag(t: *const linux.termios, g: SttyGroup) u32 {
+    return switch (g) {
+        .control => @bitCast(t.cflag),
+        .input => @bitCast(t.iflag),
+        .output => @bitCast(t.oflag),
+        .local => @bitCast(t.lflag),
+        .combination => 0,
+    };
+}
+
+fn sttySetFlag(t: *linux.termios, g: SttyGroup, value: u32) void {
+    switch (g) {
+        .control => t.cflag = @bitCast(value),
+        .input => t.iflag = @bitCast(value),
+        .output => t.oflag = @bitCast(value),
+        .local => t.lflag = @bitCast(value),
+        .combination => {},
+    }
+}
+
+fn baudValue(bits: u32) u32 {
+    return switch (bits & 0xf) {
+        0x0 => 0, 0x1 => 50, 0x2 => 75, 0x3 => 110, 0x4 => 134, 0x5 => 150,
+        0x6 => 200, 0x7 => 300, 0x8 => 600, 0x9 => 1200, 0xa => 1800,
+        0xb => 2400, 0xc => 4800, 0xd => 9600, 0xe => 19200, 0xf => 38400,
+        else => 0,
+    };
+}
+
+const Wrap = struct {
+    col: usize = 0,
+    fn text(self: *Wrap, text_msg: []const u8) void {
+        if (self.col > 0 and (text_msg.len == 0 or text_msg[0] != '\n')) {
+            self.col += 1;
+            if (self.col + text_msg.len >= 80) {
+                out("\n");
+                self.col = 0;
+            } else {
+                out(" ");
+            }
+        }
+        out(text_msg);
+        self.col += text_msg.len;
+        if (text_msg.len > 0 and text_msg[text_msg.len - 1] == '\n') self.col = 0;
+    }
+    fn newline(self: *Wrap) void {
+        if (self.col != 0) self.text("\n");
+    }
+    fn line(self: *Wrap, text_msg: []const u8) void {
+        var b: [128]u8 = undefined;
+        const joined = std.fmt.bufPrint(&b, "{s}\n", .{text_msg}) catch text_msg;
+        self.text(joined);
+    }
+};
+
+fn visibleChar(ch: u8, buf: *[8]u8) []const u8 {
+    if (ch == 0) return "<undef>";
+    var n: usize = 0;
+    var c = ch;
+    if (c >= 128) {
+        buf[n] = 'M'; buf[n + 1] = '-'; n += 2;
+        c -= 128;
+    }
+    if (c < 32 or c == 127) {
+        buf[n] = '^'; buf[n + 1] = c ^ 0x40; n += 2;
+    } else {
+        buf[n] = c; n += 1;
+    }
+    return buf[0..n];
+}
+
+fn sttyDisplay(t: *const linux.termios, all: bool, label: []const u8) void {
+    var w = Wrap{};
+    var speedbuf: [64]u8 = undefined;
+    const ispeed = baudValue(@bitCast(t.cflag));
+    const ospeed = baudValue(@bitCast(t.cflag));
+    const speed = if (ispeed == 0 or ispeed == ospeed) ospeed else ispeed;
+    w.text(std.fmt.bufPrint(&speedbuf, "speed {d} baud;", .{speed}) catch "speed 0 baud;");
+
+    if (all) {
+        // Match busybox's display_window_size(): a pty without a winsize
+        // reports this diagnostic on stderr before "line = 0;".
+        var win: [8]u8 align(4) = undefined;
+        const rc = linux.ioctl(0, TIOCGWINSZ, @intFromPtr(&win));
+        const row: u16 = @as(*const u16, @ptrCast(&win)).*;
+        if (linux.errno(rc) != .SUCCESS or row == 0) {
+            errout("stty: standard input: No such file or directory\n");
+        }
+    }
+    var lbuf: [64]u8 = undefined;
+    w.line(std.fmt.bufPrint(&lbuf, "line = {d};", .{t.line}) catch "line = 0;");
+
+    var cbuf: [8]u8 = undefined;
+    for (stty_chars) |ci| {
+        const ch = t.cc[ci.offset];
+        var ebuf: [64]u8 = undefined;
+        const vis = visibleChar(ch, &cbuf);
+        const entry_text = std.fmt.bufPrint(&ebuf, "{s} = {s};", .{ ci.name, vis }) catch "";
+        w.text(entry_text);
+    }
+    // Linux has VEOF != VMIN, so busybox always prints min/time.
+    var mbuf: [64]u8 = undefined;
+    w.text(std.fmt.bufPrint(&mbuf, "min = {d}; time = {d};", .{ t.cc[6], t.cc[5] }) catch "");
+    w.newline();
+    _ = label;
+
+    var prev: SttyGroup = .control;
+    for (stty_modes) |m| {
+        if (m.flags & OMIT != 0) continue;
+        if (m.group != prev) {
+            w.newline();
+            prev = m.group;
+        }
+        const cur = sttyFlag(t, m.group);
+        const mask: u32 = if (m.mask != 0) m.mask else m.bits;
+        if ((cur & mask) == m.bits) {
+            if (all or (m.flags & SANE_UNSET != 0)) w.text(m.name);
+        } else if ((all and (m.flags & REV != 0)) or
+            (!all and (m.flags & (SANE_SET | REV)) == (SANE_SET | REV)))
+        {
+            var nbuf: [64]u8 = undefined;
+            w.text(std.fmt.bufPrint(&nbuf, "-{s}", .{m.name}) catch "");
+        }
+    }
+    w.newline();
+}
+
+fn sttyRecoverable(t: *const linux.termios) void {
+    put("{x}:{x}:{x}:{x}", .{
+        @as(u32, @bitCast(t.iflag)), @as(u32, @bitCast(t.oflag)),
+        @as(u32, @bitCast(t.cflag)), @as(u32, @bitCast(t.lflag)),
+    });
+    for (0..32) |k| put(":{x}", .{if (k < t.cc.len) t.cc[k] else 0});
+    out("\n");
+}
+
+fn sttySane(t: *linux.termios) void {
+    for (stty_modes) |m| {
+        var cur = sttyFlag(t, m.group);
+        if (m.flags & SANE_SET != 0) cur |= m.bits;
+        if (m.flags & SANE_UNSET != 0) cur &= ~m.bits;
+        if (m.mask != 0 and m.flags & SANE_SET == 0 and m.flags & SANE_UNSET == 0) {
+            cur = (cur & ~m.mask) | m.bits;
+        }
+        sttySetFlag(t, m.group, cur);
+    }
+    t.cflag = @bitCast((@as(u32, @bitCast(t.cflag)) & ~@as(u32, 0xf)) | 0xf); // B38400
+    for (stty_chars) |ci| t.cc[ci.offset] = ci.sane;
+}
 
 pub fn sttyMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     setProg(argv);
@@ -1594,12 +2215,19 @@ pub fn sttyMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var device: ?[]const u8 = null;
     var show_all = false;
     var show_g = false;
+    var set_requested = false;
+    var sane = false;
     var i: usize = 1;
     while (i < av.len) : (i += 1) {
         const a = av[i];
         if (std.mem.eql(u8, a, "-F")) {
             i += 1;
-            if (i < av.len) device = av[i];
+            if (i >= av.len) usageDie("stty");
+            device = av[i];
+            continue;
+        }
+        if (a.len > 2 and std.mem.startsWith(u8, a, "-F")) {
+            device = a[2..];
             continue;
         }
         if (std.mem.eql(u8, a, "-a")) { show_all = true; continue; }
@@ -1608,6 +2236,21 @@ pub fn sttyMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             plain("invalid argument '{s}'", .{a});
             return 1;
         }
+        if (std.mem.eql(u8, a, "sane")) {
+            sane = true;
+            set_requested = true;
+            continue;
+        }
+        plain("invalid argument '{s}'", .{a});
+        return 1;
+    }
+    if (show_all and show_g) {
+        plain("-a and -g are mutually exclusive", .{});
+        return 1;
+    }
+    if ((show_all or show_g) and set_requested) {
+        plain("modes may not be set when -a or -g is used", .{});
+        return 1;
     }
     var fd: linux.fd_t = 0;
     var owned_fd: ?linux.fd_t = null;
@@ -1617,23 +2260,35 @@ pub fn sttyMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var label: []const u8 = "standard input";
     if (device) |dev| {
         label = dev;
-        const p = Path.init(dev) catch return 1;
-        fd = openFd(p.z(), .{ .ACCMODE = .RDONLY, .NOCTTY = true }, 0) orelse {
+        var zbuf: [4096:0]u8 = undefined;
+        const zp = zs(dev, &zbuf) orelse return 1;
+        fd = openFd(zp, .{ .ACCMODE = .RDONLY, .NOCTTY = true }, 0) orelse {
             msg(last_err, "can't open '{s}'", .{dev});
             return 1;
         };
         owned_fd = fd;
     }
-    var termios: [256]u8 align(8) = undefined;
-    const rc = linux.ioctl(fd, TCGETS, @intFromPtr(&termios));
+    var t: linux.termios = undefined;
+    var rc = linux.ioctl(fd, TCGETS, @intFromPtr(&t));
     if (linux.errno(rc) != .SUCCESS) {
         msg(errOf(rc), "{s}", .{label});
         return 1;
     }
-    // On a real terminal the termios settings would be printed/applied here;
-    // -a/-g are accepted but the sandbox has no terminal to query.
-    if (show_all) out("");
-    if (show_g) out("");
+    if (show_g) {
+        sttyRecoverable(&t);
+        return 0;
+    }
+    if (show_all) {
+        sttyDisplay(&t, true, label);
+        return 0;
+    }
+    if (sane) sttySane(&t);
+    rc = linux.ioctl(fd, TCSETS, @intFromPtr(&t));
+    if (linux.errno(rc) != .SUCCESS) {
+        msg(errOf(rc), "{s}", .{label});
+        return 1;
+    }
+    if (!set_requested) sttyDisplay(&t, false, label);
     return 0;
 }
 

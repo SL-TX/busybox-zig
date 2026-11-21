@@ -533,7 +533,7 @@ git commit -m "feat(parity): reference usage text and applet --help"
 - Create: `scripts/parity/run.py`
 - Create: `scripts/parity/sandbox.py`
 - Create: `scripts/parity/normalize.py`
-- Create: `scripts/parity/pty.py`
+- Create: `scripts/parity/pty_helper.py`
 - Create: `scripts/parity/ns.py`
 - Create: `scripts/parity/tests/test_run.py`
 - Create: `tests/parity/cases/_smoke/echo.json`

@@ -1,0 +1,30 @@
+{
+  "applet": "ls",
+  "name": "sort_extension",
+  "stdout": "c.c\nb.sh\na.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "c.c": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mw=="
+      }
+    },
+    "b.sh": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mg=="
+      }
+    },
+    "a.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQ=="
+      }
+    }
+  }
+}

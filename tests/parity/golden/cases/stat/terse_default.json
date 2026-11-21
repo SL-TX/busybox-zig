@@ -1,0 +1,16 @@
+{
+  "applet": "stat",
+  "name": "terse_default",
+  "stdout": "a 5 8 81a4 1000 1000 22 <MATCH>1 0 0 <MATCH><MATCH><MATCH>4096\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

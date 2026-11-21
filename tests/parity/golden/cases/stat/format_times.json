@@ -1,0 +1,16 @@
+{
+  "applet": "stat",
+  "name": "format_times",
+  "stdout": "<MATCH> <MATCH> <MATCH> x=<TIMESTAMP> +0000 y=<TIMESTAMP> +0000 z=<TIMESTAMP> +0000\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "stat",
+  "name": "format_ids",
+  "stdout": "n=a a=644 A=-rw-r--r-- F=regular file h=1 u=1000 U=sl g=1000 G=sl d=34 D=22 f=81a4 t=0 T=0 s=5 b=8 B=512 o=4096 <MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

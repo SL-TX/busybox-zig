@@ -313,7 +313,7 @@ pub const Applet = struct {
   указывается в кейсе явно.
 - `--golden` — режим для CI без референсного бинарника: сравнение с
   закоммиченными golden-файлами.
-- `scripts/parity/pty.py` — pty-сценарии для `vi`, `top`, `login`, `passwd`,
+- `scripts/parity/pty_helper.py` — pty-сценарии для `vi`, `top`, `login`, `passwd`,
   `more`, `less`, `script` и интерактивных оболочек.
 - `scripts/parity/ns.py` — запуск в network/mount/pid namespace, tmpfs и
   loop-образах для сетевых, mount и файловых апплетов.

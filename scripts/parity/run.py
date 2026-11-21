@@ -187,7 +187,7 @@ def observe(
     full_argv = [binary, *argv]
 
     if case.get("tty") or case.get("use_pty"):
-        from scripts.parity.pty import (  # lazy: optional helper
+        from scripts.parity.pty_helper import (  # lazy: optional helper
             PtyTimeout,
             PtyUnavailable,
             run_pty,
