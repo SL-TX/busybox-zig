@@ -699,13 +699,14 @@ usleep uudecode uuencode w wc who whoami yes
 
 Разбить на под-волны, каждая — отдельный sub-plan:
 
-- **7a. Простые:** `true false echo printf pwd basename dirname cat head tail
+- **7a. Простые (45):** `true false echo printf pwd basename dirname cat head tail
   wc tee yes sleep usleep nproc sync fsync link unlink rmdir mkdir mkfifo
   mknod mktemp readlink realpath truncate install printenv env id whoami
   logname groups users who w tty hostid uname arch nice nohup timeout`.
-- **7b. Текст/числа:** `sort uniq cut fold expand unexpand join nl od paste
-  split shuf comm cmp sum cksum crc32 base32 base64 md5sum sha1sum sha256sum
-  sha384sum sha3sum sha512sum uudecode uuencode factor expr`.
+- **7b. Текст/числа (34):** `sort uniq cut fold expand unexpand join nl od paste
+  split shuf comm sum cksum crc32 base32 base64 md5sum sha1sum sha256sum
+  sha384sum sha3sum sha512sum uudecode uuencode factor expr seq tac tr tsort
+  dos2unix unix2dos`.
 - **7c. Файлы/метаданные:** `cp mv rm ln ls du df chmod chown chgrp chroot
   touch stat dd date stty shred`.
 - **7d. Тестовые встроенные:** `test [ [[` (общий `test_main` с разбором
