@@ -1,0 +1,8 @@
+{
+  "applet": "rmmod",
+  "name": "multiple",
+  "stdout": "",
+  "stderr": "rmmod: remove 'foo': Operation not permitted\nrmmod: remove 'bar': Operation not permitted\n",
+  "exit": 0,
+  "tree": {}
+}

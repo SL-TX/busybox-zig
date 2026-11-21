@@ -1,0 +1,167 @@
+{
+  "applet": "depmod",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_version",
+      "argv": [
+        "-n",
+        "notaversion"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dry_run",
+      "argv": [
+        "-n",
+        "<TMP>/lib/modules/testver"
+      ],
+      "stdin": null,
+      "files": {
+        "lib/modules/testver/kernel/drivers/foo.ko": "ELF\u0000alias=pci:v0000\u0000alias=usb:1\u0000depends=modb,moda\u0000__ksymtab_mysym\u0000__ksymtab_gpl\u0000",
+        "lib/modules/testver/kernel/drivers/bar.ko": "ELF\u0000alias=bar-alias\u0000__ksymtab_barsym\u0000",
+        "lib/modules/testver/kernel/drivers/notes.txt": "not a module"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "write_depfile",
+      "argv": [
+        "<TMP>/lib/modules/testver"
+      ],
+      "stdin": null,
+      "files": {
+        "lib/modules/testver/kernel/drivers/foo.ko": "ELF\u0000alias=pci:v0000\u0000alias=usb:1\u0000depends=modb,moda\u0000__ksymtab_mysym\u0000__ksymtab_gpl\u0000",
+        "lib/modules/testver/kernel/drivers/bar.ko": "ELF\u0000alias=bar-alias\u0000__ksymtab_barsym\u0000",
+        "lib/modules/testver/kernel/drivers/notes.txt": "not a module"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "ignored_options",
+      "argv": [
+        "-n",
+        "-a",
+        "-A",
+        "-e",
+        "-F",
+        "System.map",
+        "-q",
+        "-r",
+        "-u",
+        "<TMP>/lib/modules/testver"
+      ],
+      "stdin": null,
+      "files": {
+        "lib/modules/testver/kernel/drivers/foo.ko": "ELF\u0000alias=pci:v0000\u0000alias=usb:1\u0000depends=modb,moda\u0000__ksymtab_mysym\u0000__ksymtab_gpl\u0000",
+        "lib/modules/testver/kernel/drivers/bar.ko": "ELF\u0000alias=bar-alias\u0000__ksymtab_barsym\u0000",
+        "lib/modules/testver/kernel/drivers/notes.txt": "not a module"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_modules",
+      "argv": [
+        "-n",
+        "<TMP>/lib/modules/testver"
+      ],
+      "stdin": null,
+      "files": {
+        "lib/modules/testver/kernel/drivers/notes.txt": "hi"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "name_dashes",
+      "argv": [
+        "-n",
+        "<TMP>/lib/modules/testver"
+      ],
+      "stdin": null,
+      "files": {
+        "lib/modules/testver/kernel/drivers/foo.ko": "ELF\u0000alias=pci:v0000\u0000alias=usb:1\u0000depends=modb,moda\u0000__ksymtab_mysym\u0000__ksymtab_gpl\u0000",
+        "lib/modules/testver/kernel/drivers/bar.ko": "ELF\u0000alias=bar-alias\u0000__ksymtab_barsym\u0000",
+        "lib/modules/testver/kernel/drivers/notes.txt": "not a module",
+        "lib/modules/testver/kernel/drivers/x-bar.ko": "ELF\u0000alias=my-alias\u0000depends=other-mod\u0000__ksymtab_my-sym\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    }
+  ]
+}

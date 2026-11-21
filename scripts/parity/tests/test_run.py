@@ -55,6 +55,16 @@ class HarnessSelfTest(unittest.TestCase):
         )
         self.assertEqual(result.status, "pass", result.diff)
 
+    def test_tmp_path_is_substituted_in_argv(self):
+        # A case can build a fake tree at a per-root absolute path by placing
+        # <TMP> in argv; both observations must see their own sandbox root.
+        result = run_case(
+            binary=sys.executable,
+            argv=["-c", "import sys; print(sys.argv[1])", "<TMP>"],
+            case=make_case(expect={"exit": 0, "stdout": "<TMP>\n", "stderr": ""}),
+        )
+        self.assertEqual(result.status, "pass", result.diff)
+
     def test_different_output_fails(self):
         result = compare(expected="a\n", actual="b\n")
         self.assertEqual(result.status, "fail")

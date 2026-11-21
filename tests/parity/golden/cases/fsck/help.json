@@ -1,0 +1,8 @@
+{
+  "applet": "fsck",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fsck [-ANPRTV] [-t FSTYPE] [FS_OPTS] [BLOCKDEV]...\n\nCheck and repair filesystems\n\n\t-A\tWalk /etc/fstab and check all filesystems\n\t-N\tDon't execute, just show what would be done\n\t-P\tWith -A, check filesystems in parallel\n\t-R\tWith -A, skip the root filesystem\n\t-T\tDon't show title on startup\n\t-V\tVerbose\n\t-t TYPE\tList of filesystem types to check\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

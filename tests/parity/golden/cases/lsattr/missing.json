@@ -1,0 +1,8 @@
+{
+  "applet": "lsattr",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "lsattr: can't stat 'missing': No such file or directory\n",
+  "exit": 0,
+  "tree": {}
+}

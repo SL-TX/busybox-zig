@@ -1,0 +1,8 @@
+{
+  "applet": "modprobe",
+  "name": "already_loaded_quiet",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

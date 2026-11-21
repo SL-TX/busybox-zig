@@ -1,0 +1,135 @@
+{
+  "applet": "insmod",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z",
+        "x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "missing.ko"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "fake_module",
+      "argv": [
+        "a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "with_params",
+      "argv": [
+        "a.ko",
+        "foo=1",
+        "bar=two"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "quiet_flag",
+      "argv": [
+        "-q",
+        "a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "not_a_module",
+      "argv": [
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "plain text"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

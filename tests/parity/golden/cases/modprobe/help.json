@@ -1,0 +1,8 @@
+{
+  "applet": "modprobe",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: modprobe [-rq] MODULE [SYMBOL=VALUE]...\n\n\t-r\tRemove MODULE\n\t-q\tQuiet\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

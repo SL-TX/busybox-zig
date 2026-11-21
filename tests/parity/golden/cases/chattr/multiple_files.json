@@ -1,0 +1,23 @@
+{
+  "applet": "chattr",
+  "name": "multiple_files",
+  "stdout": "",
+  "stderr": "chattr: setting flags on f: Operation not permitted\nchattr: setting flags on g: Operation not permitted\n",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eQ=="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

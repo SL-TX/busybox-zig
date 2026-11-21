@@ -1,0 +1,288 @@
+{
+  "applet": "modinfo",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z",
+        "x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "all_fields",
+      "argv": [
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "author",
+      "argv": [
+        "-a",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "description",
+      "argv": [
+        "-d",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "license",
+      "argv": [
+        "-l",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "parm",
+      "argv": [
+        "-p",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "filename",
+      "argv": [
+        "-n",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "field",
+      "argv": [
+        "-F",
+        "alias",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "vermagic",
+      "argv": [
+        "-F",
+        "vermagic",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "nul_terminated",
+      "argv": [
+        "-0",
+        "-a",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "two_fields",
+      "argv": [
+        "-a",
+        "-l",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    },
+    {
+      "name": "missing_module",
+      "argv": [
+        "nosuchmod_xyz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_field",
+      "argv": [
+        "-F",
+        "nosuchfield",
+        "<TMP>/a.ko"
+      ],
+      "stdin": null,
+      "files": {
+        "a.ko": "ELF\u0000author=Joe Dev\u0000description=A test module\u0000license=GPL\u0000parm=foo=1\u0000alias=pci:v0000\u0000version=1.2\u0000srcversion=ABC\u0000depends=modb\u0000__ksymtab_mysym\u0000vermagic=5.15-test SMP\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "tmp_path"
+      ],
+      "requires": []
+    }
+  ]
+}

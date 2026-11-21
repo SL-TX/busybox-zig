@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "set_projid",
+  "stdout": "",
+  "stderr": "chattr: setting project ID on f: Operation not supported\n",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

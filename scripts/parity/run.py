@@ -184,7 +184,11 @@ def observe(
     rules = case.get("normalize") or []
     env_map = _environment(case, root, env)
     timeout = (timeout_ms if timeout_ms is not None else case.get("timeout_ms", 5000)) / 1000.0
-    full_argv = [binary, *argv]
+    # A case may refer to its own sandbox with the portable <TMP> placeholder
+    # in argv (env values already support it). Substituting per-root keeps the
+    # two observations independent while letting a case build a fake module
+    # tree inside each sandbox.
+    full_argv = [binary, *(a.replace("<TMP>", root) for a in argv)]
 
     if case.get("tty") or case.get("use_pty"):
         from scripts.parity.pty_helper import (  # lazy: optional helper

@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "set_version",
+  "stdout": "",
+  "stderr": "chattr: setting version on f: Inappropriate ioctl for device\n",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

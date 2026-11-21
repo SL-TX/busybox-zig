@@ -1,0 +1,16 @@
+{
+  "applet": "modinfo",
+  "name": "nul_terminated",
+  "stdout": "Joe Dev\u0000",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a.ko": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "f0VMRgBhdXRob3I9Sm9lIERldgBkZXNjcmlwdGlvbj1BIHRlc3QgbW9kdWxlAGxpY2Vuc2U9R1BMAHBhcm09Zm9vPTEAYWxpYXM9cGNpOnYwMDAwAHZlcnNpb249MS4yAHNyY3ZlcnNpb249QUJDAGRlcGVuZHM9bW9kYgBfX2tzeW10YWJfbXlzeW0AdmVybWFnaWM9NS4xNS10ZXN0IFNNUAA="
+      }
+    }
+  }
+}

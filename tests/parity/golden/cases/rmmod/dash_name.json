@@ -1,0 +1,8 @@
+{
+  "applet": "rmmod",
+  "name": "dash_name",
+  "stdout": "",
+  "stderr": "rmmod: remove 'some_module': Operation not permitted\n",
+  "exit": 0,
+  "tree": {}
+}

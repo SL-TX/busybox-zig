@@ -1,0 +1,8 @@
+{
+  "applet": "insmod",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: insmod FILE [SYMBOL=VALUE]...\n\nLoad kernel module\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

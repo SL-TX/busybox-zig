@@ -1,0 +1,20 @@
+{
+  "applet": "lsattr",
+  "name": "dir_contents",
+  "stdout": "-------------------- sub/a\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "sub": {
+      "type": "dir",
+      "mode": 493
+    },
+    "sub/a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQ=="
+      }
+    }
+  }
+}
