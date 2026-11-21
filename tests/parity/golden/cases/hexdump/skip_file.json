@@ -1,0 +1,16 @@
+{
+  "applet": "hexdump",
+  "name": "skip_file",
+  "stdout": "0000002 6463 6665                              \n0000006\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "data": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjZGVm"
+      }
+    }
+  }
+}

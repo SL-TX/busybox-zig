@@ -110,6 +110,87 @@ pub fn setsid_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return @intCast(c.runChild(o.args));
 }
 
+const cap_names = [_][]const u8{
+    "chown", "dac_override", "dac_read_search", "fowner", "fsetid", "kill",
+    "setgid", "setuid", "setpcap", "linux_immutable", "net_bind_service",
+    "net_broadcast", "net_admin", "net_raw", "ipc_lock", "ipc_owner",
+    "sys_module", "sys_rawio", "sys_chroot", "sys_ptrace", "sys_pacct",
+    "sys_admin", "sys_boot", "sys_nice", "sys_resource", "sys_time",
+    "sys_tty_config", "mknod", "lease", "audit_write", "audit_control",
+    "setfcap", "mac_override", "mac_admin", "syslog", "wake_alarm",
+    "block_suspend", "audit_read", "cap_38", "cap_39", "cap_40",
+};
+
+fn statusField(line: []const u8, key: []const u8) ?[]const u8 {
+    if (!std.mem.startsWith(u8, line, key) or line.len <= key.len or line[key.len] != ':') return null;
+    return std.mem.trim(u8, line[key.len + 1 ..], " \t");
+}
+
+fn printCaps(label: []const u8, mask: u64) void {
+    c.put("{s}: ", .{label});
+    var printed = false;
+    for (cap_names, 0..) |name, i| {
+        if (i >= 64) break;
+        if ((mask & (@as(u64, 1) << @intCast(i))) == 0) continue;
+        if (printed) c.out(",");
+        c.out(name);
+        printed = true;
+    }
+    if (!printed) c.out("[none]");
+    c.out("\n");
+}
+
+/// Read-only capability dump, equivalent to the reference's dump().
+fn setprivDump() c_int {
+    const txt = c.readFile("/proc/self/status") catch return 1;
+    var uid: []const u8 = "0";
+    var euid: []const u8 = "0";
+    var gid: []const u8 = "0";
+    var egid: []const u8 = "0";
+    var groups: []const u8 = "";
+    var inh: u64 = 0;
+    var amb: u64 = 0;
+    var bnd: u64 = 0;
+    var nnp: []const u8 = "0";
+    var lines = std.mem.splitScalar(u8, txt, '\n');
+    while (lines.next()) |line| {
+        if (statusField(line, "Uid")) |v| {
+            var it = std.mem.tokenizeAny(u8, v, " \t");
+            uid = it.next() orelse uid;
+            euid = it.next() orelse euid;
+        } else if (statusField(line, "Gid")) |v| {
+            var it = std.mem.tokenizeAny(u8, v, " \t");
+            gid = it.next() orelse gid;
+            egid = it.next() orelse egid;
+        } else if (statusField(line, "Groups")) |v| {
+            groups = v;
+        } else if (statusField(line, "CapInh")) |v| {
+            inh = std.fmt.parseInt(u64, v, 16) catch 0;
+        } else if (statusField(line, "CapAmb")) |v| {
+            amb = std.fmt.parseInt(u64, v, 16) catch 0;
+        } else if (statusField(line, "CapBnd")) |v| {
+            bnd = std.fmt.parseInt(u64, v, 16) catch 0;
+        } else if (statusField(line, "NoNewPrivs")) |v| {
+            nnp = v;
+        }
+    }
+    c.put("uid: {s}\neuid: {s}\ngid: {s}\negid: {s}\n", .{ uid, euid, gid, egid });
+    c.out("Supplementary groups: ");
+    var first = true;
+    var git = std.mem.tokenizeAny(u8, groups, " \t");
+    while (git.next()) |g| {
+        if (!first) c.out(",");
+        c.out(g);
+        first = false;
+    }
+    c.out("\n");
+    c.put("no_new_privs: {s}\n", .{nnp});
+    printCaps("Inheritable capabilities", inh);
+    printCaps("Ambient capabilities", amb);
+    printCaps("Capability bounding set", bnd);
+    return 0;
+}
+
 pub fn setpriv_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = c.argsFrom(argv, argc);
     c.setProg(argv);
@@ -121,6 +202,10 @@ pub fn setpriv_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         .{ .name = "bounding-set", .has_arg = .required, .val = 'b' },
         .{ .name = "clear-groups", .val = 'c' },
     });
+    if (c.flagged(o, 0)) {
+        if (o.args.len != 0) c.usageDie("setpriv");
+        return setprivDump();
+    }
     if (o.args.len == 0) c.usageDie("setpriv");
     return @intCast(c.runChild(o.args));
 }

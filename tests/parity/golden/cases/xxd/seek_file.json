@@ -1,0 +1,16 @@
+{
+  "applet": "xxd",
+  "name": "seek_file",
+  "stdout": "00000002: 6364 6566                                cdef\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "data": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjZGVm"
+      }
+    }
+  }
+}

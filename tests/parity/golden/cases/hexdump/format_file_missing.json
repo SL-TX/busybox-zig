@@ -1,0 +1,8 @@
+{
+  "applet": "hexdump",
+  "name": "format_file_missing",
+  "stdout": "",
+  "stderr": "hexdump: can't open '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

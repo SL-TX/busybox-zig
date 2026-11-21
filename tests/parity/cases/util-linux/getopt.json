@@ -139,6 +139,26 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "name_option",
+      "argv": [
+        "-n",
+        "PROG",
+        "-o",
+        "ab:",
+        "--",
+        "-x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

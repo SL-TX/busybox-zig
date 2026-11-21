@@ -47,6 +47,21 @@
         "timestamp"
       ],
       "requires": []
+    },
+    {
+      "name": "dump",
+      "argv": [
+        "-d"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

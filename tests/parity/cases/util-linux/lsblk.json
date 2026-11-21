@@ -29,9 +29,7 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [],
-      "requires": [
-        "disk"
-      ]
+      "requires": []
     },
     {
       "name": "invalid_option",

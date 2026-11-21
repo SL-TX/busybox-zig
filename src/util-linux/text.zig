@@ -342,10 +342,12 @@ fn parseNum(s: []const u8) ?usize {
     return std.fmt.parseInt(usize, body, base) catch null;
 }
 
+var bad_num = false;
 fn val(s: []const u8, name: []const u8) usize {
+    _ = name;
     return parseNum(s) orelse {
         c.plain("invalid number '{s}'", .{s});
-        _ = name;
+        bad_num = true;
         return 0;
     };
 }
@@ -396,7 +398,13 @@ pub fn xxd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         c.plain("invalid option -- '{c}'", .{a[1]});
         c.usageDie("xxd");
     }
-    if (i >= args.len or std.mem.eql(u8, args[i], "-")) {
+    if (bad_num) return 1;
+    const from_stdin = (i >= args.len or std.mem.eql(u8, args[i], "-"));
+    if (from_stdin and skip > 0) {
+        c.msg(29, "stdin", .{}); // ESPIPE -> "Illegal seek"
+        return 1;
+    }
+    if (from_stdin) {
         if (reverse) {
             const text = c.readStdin();
             var outb: std.ArrayList(u8) = .empty;
@@ -427,47 +435,61 @@ pub fn xxd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         if (len) |l| {
             if (l < data.len) data = data[0..l];
         }
-        if (plain) {
-            for (data) |b| { const h = hexLower(b); c.out(&h); }
-            c.out("\n");
-        } else if (inc_style) {
-            c.out("  ");
-            for (data, 0..) |b, k| {
-                if (k != 0) c.out(" ");
-                c.put("0x{x:0>2},", .{b});
-            }
-            c.out("\n");
-        } else {
-            var off: usize = 0;
-            while (off < data.len) : (off += per_line) {
-                var line: [600]u8 = undefined;
-                var pos: usize = 0;
-                var obuf: [16]u8 = undefined;
-                const offs = std.fmt.bufPrint(&obuf, "{x:0>8}", .{add_off + off}) catch break;
-                @memcpy(line[pos .. pos + offs.len], offs); pos += offs.len;
-                line[pos] = ':'; pos += 1;
-                line[pos] = ' '; pos += 1;
-                const hexstart = pos;
-                const n = @min(per_line, data.len - off);
-                var gi: usize = 0;
-                while (gi < n) : (gi += group) {
-                    const lim = @min(gi + group, n);
-                    var kk = gi;
-                    while (kk < lim) : (kk += 1) emitHex(&line, &pos, data[off + kk]);
-                    if (lim < n) { line[pos] = ' '; pos += 1; }
-                }
-                const field: usize = 2 * per_line + per_line / group + 1;
-                var pad = field -| (pos - hexstart);
-                while (pad > 0) : (pad -= 1) { line[pos] = ' '; pos += 1; }
-                c.out(line[0..pos]);
-                for (data[off .. off + n]) |b| c.out(&[_]u8{if (isPrint(b)) b else '.'});
-                c.out("\n");
-            }
-        }
+        xxdEmit(data, add_off, group, per_line, plain, inc_style);
         return 0;
     }
-    c.plain("can't open '{s}': No such file or directory", .{args[i]});
-    return 1;
+    const fdata = c.readFile(args[i]) catch {
+        c.msg(2, "can't open '{s}'", .{args[i]});
+        return 1;
+    };
+    var data = fdata;
+    if (skip >= data.len) data = &.{} else data = data[skip..];
+    if (len) |l| { if (l < data.len) data = data[0..l]; }
+    xxdEmit(data, add_off + skip, group, per_line, plain, inc_style);
+    return 0;
+}
+
+fn xxdEmit(data: []const u8, base: usize, group: usize, per_line: usize, plain: bool, inc_style: bool) void {
+    if (data.len == 0) return;
+    if (plain) {
+        for (data) |b| { const h = hexLower(b); c.out(&h); }
+        c.out("\n");
+        return;
+    }
+    if (inc_style) {
+        c.out("  ");
+        for (data, 0..) |b, k| {
+            if (k != 0) c.out(" ");
+            c.put("0x{x:0>2},", .{b});
+        }
+        c.out("\n");
+        return;
+    }
+    var off: usize = 0;
+    while (off < data.len) : (off += per_line) {
+        var line: [600]u8 = undefined;
+        var pos: usize = 0;
+        var obuf: [16]u8 = undefined;
+        const offs = std.fmt.bufPrint(&obuf, "{x:0>8}", .{base + off}) catch break;
+        @memcpy(line[pos .. pos + offs.len], offs); pos += offs.len;
+        line[pos] = ':'; pos += 1;
+        line[pos] = ' '; pos += 1;
+        const hexstart = pos;
+        const n = @min(per_line, data.len - off);
+        var gi: usize = 0;
+        while (gi < n) : (gi += group) {
+            const lim = @min(gi + group, n);
+            var kk = gi;
+            while (kk < lim) : (kk += 1) emitHex(&line, &pos, data[off + kk]);
+            if (lim < n) { line[pos] = ' '; pos += 1; }
+        }
+        const field: usize = 2 * per_line + per_line / group + 1;
+        var pad = field -| (pos - hexstart);
+        while (pad > 0) : (pad -= 1) { line[pos] = ' '; pos += 1; }
+        c.out(line[0..pos]);
+        for (data[off .. off + n]) |b| c.out(&[_]u8{if (isPrint(b)) b else '.'});
+        c.out("\n");
+    }
 }
 
 // -------------------------------------------------------- hexdump / hd -----
@@ -511,6 +533,7 @@ fn emitCanonical(data: []const u8) void {
     c.out(fin); c.out("\n");
 }
 var line_final: [32]u8 = undefined;
+var dump_base: usize = 0;
 
 fn emitDefault(data: []const u8) void {
     if (data.len == 0) return;
@@ -519,7 +542,7 @@ fn emitDefault(data: []const u8) void {
         var line: [200]u8 = undefined;
         var pos: usize = 0;
         var obuf: [16]u8 = undefined;
-        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{off}) catch break;
+        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{dump_base + off}) catch break;
         @memcpy(line[pos .. pos + offs.len], offs); pos += offs.len;
         line[pos] = ' '; pos += 1;
         const n = @min(16, data.len - off);
@@ -540,7 +563,7 @@ fn emitDefault(data: []const u8) void {
         c.out(line[0..47]); c.out("\n");
         _ = n;
     }
-    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{data.len}) catch return;
+    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{dump_base + data.len}) catch return;
     c.out(fin); c.out("\n");
 }
 
@@ -551,7 +574,7 @@ fn emitOctal(data: []const u8) void {
         var line: [200]u8 = undefined;
         var pos: usize = 0;
         var obuf: [16]u8 = undefined;
-        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{off}) catch break;
+        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{dump_base + off}) catch break;
         @memcpy(line[pos .. pos + offs.len], offs); pos += offs.len;
         line[pos] = ' '; pos += 1;
         for (0..16) |k| {
@@ -563,7 +586,7 @@ fn emitOctal(data: []const u8) void {
         }
         c.out(line[0..71]); c.out("\n");
     }
-    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{data.len}) catch return;
+    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{dump_base + data.len}) catch return;
     c.out(fin); c.out("\n");
 }
 
@@ -575,7 +598,7 @@ fn emitChar(data: []const u8) void {
         @memset(&line, ' ');
         var pos: usize = 0;
         var obuf: [16]u8 = undefined;
-        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{off}) catch break;
+        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{dump_base + off}) catch break;
         @memcpy(line[pos .. pos + offs.len], offs); pos += offs.len;
         pos = 10;
         for (0..16) |k| {
@@ -584,7 +607,7 @@ fn emitChar(data: []const u8) void {
         }
         c.out(line[0..71]); c.out("\n");
     }
-    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{data.len}) catch return;
+    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{dump_base + data.len}) catch return;
     c.out(fin); c.out("\n");
 }
 
@@ -596,7 +619,7 @@ fn emitHexWords(data: []const u8, width: usize, lead: usize) void {
         @memset(&line, ' ');
         var pos: usize = 0;
         var obuf: [16]u8 = undefined;
-        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{off}) catch break;
+        const offs = std.fmt.bufPrint(&obuf, "{x:0>7}", .{dump_base + off}) catch break;
         @memcpy(line[pos .. pos + offs.len], offs); pos += offs.len;
         line[pos] = ' '; pos += 1;
         pos += lead;
@@ -615,7 +638,7 @@ fn emitHexWords(data: []const u8, width: usize, lead: usize) void {
         }
         c.out(line[0..71]); c.out("\n");
     }
-    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{data.len}) catch return;
+    const fin = std.fmt.bufPrint(&line_final, "{x:0>7}", .{dump_base + data.len}) catch return;
     c.out(fin); c.out("\n");
 }
 
@@ -646,6 +669,10 @@ pub fn hexdump_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     var oct = false;
     var chars = false;
     var hexw = false;
+    var dump_len: ?usize = null;
+    var skip: usize = 0;
+    var fmt: ?[]const u8 = null;
+    var fmt_file: ?[]const u8 = null;
     var i: usize = 1;
     while (i < args.len and args[i].len > 1 and args[i][0] == '-') : (i += 1) {
         const a = args[i];
@@ -654,15 +681,35 @@ pub fn hexdump_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         if (std.mem.eql(u8, a, "-c")) { chars = true; continue; }
         if (std.mem.eql(u8, a, "-x")) { hexw = true; continue; }
         if (std.mem.eql(u8, a, "-v") or std.mem.eql(u8, a, "-d") or std.mem.eql(u8, a, "-o")) continue;
-        if (std.mem.eql(u8, a, "-n") or std.mem.eql(u8, a, "-s") or std.mem.eql(u8, a, "-e") or std.mem.eql(u8, a, "-f")) {
-            i += 1; if (i >= args.len) c.usageDie("hexdump"); continue;
+        if (std.mem.eql(u8, a, "-n") or std.mem.eql(u8, a, "-s")) {
+            i += 1;
+            if (i >= args.len) c.usageDie("hexdump");
+            const v = parseNum(args[i]) orelse {
+                c.plain("invalid number '{s}'", .{args[i]});
+                return 1;
+            };
+            if (a[1] == 'n') dump_len = v else skip = v;
+            continue;
+        }
+        if (std.mem.eql(u8, a, "-e")) {
+            i += 1; if (i >= args.len) c.usageDie("hexdump");
+            fmt = args[i]; continue;
+        }
+        if (std.mem.eql(u8, a, "-f")) {
+            i += 1; if (i >= args.len) c.usageDie("hexdump");
+            fmt_file = args[i]; continue;
         }
         c.plain("invalid option -- '{c}'", .{a[1]});
         c.usageDie("hexdump");
     }
     const paths = args[i..];
+    const from_stdin = paths.len == 0;
+    if (from_stdin and skip > 0) {
+        c.msg(29, "stdin", .{}); // ESPIPE
+        return 1;
+    }
     var data: []u8 = undefined;
-    if (paths.len == 0) {
+    if (from_stdin) {
         data = c.readStdin();
     } else {
         data = c.readFile(paths[0]) catch {
@@ -670,7 +717,86 @@ pub fn hexdump_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             return 1;
         };
     }
+    dump_base = if (from_stdin) 0 else skip;
+    if (skip > 0) {
+        if (skip >= data.len) data = &.{} else data = data[skip..];
+    }
+    if (dump_len) |l| { if (l < data.len) data = data[0..l]; }
+    if (fmt_file) |ff| {
+        const ftxt = c.readFile(ff) catch {
+            c.msg(2, "can't open '{s}'", .{ff});
+            return 1;
+        };
+        var lines = std.mem.splitScalar(u8, ftxt, '\n');
+        while (lines.next()) |ln| {
+            const t = std.mem.trim(u8, ln, " \t\r");
+            if (t.len == 0 or t[0] == '#') continue;
+            fmt = t; break;
+        }
+    }
+    if (fmt) |f| return emitFormat(data, f);
     if (canonical) emitCanonical(data) else if (oct) emitOctal(data) else if (chars) emitChar(data) else if (hexw) emitHexWords(data, 8, 3) else emitDefault(data);
+    return 0;
+}
+
+/// Minimal od-style format evaluator for the deterministic -e/-f cases:
+/// handles a leading "N/S" group count and a single quoted conversion
+/// (%02x, %03o, %04x, %d, %c) with literal text and \n escapes.
+fn emitFormat(data: []const u8, fmt: []const u8) u8 {
+    var f = std.mem.trim(u8, fmt, " \t");
+    if (f.len < 2 or f[0] != '"' or f[f.len - 1] != '"') {
+        c.plain("bad format {{{s}}}", .{fmt});
+        return 1;
+    }
+    f = f[1 .. f.len - 1];
+    var group: usize = 2;
+    if (std.mem.indexOfScalar(u8, f, '/')) |slash| {
+        group = parseNum(f[0..slash]) orelse 1;
+        if (group == 0) group = 1;
+        if (slash + 1 < f.len and std.ascii.isDigit(f[slash + 1])) {
+            // skip explicit byte count (e.g. 16/1)
+        }
+    }
+    const q1 = std.mem.indexOfScalar(u8, f, '"');
+    const inner = if (q1) |a| blk: {
+        const q2 = std.mem.indexOfScalar(u8, f[a + 1 ..], '"') orelse break :blk f[a + 1 ..];
+        break :blk f[a + 1 .. a + 1 + q2];
+    } else f;
+    var off: usize = 0;
+    while (off < data.len) : (off += group) {
+        var word: u64 = 0;
+        for (0..group) |k| {
+            if (off + k >= data.len) break;
+            word |= @as(u64, data[off + k]) << @intCast(8 * k);
+        }
+        var j: usize = 0;
+        while (j < inner.len) {
+            if (inner[j] == '\\' and j + 1 < inner.len and inner[j + 1] == 'n') {
+                c.out("\n"); j += 2; continue;
+            }
+            if (inner[j] == '%' and j + 1 < inner.len) {
+                var end = j + 1;
+                while (end < inner.len and std.ascii.isAlphanumeric(inner[end])) end += 1;
+                const spec = inner[j..end];
+                var b: [32]u8 = undefined;
+                const out = if (std.mem.eql(u8, spec, "%02x") or std.mem.eql(u8, spec, "%x"))
+                    std.fmt.bufPrint(&b, "{x:0>2}", .{word}) catch ""
+                else if (std.mem.eql(u8, spec, "%04x"))
+                    std.fmt.bufPrint(&b, "{x:0>4}", .{word}) catch ""
+                else if (std.mem.eql(u8, spec, "%03o") or std.mem.eql(u8, spec, "%o"))
+                    std.fmt.bufPrint(&b, "{o:0>3}", .{word}) catch ""
+                else if (std.mem.eql(u8, spec, "%d"))
+                    std.fmt.bufPrint(&b, "{d}", .{word}) catch ""
+                else if (std.mem.eql(u8, spec, "%c"))
+                    std.fmt.bufPrint(&b, "{c}", .{@as(u8, @truncate(word))}) catch ""
+                else spec;
+                c.out(out);
+                j = end; continue;
+            }
+            c.out(inner[j .. j + 1]);
+            j += 1;
+        }
+    }
     return 0;
 }
 
@@ -728,6 +854,7 @@ pub fn getopt_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     var quiet_output = false;
     var quote = true;
     var test_only = false;
+    var progname: ?[]const u8 = null;
     var optstr: ?[]const u8 = null;
     var own_i: usize = 1;
     var compat = false;
@@ -745,6 +872,7 @@ pub fn getopt_main(argc: c_int, argv: [*][*:0]const u8) c_int {
                 optstr = args[own_i];
             } else if (std.mem.eql(u8, a, "-n")) {
                 own_i += 1; if (own_i >= args.len) c.usageDie("getopt");
+                progname = args[own_i];
             } else if (std.mem.eql(u8, a, "-l") or std.mem.eql(u8, a, "-s")) {
                 own_i += 1; if (own_i >= args.len) c.usageDie("getopt");
             } else if (std.mem.eql(u8, a, "-q")) quiet_errors = true
@@ -759,6 +887,7 @@ pub fn getopt_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         }
     }
     if (test_only) return 4;
+    if (progname) |pn| c.setProgramName(pn);
     var start: usize = if (compat) 1 else own_i;
     if (optstr == null) {
         if (start >= args.len) {

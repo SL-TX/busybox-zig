@@ -1,0 +1,8 @@
+{
+  "applet": "xxd",
+  "name": "columns",
+  "stdout": "00000000: 6162 6364 6566 6768  abcdefgh\n00000008: 696a                 ij\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

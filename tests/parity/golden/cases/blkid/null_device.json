@@ -1,0 +1,8 @@
+{
+  "applet": "blkid",
+  "name": "null_device",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

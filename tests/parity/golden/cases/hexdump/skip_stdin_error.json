@@ -1,0 +1,8 @@
+{
+  "applet": "hexdump",
+  "name": "skip_stdin_error",
+  "stdout": "",
+  "stderr": "hexdump: stdin: Illegal seek\n",
+  "exit": 1,
+  "tree": {}
+}

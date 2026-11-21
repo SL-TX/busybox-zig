@@ -19,6 +19,10 @@ pub fn setProg(argv: [*][*:0]const u8) void {
     bb.env.setProgramName(std.fs.path.basename(std.mem.span(argv[0])));
 }
 
+pub fn setProgramName(name: []const u8) void {
+    bb.env.setProgramName(name);
+}
+
 pub fn out(bytes: []const u8) void {
     var done: usize = 0;
     while (done < bytes.len) {

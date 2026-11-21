@@ -1,0 +1,8 @@
+{
+  "applet": "acpid",
+  "name": "debug",
+  "stdout": "",
+  "stderr": "acpid: can't change directory to '/etc/acpi': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

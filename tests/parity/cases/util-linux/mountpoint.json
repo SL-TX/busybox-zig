@@ -93,6 +93,58 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "dev_major_minor",
+      "argv": [
+        "-d",
+        "/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:^[0-9]+:[0-9]+$"
+      ],
+      "requires": []
+    },
+    {
+      "name": "device_name",
+      "argv": [
+        "-n",
+        "/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:/dev/[A-Za-z0-9_]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "x_not_block",
+      "argv": [
+        "-x",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

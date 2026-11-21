@@ -1,0 +1,8 @@
+{
+  "applet": "hexdump",
+  "name": "bad_number",
+  "stdout": "",
+  "stderr": "hexdump: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

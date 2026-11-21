@@ -136,6 +136,73 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "seek_stdin_error",
+      "argv": [
+        "-s",
+        "2"
+      ],
+      "stdin": "abcdef",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "seek_file",
+      "argv": [
+        "-s",
+        "2",
+        "data"
+      ],
+      "stdin": null,
+      "files": {
+        "data": "abcdef"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_number",
+      "argv": [
+        "-s",
+        "abc"
+      ],
+      "stdin": "abcdef",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "columns",
+      "argv": [
+        "-c",
+        "8"
+      ],
+      "stdin": "abcdefghij",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

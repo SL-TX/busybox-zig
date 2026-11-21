@@ -1,0 +1,8 @@
+{
+  "applet": "xxd",
+  "name": "bad_number",
+  "stdout": "",
+  "stderr": "xxd: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

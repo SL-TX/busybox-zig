@@ -1,0 +1,8 @@
+{
+  "applet": "hexdump",
+  "name": "limit",
+  "stdout": "0000000 6261                                   \n0000002\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

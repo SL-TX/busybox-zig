@@ -1,0 +1,16 @@
+{
+  "applet": "fatattr",
+  "name": "valid_file",
+  "stdout": "",
+  "stderr": "fatattr: FAT_IOCTL_GET_ATTRIBUTES: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {
+    "data": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

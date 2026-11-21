@@ -1,0 +1,8 @@
+{
+  "applet": "ipcrm",
+  "name": "bad_id",
+  "stdout": "",
+  "stderr": "ipcrm: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

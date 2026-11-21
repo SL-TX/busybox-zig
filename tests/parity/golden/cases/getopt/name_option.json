@@ -1,0 +1,8 @@
+{
+  "applet": "getopt",
+  "name": "name_option",
+  "stdout": " --\n",
+  "stderr": "PROG: invalid option -- 'x'\n",
+  "exit": 1,
+  "tree": {}
+}
