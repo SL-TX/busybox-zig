@@ -44,10 +44,11 @@ fn statPath(path: []const u8) !linux.Statx {
     return st;
 }
 
-fn sameFile(a: linux.Statx, b: linux.Statx) bool {
-    // Statx does not expose st_dev in this Zig version; inode equality is
-    // sufficient for the common "copy onto itself" case.
-    return a.ino == b.ino;
+/// True when two stat results describe the same directory entry.
+/// `statx(..., .BASIC_STATS, ...)` fills dev_major/dev_minor as well as ino,
+/// so both must match: inode numbers are only unique within one filesystem.
+pub fn sameFile(a: linux.Statx, b: linux.Statx) bool {
+    return a.dev_major == b.dev_major and a.dev_minor == b.dev_minor and a.ino == b.ino;
 }
 
 const CopyCtx = struct {
@@ -113,15 +114,23 @@ fn copyFileImpl(src: []const u8, dest: []const u8, opts: Options) !void {
         return;
     }
 
-    // Links: honour -d / -l / -s over content copying.
-    if (opts.make_softlink or opts.make_hardlink or (!opts.dereference and src_kind == linux.S.IFLNK)) {
-        var lbuf: [4096]u8 = undefined;
-        const n = try io.readlink(src, &lbuf);
+    // Links: honour -l / -s / -d over content copying. Only the "preserve an
+    // existing symlink" case needs readlink; a hardlink needs no target and
+    // `cp -s` must point at the source path, not at the source's target.
+    const is_link_to_preserve = !opts.dereference and src_kind == linux.S.IFLNK;
+    if (opts.make_hardlink) {
         try removeIfExists(dest);
-        if (opts.make_hardlink) {
-            try io.link(src, dest);
-        } else {
+        try io.link(src, dest);
+        return;
+    }
+    if (opts.make_softlink or is_link_to_preserve) {
+        try removeIfExists(dest);
+        if (is_link_to_preserve and !opts.make_softlink) {
+            var lbuf: [4096]u8 = undefined;
+            const n = try io.readlink(src, &lbuf);
             try io.symlink(lbuf[0..n], dest);
+        } else {
+            try io.symlink(src, dest);
         }
         return;
     }

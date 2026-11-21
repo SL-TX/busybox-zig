@@ -6,6 +6,7 @@
 const std = @import("std");
 const linux = std.os.linux;
 const proc = @import("process.zig");
+const env = @import("env.zig");
 
 pub const pid_t = linux.pid_t;
 
@@ -26,11 +27,14 @@ pub fn spawn(argv: []const []const u8) !pid_t {
     const a = std.heap.page_allocator;
     const pathz = try std.fmt.allocPrintSentinel(a, "{s}", .{argv[0]}, 0);
     const zargs = try zargv(a, argv);
-    const envp: [1:null]?[*:0]const u8 = .{null};
+    // Children inherit the environment installed by main(), just as a
+    // BusyBox-spawned program inherits environ.
+    const envp = try env.buildEnvp(a);
+    defer env.freeEnvp(a, envp);
 
     const pid = try proc.fork();
     if (pid == 0) {
-        _ = linux.execve(pathz, zargs, &envp);
+        _ = linux.execve(pathz, zargs, env.envpPtr(envp));
         linux.exit(111);
     }
     return pid;

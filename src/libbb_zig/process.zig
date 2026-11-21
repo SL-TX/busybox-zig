@@ -4,6 +4,7 @@
 
 const std = @import("std");
 const linux = std.os.linux;
+const env = @import("env.zig");
 
 pub const pid_t = linux.pid_t;
 pub const uid_t = linux.uid_t;
@@ -167,9 +168,13 @@ pub fn wait4(pid: pid_t, status: *i32, flags: u32) !pid_t {
     return @intCast(rc);
 }
 
+/// execv() with the startup environment installed by main() passed on to the
+/// new program (BusyBox children inherit environ).
 pub fn execv(path: [*:0]const u8, argv: [*:null]const ?[*:0]const u8) !noreturn {
-    const envp = [_]?[*:0]const u8{null};
-    const rc = linux.execve(path, argv, &envp);
+    const a = std.heap.page_allocator;
+    const envp = try env.buildEnvp(a);
+    defer env.freeEnvp(a, envp);
+    const rc = linux.execve(path, argv, env.envpPtr(envp));
     try check(rc);
     return error.ExecFailed;
 }

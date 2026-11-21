@@ -44,11 +44,21 @@ fn readFile(a: std.mem.Allocator, path: []const u8) ![]u8 {
 }
 
 fn exists(path: []const u8) bool {
+    return stat(path) != null;
+}
+
+fn stat(path: []const u8) ?linux.Statx {
     var z: [512:0]u8 = undefined;
-    const p = zpath(path, &z) catch return false;
+    const p = zpath(path, &z) catch return null;
     var st: linux.Statx = undefined;
-    const rc = linux.statx(linux.AT.FDCWD, p, 0, .BASIC_STATS, &st);
-    return linux.errno(rc) == .SUCCESS;
+    const rc = linux.statx(linux.AT.FDCWD, p, linux.AT.SYMLINK_NOFOLLOW, .BASIC_STATS, &st);
+    return if (linux.errno(rc) == .SUCCESS) st else null;
+}
+
+fn readLink(a: std.mem.Allocator, path: []const u8) ![]u8 {
+    var buf: [1024]u8 = undefined;
+    const n = try bb.io.readlink(path, &buf);
+    return a.dupe(u8, buf[0..n]);
 }
 
 fn clean() void {
@@ -142,4 +152,111 @@ test "copyFile with force overwrites an existing destination" {
     const got = try readFile(std.testing.allocator, dst);
     defer std.testing.allocator.free(got);
     try std.testing.expectEqualStrings("new", got);
+}
+
+test "sameFile compares device and inode, not inode alone" {
+    var a = std.mem.zeroes(linux.Statx);
+    var b = std.mem.zeroes(linux.Statx);
+    a.ino = 42;
+    b.ino = 42;
+    a.dev_major = 8;
+    a.dev_minor = 1;
+    b.dev_major = 8;
+    b.dev_minor = 1;
+    try std.testing.expect(copy.sameFile(a, b));
+
+    // Same inode on a different device must NOT be reported as the same file.
+    // A real cross-device inode collision is impractical to construct
+    // deterministically, so the comparison logic is tested with synthetic
+    // stat results (exactly the fields .BASIC_STATS fills).
+    b.dev_major = 0;
+    try std.testing.expect(!copy.sameFile(a, b));
+
+    b.dev_major = 8;
+    b.ino = 43;
+    try std.testing.expect(!copy.sameFile(a, b));
+}
+
+test "sameFile distinguishes two real files on the same filesystem" {
+    clean();
+    defer clean();
+    bb.file.makeDirectory(base, 0o755) catch {};
+    const a_path = base ++ "/devstat-a.txt";
+    const b_path = base ++ "/devstat-b.txt";
+    writeFile(a_path, "a");
+    writeFile(b_path, "b");
+    const a = stat(a_path).?;
+    const b = stat(b_path).?;
+    try std.testing.expectEqual(a.dev_major, b.dev_major);
+    try std.testing.expectEqual(a.dev_minor, b.dev_minor);
+    try std.testing.expect(a.ino != b.ino);
+    try std.testing.expect(!copy.sameFile(a, b));
+    try std.testing.expect(copy.sameFile(a, stat(a_path).?));
+}
+
+test "copyFile rejects copying a file onto itself" {
+    clean();
+    defer clean();
+    bb.file.makeDirectory(base, 0o755) catch {};
+    const src = base ++ "/self.txt";
+    writeFile(src, "data");
+    try std.testing.expectError(error.SameFile, copy.copyFile(src, src, .{}));
+    const got = try readFile(std.testing.allocator, src);
+    defer std.testing.allocator.free(got);
+    try std.testing.expectEqualStrings("data", got); // source untouched
+}
+
+test "make_hardlink on a regular file links the inode without reading a target" {
+    clean();
+    defer clean();
+    bb.file.makeDirectory(base, 0o755) catch {};
+    const src = base ++ "/hard-src.txt";
+    const dst = base ++ "/hard-dst.txt";
+    writeFile(src, "hard payload");
+
+    try copy.copyFile(src, dst, .{ .make_hardlink = true });
+
+    const s = stat(src).?;
+    const d = stat(dst).?;
+    try std.testing.expectEqual(s.ino, d.ino);
+    try std.testing.expectEqual(s.dev_major, d.dev_major);
+    try std.testing.expectEqual(s.dev_minor, d.dev_minor);
+    const got = try readFile(std.testing.allocator, dst);
+    defer std.testing.allocator.free(got);
+    try std.testing.expectEqualStrings("hard payload", got);
+}
+
+test "make_softlink on a regular file symlinks the source path" {
+    clean();
+    defer clean();
+    bb.file.makeDirectory(base, 0o755) catch {};
+    const src = base ++ "/soft-src.txt";
+    const dst = base ++ "/soft-dst.txt";
+    writeFile(src, "soft payload");
+
+    try copy.copyFile(src, dst, .{ .make_softlink = true });
+
+    const target = try readLink(std.testing.allocator, dst);
+    defer std.testing.allocator.free(target);
+    try std.testing.expectEqualStrings(src, target);
+    const got = try readFile(std.testing.allocator, dst);
+    defer std.testing.allocator.free(got);
+    try std.testing.expectEqualStrings("soft payload", got);
+}
+
+test "copyFile without dereference preserves an existing symlink by its target" {
+    clean();
+    defer clean();
+    bb.file.makeDirectory(base, 0o755) catch {};
+    const real = base ++ "/real.txt";
+    const link = base ++ "/orig-link";
+    const dst = base ++ "/copied-link";
+    writeFile(real, "via link");
+    try bb.io.symlink(real, link);
+
+    try copy.copyFile(link, dst, .{});
+
+    const target = try readLink(std.testing.allocator, dst);
+    defer std.testing.allocator.free(target);
+    try std.testing.expectEqualStrings(real, target);
 }

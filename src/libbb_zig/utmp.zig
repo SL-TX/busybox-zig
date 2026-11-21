@@ -104,6 +104,28 @@ pub fn appendEntry(path: []const u8, entry: NativeUt) !void {
     try io.writeAll(fd, std.mem.asBytes(&entry));
 }
 
+/// Overwrite `path` with a sequence of records (truncating first).
+pub fn writeEntries(path: []const u8, entries: []const NativeUt) !void {
+    const fd = try io.open(path, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o664);
+    defer io.close(fd) catch {};
+    for (entries) |e| try io.writeAll(fd, std.mem.asBytes(&e));
+}
+
+/// Rewrite every record in place, substituting `replacement` at `index`.
+/// This is the pututxline() behaviour: the matching ut_id entry is replaced
+/// rather than a new record appended.
+fn rewriteWith(path: []const u8, entries: []const NativeUt, index: usize, replacement: NativeUt) !void {
+    const fd = try io.open(path, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o664);
+    defer io.close(fd) catch {};
+    for (entries, 0..) |e, i| {
+        if (i == index) {
+            try io.writeAll(fd, std.mem.asBytes(&replacement));
+        } else {
+            try io.writeAll(fd, std.mem.asBytes(&e));
+        }
+    }
+}
+
 /// Read all complete records from `path`.
 pub fn readEntries(a: std.mem.Allocator, path: []const u8) ![]NativeUt {
     const fd = try io.open(path, .{ .ACCMODE = .RDONLY }, 0);
@@ -129,9 +151,16 @@ pub fn readEntries(a: std.mem.Allocator, path: []const u8) ![]NativeUt {
     return out;
 }
 
+fn nowSeconds() i64 {
+    var ts: linux.timespec = undefined;
+    const rc = linux.clock_gettime(.REALTIME, &ts);
+    if (linux.errno(rc) != .SUCCESS) return 0;
+    return ts.sec;
+}
+
 /// BusyBox-style write_new_utmp(): append a fresh record.
 pub fn writeNewUtmp(path: []const u8, pid: linux.pid_t, new_type: UtType, tty: []const u8, user: ?[]const u8, host: ?[]const u8) !void {
-    const sec: i64 = @intCast(std.time.timestamp());
+    const sec: i64 = nowSeconds();
     try appendEntry(path, makeEntry(.{
         .pid = pid,
         .new_type = new_type,
@@ -142,15 +171,16 @@ pub fn writeNewUtmp(path: []const u8, pid: linux.pid_t, new_type: UtType, tty: [
     }));
 }
 
-/// BusyBox-style update_utmp(): update the first matching live record, or
-/// append a new one when none exists (except for DEAD_PROCESS).
+/// BusyBox-style update_utmp(): replace the first matching live record IN
+/// PLACE (pututxline() overwrites the entry with the same ut_id), or append a
+/// new record when none exists (except for DEAD_PROCESS).
 pub fn updateUtmp(a: std.mem.Allocator, path: []const u8, pid: linux.pid_t, new_type: UtType, tty: ?[]const u8, user: ?[]const u8, host: ?[]const u8) !void {
     const entries = readEntries(a, path) catch @as([]NativeUt, &.{});
     // A zero-length slice may be the static fallback, which must not be freed.
     defer if (entries.len != 0) a.free(entries);
 
-    const sec: i64 = @intCast(std.time.timestamp());
-    for (entries) |old| {
+    const sec: i64 = nowSeconds();
+    for (entries, 0..) |old, i| {
         if (old.ut_pid == pid and old.ut_id[0] != 0) {
             var e = old;
             e.ut_type = @intFromEnum(new_type);
@@ -158,7 +188,7 @@ pub fn updateUtmp(a: std.mem.Allocator, path: []const u8, pid: linux.pid_t, new_
             if (user) |u| safeCopy(&e.ut_user, u);
             if (host) |h| safeCopy(&e.ut_host, h);
             e.ut_tv.tv_sec = @truncate(@as(u64, @bitCast(sec)));
-            try appendEntry(path, e); // pututxline semantics: overwrite by id
+            try rewriteWith(path, entries, i, e);
             return;
         }
     }

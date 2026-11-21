@@ -69,3 +69,43 @@ test "encode/decode round-trips a utmp record through a temp file" {
     try std.testing.expectEqualStrings("tty7", std.mem.sliceTo(&got[0].ut_line, 0));
     try std.testing.expectEqual(@as(u32, 1234567890), got[0].ut_tv.tv_sec);
 }
+
+test "updateUtmp overwrites a matching record in place (login then logout)" {
+    const path = "/tmp/opencode/bb-utmp-update-test.bin";
+    defer bb.file.removeFile(path, .{ .force = true }) catch {};
+    bb.file.removeFile(path, .{ .force = true }) catch {};
+
+    // Login on tty3 creates one USER_PROCESS record.
+    try ut.writeNewUtmp(path, 4321, .user_process, "/dev/tty3", "carol", "example.org");
+    // Logout must replace that record, not append a second one.
+    try ut.updateUtmpDeadProcess(std.testing.allocator, path, 4321);
+
+    const got = try ut.readEntries(std.testing.allocator, path);
+    defer std.testing.allocator.free(got);
+    try std.testing.expectEqual(@as(usize, 1), got.len);
+    try std.testing.expectEqual(@as(i16, @intFromEnum(ut.UtType.dead_process)), got[0].ut_type);
+    try std.testing.expectEqual(@as(i32, 4321), got[0].ut_pid);
+    try std.testing.expectEqualStrings("tty3", std.mem.sliceTo(&got[0].ut_line, 0));
+    try std.testing.expectEqualStrings("carol", std.mem.sliceTo(&got[0].ut_user, 0));
+    try std.testing.expectEqualStrings("example.org", std.mem.sliceTo(&got[0].ut_host, 0));
+}
+
+test "updateUtmp preserves other records and appends only for new live sessions" {
+    const path = "/tmp/opencode/bb-utmp-append-test.bin";
+    defer bb.file.removeFile(path, .{ .force = true }) catch {};
+    bb.file.removeFile(path, .{ .force = true }) catch {};
+
+    try ut.writeNewUtmp(path, 100, .user_process, "/dev/tty1", "alice", null);
+    // A new live session for another pid appends a second record.
+    try ut.updateUtmp(std.testing.allocator, path, 200, .user_process, "pts/4", "bob", null);
+    var got = try ut.readEntries(std.testing.allocator, path);
+    defer std.testing.allocator.free(got);
+    try std.testing.expectEqual(@as(usize, 2), got.len);
+    try std.testing.expectEqual(@as(i16, @intFromEnum(ut.UtType.user_process)), got[0].ut_type);
+
+    // A DEAD_PROCESS with no matching pid must not create a new record.
+    try ut.updateUtmpDeadProcess(std.testing.allocator, path, 999);
+    std.testing.allocator.free(got);
+    got = try ut.readEntries(std.testing.allocator, path);
+    try std.testing.expectEqual(@as(usize, 2), got.len);
+}
