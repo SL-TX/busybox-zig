@@ -36,5 +36,7 @@ test {
     _ = @import("loginutils/login_test.zig");
     _ = @import("remaining/remaining_test.zig");
     _ = @import("util-linux/util_linux_test.zig");
+    _ = @import("e2fsprogs/e2fsprogs_test.zig");
+    _ = @import("modutils/modutils_test.zig");
     _ = @import("final_review_test.zig");
 }

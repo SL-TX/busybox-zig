@@ -278,6 +278,18 @@ fn mainFor(comptime name: []const u8) MainFn {
     // Task 8 — klibc
     if (std.mem.eql(u8, name, "nuke")) return @import("klibc").nuke_main;
     if (std.mem.eql(u8, name, "resume")) return @import("klibc").resume_main;
+    // Task 11 — e2fsprogs (tune2fs is wired but compiled out in the defconfig)
+    if (std.mem.eql(u8, name, "chattr")) return @import("e2fsprogs").chattr_main;
+    if (std.mem.eql(u8, name, "lsattr")) return @import("e2fsprogs").lsattr_main;
+    if (std.mem.eql(u8, name, "fsck")) return @import("e2fsprogs").fsck_main;
+    if (std.mem.eql(u8, name, "tune2fs")) return @import("e2fsprogs").tune2fs_main;
+    // Task 11 — modutils (modprobe-small flavour in the reference binary)
+    if (std.mem.eql(u8, name, "depmod")) return @import("modutils").depmod_main;
+    if (std.mem.eql(u8, name, "insmod")) return @import("modutils").insmod_main;
+    if (std.mem.eql(u8, name, "lsmod")) return @import("modutils").lsmod_main;
+    if (std.mem.eql(u8, name, "modinfo")) return @import("modutils").modinfo_main;
+    if (std.mem.eql(u8, name, "modprobe")) return @import("modutils").modprobe_main;
+    if (std.mem.eql(u8, name, "rmmod")) return @import("modutils").rmmod_main;
     // remaining
     if (std.mem.eql(u8, name, "ascii")) return @import("remaining").ascii_main;
     if (std.mem.eql(u8, name, "dc")) return @import("remaining").dc_main;

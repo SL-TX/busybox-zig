@@ -128,6 +128,23 @@ pub fn build(b: *std.Build) void {
     klibc.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("klibc", klibc);
 
+    // Task 11 — e2fsprogs and modutils applets.
+    const e2fsprogs = b.addModule("e2fsprogs", .{
+        .root_source_file = b.path("src/e2fsprogs/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    e2fsprogs.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("e2fsprogs", e2fsprogs);
+
+    const modutils = b.addModule("modutils", .{
+        .root_source_file = b.path("src/modutils/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    modutils.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("modutils", modutils);
+
     // Small applets from the remaining categories that are in the registry.
     const remaining = b.addModule("remaining", .{
         .root_source_file = b.path("src/remaining/main.zig"),
@@ -166,6 +183,8 @@ pub fn build(b: *std.Build) void {
     test_module.addImport("debianutils", debianutils);
     test_module.addImport("printutils", printutils);
     test_module.addImport("klibc", klibc);
+    test_module.addImport("e2fsprogs", e2fsprogs);
+    test_module.addImport("modutils", modutils);
     test_module.addImport("remaining", remaining);
     const tests = b.addTest(.{ .root_module = test_module });
     const run_tests = b.addRunArtifact(tests);
