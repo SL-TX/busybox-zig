@@ -2,6 +2,7 @@ const std = @import("std");
 const linux = std.os.linux;
 const applets = @import("applets.zig");
 const main = @import("main.zig");
+const meta = @import("generated/meta.zig");
 
 const Capture = struct {
     list: *std.ArrayList(u8),
@@ -68,13 +69,16 @@ test "list has no internal helper names" {
         try std.testing.expect(!has_busybox);
 }
 
-test "version is 1.39.0 banner only" {
+test "version is the exact reference 1.39.0.git banner" {
     const r = invoke(&.{ "busybox", "--version" });
     defer freeResult(r);
     try std.testing.expectEqual(@as(u8, 0), r.code);
-    try std.testing.expect(std.mem.startsWith(u8, r.out, "BusyBox v1.39.0"));
+    try std.testing.expect(std.mem.startsWith(u8, r.out, "BusyBox v1.39.0.git ("));
     try std.testing.expect(!std.mem.containsAtLeast(u8, r.out, 1, "multi-call binary"));
     try std.testing.expect(std.mem.endsWith(u8, r.out, "\n"));
+    // The timestamp is build-specific in general, but the committed golden
+    // fixes one exact reference build; differential tests normalize it.
+    try std.testing.expectEqualStrings(meta.version, r.out);
 }
 
 test "list-full format has no leading slash" {
@@ -102,13 +106,22 @@ test "list and list-full are aligned by applet name" {
     }
 }
 
-test "no-args output contains the multi-call banner" {
-    const r = invoke(&.{"busybox"});
-    defer freeResult(r);
-    try std.testing.expectEqual(@as(u8, 0), r.code);
-    try std.testing.expect(std.mem.startsWith(u8, r.out, "BusyBox v1.39.0"));
-    try std.testing.expect(std.mem.containsAtLeast(u8, r.out, 1, " multi-call binary."));
-    try std.testing.expect(std.mem.indexOf(u8, r.out, "Currently defined functions:") != null);
+test "no-args and --help emit the exact reference body" {
+    const noargs = invoke(&.{"busybox"});
+    defer freeResult(noargs);
+    const help = invoke(&.{ "busybox", "--help" });
+    defer freeResult(help);
+
+    try std.testing.expectEqual(@as(u8, 0), noargs.code);
+    try std.testing.expectEqual(@as(u8, 0), help.code);
+    // Reconstruct the expected output from the split golden constants so the
+    // timestamp lives only in `version` and can be normalized downstream.
+    const expected = meta.version[0 .. meta.version.len - 1] ++ " multi-call binary.\n" ++ meta.noargs_body;
+    try std.testing.expectEqualStrings(expected, noargs.out);
+    try std.testing.expectEqualStrings(expected, help.out);
+    try std.testing.expect(std.mem.indexOf(u8, noargs.out, "   or: busybox --list[-full]\n") != null);
+    try std.testing.expect(std.mem.indexOf(u8, noargs.out, "\tCurrently defined functions:") == null);
+    try std.testing.expect(std.mem.indexOf(u8, noargs.out, "Currently defined functions:\n\t[, [[, acpid,") != null);
 }
 
 test "POSIX special cases are not intercepted as meta help" {

@@ -8,11 +8,12 @@ const linux = std.os.linux;
 const applets = @import("applets.zig");
 const libbb_zig = @import("libbb_zig");
 const cfg = @import("config");
+const meta = @import("generated/meta.zig");
 
-/// Reference banner from libbb/messages.c: "BusyBox v" BB_VER BB_EXTRA_VERSION.
-/// The parenthesized suffix is a build-time timestamp; this build uses the
-/// reference commit's timestamp (6412da2, 2026-11-17 18:23:08 +0100).
-pub const banner = "BusyBox v1.39.0 (2026-11-17 18:23:08 +0100)";
+/// Exact reference banner (including the `.git` suffix). Generated from the
+/// reference binary in tests/parity/golden/meta.txt; only the timestamp is
+/// build-specific and may be normalized by differential tests.
+pub const banner = meta.version;
 
 const mim_script =
     \\#!/bin/sh
@@ -93,48 +94,10 @@ fn eq(a: []const u8, b: []const u8) bool {
 }
 
 fn printNoArgs(out: anytype) void {
-    out.writeAll(banner ++ " multi-call binary.\n");
-    out.writeAll(
-        "BusyBox is copyrighted by many authors between 1998-2015.\n" ++
-            "Licensed under GPLv2. See source distribution for detailed\n" ++
-            "copyright notices.\n" ++
-            "\n" ++
-            "Usage: busybox [function [arguments]...]\n" ++
-            "   or: busybox --list",
-    );
-    if (cfg.CONFIG_FEATURE_INSTALLER) out.writeAll("-full");
-    out.writeAll("\n");
-    if (cfg.CONFIG_FEATURE_SHOW_SCRIPT) out.writeAll("   or: busybox --show SCRIPT\n");
-    if (cfg.CONFIG_FEATURE_INSTALLER) out.writeAll("   or: busybox --install [-s] [DIR]\n");
-    out.writeAll(
-        "   or: function [arguments]...\n" ++
-            "\n",
-    );
-    if (!cfg.CONFIG_FEATURE_SH_STANDALONE) {
-        out.writeAll(
-            "\tBusyBox is a multi-call binary that combines many common Unix\n" ++
-                "\tutilities into a single executable.  Most people will create a\n" ++
-                "\tlink to busybox for each function they wish to use and BusyBox\n" ++
-                "\twill act like whatever it was invoked as.\n",
-        );
-    } else {
-        out.writeAll(
-            "\tBusyBox is a multi-call binary that combines many common Unix\n" ++
-                "\tutilities into a single executable.  The shell in this build\n" ++
-                "\tis configured to run built-in utilities without $PATH search.\n" ++
-                "\tYou don't need to install a link to busybox for each utility.\n" ++
-                "\tTo run external program, use full path (/sbin/ip instead of ip).\n",
-        );
-    }
-    out.writeAll("\nCurrently defined functions:\n");
-
-    const names = applets.appletNames(std.heap.page_allocator) catch return;
-    defer std.heap.page_allocator.free(names);
-    for (names, 0..) |name, i| {
-        if (i != 0) out.writeAll(", ");
-        out.writeAll(name);
-    }
-    out.writeAll("\n");
+    // Byte-for-byte reference output. `meta.noargs` is composed from the
+    // split `version` banner and `noargs_body` golden constants, so tests can
+    // normalize the build-specific timestamp without touching the body.
+    out.writeAll(meta.noargs);
 }
 
 fn writeList(allocator: std.mem.Allocator, out: anytype, full: bool) void {
@@ -304,7 +267,7 @@ pub fn run(allocator: std.mem.Allocator, argv: []const []const u8, out: anytype,
         name_index = 1;
         const opt = argv[1];
         if (eq(opt, "--version") and argv.len == 2) {
-            out.writeAll(banner ++ "\n");
+            out.writeAll(banner); // includes its trailing newline
             return 0;
         } else if (eq(opt, "--list")) {
             writeList(allocator, out, false);
