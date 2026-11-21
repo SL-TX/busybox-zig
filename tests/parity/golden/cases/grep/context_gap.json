@@ -1,0 +1,16 @@
+{
+  "applet": "grep",
+  "name": "context_gap",
+  "stdout": "ab\nX\n--\nZ\nab\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWIKWApZCloKYWIK"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "start-stop-daemon",
+  "name": "start_make_pidfile",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "ssd.pid": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "PE1BVENIPgo="
+      }
+    }
+  }
+}

@@ -240,10 +240,39 @@ pub fn xargsMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         return rc;
     }
 
+    // -s limits the total bytes of the argument vector (each argument costs
+    // strlen+1). Fixed command arguments are charged first, exactly as in
+    // BusyBox's xargs.c, leaving the remaining budget for input tokens.
+    var budget: usize = std.math.maxInt(usize);
+    if (o.s) |sval| {
+        budget = sval;
+        for (cmd) |part| {
+            const cost = part.len + 1;
+            if (cost >= budget) {
+                bb.messages.plainMsg("can't fit single argument within argument list size limit", .{});
+                return 1;
+            }
+            budget -= cost;
+        }
+    }
     const per = o.n orelse toks.len;
     var pos: usize = 0;
     while (pos < toks.len) {
-        const end = @min(pos + per, toks.len);
+        var end = @min(pos + per, toks.len);
+        if (o.s != null) {
+            var used: usize = 0;
+            var k = pos;
+            while (k < @min(pos + per, toks.len)) : (k += 1) {
+                const cost = toks[k].len + 1;
+                if (cost > budget) {
+                    bb.messages.plainMsg("argument line too long", .{});
+                    return 1;
+                }
+                if (used + cost > budget) break;
+                used += cost;
+                end = k + 1;
+            }
+        }
         var built: std.ArrayList([]const u8) = .empty;
         defer built.deinit(allocator);
         for (cmd) |part| built.append(allocator, part) catch {};

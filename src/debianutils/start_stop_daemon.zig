@@ -160,6 +160,19 @@ fn signum(name: []const u8) ?i32 {
     return null;
 }
 
+fn writePidfile(allocator: std.mem.Allocator, path: ?[]const u8, pid: u32) void {
+    const p = path orelse return;
+    var zbuf: [4096:0]u8 = undefined;
+    const zp = c.z(p, &zbuf) catch return;
+    const fd: linux.fd_t = @intCast(linux.open(zp.ptr, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o666));
+    if (linux.errno(@as(usize, @intCast(fd))) != .SUCCESS) return;
+    defer _ = linux.close(fd);
+    var nb: [32]u8 = undefined;
+    const s = std.fmt.bufPrint(&nb, "{d}\n", .{pid}) catch return;
+    c.writeAll(fd, s);
+    _ = allocator;
+}
+
 fn readFileTrim(allocator: std.mem.Allocator, path: []const u8) ?[]const u8 {
     const data = c.readFile(allocator, path) catch return null;
     return std.mem.trimEnd(u8, data, "\n\r");
@@ -230,6 +243,9 @@ pub fn startStopDaemonMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             }
         }
         if (startas == null) startas = execname;
+        // Matching must use the resolved program name (from -x, -a or the
+        // first positional argument), not the raw -x option alone.
+        o.execname = execname;
     }
 
     var user_id: ?u32 = null;
@@ -322,12 +338,29 @@ pub fn startStopDaemonMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var argv_child: std.ArrayList([]const u8) = .empty;
     defer argv_child.deinit(allocator);
     argv_child.append(allocator, startas.?) catch {};
-    for (o.positional) |p| argv_child.append(allocator, p) catch {};
-    // Start the daemon in the background (fire-and-forget, like -b).
-    const pid_rc = linux.fork();
-    if (pid_rc == 0) {
-        _ = c.runChild(allocator, argv_child.items);
-        std.process.exit(0);
+    // Without -x/-a the first positional argument was consumed as the program
+    // name; argv[0] is re-inserted above, so skip it here.
+    const positional_for_child = if (o.flags & X != 0 or o.flags & A != 0)
+        o.positional
+    else if (o.positional.len > 0)
+        o.positional[1..]
+    else
+        o.positional;
+    for (positional_for_child) |p| argv_child.append(allocator, p) catch {};
+
+    const background = (o.flags & B) != 0;
+    if (background) {
+        // -b: detach, write the pidfile, and return success immediately.
+        const pid_rc = linux.fork();
+        if (pid_rc == 0) {
+            if ((o.flags & M) != 0) writePidfile(allocator, o.pidfile, @intCast(linux.getpid()));
+            _ = c.runChild(allocator, argv_child.items);
+            std.process.exit(0);
+        }
+        return 0;
     }
-    return 0;
+    // Non-background: the reference vforks+execvp's, so the caller observes
+    // the program's exit status. fork+wait reproduces that observably.
+    if ((o.flags & M) != 0) writePidfile(allocator, o.pidfile, @intCast(linux.getpid()));
+    return c.runChild(allocator, argv_child.items);
 }

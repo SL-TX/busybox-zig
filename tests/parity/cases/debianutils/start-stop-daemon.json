@@ -215,6 +215,114 @@
         "timestamp"
       ],
       "requires": []
+    },
+    {
+      "name": "start_positional_test",
+      "argv": [
+        "-S",
+        "-t",
+        "/bin/true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "start_true",
+      "argv": [
+        "-S",
+        "/bin/true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "start_false",
+      "argv": [
+        "-S",
+        "/bin/false"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "start_x",
+      "argv": [
+        "-S",
+        "-x",
+        "/bin/true",
+        "--",
+        "arg1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "start_a",
+      "argv": [
+        "-S",
+        "-a",
+        "/bin/true",
+        "-n",
+        "nosuch"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "start_make_pidfile",
+      "argv": [
+        "-S",
+        "-m",
+        "-p",
+        "ssd.pid",
+        "/bin/true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+"
+      ],
+      "requires": []
     }
   ]
 }

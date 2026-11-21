@@ -317,7 +317,7 @@ fn processLines(matchers: []const Matcher, data: []const u8, opts: Options, pref
 
             if (opts.after > 0 or opts.before > 0) {
                 if (last_printed) |lp| {
-                    if (idx > lp + 1 + after_left) out("--");
+                    if (idx > lp + 1 + after_left) out("--\n");
                 }
             }
             if (opts.before > 0) {
@@ -344,8 +344,8 @@ fn processLines(matchers: []const Matcher, data: []const u8, opts: Options, pref
     return result;
 }
 
-fn collectFiles(allocator: std.mem.Allocator, path: []const u8, recurse: bool, files: *std.ArrayList([]const u8)) void {
-    const st = c.fileInfo(path) orelse {
+fn collectFiles(allocator: std.mem.Allocator, path: []const u8, recurse: bool, follow: bool, files: *std.ArrayList([]const u8)) void {
+    const st = c.statPath(path, follow) orelse {
         files.append(allocator, path) catch {};
         return;
     };
@@ -360,9 +360,9 @@ fn collectFiles(allocator: std.mem.Allocator, path: []const u8, recurse: bool, f
             else
                 std.fmt.allocPrint(allocator, "{s}/{s}", .{ path, name });
             const p = full catch continue;
-            const st2 = c.statPath(p, false) orelse continue;
+            const st2 = c.statPath(p, follow) orelse continue;
             if ((st2.mode & c.linux.S.IFMT) == c.linux.S.IFDIR) {
-                collectFiles(allocator, p, recurse, files);
+                collectFiles(allocator, p, recurse, follow, files);
             } else {
                 files.append(allocator, p) catch {};
             }
@@ -506,7 +506,7 @@ pub fn grepMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         files.append(A, "-") catch {};
     } else {
         var expanded: std.ArrayList([]const u8) = .empty;
-        for (files.items) |f| collectFiles(A, f, opts.flags & (F_r | F_R) != 0, &expanded);
+        for (files.items) |f| collectFiles(A, f, opts.flags & (F_r | F_R) != 0, opts.flags & F_R != 0, &expanded);
         files = expanded;
     }
 

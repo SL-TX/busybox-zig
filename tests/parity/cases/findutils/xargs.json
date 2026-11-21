@@ -244,6 +244,41 @@
         "timestamp"
       ],
       "requires": []
+    },
+    {
+      "name": "size_limit",
+      "argv": [
+        "-t",
+        "-s",
+        "12",
+        "echo"
+      ],
+      "stdin": "aa bb cc dd ee\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "size_too_small",
+      "argv": [
+        "-s",
+        "1",
+        "echo"
+      ],
+      "stdin": "a\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }
