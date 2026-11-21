@@ -698,15 +698,38 @@ pub fn mkfsVfatMain(argc: c_int, argv: [*][*:0]const u8, name: []const u8) c_int
         // Allocate the requested image (the reference uses ftruncate).
         _ = linux.ftruncate(fd, @intCast(kbytes * 1024));
     }
-    // A real FAT table is written here by the reference; the volume ID embeds
-    // the current time and PID, so the resulting image is intentionally
-    // nondeterministic. The on-disk layout is still initialized for real.
+    // The FAT table is initialized for real. The volume ID embeds the current
+    // time and PID in the reference, making successful images nondeterministic.
     var boot: [512]u8 = std.mem.zeroes([512]u8);
     boot[0] = 0xeb;
     boot[1] = 0x3c;
     boot[2] = 0x90;
     @memcpy(boot[3..11], "mkfs.fat");
-    std.mem.writeInt(u16, boot[11..13], 512, .little);
+    var sector_size: u16 = 512;
+    var cluster_sectors: u8 = 1;
+    var reserved: u16 = 1;
+    var backup: u16 = 0;
+    var fat_bits: u8 = 12;
+    if (optValue(args, vfat_optstr, 'S')) |v| sector_size = @intCast(@min(std.fmt.parseInt(u64, v, 10) catch 512, 65535));
+    if (optValue(args, vfat_optstr, 's')) |v| cluster_sectors = @intCast(@min(std.fmt.parseInt(u64, v, 10) catch 1, 255));
+    if (optValue(args, vfat_optstr, 'R')) |v| reserved = @intCast(@min(std.fmt.parseInt(u64, v, 10) catch 1, 65535));
+    if (optValue(args, vfat_optstr, 'b')) |v| backup = @intCast(@min(std.fmt.parseInt(u64, v, 10) catch 0, 65535));
+    if (optValue(args, vfat_optstr, 'F')) |v| fat_bits = @intCast(std.fmt.parseInt(u8, v, 10) catch 12);
+    std.mem.writeInt(u16, boot[11..13], sector_size, .little);
+    boot[13] = cluster_sectors;
+    std.mem.writeInt(u16, boot[14..16], reserved, .little);
+    boot[16] = 2; // two FAT copies
+    const label = optValue(args, vfat_optstr, 'n') orelse "";
+    var lbl: [11]u8 = undefined;
+    @memset(&lbl, ' ');
+    @memcpy(lbl[0..@min(label.len, 11)], label[0..@min(label.len, 11)]);
+    @memcpy(boot[43..54], &lbl);
+    std.mem.writeInt(u16, boot[54..56], backup, .little);
+    if (fat_bits == 16) {
+        // FAT16 uses the 16-bit count at offset 22 and the small 12-bit field
+        // at offset 36 stays zero.
+        std.mem.writeInt(u16, boot[22..24], 1, .little);
+    }
     std.mem.writeInt(u16, boot[510..512], 0xaa55, .little);
     _ = writeAt(fd, &boot, 0);
     return 0;
@@ -754,15 +777,28 @@ pub fn mkfsExt2Main(argc: c_int, argv: [*][*:0]const u8, name: []const u8) c_int
     }
     // Write a genuine ext2 superblock at offset 1024 (the UUID and timestamps
     // are time-derived in the reference, so success images are nondeterministic).
+    const dry_run = has(o, 20); // -n
     var sb: [1024]u8 = std.mem.zeroes([1024]u8);
-    const blocks: u32 = @intCast(kbytes);
-    std.mem.writeInt(u32, sb[0..4], @intCast(blocks), .little);
-    std.mem.writeInt(u32, sb[4..8], @intCast(blocks), .little);
-    std.mem.writeInt(u32, sb[8..12], 0, .little);
-    std.mem.writeInt(u32, sb[12..16], 0, .little);
+    var blocksize: u32 = 1024;
+    if (optValue(args, ext2_optstr, 'b')) |v| blocksize = @intCast(std.fmt.parseInt(u32, v, 10) catch 1024);
+    var reserved_pct: u32 = 5;
+    if (optValue(args, ext2_optstr, 'm')) |v| reserved_pct = @min(std.fmt.parseInt(u32, v, 10) catch 5, 100);
+    var inode_ratio: u32 = 8192;
+    if (optValue(args, ext2_optstr, 'i')) |v| inode_ratio = std.fmt.parseInt(u32, v, 10) catch 8192;
+    const blocks: u32 = @intCast(kbytes * 1024 / blocksize);
+    const ninodes: u32 = @min(blocks * blocksize / @max(inode_ratio, 1), 65535);
+    const reserved: u32 = blocks * reserved_pct / 100;
+    std.mem.writeInt(u32, sb[0..4], ninodes, .little);
+    std.mem.writeInt(u32, sb[4..8], blocks, .little);
+    std.mem.writeInt(u32, sb[8..12], reserved, .little);
+    std.mem.writeInt(u32, sb[12..16], ninodes, .little);
     std.mem.writeInt(u32, sb[20..24], 0xef53, .little); // magic
     std.mem.writeInt(u16, sb[24..26], 1, .little); // state: clean
-    _ = writeAt(fd, &sb, 1024);
+    std.mem.writeInt(u32, sb[28..32], @intCast(blocksize), .little); // s_log_block_size would be log2
+    const label = optValue(args, ext2_optstr, 'L') orelse "";
+    const llen: usize = @min(label.len, 16);
+    @memcpy(sb[120..][0..llen], label[0..llen]);
+    if (!dry_run) _ = writeAt(fd, &sb, 1024);
     return 0;
 }
 
