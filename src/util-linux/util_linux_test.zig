@@ -19,6 +19,31 @@ test "blkidDetect reads ext superblock at device offset 1024+0x38" {
     try std.testing.expectEqualStrings("01020304-0506-0708-090a-0b0c0d0e0f10", &info.uuid);
 }
 
+test "blkidDetect tolerates a 1024-byte buffer (no panic, returns null)" {
+    var short: [1024]u8 = @splat(0);
+    // Even with magic bytes present at 0x38/0x39 the buffer is too small.
+    short[0x38] = 0x53;
+    short[0x39] = 0xEF;
+    try std.testing.expect(ul.blkidDetect(short[0..1024]) == null);
+}
+
+test "blkidDetect tolerates truncated ext data with magic but no UUID" {
+    var buf: [1024 + 0x38 + 2]u8 = @splat(0);
+    buf[1024 + 0x38] = 0x53;
+    buf[1024 + 0x39] = 0xEF;
+    try std.testing.expect(ul.blkidDetect(&buf) == null);
+}
+
+test "blkidDetect detects ext at the exact minimum sized buffer" {
+    var buf: [1024 + 0x68 + 16]u8 = @splat(0);
+    buf[1024 + 0x38] = 0x53;
+    buf[1024 + 0x39] = 0xEF;
+    for (0..16) |i| buf[1024 + 0x68 + i] = @intCast(i + 1);
+    const info = ul.blkidDetect(&buf) orelse return error.DetectionFailed;
+    try std.testing.expectEqualStrings("ext4", info.kind);
+    try std.testing.expectEqualStrings("01020304-0506-0708-090a-0b0c0d0e0f10", &info.uuid);
+}
+
 test "blkidDetect rejects magic at device offset zero (old bug)" {
     var buf: [2060]u8 = @splat(0);
     // The pre-fix code checked sb[0x38]/sb[0x39] on a buffer read from offset 0.

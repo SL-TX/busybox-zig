@@ -60,6 +60,23 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "short_file",
+      "argv": [
+        "short"
+      ],
+      "stdin": null,
+      "files": {
+        "short": "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

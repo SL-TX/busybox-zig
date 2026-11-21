@@ -276,7 +276,9 @@ pub const BlkidInfo = struct {
 /// at byte 1024 of the device: magic 0xEF53 at 1024+0x38 (absolute 0x438) and
 /// the 16-byte s_uuid at 1024+0x68 (absolute 0x468).
 pub fn blkidDetect(data: []const u8) ?BlkidInfo {
-    if (data.len < 1024) return null;
+    // The ext probe reads the magic at 1024+0x38..+0x39 and the full 16-byte
+    // UUID at 1024+0x68..+0x68+16, so require the whole region up front.
+    if (data.len < 1024 + 0x68 + 16) return null;
     if (data[1024 + 0x38] == 0x53 and data[1024 + 0x39] == 0xEF) {
         var info = BlkidInfo{ .kind = "ext4", .has_uuid = true };
         const hex = "0123456789abcdef";
