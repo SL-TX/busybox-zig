@@ -317,6 +317,23 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "tree")) return @import("miscutils").tree_main;
     if (std.mem.eql(u8, name, "ts")) return @import("miscutils").ts_main;
     if (std.mem.eql(u8, name, "ttysize")) return @import("miscutils").ttysize_main;
+    if (std.mem.eql(u8, name, "beep")) return @import("miscutils").beep_main;
+    if (std.mem.eql(u8, name, "conspy")) return @import("miscutils").conspy_main;
+    if (std.mem.eql(u8, name, "devmem")) return @import("miscutils").devmem_main;
+    if (std.mem.eql(u8, name, "fbsplash")) return @import("miscutils").fbsplash_main;
+    if (std.mem.eql(u8, name, "hdparm")) return @import("miscutils").hdparm_main;
+    if (std.mem.eql(u8, name, "i2cdetect")) return @import("miscutils").i2cdetect_main;
+    if (std.mem.eql(u8, name, "i2cdump")) return @import("miscutils").i2cdump_main;
+    if (std.mem.eql(u8, name, "i2cget")) return @import("miscutils").i2cget_main;
+    if (std.mem.eql(u8, name, "i2cset")) return @import("miscutils").i2cset_main;
+    if (std.mem.eql(u8, name, "i2ctransfer")) return @import("miscutils").i2ctransfer_main;
+    if (std.mem.eql(u8, name, "lsscsi")) return @import("miscutils").lsscsi_main;
+    if (std.mem.eql(u8, name, "mt")) return @import("miscutils").mt_main;
+    if (std.mem.eql(u8, name, "partprobe")) return @import("miscutils").partprobe_main;
+    if (std.mem.eql(u8, name, "readahead")) return @import("miscutils").readahead_main;
+    if (std.mem.eql(u8, name, "setserial")) return @import("miscutils").setserial_main;
+    if (std.mem.eql(u8, name, "volname")) return @import("miscutils").volname_main;
+    if (std.mem.eql(u8, name, "watchdog")) return @import("miscutils").watchdog_main;
     // procps
     if (std.mem.eql(u8, name, "ps")) return @import("procps").ps_main;
     if (std.mem.eql(u8, name, "top")) return @import("procps").top_main;
