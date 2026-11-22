@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "with_netmask_arg",
+  "stdout": "NETWORK=192.168.1.96\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

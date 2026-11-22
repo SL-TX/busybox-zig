@@ -381,6 +381,10 @@ pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return 0;
 }
 
+// Task 13a — diagnostics and addressing applets. Each lives in its own file;
+// this module root only re-exports their entry points.
+pub const ipcalc_main = @import("ipcalc.zig").ipcalcMain;
+
 pub fn nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     if (args.len < 3) return 1;

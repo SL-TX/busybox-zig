@@ -242,6 +242,8 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "ping")) return @import("networking").ping_main;
     if (std.mem.eql(u8, name, "wget")) return @import("networking").wget_main;
     if (std.mem.eql(u8, name, "nc")) return @import("networking").nc_main;
+    // Task 13a — diagnostics and addressing
+    if (std.mem.eql(u8, name, "ipcalc")) return @import("networking").ipcalc_main;
     // miscutils
     if (std.mem.eql(u8, name, "ionice")) return @import("miscutils").ionice_main;
     if (std.mem.eql(u8, name, "renice")) return @import("miscutils").renice_main;

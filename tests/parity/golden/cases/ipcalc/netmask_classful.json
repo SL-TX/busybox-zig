@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "netmask_classful",
+  "stdout": "NETMASK=255.255.0.0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

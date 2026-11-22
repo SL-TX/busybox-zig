@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "bad_prefix_range",
+  "stdout": "",
+  "stderr": "ipcalc: number 33 is not in 0..32 range\n",
+  "exit": 1,
+  "tree": {}
+}

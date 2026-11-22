@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "bad_address",
+  "stdout": "",
+  "stderr": "ipcalc: bad IP address: 1.2.3.999\n",
+  "exit": 1,
+  "tree": {}
+}

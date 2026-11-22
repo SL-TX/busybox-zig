@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "localhost_hostname",
+  "stdout": "HOSTNAME=localhost\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

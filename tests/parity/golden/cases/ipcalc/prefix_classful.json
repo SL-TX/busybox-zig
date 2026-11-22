@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "prefix_classful",
+  "stdout": "PREFIX=8\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
