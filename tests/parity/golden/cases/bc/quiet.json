@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "quiet",
+  "stdout": "8\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "dc",
+  "name": "no_x_registers",
+  "stdout": "",
+  "stderr": "dc: stack has too few elements\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "warn_name",
+  "stdout": "",
+  "stderr": "bc: POSIX only allows one character names; this is bad: 'abc=5'\n",
+  "exit": 0,
+  "tree": {}
+}

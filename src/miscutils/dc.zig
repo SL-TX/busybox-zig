@@ -1,11 +1,13 @@
 //! dc — reverse-Polish calculator (reference bc.c FEATURE_DC_BIG flavour).
-//! Numbers carry their own decimal scale; division obeys the global `k` scale.
+//! Numbers are arbitrary-precision bignums carrying their own decimal scale;
+//! division obeys the global `k` scale. `-x` enables extended register names.
 
 const std = @import("std");
 const c = @import("common.zig");
+const big = @import("big.zig");
 
 const Value = struct {
-    num: i128 = 0,
+    num: *big.Big,
     scale: u8 = 0,
 };
 
@@ -15,7 +17,18 @@ const Dc = struct {
     scale: u8 = 0,
     obase: u8 = 10,
     ibase: u8 = 10,
+    extended: bool = false,
+    regs: std.StringHashMap(*big.Big),
+    reg_stacks: std.StringHashMap(std.ArrayList(*big.Big)),
     failed: bool = false,
+
+    fn init(extended: bool) Dc {
+        return .{
+            .extended = extended,
+            .regs = std.StringHashMap(*big.Big).init(std.heap.page_allocator),
+            .reg_stacks = std.StringHashMap(std.ArrayList(*big.Big)).init(std.heap.page_allocator),
+        };
+    }
 
     fn push(self: *Dc, v: Value) void {
         if (self.depth >= self.stack.len) {
@@ -37,100 +50,85 @@ const Dc = struct {
         return self.stack[self.depth];
     }
 
-    fn pow10(n: u8) i128 {
-        var r: i128 = 1;
-        var i: u8 = 0;
-        while (i < n) : (i += 1) r *= 10;
-        return r;
-    }
-
-    fn alignValues(a: Value, b: Value) struct { a: i128, b: i128, scale: u8 } {
+    fn alignValues(a: Value, b: Value) struct { a: *big.Big, b: *big.Big, scale: u8 } {
         const s = @max(a.scale, b.scale);
         return .{
-            .a = a.num * pow10(s - a.scale),
-            .b = b.num * pow10(s - b.scale),
+            .a = big.mul(a.num, big.pow10(s - a.scale)),
+            .b = big.mul(b.num, big.pow10(s - b.scale)),
             .scale = s,
         };
     }
 
     fn printValue(self: *Dc, v: Value) void {
+        const absn = big.abs(v.num);
+        const d = big.divTrunc(absn, big.pow10(v.scale));
+        if (big.isNeg(v.num)) c.out("-");
         if (self.obase != 10) {
-            var n: i128 = @divTrunc(v.num, pow10(v.scale));
-            if (n < 0) {
-                c.out("-");
-                n = -n;
+            const text = big.toString(d.q, self.obase);
+            if (self.obase > 10) {
+                for (text) |*ch| ch.* = std.ascii.toUpper(ch.*);
             }
-            const base: i128 = self.obase;
-            var digits: [128]u8 = undefined;
-            var len: usize = 0;
-            if (n == 0) {
-                digits[0] = '0';
-                len = 1;
-            }
-            while (n > 0) : (n = @divTrunc(n, base)) {
-                const d: u8 = @intCast(@mod(n, base));
-                digits[len] = if (d < 10) '0' + d else 'A' + (d - 10);
-                len += 1;
-            }
-            while (len > 0) {
-                len -= 1;
-                c.out(digits[len .. len + 1]);
-            }
+            c.out(text);
             c.out("\n");
             return;
         }
-        var n = v.num;
-        var neg = false;
-        if (n < 0) {
-            neg = true;
-            n = -n;
-        }
-        var ibuf: [80]u8 = undefined;
-        const whole = std.fmt.bufPrint(&ibuf, "{d}", .{@divTrunc(n, pow10(v.scale))}) catch "0";
-        if (neg) c.out("-");
+        const whole = big.toString(d.q, 10);
         if (v.scale == 0) {
-            c.printfOut("{s}\n", .{whole});
+            c.out(whole);
+            c.out("\n");
             return;
         }
-        const p = pow10(v.scale);
-        const frac = @mod(n, p);
-        if (@divTrunc(n, p) == 0) {
+        const frac = big.toString(d.r, 10);
+        if (big.isZero(d.q)) {
             c.out(".");
         } else {
-            c.printfOut("{s}.", .{whole});
+            c.out(whole);
+            c.out(".");
         }
-        var fbuf: [80]u8 = undefined;
-        const fstr = std.fmt.bufPrint(&fbuf, "{d}", .{frac}) catch "0";
-        var pad: usize = v.scale - fstr.len;
+        var pad: usize = if (frac.len < v.scale) v.scale - frac.len else 0;
         while (pad > 0) : (pad -= 1) c.out("0");
-        c.out(fstr);
+        c.out(frac);
         c.out("\n");
+    }
+
+    fn readRegName(self: *Dc, input: []const u8, idx: *usize) ?[]const u8 {
+        var i = idx.*;
+        if (self.extended) {
+            while (i < input.len and (input[i] == ' ' or input[i] == '\t' or input[i] == '\n' or input[i] == '\r')) i += 1;
+        }
+        if (i >= input.len) return null;
+        const start = i;
+        i += 1;
+        if (self.extended) {
+            while (i < input.len and (std.ascii.isLower(input[i]) or std.ascii.isDigit(input[i]) or input[i] == '_')) i += 1;
+        }
+        idx.* = i;
+        return input[start..i];
+    }
+
+    fn key(self: *Dc, name: []const u8) []const u8 {
+        _ = self;
+        return std.heap.page_allocator.dupe(u8, name) catch name;
     }
 
     fn execute(self: *Dc, input: []const u8) void {
         var i: usize = 0;
         while (i < input.len and !self.failed) {
             const ch = input[i];
-            if (ch >= '0' and ch <= '9') {
+            if (digit(ch, self.ibase) != null) {
                 var j = i;
-                while (j < input.len and ((input[j] >= '0' and input[j] <= '9') or (self.ibase == 16 and input[j] >= 'a' and input[j] <= 'f'))) : (j += 1) {}
-                const txt = input[i..j];
-                var val: i128 = 0;
-                for (txt) |d| {
-                    const digit: i128 = if (d >= '0' and d <= '9') d - '0' else d - 'a' + 10;
-                    val = val * self.ibase + digit;
-                }
-                self.push(.{ .num = val });
+                while (j < input.len and digit(input[j], self.ibase) != null) : (j += 1) {}
+                self.push(.{ .num = big.fromString(input[i..j], self.ibase) });
                 i = j;
                 continue;
             }
             if (ch == '_') {
                 i += 1;
-                var val: i128 = 0;
-                while (i < input.len and input[i] >= '0' and input[i] <= '9') : (i += 1) {
-                    val = val * 10 + (input[i] - '0');
-                }
-                self.push(.{ .num = -val });
+                var j = i;
+                while (j < input.len and digit(input[j], 10) != null) : (j += 1) {}
+                self.push(.{ .num = big.fromString(input[i..j], 10) });
+                self.stack[self.depth - 1].num.negate();
+                i = j;
                 continue;
             }
             if (ch == ' ' or ch == '\t' or ch == '\n' or ch == '\r') {
@@ -139,109 +137,138 @@ const Dc = struct {
             }
             i += 1;
             switch (ch) {
-                '+' => {
+                '+', '-' => {
                     const b = self.pop() orelse return;
                     const aa = self.pop() orelse return;
                     const r = alignValues(aa, b);
-                    self.push(.{ .num = r.a + r.b, .scale = r.scale });
-                },
-                '-' => {
-                    const b = self.pop() orelse return;
-                    const aa = self.pop() orelse return;
-                    const r = alignValues(aa, b);
-                    self.push(.{ .num = r.a - r.b, .scale = r.scale });
+                    self.push(.{ .num = if (ch == '+') big.add(r.a, r.b) else big.sub(r.a, r.b), .scale = r.scale });
                 },
                 '*' => {
                     const b = self.pop() orelse return;
                     const aa = self.pop() orelse return;
-                    self.push(.{ .num = aa.num * b.num, .scale = aa.scale + b.scale });
+                    self.push(.{ .num = big.mul(aa.num, b.num), .scale = aa.scale + b.scale });
                 },
                 '/' => {
                     const b = self.pop() orelse return;
                     const aa = self.pop() orelse return;
-                    if (b.num == 0) {
+                    if (big.isZero(b.num)) {
                         c.plainMsg("divide by zero", .{});
                         self.failed = true;
                         return;
                     }
                     const r = alignValues(aa, b);
-                    const extra = pow10(self.scale);
-                    self.push(.{ .num = @divTrunc(r.a * extra, r.b), .scale = self.scale });
+                    const q = big.divTrunc(big.mul(r.a, big.pow10(self.scale)), r.b).q;
+                    self.push(.{ .num = q, .scale = self.scale });
                 },
                 '%' => {
                     const b = self.pop() orelse return;
                     const aa = self.pop() orelse return;
-                    if (b.num == 0) {
+                    if (big.isZero(b.num)) {
                         c.plainMsg("divide by zero", .{});
                         self.failed = true;
                         return;
                     }
-                    self.push(.{ .num = @rem(aa.num, b.num), .scale = aa.scale });
+                    self.push(.{ .num = big.mod(aa.num, b.num), .scale = aa.scale });
                 },
                 '^' => {
                     const b = self.pop() orelse return;
                     const aa = self.pop() orelse return;
-                    var exp = b.num;
-                    if (exp < 0) exp = 0;
-                    var r: i128 = 1;
-                    var k: i128 = 0;
-                    while (k < exp) : (k += 1) r *= aa.num;
-                    self.push(.{ .num = r });
+                    const exp = big.smallExponent(b.num, 100_000) orelse {
+                        c.plainMsg("exponent too large", .{});
+                        self.failed = true;
+                        return;
+                    };
+                    self.push(.{ .num = big.pow(aa.num, exp) });
                 },
                 'v' => {
                     const aa = self.pop() orelse return;
-                    if (aa.num < 0) {
-                        self.push(.{ .num = 0 });
-                        continue;
-                    }
-                    var x: i128 = aa.num;
-                    var y: i128 = @divTrunc(x + 1, 2);
-                    while (y < x) {
-                        x = y;
-                        y = @divTrunc(x + @divTrunc(aa.num, x), 2);
-                    }
-                    self.push(.{ .num = x });
+                    self.push(.{ .num = big.sqrt(aa.num) });
                 },
                 '~' => {
                     const b = self.pop() orelse return;
                     const aa = self.pop() orelse return;
-                    if (b.num == 0) {
+                    if (big.isZero(b.num)) {
                         c.plainMsg("divide by zero", .{});
                         self.failed = true;
                         return;
                     }
-                    const q = @divTrunc(aa.num, b.num);
-                    self.push(.{ .num = q });
-                    self.push(.{ .num = aa.num - q * b.num });
+                    const d = big.divTrunc(aa.num, b.num);
+                    self.push(.{ .num = d.q });
+                    self.push(.{ .num = d.r });
                 },
                 '|' => {
                     const m = self.pop() orelse return;
                     const e = self.pop() orelse return;
                     const b = self.pop() orelse return;
-                    if (m.num == 0) {
-                        self.push(.{ .num = 0 });
+                    if (big.isZero(m.num)) {
+                        self.push(.{ .num = big.fromU64(0) });
                         continue;
                     }
-                    var result: i128 = 1;
-                    var base = @mod(b.num, m.num);
-                    var exp = e.num;
-                    while (exp > 0) : (exp >>= 1) {
-                        if ((exp & 1) != 0) result = @mod(result * base, m.num);
-                        base = @mod(base * base, m.num);
+                    const exp = big.smallExponent(e.num, 1_000_000) orelse {
+                        c.plainMsg("exponent too large", .{});
+                        self.failed = true;
+                        return;
+                    };
+                    var result = big.fromU64(1);
+                    const base = big.mod(b.num, m.num);
+                    var k: u32 = 0;
+                    while (k < exp) : (k += 1) {
+                        result = big.mod(big.mul(result, base), m.num);
                     }
                     self.push(.{ .num = result });
                 },
                 'k' => {
                     const v = self.pop() orelse return;
-                    self.scale = @intCast(@min(18, @max(0, v.num)));
+                    const n = big.toU64(v.num) orelse 0;
+                    self.scale = @intCast(@min(200, n));
                 },
                 'i' => {
                     const v = self.pop() orelse return;
-                    if (v.num >= 2 and v.num <= 16) self.ibase = @intCast(v.num);
+                    const n = big.toU64(v.num) orelse 0;
+                    if (n >= 2 and n <= 16) self.ibase = @intCast(n);
                 },
                 'o' => {
                     const v = self.pop() orelse return;
-                    if (v.num == 2 or v.num == 8 or v.num == 10 or v.num == 16) self.obase = @intCast(v.num);
+                    const n = big.toU64(v.num) orelse 0;
+                    if (n == 2 or n == 8 or n == 10 or n == 16) self.obase = @intCast(n);
+                },
+                's', 'l', 'S', 'L' => {
+                    const name = self.readRegName(input, &i) orelse {
+                        c.plainMsg("bad character '{c}'", .{ch});
+                        self.failed = true;
+                        return;
+                    };
+                    const k = self.key(name);
+                    if (ch == 's') {
+                        const v = self.pop() orelse return;
+                        self.regs.put(k, v.num) catch {};
+                    } else if (ch == 'l') {
+                        const v = self.regs.get(k) orelse big.fromU64(0);
+                        self.push(.{ .num = big.copy(v) });
+                    } else if (ch == 'S') {
+                        const v = self.pop() orelse return;
+                        const gop = self.reg_stacks.getOrPut(k) catch return;
+                        if (!gop.found_existing) gop.value_ptr.* = .empty;
+                        gop.value_ptr.append(std.heap.page_allocator, v.num) catch {};
+                    } else {
+                        const gop = self.reg_stacks.getPtr(k) orelse {
+                            c.plainMsg("stack has too few elements", .{});
+                            self.failed = true;
+                            return;
+                        };
+                        const v = gop.pop() orelse {
+                            c.plainMsg("stack has too few elements", .{});
+                            self.failed = true;
+                            return;
+                        };
+                        self.push(.{ .num = v });
+                    }
+                },
+                'r' => {
+                    const a = self.pop() orelse return;
+                    const b = self.pop() orelse return;
+                    self.push(b);
+                    self.push(a);
                 },
                 'p' => {
                     if (self.depth == 0) {
@@ -267,11 +294,24 @@ const Dc = struct {
     }
 };
 
+fn digit(ch: u8, base: u8) ?u8 {
+    const d: ?u8 = if (ch >= '0' and ch <= '9')
+        ch - '0'
+    else if (ch >= 'a' and ch <= 'z')
+        ch - 'a' + 10
+    else if (ch >= 'A' and ch <= 'Z')
+        ch - 'A' + 10
+    else
+        null;
+    const v = d orelse return null;
+    return if (v < base) v else null;
+}
+
 pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const a = std.heap.page_allocator;
     const args = c.argsFrom(a, argv, argc) catch return 1;
     c.setName("dc");
-    var machine = Dc{};
+    var machine = Dc.init(false);
     var script = false;
     var i: usize = 1;
     while (i < args.len) : (i += 1) {
@@ -293,7 +333,8 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
             defer a.free(data);
             machine.execute(data);
         } else if (std.mem.eql(u8, arg, "-x")) {
-            // Extended registers are accepted but unused by our scripts.
+            // Enables extended (multi-character) register names for s/l/S/L.
+            machine.extended = true;
         } else if (arg.len > 1 and arg[0] == '-') {
             c.usageDie("dc");
         } else {

@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "standard",
+  "stdout": "",
+  "stderr": "bc: POSIX does not allow the 'print' keyword\n",
+  "exit": 1,
+  "tree": {}
+}

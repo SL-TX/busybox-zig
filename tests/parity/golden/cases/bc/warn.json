@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "warn",
+  "stdout": "5",
+  "stderr": "bc: POSIX does not allow the 'print' keyword\n",
+  "exit": 0,
+  "tree": {}
+}
