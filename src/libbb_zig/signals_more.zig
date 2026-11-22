@@ -41,7 +41,7 @@ const signals = [_]SignalName{
     .{ .num = 26, .name = "VTALRM" },
     .{ .num = 27, .name = "PROF" },
     .{ .num = 28, .name = "WINCH" },
-    .{ .num = 29, .name = "IO" },
+    .{ .num = 29, .name = "POLL" },
     .{ .num = 30, .name = "PWR" },
     .{ .num = 31, .name = "SYS" },
     .{ .num = 32, .name = "RTMIN" },
@@ -54,6 +54,7 @@ fn aliasNumber(name: []const u8) ?c_int {
     // Common aliases that do not have a dedicated slot in the name table.
     if (std.ascii.eqlIgnoreCase(name, "CLD")) return 17;
     if (std.ascii.eqlIgnoreCase(name, "IOT")) return 6;
+    if (std.ascii.eqlIgnoreCase(name, "IO")) return 29;
     if (std.ascii.eqlIgnoreCase(name, "UNUSED")) return 31;
     return null;
 }

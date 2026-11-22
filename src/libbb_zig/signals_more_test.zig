@@ -16,6 +16,8 @@ test "signalByName accepts numbers, names and SIG-prefixed names" {
     try std.testing.expectEqual(@as(c_int, 17), try sm.signalByName("CHLD"));
     try std.testing.expectEqual(@as(c_int, 17), try sm.signalByName("CLD"));
     try std.testing.expectEqual(@as(c_int, 29), try sm.signalByName("IO"));
+    try std.testing.expectEqual(@as(c_int, 29), try sm.signalByName("POLL"));
+    try std.testing.expectEqual(@as(c_int, 29), try sm.signalByName("SIGPOLL"));
     try std.testing.expectEqual(@as(c_int, 6), try sm.signalByName("IOT"));
 }
 
@@ -45,6 +47,8 @@ test "signalName is the inverse of signalByName for table entries" {
     try std.testing.expectEqualStrings("KILL", sm.signalName(9, &buf));
     try std.testing.expectEqualStrings("EXIT", sm.signalName(0, &buf));
     try std.testing.expectEqualStrings("RTMIN", sm.signalName(32, &buf));
+    // BusyBox's signals[] uses SIGPOLL as the canonical name for signal 29.
+    try std.testing.expectEqualStrings("POLL", sm.signalName(29, &buf));
     try std.testing.expectEqualStrings("123", sm.signalName(123, &buf));
 }
 

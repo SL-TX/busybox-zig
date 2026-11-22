@@ -222,13 +222,15 @@ fn cmdArgs(data: []const u8) CmdArgs {
 }
 
 fn commMatches(comm: []const u8, name: []const u8, argv: CmdArgs) bool {
-    // strncmp(comm, name, 15) semantics, plus the truncated-name workaround.
-    if (comm.len >= 15) {
-        if (!std.mem.startsWith(u8, name, comm[0..15])) return false;
-        const a1 = basename(argv.argv1);
-        return std.mem.eql(u8, a1, name);
+    // A direct match covers every exact name, including a comm that is
+    // exactly 15 characters long with no argv[1] (e.g. a kernel thread).
+    if (std.mem.eql(u8, comm, name)) return true;
+    // Only a name longer than 15 chars can be a truncated comm; in that
+    // case busybox's comm_match() disambiguates using basename(argv[1]).
+    if (comm.len == 15 and name.len > 15 and std.mem.startsWith(u8, name, comm)) {
+        return std.mem.eql(u8, basename(argv.argv1), name);
     }
-    return std.mem.eql(u8, comm, name);
+    return false;
 }
 
 const ScanCtx = struct {

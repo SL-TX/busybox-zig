@@ -33,6 +33,7 @@ fn makeFakeProc() !void {
         .{ .pid = 102, .comm = "getty", .state = 'S', .ppid = 1 },
         .{ .pid = 103, .comm = "target-tool", .state = 'Z', .ppid = 1 },
         .{ .pid = 104, .comm = "not-a-pid-dir", .state = 'S', .ppid = 0 },
+        .{ .pid = 105, .comm = "exact15charname", .state = 'S', .ppid = 1 },
     };
     for (specs) |s| {
         const dir = try std.fmt.allocPrint(std.testing.allocator, "{s}/{d}", .{ ROOT, s.pid });
@@ -59,7 +60,7 @@ fn makeFakeProc() !void {
 }
 
 fn removeFakeProc() void {
-    const names = [_][]const u8{ "100", "101", "102", "103", "104", "self" };
+    const names = [_][]const u8{ "100", "101", "102", "103", "104", "105", "self" };
     for (names) |name| {
         var path_buf: [256]u8 = undefined;
         const dir = std.fmt.bufPrint(&path_buf, "{s}/{s}", .{ ROOT, name }) catch continue;
@@ -160,6 +161,17 @@ test "findPidByNameIn matches comm, basename(argv0), argv1 and exe" {
     const none = try procps.findPidByNameIn(ROOT, "no-such-process", a);
     defer procps.freePidList(none, a);
     try std.testing.expectEqual(@as(usize, 0), none.len);
+}
+
+test "findPidByNameIn matches an exact 15-char comm with no argv entries" {
+    try makeFakeProc();
+    defer removeFakeProc();
+    const a = std.testing.allocator;
+    // pid 105 has no cmdline: a 15-char comm that equals the requested name
+    // is a direct match, not a truncated name needing argv[1] disambiguation.
+    const list = try procps.findPidByNameIn(ROOT, "exact15charname", a);
+    defer procps.freePidList(list, a);
+    try std.testing.expectEqualSlices(i32, &[_]i32{105}, list);
 }
 
 test "parseProcStatus reads the real /proc and pidlistReverse reverses" {

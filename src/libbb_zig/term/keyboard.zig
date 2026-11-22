@@ -85,7 +85,7 @@ fn fill(fd: linux.fd_t, buf: *Buffer, at: usize) i8 {
 pub fn readKey(fd: linux.fd_t, buf: *Buffer, timeout: i32) i64 {
     var polls = [_]linux.pollfd{.{ .fd = fd, .events = linux.POLL.IN }};
 
-    start_over: while (true) {
+    while (true) {
         proc.errno = 0;
         var n = buf.count;
         buf.count = 0;
@@ -137,7 +137,8 @@ pub fn readKey(fd: linux.fd_t, buf: *Buffer, timeout: i32) i64 {
         }
 
         // No known sequence matched. Keep reading briefly, as busybox does,
-        // then report ESC alone (with leftovers buffered) or restart.
+        // then report ESC while preserving every unmatched byte so the caller
+        // can reprocess them on the following reads.
         while (n < buf.bytes.len) {
             const ready = sm.safePoll(&polls, 50);
             if (ready == 0) break;
@@ -150,12 +151,8 @@ pub fn readKey(fd: linux.fd_t, buf: *Buffer, timeout: i32) i64 {
             }
             n += 1;
         }
-        if (n <= 1) {
-            buf.count = n;
-            return 27;
-        }
-        buf.count = 0;
-        continue :start_over;
+        buf.count = n;
+        return 27;
     }
 }
 
