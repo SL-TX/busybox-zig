@@ -390,6 +390,7 @@ pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 // Task 13a — diagnostics and addressing applets. Each lives in its own file;
 // this module root only re-exports their entry points.
 pub const ipcalc_main = @import("ipcalc.zig").ipcalcMain;
+pub const nslookup_main = @import("nslookup.zig").nslookupMain;
 pub const arp_main = @import("arp.zig").arpMain;
 pub const netstat_main = @import("netstat.zig").netstatMain;
 pub const route_main = @import("route.zig").routeMain;

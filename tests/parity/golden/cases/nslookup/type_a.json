@@ -1,0 +1,8 @@
+{
+  "applet": "nslookup",
+  "name": "type_a",
+  "stdout": "Server:\t\t127.0.0.1\nAddress:\t127.0.0.1:53\n\nNon-authoritative answer:\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
