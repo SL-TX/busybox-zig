@@ -130,6 +130,23 @@
       "requires": []
     },
     {
+      "name": "filter_failure",
+      "argv": [
+        "-X",
+        "<BB>",
+        "false"
+      ],
+      "stdin": "Content-Type: text/plain\nContent-Disposition: inline; filename=\"hello.txt\"\nContent-Transfer-Encoding: 7bit\n\nhello\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
       "name": "unsupported_encoding",
       "argv": [],
       "stdin": "Content-Type: text/plain\nContent-Disposition: inline; filename=\"qp.txt\"\nContent-Transfer-Encoding: quoted-printable\n\nhello=20world\n",
