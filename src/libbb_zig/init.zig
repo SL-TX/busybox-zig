@@ -43,6 +43,21 @@ pub const term = struct {
     pub const fb = @import("term/fb.zig");
 };
 
+// Task 19 — compression / archive helpers (Wave 5 prerequisites).
+pub const compression = struct {
+    pub const gzip = @import("compression/gzip.zig");
+    pub const bzip2 = @import("compression/bzip2.zig");
+    pub const xz = @import("compression/xz.zig");
+    pub const lzma = @import("compression/lzma.zig");
+    pub const lzop = @import("compression/lzop.zig");
+};
+pub const archive = struct {
+    pub const tar = @import("archive/tar.zig");
+    pub const cpio = @import("archive/cpio.zig");
+    pub const rpm = @import("archive/rpm.zig");
+    pub const dpkg = @import("archive/dpkg.zig");
+};
+
 // Wave 3 networking helpers.
 pub const dns = @import("net/dns.zig");
 pub const http = @import("net/http.zig");

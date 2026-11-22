@@ -27,6 +27,15 @@ test {
     _ = @import("libbb_zig/identity_test.zig");
     _ = @import("libbb_zig/utmp_test.zig");
     _ = @import("libbb_zig/mtab_test.zig");
+    // Task 19 — libbb compression/archive helpers (Wave 5 prerequisites).
+    _ = @import("libbb_zig/compression/gzip_test.zig");
+    _ = @import("libbb_zig/compression/bzip2_test.zig");
+    _ = @import("libbb_zig/compression/xz_test.zig");
+    _ = @import("libbb_zig/compression/lzop_test.zig");
+    _ = @import("libbb_zig/archive/tar_test.zig");
+    _ = @import("libbb_zig/archive/cpio_test.zig");
+    _ = @import("libbb_zig/archive/rpm_test.zig");
+    _ = @import("libbb_zig/archive/dpkg_test.zig");
     // Task 15 — libbb process/terminal helpers (Wave 4 prerequisites).
     _ = @import("libbb_zig/procps_test.zig");
     _ = @import("libbb_zig/signals_more_test.zig");
