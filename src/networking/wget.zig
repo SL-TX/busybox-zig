@@ -50,6 +50,22 @@ const longopts = [_]n.LongOpt{
     .{ .name = "post-file", .has_arg = .required, .val = LongVal.post_file },
 };
 
+/// Short option letters in the optstring, in order.  getopt32 assigns bits
+/// 0..n-1 to these and gives long-only options the following bits in their
+/// declaration order (see buildLongs in libbb_zig/getopt.zig).  Deriving the
+/// bit here keeps --spider correct if the long-option table is reordered.
+const short_opt_chars = "cqSOoPYUTtn";
+
+fn longOnlyBit(comptime name: []const u8) comptime_int {
+    var next_bit: usize = short_opt_chars.len;
+    inline for (longopts) |lo| {
+        if (std.mem.indexOfScalar(u8, short_opt_chars, lo.val) != null) continue;
+        if (std.mem.eql(u8, lo.name, name)) return next_bit;
+        next_bit += 1;
+    }
+    @compileError("long option not declared: " ++ name);
+}
+
 fn parseNonNegative(text: []const u8) u32 {
     for (text) |c| if (c < '0' or c > '9') n.plainDie("invalid number '{s}'", .{text});
     return std.fmt.parseInt(u32, text, 10) catch n.plainDie("invalid number '{s}'", .{text});
@@ -259,7 +275,7 @@ pub fn wgetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         }
     }
     const quiet = (opts.flags & 2) != 0;
-    const spider = (opts.flags & (1 << 11)) != 0; // --spider, first non-short long val
+    const spider = (opts.flags & (@as(u32, 1) << longOnlyBit("spider"))) != 0;
     const show = (opts.flags & 4) != 0;
     const cont = (opts.flags & 1) != 0;
 

@@ -482,6 +482,55 @@
         "delay_ms": 3000,
         "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
       }
+    },
+    {
+      "name": "spider_alone",
+      "argv": [
+        "-q",
+        "-O",
+        "-",
+        "--spider",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 0,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
+    },
+    {
+      "name": "header_alone",
+      "argv": [
+        "-q",
+        "-O",
+        "-",
+        "--header",
+        "X: y",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 0,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
     }
   ]
 }

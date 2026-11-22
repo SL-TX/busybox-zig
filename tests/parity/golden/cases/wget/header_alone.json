@@ -1,0 +1,8 @@
+{
+  "applet": "wget",
+  "name": "header_alone",
+  "stdout": "HELLO",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
