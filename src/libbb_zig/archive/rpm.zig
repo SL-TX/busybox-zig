@@ -21,6 +21,7 @@ pub const Tag = enum(u32) {
     name = 1000,
     version = 1001,
     release = 1002,
+    buildtime = 1006,
     summary = 1004,
     description = 1005,
     license = 1014,
@@ -113,7 +114,9 @@ pub fn parse(data: []const u8) Error!Rpm {
     };
     const sig = try readHeader(data, 96);
     const main = try readHeader(data, std.mem.alignForward(usize, sig.end, 8));
-    const payload_start = std.mem.alignForward(usize, main.end, 8);
+    // BusyBox starts the payload immediately after the main header (no
+    // 8-byte pad), so match that offset for interoperability.
+    const payload_start = main.end;
     if (payload_start > data.len) return error.Truncated;
     return .{ .lead = lead, .signature = sig.header, .header = main.header, .payload = data[payload_start..] };
 }
@@ -217,7 +220,6 @@ pub fn build(allocator: Allocator, opts: BuildOptions) Error![]u8 {
         .{ .tag = .payload_format, .kind = 6, .value = "cpio" },
         .{ .tag = .payload_compressor, .kind = 6, .value = opts.payload_compressor },
     });
-    while (out.items.len % 8 != 0) try out.append(allocator, 0);
     try out.appendSlice(allocator, opts.payload);
     return out.toOwnedSlice(allocator);
 }

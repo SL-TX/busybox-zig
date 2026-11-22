@@ -1,0 +1,23 @@
+{
+  "applet": "cpio",
+  "name": "extract_overwrite",
+  "stdout": "",
+  "stderr": "1 blocks\n",
+  "exit": 0,
+  "tree": {
+    "hello.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQK"
+      }
+    },
+    "cpio": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    }
+  }
+}

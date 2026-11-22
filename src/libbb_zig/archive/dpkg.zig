@@ -46,7 +46,9 @@ fn writeNum(dst: []u8, value: usize) Error!void {
     var buf: [32]u8 = undefined;
     const s = std.fmt.bufPrint(&buf, "{d}", .{value}) catch return error.CorruptHeader;
     @memset(dst, ' ');
-    @memcpy(dst[dst.len - s.len ..], s);
+    // BusyBox's bb_strtou rejects leading whitespace, so ar numeric fields
+    // must be left-aligned (as GNU ar writes them).
+    @memcpy(dst[0..s.len], s);
 }
 
 fn readNum(src: []const u8) Error!usize {
@@ -140,10 +142,21 @@ pub fn buildAr(allocator: Allocator, members: []const Member) Error![]u8 {
 fn appendMember(out: *std.ArrayList(u8), allocator: Allocator, name: []const u8, body: []const u8) Error!void {
     var header: [60]u8 = @splat(' ');
     @memcpy(header[0..name.len], name);
+    // GNU ar terminates short member names with '/'; BusyBox's dpkg-deb
+    // reader and other ar readers expect it. String-table references already
+    // begin with '/', so they are left untouched.
+    if (name.len == 0 or name[0] != '/') {
+        if (name.len < 16) header[name.len] = '/';
+    }
     try writeNum(header[16..28], 0);
     try writeNum(header[28..34], 0);
     try writeNum(header[34..40], 0);
-    try writeNum(header[40..48], 0o100644);
+    // BusyBox parses the ar mode field in base 8, so it must be written as
+    // octal digits ("100644"), not decimal ("33188").
+    var mode_buf: [16]u8 = undefined;
+    const mode_text = std.fmt.bufPrint(&mode_buf, "{o}", .{@as(usize, 0o100644)}) catch return error.CorruptHeader;
+    @memset(header[40..48], ' ');
+    @memcpy(header[40 .. 40 + mode_text.len], mode_text);
     try writeNum(header[48..58], body.len);
     header[58] = '`';
     header[59] = '\n';

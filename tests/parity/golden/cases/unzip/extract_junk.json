@@ -1,0 +1,34 @@
+{
+  "applet": "unzip",
+  "name": "extract_junk",
+  "stdout": "Archive:  zip\n  inflating: hello.txt\n  inflating: nested.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out": {
+      "type": "dir",
+      "mode": 509
+    },
+    "out/nested.txt": {
+      "type": "file",
+      "mode": 384,
+      "content": {
+        "__base64__": "bmVzdGVkCg=="
+      }
+    },
+    "out/hello.txt": {
+      "type": "file",
+      "mode": 384,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQK"
+      }
+    },
+    "zip": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "UEsDBBQAAAAIABPvv712XS07CO+/vQ4AAAAMAAAACQAAAGhlbGxvLnR4dO+/vUjvv73vv73vv71XKO+/vS/vv71J77+9AgBQSwMEFAAAAAgAE++/vXZd77+977+977+977+9CQAAAAcAAAAOAAAAZGlyL25lc3RlZC50eHTvv71LLS5JTe+/vQIAUEsBAhQDFAAAAAgAE++/vXZdLTsI77+9DgAAAAwAAAAJAAAAAAAAAAAAAADvv70BAAAAAGhlbGxvLnR4dFBLAQIUAxQAAAAIABPvv712Xe+/ve+/ve+/ve+/vQkAAAAHAAAADgAAAAAAAAAAAAAA77+9ATUAAABkaXIvbmVzdGVkLnR4dFBLBQYAAAAAAgACAHMAAABqAAAAAAA="
+      }
+    }
+  }
+}

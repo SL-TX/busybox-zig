@@ -87,6 +87,9 @@ pub fn lzo1xDecompress(allocator: Allocator, input: []const u8, expected_len: us
             if (tail != 0) try copyLiterals(input, out, &ip, &op, tail);
         }
     }
+    // A successful decompression can end exactly when the output buffer is
+    // full (lzo1x's EOF token is optional when the size is known).
+    if (op == out.len) return out;
     return error.CorruptInput;
 }
 
@@ -225,13 +228,13 @@ pub fn compress(allocator: Allocator, data: []const u8, level: u4) Error![]u8 {
         defer allocator.free(lzo);
         // lzop stores raw data when literal encoding would expand it.
         const store = lzo.len >= data.len;
-        try appendU32BE(&out, allocator, @intCast(if (store) data.len else lzo.len));
+        // lzop block header order is: uncompressed size, compressed size.
         try appendU32BE(&out, allocator, @intCast(data.len));
+        try appendU32BE(&out, allocator, @intCast(if (store) data.len else lzo.len));
         try appendU32BE(&out, allocator, adler32(data));
         try out.appendSlice(allocator, if (store) data else lzo);
     }
-    try appendU32BE(&out, allocator, 0); // end of blocks
-    try appendU32BE(&out, allocator, 0);
+    try appendU32BE(&out, allocator, 0); // end of blocks (single zero word)
     return out.toOwnedSlice(allocator);
 }
 
@@ -254,17 +257,20 @@ pub fn decompress(allocator: Allocator, data: []const u8) Error![]u8 {
     pos += name_len;
     if (version < 0x0940 or needed < 0x0940 or needed > 0x1040) return error.BadHeader;
     if (method == 0 or method > 3) return error.BadHeader;
-    if ((flags & 0x0000_3fff) != F_ADLER32_D) return error.Unsupported;
+    if ((flags & F_ADLER32_D) == 0) return error.Unsupported;
     const want_header_sum = try readU32BE(data, &pos);
     if (want_header_sum != adler32(data[header_start .. pos - 4])) return error.ChecksumMismatch;
 
     var out: std.ArrayList(u8) = .empty;
     errdefer out.deinit(allocator);
     while (true) {
-        if (data.len - pos < 8) return error.Truncated;
-        const packed_len = try readU32BE(data, &pos);
+        if (data.len - pos < 4) return error.Truncated;
         const unpacked_len = try readU32BE(data, &pos);
-        if (packed_len == 0 and unpacked_len == 0) break;
+        // The reference writer terminates the block list with a single zero
+        // word (BusyBox lzop.c: write32(0)).
+        if (unpacked_len == 0) break;
+        if (data.len - pos < 4) return error.Truncated;
+        const packed_len = try readU32BE(data, &pos);
         if (data.len - pos < 4) return error.Truncated;
         const want_sum = try readU32BE(data, &pos);
         if (packed_len > data.len - pos) return error.Truncated;

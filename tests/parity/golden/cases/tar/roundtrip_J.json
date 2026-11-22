@@ -1,0 +1,16 @@
+{
+  "applet": "tar",
+  "name": "roundtrip_J",
+  "stdout": "rt.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "rt.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "cm91bmR0cmlwIHBheWxvYWQK"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "bunzip2",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "bunzip2: nonexist: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

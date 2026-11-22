@@ -9,6 +9,7 @@ so the two trees are directly comparable even though the absolute roots differ.
 
 from __future__ import annotations
 
+import base64
 import os
 import stat
 from typing import Any
@@ -73,6 +74,18 @@ def materialize(case: dict, root: str) -> None:
         path = os.path.join(root, rel)
         with open(path, "w", encoding="utf-8", newline="") as fh:
             fh.write(content)
+        os.chmod(path, FILE_MODE)
+
+    # Binary fixtures (compression/archive formats) cannot be represented as
+    # UTF-8 JSON strings.  ``files_b64`` maps a path to base64-encoded bytes
+    # and is written verbatim.  It is additive; existing textual ``files``
+    # cases are unaffected.
+    for raw, encoded in (case.get("files_b64", {}) or {}).items():
+        rel = _safe_relative(raw)
+        _touch_parents(root, rel)
+        path = os.path.join(root, rel)
+        with open(path, "wb") as fh:
+            fh.write(base64.b64decode(encoded))
         os.chmod(path, FILE_MODE)
 
     for raw, target in (case.get("symlinks", {}) or {}).items():

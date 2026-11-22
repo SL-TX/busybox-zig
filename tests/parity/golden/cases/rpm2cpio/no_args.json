@@ -1,0 +1,8 @@
+{
+  "applet": "rpm2cpio",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "rpm2cpio: short read\n",
+  "exit": 1,
+  "tree": {}
+}

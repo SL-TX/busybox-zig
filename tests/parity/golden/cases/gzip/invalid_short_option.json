@@ -1,0 +1,8 @@
+{
+  "applet": "gzip",
+  "name": "invalid_short_option",
+  "stdout": "",
+  "stderr": "gzip: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: gzip [-cfkdt] [FILE]...\n\nCompress FILEs (or stdin)\n\n\t-d\tDecompress\n\t-c\tWrite to stdout\n\t-f\tForce\n\t-k\tKeep input files\n\t-t\tTest integrity\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "tar",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: tar c|x|t [-zJjahmvokO] [-f TARFILE] [-C DIR] [-T FILE] [-X FILE] [LONGOPT]... [FILE]...\n\nCreate, extract, or list files from a tar file\n\n\tc\tCreate\n\tx\tExtract\n\tt\tList\n\t-f FILE\tName of TARFILE ('-' for stdin/out)\n\t-C DIR\tChange to DIR before operation\n\t-v\tVerbose\n\t-O\tExtract to stdout\n\t-m\tDon't restore mtime\n\t-o\tDon't restore user:group\n\t-k\tDon't replace existing files\n\t-z\t(De)compress using gzip\n\t-J\t(De)compress using xz\n\t-j\t(De)compress using bzip2\n\t--lzma\t(De)compress using lzma\n\t-a\t(De)compress based on extension\n\t-h\tFollow symlinks\n\t-T FILE\tFile with names to include\n\t-X FILE\tFile with glob patterns to exclude\n\t--exclude PATTERN\tGlob pattern to exclude\n\t--overwrite\t\tReplace existing files\n\t--strip-components NUM\tNUM of leading components to strip\n\t--no-recursion\t\tDon't descend in directories\n\t--numeric-owner\t\tUse numeric user:group\n\t--no-same-permissions\tDon't restore access permissions\n\t--to-command COMMAND\tPipe files to COMMAND\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,194 @@
+{
+  "applet": "cpio",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "list",
+      "argv": [
+        "-t",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "list_verbose",
+      "argv": [
+        "-v",
+        "-t",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "extract",
+      "argv": [
+        "-i",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "extract_overwrite",
+      "argv": [
+        "-i",
+        "-u",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "extract_dirs",
+      "argv": [
+        "-i",
+        "-d",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "-t",
+        "-F",
+        "nope"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "corrupt_stdin",
+      "argv": [
+        "-t"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "stdin_b64": "QkFEIQ=="
+    },
+    {
+      "name": "roundtrip_create",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys; bb=sys.argv[1]; tmp=sys.argv[2]; os.makedirs(tmp,exist_ok=True); open(os.path.join(tmp,'rt.txt'),'wb').write(b'roundtrip payload\\n'); c=subprocess.run([bb,'cpio','-o','-H','newc'],input=b'rt.txt\\n',cwd=tmp,stdout=subprocess.PIPE,check=True).stdout; r=subprocess.run([bb,'cpio','-t'],input=c,cwd=tmp,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True); sys.stdout.buffer.write(r.stdout)",
+        "<BB>",
+        "<TMP>"
+      ],
+      "expect": {
+        "stdout": "rt.txt\n"
+      }
+    }
+  ]
+}

@@ -346,7 +346,7 @@ pub fn parse(allocator: Allocator, data: []const u8) Error![]Entry {
                     .gid = h.gid,
                     .mtime = h.mtime,
                     .typeflag = h.typeflag,
-                    .realsize = h.realsize,
+                    .realsize = if (h.realsize != 0) h.realsize else h.size,
                     .sparse = sp,
                 });
                 if (h.typeflag != 'x' and h.typeflag != 'g') {

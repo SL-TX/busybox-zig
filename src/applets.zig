@@ -405,6 +405,31 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "setkeycodes")) return @import("console_tools").setkeycodes_main;
     if (std.mem.eql(u8, name, "setlogcons")) return @import("console_tools").setlogcons_main;
     if (std.mem.eql(u8, name, "showkey")) return @import("console_tools").showkey_main;
+    // Task 20 — archival wave
+    if (std.mem.eql(u8, name, "gzip")) return @import("archival").gzip_main;
+    if (std.mem.eql(u8, name, "gunzip")) return @import("archival").gunzip_main;
+    if (std.mem.eql(u8, name, "zcat")) return @import("archival").zcat_main;
+    if (std.mem.eql(u8, name, "bzip2")) return @import("archival").bzip2_main;
+    if (std.mem.eql(u8, name, "bunzip2")) return @import("archival").bunzip2_main;
+    if (std.mem.eql(u8, name, "bzcat")) return @import("archival").bzcat_main;
+    if (std.mem.eql(u8, name, "xz")) return @import("archival").xz_main;
+    if (std.mem.eql(u8, name, "unxz")) return @import("archival").unxz_main;
+    if (std.mem.eql(u8, name, "xzcat")) return @import("archival").xzcat_main;
+    if (std.mem.eql(u8, name, "lzma")) return @import("archival").lzma_main;
+    if (std.mem.eql(u8, name, "unlzma")) return @import("archival").unlzma_main;
+    if (std.mem.eql(u8, name, "lzcat")) return @import("archival").lzcat_main;
+    if (std.mem.eql(u8, name, "lzop")) return @import("archival").lzop_main;
+    if (std.mem.eql(u8, name, "unlzop")) return @import("archival").unlzop_main;
+    if (std.mem.eql(u8, name, "lzopcat")) return @import("archival").lzopcat_main;
+    if (std.mem.eql(u8, name, "uncompress")) return @import("archival").uncompress_main;
+    if (std.mem.eql(u8, name, "ar")) return @import("archival").ar_main;
+    if (std.mem.eql(u8, name, "cpio")) return @import("archival").cpio_main;
+    if (std.mem.eql(u8, name, "dpkg")) return @import("archival").dpkg_main;
+    if (std.mem.eql(u8, name, "dpkg-deb")) return @import("archival").dpkg_deb_main;
+    if (std.mem.eql(u8, name, "rpm")) return @import("archival").rpm_main;
+    if (std.mem.eql(u8, name, "rpm2cpio")) return @import("archival").rpm2cpio_main;
+    if (std.mem.eql(u8, name, "unzip")) return @import("archival").unzip_main;
+    if (std.mem.eql(u8, name, "tar")) return @import("archival").tar_main;
     // shell
     if (std.mem.eql(u8, name, "ash")) return @import("shell").ash_main;
     if (std.mem.eql(u8, name, "hush")) return @import("shell").hush_main;

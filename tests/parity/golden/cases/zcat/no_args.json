@@ -1,0 +1,8 @@
+{
+  "applet": "zcat",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "zcat: short read\n",
+  "exit": 1,
+  "tree": {}
+}

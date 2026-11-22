@@ -1,0 +1,16 @@
+{
+  "applet": "unxz",
+  "name": "test_ok",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a.xz": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "77+9N3pYWgAABO+/vda0RgIAIQEWAAAAdC/vv73vv70AIwATXQA0GUnvv73vv70X77+9OjNf77+977+977+9BO+/vSAAAAAAHe+/ve+/ve+/vcui77+977+9AAEvJO+/vWnvv70OH++/ve+/vX0BAAAAAARZWg=="
+      }
+    }
+  }
+}

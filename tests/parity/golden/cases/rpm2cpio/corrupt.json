@@ -1,0 +1,16 @@
+{
+  "applet": "rpm2cpio",
+  "name": "corrupt",
+  "stdout": "",
+  "stderr": "rpm2cpio: short read\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QkFEIQ=="
+      }
+    }
+  }
+}

@@ -89,6 +89,15 @@ pub fn build(b: *std.Build) void {
     console_tools.addImport("coreutils", coreutils);
     exe.root_module.addImport("console_tools", console_tools);
 
+    // Task 20 — archival module
+    const archival = b.addModule("archival", .{
+        .root_source_file = b.path("src/archival/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    archival.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("archival", archival);
+
     // Add shell module
     const shell = b.addModule("shell", .{
         .root_source_file = b.path("src/shell/main.zig"),
@@ -196,6 +205,7 @@ pub fn build(b: *std.Build) void {
     test_module.addImport("miscutils", miscutils);
     test_module.addImport("procps", procps);
     test_module.addImport("console_tools", console_tools);
+    test_module.addImport("archival", archival);
     test_module.addImport("shell", shell);
     loginutils.addImport("libbb_zig", libbb_zig);
     test_module.addImport("loginutils", loginutils);

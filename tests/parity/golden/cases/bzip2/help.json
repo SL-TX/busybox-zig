@@ -1,0 +1,8 @@
+{
+  "applet": "bzip2",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: bzip2 [-cfkdt123456789] [FILE]...\n\nCompress FILEs (or stdin) with bzip2 algorithm\n\n\t-1..9\tCompression level\n\t-d\tDecompress\n\t-c\tWrite to stdout\n\t-f\tForce\n\t-k\tKeep input files\n\t-t\tTest integrity\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

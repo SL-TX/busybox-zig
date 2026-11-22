@@ -1,0 +1,16 @@
+{
+  "applet": "bzip2",
+  "name": "decompress_corrupt",
+  "stdout": "",
+  "stderr": "bzip2: invalid magic\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    }
+  }
+}

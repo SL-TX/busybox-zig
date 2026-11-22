@@ -1,0 +1,16 @@
+{
+  "applet": "unzip",
+  "name": "print",
+  "stdout": "hello world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "zip": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "UEsDBBQAAAAIABPvv712XS07CO+/vQ4AAAAMAAAACQAAAGhlbGxvLnR4dO+/vUjvv73vv73vv71XKO+/vS/vv71J77+9AgBQSwMEFAAAAAgAE++/vXZd77+977+977+977+9CQAAAAcAAAAOAAAAZGlyL25lc3RlZC50eHTvv71LLS5JTe+/vQIAUEsBAhQDFAAAAAgAE++/vXZdLTsI77+9DgAAAAwAAAAJAAAAAAAAAAAAAADvv70BAAAAAGhlbGxvLnR4dFBLAQIUAxQAAAAIABPvv712Xe+/ve+/ve+/ve+/vQkAAAAHAAAADgAAAAAAAAAAAAAA77+9ATUAAABkaXIvbmVzdGVkLnR4dFBLBQYAAAAAAgACAHMAAABqAAAAAAA="
+      }
+    }
+  }
+}

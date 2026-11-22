@@ -1,0 +1,108 @@
+{
+  "applet": "unxz",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "decompress_file",
+      "argv": [
+        "-c",
+        "a.xz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.xz": "/Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4AAjABNdADQZSe6N6ReJOjNf/LOBBLcgAAAAAB27l4fLotvRAAEvJJdpmQ4ftvN9AQAAAAAEWVo="
+      }
+    },
+    {
+      "name": "decompress_stdin",
+      "argv": [
+        "-c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "stdin_b64": "/Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4AAjABNdADQZSe6N6ReJOjNf/LOBBLcgAAAAAB27l4fLotvRAAEvJJdpmQ4ftvN9AQAAAAAEWVo="
+    },
+    {
+      "name": "test_ok",
+      "argv": [
+        "-t",
+        "a.xz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.xz": "/Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4AAjABNdADQZSe6N6ReJOjNf/LOBBLcgAAAAAB27l4fLotvRAAEvJJdpmQ4ftvN9AQAAAAAEWVo="
+      }
+    },
+    {
+      "name": "test_corrupt",
+      "argv": [
+        "-t",
+        "a.xz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.xz": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    }
+  ]
+}

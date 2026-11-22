@@ -1,0 +1,248 @@
+{
+  "applet": "bzip2",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "-c",
+        "nonexist"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "decompress_file",
+      "argv": [
+        "-d",
+        "-c",
+        "a.bz2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.bz2": "QlpoOTFBWSZTWaNUVpIAAAdRgAAQQAAGRJCAIAAiv9VDT0QgyYjiIilrVpiMfF3JFOFCQo1RWkg="
+      }
+    },
+    {
+      "name": "test_ok",
+      "argv": [
+        "-t",
+        "a.bz2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.bz2": "QlpoOTFBWSZTWaNUVpIAAAdRgAAQQAAGRJCAIAAiv9VDT0QgyYjiIilrVpiMfF3JFOFCQo1RWkg="
+      }
+    },
+    {
+      "name": "test_corrupt",
+      "argv": [
+        "-t",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    },
+    {
+      "name": "decompress_corrupt",
+      "argv": [
+        "-d",
+        "-c",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    },
+    {
+      "name": "roundtrip",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "stdout": "hello world\nhello world\nhello world\n"
+      },
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import subprocess,sys; bb=sys.argv[1]; ap=sys.argv[2]; opts=sys.argv[3:]; d=b'hello world\\n'*3; c=subprocess.run([bb,ap,'-c']+opts,input=d,stdout=subprocess.PIPE,check=True).stdout; sys.stdout.buffer.write(subprocess.run([bb,ap,'-d','-c'],input=c,stdout=subprocess.PIPE,check=True).stdout)",
+        "<BB>",
+        "bzip2"
+      ]
+    },
+    {
+      "name": "roundtrip_1",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "stdout": "hello world\nhello world\nhello world\n"
+      },
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import subprocess,sys; bb=sys.argv[1]; ap=sys.argv[2]; opts=sys.argv[3:]; d=b'hello world\\n'*3; c=subprocess.run([bb,ap,'-c']+opts,input=d,stdout=subprocess.PIPE,check=True).stdout; sys.stdout.buffer.write(subprocess.run([bb,ap,'-d','-c'],input=c,stdout=subprocess.PIPE,check=True).stdout)",
+        "<BB>",
+        "bzip2",
+        "-1"
+      ]
+    },
+    {
+      "name": "roundtrip_9",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "stdout": "hello world\nhello world\nhello world\n"
+      },
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import subprocess,sys; bb=sys.argv[1]; ap=sys.argv[2]; opts=sys.argv[3:]; d=b'hello world\\n'*3; c=subprocess.run([bb,ap,'-c']+opts,input=d,stdout=subprocess.PIPE,check=True).stdout; sys.stdout.buffer.write(subprocess.run([bb,ap,'-d','-c'],input=c,stdout=subprocess.PIPE,check=True).stdout)",
+        "<BB>",
+        "bzip2",
+        "-9"
+      ]
+    },
+    {
+      "name": "roundtrip_k",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "stdout": "hello world\nhello world\nhello world\n"
+      },
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import subprocess,sys; bb=sys.argv[1]; ap=sys.argv[2]; opts=sys.argv[3:]; d=b'hello world\\n'*3; c=subprocess.run([bb,ap,'-c']+opts,input=d,stdout=subprocess.PIPE,check=True).stdout; sys.stdout.buffer.write(subprocess.run([bb,ap,'-d','-c'],input=c,stdout=subprocess.PIPE,check=True).stdout)",
+        "<BB>",
+        "bzip2",
+        "-k"
+      ]
+    },
+    {
+      "name": "roundtrip_f",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "stdout": "hello world\nhello world\nhello world\n"
+      },
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import subprocess,sys; bb=sys.argv[1]; ap=sys.argv[2]; opts=sys.argv[3:]; d=b'hello world\\n'*3; c=subprocess.run([bb,ap,'-c']+opts,input=d,stdout=subprocess.PIPE,check=True).stdout; sys.stdout.buffer.write(subprocess.run([bb,ap,'-d','-c'],input=c,stdout=subprocess.PIPE,check=True).stdout)",
+        "<BB>",
+        "bzip2",
+        "-f"
+      ]
+    }
+  ]
+}

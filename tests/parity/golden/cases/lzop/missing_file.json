@@ -1,0 +1,8 @@
+{
+  "applet": "lzop",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "lzop: nonexist: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

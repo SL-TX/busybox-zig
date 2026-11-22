@@ -1,0 +1,8 @@
+{
+  "applet": "bunzip2",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: bunzip2 [-cfk] [FILE]...\n\nDecompress FILEs (or stdin)\n\n\t-c\tWrite to stdout\n\t-f\tForce\n\t-k\tKeep input files\n\t-t\tTest integrity\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

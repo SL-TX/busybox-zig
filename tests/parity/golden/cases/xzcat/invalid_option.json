@@ -1,0 +1,8 @@
+{
+  "applet": "xzcat",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "xzcat: unrecognized option '--badopt'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: xzcat [FILE]...\n\nDecompress to stdout\n",
+  "exit": 1,
+  "tree": {}
+}

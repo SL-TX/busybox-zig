@@ -1,0 +1,16 @@
+{
+  "applet": "dpkg-deb",
+  "name": "corrupt",
+  "stdout": "",
+  "stderr": "dpkg-deb: short read\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QkFEIQ=="
+      }
+    }
+  }
+}

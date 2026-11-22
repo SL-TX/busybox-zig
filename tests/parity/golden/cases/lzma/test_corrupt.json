@@ -1,0 +1,16 @@
+{
+  "applet": "lzma",
+  "name": "test_corrupt",
+  "stdout": "",
+  "stderr": "lzma: unexpected EOF\n",
+  "exit": 1,
+  "tree": {
+    "a.lzma": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    }
+  }
+}

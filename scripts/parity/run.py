@@ -265,7 +265,10 @@ def observe(
                 "stderr": subprocess.PIPE,
                 "timeout": timeout,
             }
-            if case.get("stdin") is None:
+            if case.get("stdin_b64") is not None:
+                # Binary stdin for compression/archive round-trip cases.
+                kwargs["input"] = base64.b64decode(case["stdin_b64"])
+            elif case.get("stdin") is None:
                 kwargs["stdin"] = subprocess.DEVNULL
             else:
                 raw_stdin = str(case["stdin"])

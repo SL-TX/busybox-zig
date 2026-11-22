@@ -1,0 +1,8 @@
+{
+  "applet": "lzop",
+  "name": "roundtrip_F",
+  "stdout": "hello world\nhello world\nhello world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "cpio",
+  "name": "list",
+  "stdout": "hello.txt\n",
+  "stderr": "1 blocks\n",
+  "exit": 0,
+  "tree": {
+    "cpio": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    }
+  }
+}
