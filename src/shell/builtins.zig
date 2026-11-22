@@ -174,7 +174,10 @@ fn printFmtChar(fmt: []const u8, i: *usize) void {
         'f' => out("\x0c"),
         'v' => out("\x0b"),
         '\\' => out("\\"),
-        else => out(fmt[i.* .. i.* + 1]),
+        else => {
+            out("\\");
+            out(fmt[i.* .. i.* + 1]);
+        },
     }
     i.* += 1;
 }
@@ -309,7 +312,10 @@ fn printBackslashEscaped(text: []const u8) void {
             'f' => out("\x0c"),
             'v' => out("\x0b"),
             '\\' => out("\\"),
-            else => out(text[i .. i + 1]),
+            else => {
+                out("\\");
+                out(text[i .. i + 1]);
+            },
         }
     }
 }
@@ -337,6 +343,7 @@ fn doPrintf(sh: *Shell, args: []const []const u8) u8 {
                 continue;
             }
             var spec = FmtSpec{};
+            var had_mod = false;
             parse_flags: while (i < fmt.len) : (i += 1) {
                 switch (fmt[i]) {
                     '-' => spec.left = true,
@@ -346,8 +353,10 @@ fn doPrintf(sh: *Shell, args: []const []const u8) u8 {
                     '0' => spec.zero = true,
                     else => break :parse_flags,
                 }
+                had_mod = true;
             }
             if (i < fmt.len and fmt[i] == '*') {
+                had_mod = true;
                 i += 1;
                 if (argi < args.len) {
                     spec.width = std.fmt.parseInt(usize, args[argi], 10) catch 0;
@@ -355,9 +364,13 @@ fn doPrintf(sh: *Shell, args: []const []const u8) u8 {
                     used_arg = true;
                 }
             } else {
-                while (i < fmt.len and std.ascii.isDigit(fmt[i])) : (i += 1) spec.width = spec.width * 10 + (fmt[i] - '0');
+                while (i < fmt.len and std.ascii.isDigit(fmt[i])) : (i += 1) {
+                    had_mod = true;
+                    spec.width = spec.width * 10 + (fmt[i] - '0');
+                }
             }
             if (i < fmt.len and fmt[i] == '.') {
+                had_mod = true;
                 i += 1;
                 if (i < fmt.len and fmt[i] == '*') {
                     i += 1;
@@ -376,6 +389,12 @@ fn doPrintf(sh: *Shell, args: []const []const u8) u8 {
             if (i >= fmt.len) break;
             const conv = fmt[i];
             i += 1;
+            if (conv == 'b' and had_mod) {
+                var eb: [1024]u8 = undefined;
+                const em = std.fmt.bufPrint(&eb, "{s}: {s}: invalid format\n", .{ sh.name, fmt }) catch "";
+                errout(em);
+                return 1;
+            }
             const val: []const u8 = if (argi < args.len) blk: {
                 used_arg = true;
                 const v = args[argi];
@@ -697,10 +716,15 @@ fn doShift(sh: *Shell, args: []const []const u8) u8 {
     return 0;
 }
 
+extern fn execSetExitOverride(code: u8) void;
+
 fn doExit(sh: *Shell, args: []const []const u8) u8 {
-    if (args.len != 0) {
-        sh.exit_code = num(args[0]) orelse 2;
+    if (args.len == 0) {
+        sh.exiting = true;
+        return sh.exit_code;
     }
+    sh.exit_code = num(args[0]) orelse 2;
+    execSetExitOverride(sh.exit_code);
     sh.exiting = true;
     return sh.exit_code;
 }
@@ -1000,6 +1024,7 @@ fn doRead(sh: *Shell, args: []const []const u8) u8 {
     }
     if (prompt) |p| out(p);
     var line: std.ArrayList(u8) = .empty;
+    var protected: std.ArrayList(bool) = .empty;
     var buf: [1]u8 = undefined;
     var got_eof = false;
     while (true) {
@@ -1017,15 +1042,19 @@ fn doRead(sh: *Shell, args: []const []const u8) u8 {
             const n2 = linux.read(0, &buf, 1);
             if (linux.errno(n2) != .SUCCESS or n2 == 0) {
                 line.append(sh.a, '\\') catch {};
+                protected.append(sh.a, false) catch {};
                 break;
             }
             if (buf[0] == '\n') continue; // backslash-newline: continue on next line
             line.append(sh.a, buf[0]) catch {}; // backslash removes itself
+            protected.append(sh.a, true) catch {}; // but the char is IFS-protected
             continue;
         }
         line.append(sh.a, buf[0]) catch {};
+        protected.append(sh.a, false) catch {};
     }
-    var text = line.items;
+    const text = line.items;
+    const prot = protected.items;
     if (!got_eof or text.len != 0) {
         if (names.items.len == 0) {
             sh.set("REPLY", text) catch {};
@@ -1033,17 +1062,16 @@ fn doRead(sh: *Shell, args: []const []const u8) u8 {
         }
         const ifs = sh.get("IFS") orelse " \t\n";
         var fields: std.ArrayList([]const u8) = .empty;
-        var p: usize = 0;
-        while (p < text.len and std.mem.indexOfScalar(u8, ifs, text[p]) != null) p += 1;
-        text = text[p..];
-        while (text.len != 0 and names.items.len > fields.items.len + 1) {
-            var end: usize = 0;
-            while (end < text.len and std.mem.indexOfScalar(u8, ifs, text[end]) == null) end += 1;
-            fields.append(sh.a, text[0..end]) catch {};
-            text = text[end..];
-            while (text.len != 0 and std.mem.indexOfScalar(u8, ifs, text[0]) != null) text = text[1..];
+        var cur: usize = 0;
+        while (cur < line.items.len and std.mem.indexOfScalar(u8, ifs, line.items[cur]) != null and !prot[cur]) cur += 1;
+        while (cur < line.items.len and names.items.len > fields.items.len + 1) {
+            const begin = cur;
+            while (cur < line.items.len and
+                !(std.mem.indexOfScalar(u8, ifs, line.items[cur]) != null and !prot[cur])) cur += 1;
+            fields.append(sh.a, line.items[begin..cur]) catch {};
+            while (cur < line.items.len and std.mem.indexOfScalar(u8, ifs, line.items[cur]) != null and !prot[cur]) cur += 1;
         }
-        fields.append(sh.a, text) catch {};
+        fields.append(sh.a, line.items[cur..]) catch {};
         for (names.items, 0..) |name, k| {
             sh.set(name, if (k < fields.items.len) fields.items[k] else "") catch {};
         }
@@ -1461,8 +1489,9 @@ fn compareOp(a: []const u8, op: []const u8, b: []const u8, sh: *Shell) bool {
         if (std.mem.eql(u8, op, "-ef")) {
             return fa.dev == fb.dev and fa.ino == fb.ino;
         }
-        const newera = fa.sec > fb.sec or (fa.sec == fb.sec and fa.nsec > fb.nsec);
-        return if (std.mem.eql(u8, op, "-nt")) newera else !newera;
+        const newer = fa.sec > fb.sec or (fa.sec == fb.sec and fa.nsec > fb.nsec);
+        const older = fa.sec < fb.sec or (fa.sec == fb.sec and fa.nsec < fb.nsec);
+        return if (std.mem.eql(u8, op, "-nt")) newer else older;
     }
     const an = std.fmt.parseInt(i64, a, 10) catch return false;
     const bn = std.fmt.parseInt(i64, b, 10) catch return false;

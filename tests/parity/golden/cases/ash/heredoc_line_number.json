@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "heredoc_line_number",
+  "stdout": "line1\nline2\n",
+  "stderr": "script.sh: line 5: badcmd_after: not found\n",
+  "exit": 127,
+  "tree": {
+    "script.sh": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Y2F0IDw8RU9GCmxpbmUxCmxpbmUyCkVPRgpiYWRjbWRfYWZ0ZXIK"
+      }
+    }
+  }
+}

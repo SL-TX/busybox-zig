@@ -2715,6 +2715,263 @@
       "script": [
         "set -o ignoreeof\n\u0004\u0004exit\n"
       ]
+    },
+    {
+      "name": "pos_param_default",
+      "argv": [
+        "-c",
+        "echo \"[${1-def}]\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pos_param_default_set",
+      "argv": [
+        "-c",
+        "set -- a; echo \"[${1-def}]\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pos_param_colon_default",
+      "argv": [
+        "-c",
+        "echo \"[${1:-def}]\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "case_mixed_quote",
+      "argv": [
+        "-c",
+        "case abc in a\"b\"*) echo M;; *) echo N;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "case_mixed_quote_nomatch",
+      "argv": [
+        "-c",
+        "case axc in a\"b\"*) echo M;; *) echo N;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "test_ot_equal",
+      "argv": [
+        "-c",
+        "touch -d 2020-01-01 a; touch -d 2020-01-01 b; [ a -ot b ] && echo OT || echo NOT"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "test_ot_strict",
+      "argv": [
+        "-c",
+        "touch -d 2020-01-01 a; touch -d 2021-01-01 b; [ a -ot b ] && echo OT"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "arith_double_minus",
+      "argv": [
+        "-c",
+        "echo $((0--1)) $((7--2)) $((5---2))"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "read_escaped_ifs",
+      "argv": [
+        "-c",
+        "printf 'a\\ b c\\n' | { read x y; echo \"[$x][$y]\"; }"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "read_raw_escaped_ifs",
+      "argv": [
+        "-c",
+        "printf 'a\\ b c\\n' | { read -r x y; echo \"[$x][$y]\"; }"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "printf_b_precision",
+      "argv": [
+        "-c",
+        "printf '%.2b\\n' x; echo rc=$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "printf_unknown_escape",
+      "argv": [
+        "-c",
+        "printf 'a\\ b\\n'"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "heredoc_line_number",
+      "argv": [
+        "script.sh"
+      ],
+      "stdin": null,
+      "files": {
+        "script.sh": "cat <<EOF\nline1\nline2\nEOF\nbadcmd_after\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "trap_exit_subshell",
+      "argv": [
+        "-c",
+        "(trap \"echo Trapped\" EXIT\n (exit 1)\n)\necho One:$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ansi_c_nul",
+      "argv": [
+        "-c",
+        "echo $'str\\x00'strstr; echo $'str\\000'xx"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "nested_dq_single_quote",
+      "argv": [
+        "-c",
+        "x=set; echo \"${x:+'b c' d}\"; echo \"${x:+\"b c\" d}\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "printf_unknown_escape",
+  "stdout": "a\\ b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

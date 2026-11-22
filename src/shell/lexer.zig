@@ -243,12 +243,14 @@ pub const Lexer = struct {
             }
             if (std.mem.eql(u8, line, d.delim)) {
                 self.i = if (end < self.src.len) end + 1 else end;
+                if (end < self.src.len) self.line += 1;
                 break;
             }
             body.appendSlice(self.a, line) catch {};
             if (end < self.src.len) {
                 body.append(self.a, '\n') catch {};
                 self.i = end + 1;
+                self.line += 1;
             } else {
                 self.i = end;
             }
@@ -530,7 +532,7 @@ pub const Lexer = struct {
                         self.i += 1;
                         count += 1;
                     }
-                    try body.append(self.a, @truncate(value));
+                    if (value != 0) try body.append(self.a, @truncate(value));
                 },
                 'x' => {
                     var value: u32 = 0;
@@ -540,7 +542,7 @@ pub const Lexer = struct {
                         value = value * 16 + (if (d >= 'a') d - 'a' + 10 else d - '0');
                         self.i += 1;
                     }
-                    try body.append(self.a, @truncate(value));
+                    if (value != 0) try body.append(self.a, @truncate(value));
                 },
                 else => {
                     try body.append(self.a, '\\');

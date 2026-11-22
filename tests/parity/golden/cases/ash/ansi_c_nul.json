@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "ansi_c_nul",
+  "stdout": "strstrstr\nstrxx\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

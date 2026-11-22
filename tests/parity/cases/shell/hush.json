@@ -620,6 +620,86 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "hush_pos_param_default",
+      "argv": [
+        "-c",
+        "echo \"[${1-def}]\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_case_mixed_quote",
+      "argv": [
+        "-c",
+        "case abc in a\"b\"*) echo M;; *) echo N;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_test_ot_strict",
+      "argv": [
+        "-c",
+        "touch -d 2020-01-01 a; touch -d 2021-01-01 b; [ a -ot b ] && echo OT"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_read_escaped_ifs",
+      "argv": [
+        "-c",
+        "printf 'a\\ b c\\n' | { read x y; echo \"[$x][$y]\"; }"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_printf_b_precision",
+      "argv": [
+        "-c",
+        "printf '%.2b\\n' x; echo rc=$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

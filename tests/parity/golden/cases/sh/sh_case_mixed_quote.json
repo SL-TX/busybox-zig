@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_case_mixed_quote",
+  "stdout": "M\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -14,6 +14,11 @@ const Shell = st.Shell;
 const Node = prs.Node;
 
 var pending_signal: i32 = 0;
+var sh_exit_override: ?u8 = null;
+
+pub export fn execSetExitOverride(code: u8) void {
+    sh_exit_override = code;
+}
 
 fn signalHandler(sig: linux.SIG) callconv(.c) void {
     pending_signal = @as(i32, @intCast(@intFromEnum(sig)));
@@ -118,6 +123,7 @@ pub const Exec = struct {
     sh: *Shell,
     no_glob_depth: usize = 0,
     suppress_nounset: usize = 0,
+    expansion_quote: lx.Quote = .none,
 
     pub fn init(sh: *Shell) Exec {
         return .{ .sh = sh };
@@ -262,7 +268,8 @@ pub const Exec = struct {
                 if (linux.errno(pid) != .SUCCESS) return 1;
                 if (pid == 0) {
                     const code = self.execNode(child, in_condition);
-                    std.process.exit(code);
+                    self.runExitTraps();
+                    std.process.exit(if (sh_exit_override != null) sh_exit_override.? else code);
                 }
                 self.sh.last_bg_pid = @intCast(pid);
                 self.sh.background_jobs.append(self.sh.a, @intCast(pid)) catch {};
@@ -273,7 +280,8 @@ pub const Exec = struct {
                 if (linux.errno(pid) != .SUCCESS) return 1;
                 if (pid == 0) {
                     const code = self.execNode(child, in_condition);
-                    std.process.exit(code);
+                    self.runExitTraps();
+                    std.process.exit(if (sh_exit_override != null) sh_exit_override.? else code);
                 }
                 var status: i32 = 0;
                 _ = linux.waitpid(@intCast(pid), &status, 0);
@@ -368,19 +376,16 @@ pub const Exec = struct {
                     continue;
                 };
                 self.no_glob_depth -= 1;
-                const pattern = if (pf.len != 0) pf[0] else "";
-                var quoted_pat = false;
+                _ = pf;
+                var effective_buf: std.ArrayList(u8) = .empty;
                 for (pat_chars) |ch| {
-                    if (!ch.glob) quoted_pat = true;
-                }
-                const effective = if (quoted_pat) blk: {
-                    var esc: std.ArrayList(u8) = .empty;
-                    for (pattern) |c| {
-                        if (c == '*' or c == '?' or c == '[') esc.append(self.sh.a, '\\') catch {};
-                        esc.append(self.sh.a, c) catch {};
+                    if (ch.c == 0x1f) continue;
+                    if (!ch.glob and (ch.c == '*' or ch.c == '?' or ch.c == '[')) {
+                        effective_buf.append(self.sh.a, '\\') catch {};
                     }
-                    break :blk esc.items;
-                } else pattern;
+                    effective_buf.append(self.sh.a, ch.c) catch {};
+                }
+                const effective = effective_buf.items;
                 if (ex.patternMatch(effective, value)) {
                     return self.execNode(arm.body, in_condition);
                 }
@@ -956,6 +961,9 @@ pub const Exec = struct {
                 for (seg.text) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = seg.quote == .none });
             },
             .variable => {
+                const saved_quote = self.expansion_quote;
+                self.expansion_quote = seg.quote;
+                defer self.expansion_quote = saved_quote;
                 const sub = try self.expandParameter(seg.text);
                 const quoted = seg.quote != .none;
                 for (sub) |ch| {
@@ -1071,8 +1079,11 @@ pub const Exec = struct {
         }
         const name = spec[0..nend];
         const rest = spec[nend..];
-        const is_special = name.len == 1 and (std.ascii.isDigit(name[0]) or std.mem.indexOfScalar(u8, "$#?!@*-", name[0]) != null);
-        const name_set = is_special or self.sh.isSet(name);
+        const is_special = name.len == 1 and std.mem.indexOfScalar(u8, "$#?!@*-", name[0]) != null;
+        const name_set = if (name.len == 1 and std.ascii.isDigit(name[0]))
+            (name[0] == '0' or @as(usize, name[0] - '1') < self.sh.positionals.items.len)
+        else
+            (is_special or self.sh.isSet(name));
         const has_default = rest.len != 0 and (rest[0] == '-' or rest[0] == '+' or rest[0] == '=' or rest[0] == '?' or (rest[0] == ':' and rest.len > 1));
         if (has_default) self.suppress_nounset += 1;
         const value = self.paramValue(name);
@@ -1229,6 +1240,13 @@ pub const Exec = struct {
     /// characters (no pathname expansion) so nested quotes survive.
     fn expandWordToChars(self: *Exec, text: []const u8) ExpandError![]EChar {
         if (text.len == 0) return &.{};
+        // Inside a double-quoted substitution, literal single quotes in a
+        // replacement word are not syntactic quotes in BusyBox ash.
+        if (self.expansion_quote == .double and std.mem.indexOfScalar(u8, text, '\'') != null) {
+            var lit: std.ArrayList(u8) = .empty;
+            for (text) |c| if (c != '"') lit.append(self.sh.a, c) catch {};
+            return charsFromString(lit.items, false, false);
+        }
         self.no_glob_depth += 1;
         defer self.no_glob_depth -= 1;
         var lxr = lx.Lexer.init(self.sh.a, text);

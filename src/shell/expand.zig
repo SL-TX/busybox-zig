@@ -244,6 +244,8 @@ const Arith = struct {
             if (self.last_ident) |name| {
                 self.env.set(self.env.ctx, name, v -% 1);
             } else {
+                // `a--b` is `a - (-b)`, i.e. a + b (verified against the
+                // reference for 0--1, 7--2 and 5---2).
                 return v +% try self.unary();
             }
         }
