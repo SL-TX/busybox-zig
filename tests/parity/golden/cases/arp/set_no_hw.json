@@ -1,0 +1,8 @@
+{
+  "applet": "arp",
+  "name": "set_no_hw",
+  "stdout": "",
+  "stderr": "arp: need hardware address\n",
+  "exit": 1,
+  "tree": {}
+}

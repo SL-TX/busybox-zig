@@ -247,6 +247,9 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "nc")) return @import("networking").nc_main;
     // Task 13a — diagnostics and addressing
     if (std.mem.eql(u8, name, "ipcalc")) return @import("networking").ipcalc_main;
+    if (std.mem.eql(u8, name, "arp")) return @import("networking").arp_main;
+    if (std.mem.eql(u8, name, "netstat")) return @import("networking").netstat_main;
+    if (std.mem.eql(u8, name, "route")) return @import("networking").route_main;
     if (std.mem.eql(u8, name, "ip")) return @import("networking").ip_main;
     if (std.mem.eql(u8, name, "ipaddr")) return @import("networking").ipaddr_main;
     if (std.mem.eql(u8, name, "iplink")) return @import("networking").iplink_main;

@@ -1,0 +1,8 @@
+{
+  "applet": "arp",
+  "name": "show_numeric",
+  "stdout": "No match found in 5 entries\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
