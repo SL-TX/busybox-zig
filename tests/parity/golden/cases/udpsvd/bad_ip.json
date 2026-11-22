@@ -1,0 +1,8 @@
+{
+  "applet": "udpsvd",
+  "name": "bad_ip",
+  "stdout": "",
+  "stderr": "udpsvd: bad address 'notanip'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "dnsd",
+  "name": "missing_t",
+  "stdout": "",
+  "stderr": "dnsd: option requires an argument -- 't'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: dnsd [-dvs] [-c CONFFILE] [-t TTL_SEC] [-p PORT] [-i ADDR]\n\nSmall static DNS server daemon\n\n\t-c FILE\tConfig file\n\t-t SEC\tTTL\n\t-p PORT\tListen on PORT\n\t-i ADDR\tListen on ADDR\n\t-d\tDaemonize\n\t-v\tVerbose\n\t-s\tSend successful replies only. Use this if you want\n\t\tto use /etc/resolv.conf with two nameserver lines:\n\t\t\tnameserver DNSD_SERVER\n\t\t\tnameserver NORMAL_DNS_SERVER\n",
+  "exit": 1,
+  "tree": {}
+}

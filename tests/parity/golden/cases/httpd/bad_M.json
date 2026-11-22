@@ -1,0 +1,8 @@
+{
+  "applet": "httpd",
+  "name": "bad_M",
+  "stdout": "",
+  "stderr": "httpd: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "dumpleases",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "dumpleases: can't open 'no-such-file': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

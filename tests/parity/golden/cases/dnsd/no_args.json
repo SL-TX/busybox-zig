@@ -1,0 +1,8 @@
+{
+  "applet": "dnsd",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "dnsd: /etc/dnsd.conf: No such file or directory\ndnsd: bind: Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

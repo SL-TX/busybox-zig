@@ -1,0 +1,8 @@
+{
+  "applet": "dhcprelay",
+  "name": "bad_server_ip_v6",
+  "stdout": "",
+  "stderr": "dhcprelay: bad server IP: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

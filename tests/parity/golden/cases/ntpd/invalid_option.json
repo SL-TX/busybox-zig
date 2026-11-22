@@ -1,0 +1,8 @@
+{
+  "applet": "ntpd",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "ntpd: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ntpd [-dnqNwl] [-I IFACE] [-S PROG] [-k KEYFILE] [-p [keyno:N:]PEER]...\n\nNTP client/server\n\n\t-d[d]\tVerbose\n\t-n\tRun in foreground\n\t-q\tQuit after clock is set\n\t-N\tRun at high priority\n\t-w\tDo not set time (only query peers), implies -n\n\t-S PROG\tRun PROG after stepping time, stratum change, and every 11 min\n\t-k FILE\tKey file (ntp.keys compatible)\n\t-p [keyno:NUM:]PEER\n\t\tObtain time from PEER (may be repeated)\n\t\tUse key NUM for authentication\n\t\tIf -p is not given, 'server HOST' lines\n\t\tfrom /etc/ntp.conf are used\n\t-l\tAlso run as server on port 123\n\t-I IFACE Bind server to IFACE, implies -l\n",
+  "exit": 1,
+  "tree": {}
+}

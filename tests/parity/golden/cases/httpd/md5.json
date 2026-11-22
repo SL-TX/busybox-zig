@@ -1,0 +1,8 @@
+{
+  "applet": "httpd",
+  "name": "md5",
+  "stdout": "<MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

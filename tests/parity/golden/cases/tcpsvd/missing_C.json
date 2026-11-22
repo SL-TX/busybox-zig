@@ -1,0 +1,8 @@
+{
+  "applet": "tcpsvd",
+  "name": "missing_C",
+  "stdout": "",
+  "stderr": "tcpsvd: option requires an argument -- 'C'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: tcpsvd [-hEv] [-c N] [-C N[:MSG]] [-b N] [-u USER] [-l NAME] IP PORT PROG\n\nCreate TCP socket, bind to IP:PORT and listen for incoming connections.\nRun PROG for each connection.\n\n\tIP PORT\t\tIP:PORT to listen on\n\tPROG ARGS\tProgram to run\n\t-u USER[:GRP]\tChange to user/group after bind\n\t-c N\t\tUp to N connections simultaneously (default 30)\n\t-b N\t\tAllow backlog of approximately N TCP SYNs (default 20)\n\t-C N[:MSG]\tAllow only up to N connections from the same IP:\n\t\t\tnew connections from this IP address are closed\n\t\t\timmediately, MSG is written to the peer before close\n\t-E\t\tDon't set up environment\n\t-h\t\tLook up peer's hostname\n\t-l NAME\t\tLocal hostname (else look up local hostname in DNS)\n\t-v\t\tVerbose\n\nEnvironment if no -E:\nPROTO='TCP'\nTCPREMOTEADDR='ip:port' ('[ip]:port' for IPv6)\nTCPLOCALADDR='ip:port'\nTCPORIGDSTADDR='ip:port' of destination before firewall\n\tUseful for REDIRECTed-to-local connections:\n\tiptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to 8080\nTCPCONCURRENCY=num_of_connects_from_this_ip\nIf -h:\nTCPLOCALHOST='hostname' (-l NAME is used if specified)\nTCPREMOTEHOST='hostname'\n",
+  "exit": 1,
+  "tree": {}
+}

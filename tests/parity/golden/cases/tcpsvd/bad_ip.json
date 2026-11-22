@@ -1,0 +1,8 @@
+{
+  "applet": "tcpsvd",
+  "name": "bad_ip",
+  "stdout": "",
+  "stderr": "tcpsvd: bad address 'notanip'\n",
+  "exit": 1,
+  "tree": {}
+}

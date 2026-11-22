@@ -1,0 +1,8 @@
+{
+  "applet": "dhcprelay",
+  "name": "one_arg",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: dhcprelay CLIENT_IFACE[,CLIENT_IFACE2]... SERVER_IFACE [SERVER_IP]\n\nRelay DHCP requests between clients and server.\nWithout SERVER_IP, requests are broadcast on SERVER_IFACE.\n",
+  "exit": 1,
+  "tree": {}
+}

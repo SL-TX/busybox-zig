@@ -1,0 +1,8 @@
+{
+  "applet": "dumpleases",
+  "name": "missing_f",
+  "stdout": "",
+  "stderr": "dumpleases: option requires an argument -- 'f'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: dumpleases [-r|-a] [-d] [-f LEASEFILE]\n\nDisplay DHCP leases granted by udhcpd\n\n\t-f FILE\tLease file\n\t-r\tShow remaining time\n\t-a\tShow expiration time\n\t-d\tShow time in seconds\n",
+  "exit": 1,
+  "tree": {}
+}

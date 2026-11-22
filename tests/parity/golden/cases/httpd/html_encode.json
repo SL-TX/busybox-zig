@@ -1,0 +1,8 @@
+{
+  "applet": "httpd",
+  "name": "html_encode",
+  "stdout": "&#60;a&#32;href&#61;&#34;x&#34;&#62;&#38;amp&#59;&#60;&#47;a&#62;",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

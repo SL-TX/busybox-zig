@@ -1,0 +1,8 @@
+{
+  "applet": "telnetd",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "telnetd: unrecognized option '--bogus'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: telnetd [OPTIONS]\n\nHandle incoming telnet connections\n\n\t-l LOGIN\tExec LOGIN on connect (default /bin/login)\n\t-f ISSUE_FILE\tDisplay ISSUE_FILE instead of /etc/issue.net\n\t-K\t\tClose connection as soon as login exits\n\t\t\t(normally wait until all programs close slave pty)\n\t-p PORT\t\tPort to listen on. Default 23\n\t-b ADDR[:PORT]\tAddress to bind to\n\t-F\t\tRun in foreground\n\t-i\t\tInetd mode\n\t-w SEC\t\tInetd 'wait' mode, linger time SEC\n\t\tinetd.conf line: 23 stream tcp wait root telnetd telnetd -w10\n\t-S\t\tLog to syslog (implied by -i or without -F and -w)\n\t-v\t\tVerbose\n",
+  "exit": 1,
+  "tree": {}
+}

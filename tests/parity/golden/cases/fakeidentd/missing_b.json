@@ -1,0 +1,8 @@
+{
+  "applet": "fakeidentd",
+  "name": "missing_b",
+  "stdout": "",
+  "stderr": "fakeidentd: option requires an argument -- 'b'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fakeidentd [-fiw] [-b ADDR] [STRING]\n\nProvide fake ident (auth) service\n\n\t-f\tRun in foreground\n\t-i\tInetd mode\n\t-w\tInetd 'wait' mode\n\t-b ADDR\tBind to specified address\n\tSTRING\tIdent answer string (default: nobody)\n",
+  "exit": 1,
+  "tree": {}
+}

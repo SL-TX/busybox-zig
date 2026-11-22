@@ -1,0 +1,8 @@
+{
+  "applet": "udhcpc",
+  "name": "bad_t",
+  "stdout": "",
+  "stderr": "udhcpc: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

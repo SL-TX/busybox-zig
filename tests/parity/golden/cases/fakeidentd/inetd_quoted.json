@@ -1,0 +1,8 @@
+{
+  "applet": "fakeidentd",
+  "name": "inetd_quoted",
+  "stdout": "1234, 5678 : USERID : UNIX : nobody\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

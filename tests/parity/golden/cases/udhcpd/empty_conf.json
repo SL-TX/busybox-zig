@@ -1,0 +1,16 @@
+{
+  "applet": "udhcpd",
+  "name": "empty_conf",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "udhcpd.conf": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

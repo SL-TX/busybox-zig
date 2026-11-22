@@ -1,0 +1,8 @@
+{
+  "applet": "tcpsvd",
+  "name": "bad_port",
+  "stdout": "",
+  "stderr": "tcpsvd: bad port 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

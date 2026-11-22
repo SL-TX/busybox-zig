@@ -1,0 +1,8 @@
+{
+  "applet": "telnetd",
+  "name": "bad_w",
+  "stdout": "",
+  "stderr": "telnetd: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

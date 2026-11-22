@@ -1,0 +1,8 @@
+{
+  "applet": "ftpd",
+  "name": "missing_a",
+  "stdout": "",
+  "stderr": "ftpd: option requires an argument -- 'a'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ftpd [-wvS] [-a USER] [-t SEC] [-T SEC] [DIR]\n\nFTP server. Chroots to DIR, if this fails (run by non-root), cds to it.\nIt is an inetd service, inetd.conf line:\n\t21 stream tcp nowait root ftpd ftpd /files/to/serve\nCan be run from tcpsvd:\n\ttcpsvd -vE 0.0.0.0 21 ftpd /files/to/serve\n\n\t-w\tAllow upload\n\t-A\tNo login required, client access occurs under ftpd's UID\n\t-a USER\tEnable 'anonymous' login and map it to USER\n\t-v\tLog errors to stderr. -vv: verbose log\n\t-S\tLog errors to syslog. -SS: verbose log\n\t-t,-T N\tIdle and absolute timeout\n",
+  "exit": 1,
+  "tree": {}
+}

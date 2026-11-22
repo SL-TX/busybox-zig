@@ -1,0 +1,8 @@
+{
+  "applet": "udhcpc6",
+  "name": "no_iface",
+  "stdout": "",
+  "stderr": "udhcpc6: socket: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

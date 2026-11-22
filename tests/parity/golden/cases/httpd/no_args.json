@@ -1,0 +1,8 @@
+{
+  "applet": "httpd",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "httpd: bind: Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

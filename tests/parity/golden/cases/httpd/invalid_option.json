@@ -1,0 +1,8 @@
+{
+  "applet": "httpd",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "httpd: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: httpd [-ifv[v]] [-c CONFFILE] [-p [IP:]PORT] [-M MAXCONN] [-K KILLSEC] [-u USER[:GRP]] [-r REALM] [-h HOME]\nor httpd -d/-e/-m STRING\n\nListen for incoming HTTP requests\n\n\t-i\t\tInetd mode\n\t-f\t\tRun in foreground\n\t-v[v]\t\tVerbose\n\t-p [IP:]PORT\tBind to IP:PORT (default *:80)\n\t-M NUM\t\tPause if NUM connections are open (default 256)\n\t-K NUM\t\tKill CGIs after NUM seconds\n\t-u USER[:GRP]\tSet uid/gid after binding to port\n\t-r REALM\tAuthentication Realm for Basic Authentication\n\t-h HOME\t\tHome directory (default .)\n\t-c FILE\t\tConfiguration file (default {/etc,HOME}/httpd.conf)\n\t-m STRING\tMD5 crypt STRING\n\t-e STRING\tHTML encode STRING\n\t-d STRING\tURL decode STRING\n",
+  "exit": 1,
+  "tree": {}
+}
