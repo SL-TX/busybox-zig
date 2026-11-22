@@ -1,0 +1,8 @@
+{
+  "applet": "netcat",
+  "name": "wait_option",
+  "stdout": "",
+  "stderr": "netcat: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

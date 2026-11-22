@@ -1,0 +1,8 @@
+{
+  "applet": "wget",
+  "name": "output_doc",
+  "stdout": "",
+  "stderr": "Connecting to 127.0.0.1:1 (127.0.0.1:1)\nwget: can't connect to remote host (127.0.0.1): Connection refused\n",
+  "exit": 1,
+  "tree": {}
+}

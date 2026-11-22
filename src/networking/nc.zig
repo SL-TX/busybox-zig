@@ -64,6 +64,8 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var listen = false;
     var persistent = false;
     var udp = false;
+    var broadcast = false;
+    var ofile: ?[]const u8 = null;
     var verbose: usize = 0;
     var zero = false;
     var i: usize = 1;
@@ -87,6 +89,11 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             persistent = true;
         } else if (std.mem.eql(u8, a, "-u")) {
             udp = true;
+        } else if (std.mem.eql(u8, a, "-b")) {
+            broadcast = true;
+        } else if (std.mem.eql(u8, a, "-o") and i + 1 < parse_end) {
+            i += 1;
+            ofile = full[i];
         } else if (std.mem.eql(u8, a, "-z")) {
             zero = true;
         } else if (a.len >= 2 and a[0] == '-') {
@@ -97,12 +104,24 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
                     'l' => listen = true,
                     'k' => persistent = true,
                     'u' => udp = true,
-                    'b', 'n' => {},
+                    'b' => broadcast = true,
+                    'n' => {}, // numeric-only is the effective default here
                     else => {},
                 }
             }
             if (std.mem.indexOfScalar(u8, a, 'v') != null and a.len > 2) verbose = a.len - 1;
         }
+    }
+
+    var log_fd: ?linux.fd_t = null;
+    if (ofile) |path| {
+        const zpath = n.zstr(path) catch n.plainDie("can't open '{s}'", .{path});
+        const rc = linux.open(zpath, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o666);
+        if (linux.errno(rc) != .SUCCESS) n.plainDie("can't open '{s}'", .{path});
+        log_fd = @intCast(rc);
+    }
+    defer {
+        if (log_fd) |lf| _ = linux.close(lf);
     }
     if (wait_text) |w| _ = parseNonNegative(w);
 
@@ -124,6 +143,10 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
 
     if (listen) {
         const fd = bindLocal(source_text orelse "0.0.0.0", lport, !udp);
+        if (udp and broadcast) {
+            const one: c_int = 1;
+            _ = linux.setsockopt(fd, linux.SOL.SOCKET, linux.SO.BROADCAST, @ptrCast(&one), @sizeOf(c_int));
+        }
         if (!udp) {
             const rc = linux.listen(fd, if (persistent) 2 else 1);
             if (linux.errno(rc) != .SUCCESS) {
@@ -141,7 +164,7 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
                 n.errorMsg(@import("libbb_zig").process.errno, "accept", .{});
                 std.process.exit(1);
             };
-            cu.relay(cfd, false);
+            cu.relay(cfd, false, log_fd);
             _ = linux.close(cfd);
             if (!persistent) break;
         }
@@ -153,9 +176,13 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     // The reference binds the local endpoint (even port 0 / INADDR_ANY)
     // before connecting, so -p/-s failures surface as "bind: ...".
     const fd = if (source_text != null or lport != 0)
-        bindLocal(source_text orelse "0.0.0.0", lport, true)
+        bindLocal(source_text orelse "0.0.0.0", lport, !udp)
     else
-        makeSocket(true);
+        makeSocket(!udp);
+    if (udp and broadcast) {
+        const one: c_int = 1;
+        _ = linux.setsockopt(fd, linux.SOL.SOCKET, linux.SO.BROADCAST, @ptrCast(&one), @sizeOf(c_int));
+    }
     var peer = sock.sockaddr_in(host, rport);
     const crc = linux.connect(fd, @ptrCast(&peer), @sizeOf(sock.sockaddr.in));
     if (linux.errno(crc) != .SUCCESS) {
@@ -171,7 +198,7 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         return 1;
     }
     defer _ = linux.close(fd);
-    if (!zero) cu.relay(fd, false);
+    if (!zero) cu.relay(fd, false, log_fd);
     return 0;
 }
 
@@ -204,6 +231,6 @@ pub fn netcatMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         break :blk cu.connectOrDie(host, port);
     };
     defer _ = linux.close(fd);
-    cu.relay(fd, false);
+    cu.relay(fd, false, null);
     return 0;
 }

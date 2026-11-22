@@ -104,6 +104,7 @@ fn run(applet: []const u8, argc: c_int, argv: [*][*:0]const u8, is_get: bool) c_
     // "^cvu:p:P:" — -c and -v are flags, -u/-p/-P take arguments.
     const opts = n.opts(applet, args, "cvu:p:P:", &.{});
     const pos = opts.args;
+    const do_continue = is_get and (opts.flags & 1) != 0; // -c: REST on download
 
     // "-2:?3" complementary: 2 to 3 positional operands.
     if (pos.len < 2 or pos.len > 3) n.usageDie(applet);
@@ -149,9 +150,25 @@ fn run(applet: []const u8, argc: c_int, argv: [*][*:0]const u8, is_get: bool) c_
     const data = cu.connectOrDie(host, data_port);
 
     if (is_get) {
-        if (session.cmd("RETR", remote) == null) n.plainDie("bad response to RETR", .{});
-        const out_fd = openLocal(local, true) orelse n.plainDie("can't create '{s}'", .{local});
+        var out_fd: linux.fd_t = undefined;
+        if (do_continue) {
+            // -c resumes a partial download: append to the file and ask the
+            // server to restart at the current offset (REST).
+            const p = n.zstr(local) catch n.plainDie("can't open '{s}'", .{local});
+            const orc = linux.open(p, .{ .ACCMODE = .WRONLY, .APPEND = true, .CREAT = true }, 0o666);
+            if (linux.errno(orc) != .SUCCESS) n.plainDie("can't open '{s}'", .{local});
+            out_fd = @intCast(orc);
+            var size_buf: [32]u8 = undefined;
+            const sz = linux.lseek(out_fd, 0, linux.SEEK.END);
+            if (sz > 0) {
+                const rest = std.fmt.bufPrint(&size_buf, "{d}", .{sz}) catch "";
+                _ = session.cmd("REST", rest);
+            }
+        } else {
+            out_fd = openLocal(local, true) orelse n.plainDie("can't create '{s}'", .{local});
+        }
         defer _ = linux.close(out_fd);
+        if (session.cmd("RETR", remote) == null) n.plainDie("bad response to RETR", .{});
         pump(data, out_fd);
     } else {
         const in_fd = openLocal(local, false) orelse {

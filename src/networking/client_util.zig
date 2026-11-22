@@ -110,12 +110,28 @@ pub fn readSome(fd: linux.fd_t, buf: []u8) usize {
 
 /// Relay loop between stdin and a connected socket, echoing socket data to
 /// stdout.  Telnet strips IAC negotiation sequences on the way out.
-pub fn relay(fd: linux.fd_t, telnet_mode: bool) void {
+fn hexLog(log_fd: ?linux.fd_t, direction: u8, bytes: []const u8) void {
+    const lf = log_fd orelse return;
+    var line: [256]u8 = undefined;
+    var at: usize = 0;
+    line[at] = direction;
+    at += 1;
+    for (bytes) |b| {
+        const h = std.fmt.bufPrint(line[at..], " {x:0>2}", .{b}) catch break;
+        at += h.len;
+    }
+    line[at] = '\n';
+    at += 1;
+    _ = linux.write(lf, line[0..at].ptr, at);
+}
+
+pub fn relay(fd: linux.fd_t, telnet_mode: bool, log_fd: ?linux.fd_t) void {
     var inbuf: [8192]u8 = undefined;
     var outbuf: [8192]u8 = undefined;
     while (true) {
         const nr = readSome(fd, &outbuf);
         if (nr == 0) break;
+        hexLog(log_fd, '<', outbuf[0..nr]);
         if (telnet_mode) {
             var w: usize = 0;
             var i: usize = 0;
@@ -134,6 +150,7 @@ pub fn relay(fd: linux.fd_t, telnet_mode: bool) void {
         }
         const nstdin = readSome(0, &inbuf);
         if (nstdin == 0) break;
+        hexLog(log_fd, '>', inbuf[0..nstdin]);
         if (!sendAll(fd, inbuf[0..nstdin])) break;
     }
     _ = linux.shutdown(fd, linux.SHUT.RDWR);

@@ -95,6 +95,39 @@ fn parseUrl(url: []const u8) Url {
     return .{ .host = host, .display = display, .port = port, .path = path, .is_ftp = is_ftp, .full = url };
 }
 
+fn envValue(key: []const u8) ?[]const u8 {
+    const data = n.readWholeFile("/proc/self/environ") catch return null;
+    defer n.A.free(data);
+    var entries = std.mem.splitScalar(u8, data, 0);
+    while (entries.next()) |entry| {
+        const eq = std.mem.indexOfScalar(u8, entry, '=') orelse continue;
+        if (std.mem.eql(u8, entry[0..eq], key))
+            return n.A.dupe(u8, entry[eq + 1 ..]) catch null;
+    }
+    return null;
+}
+
+/// `-Y on/off` selects whether the standard http_proxy/HTTP_PROXY variables
+/// are honoured.  A proxy URL of the form [http://]host[:port] is resolved to
+/// the endpoint wget actually connects to.
+fn proxyEndpoint(flag: []const u8) ?struct { host: []const u8, port: u16 } {
+    if (std.mem.eql(u8, flag, "off")) return null;
+    const raw = envValue("http_proxy") orelse envValue("HTTP_PROXY") orelse return null;
+    var text = raw;
+    if (std.mem.indexOf(u8, text, "://")) |p| text = text[p + 3 ..];
+    if (std.mem.indexOfScalar(u8, text, '/')) |p| text = text[0..p];
+    var host = text;
+    var port: u16 = 80;
+    if (std.mem.lastIndexOfScalar(u8, text, ':')) |colon| {
+        const p = text[colon + 1 ..];
+        if (std.fmt.parseInt(u16, p, 10)) |v| {
+            port = v;
+            host = text[0..colon];
+        } else |_| {}
+    }
+    return .{ .host = host, .port = port };
+}
+
 fn writeOutput(path: ?[]const u8, prefix: ?[]const u8, body: []const u8) void {
     if (path == null or (path.?).len == 0) {
         n.out(body);
@@ -180,6 +213,7 @@ pub fn wgetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var spider = false;
     var show = false;
     var cont = false;
+    var proxy_flag: []const u8 = "on";
 
     // Collect the values getopt32 cannot hand back through this API.
     var i: usize = 1;
@@ -191,6 +225,8 @@ pub fn wgetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             i += 1; logfile = args[i];
         } else if ((std.mem.eql(u8, a, "-P") or std.mem.eql(u8, a, "--directory-prefix")) and i + 1 < args.len) {
             i += 1; prefix = args[i];
+        } else if ((std.mem.eql(u8, a, "-Y") or std.mem.eql(u8, a, "--proxy")) and i + 1 < args.len) {
+            i += 1; proxy_flag = args[i];
         } else if ((std.mem.eql(u8, a, "-U") or std.mem.eql(u8, a, "--user-agent")) and i + 1 < args.len) {
             i += 1; agent = args[i];
         } else if ((std.mem.eql(u8, a, "-T") or std.mem.eql(u8, a, "--timeout")) and i + 1 < args.len) {
@@ -250,7 +286,11 @@ pub fn wgetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             }) catch "";
             n.errout(line);
         }
-        const fd = cu.connectOrDie(u.host, u.port);
+        const ep = proxyEndpoint(proxy_flag);
+        const connect_host = if (ep) |e| e.host else u.host;
+        const connect_port = if (ep) |e| e.port else u.port;
+        if (!cu.isNumericHost(connect_host)) n.plainDie("bad address '{s}'", .{connect_host});
+        const fd = cu.connectOrDie(connect_host, connect_port);
         defer _ = linux.close(fd);
 
         var body: []const u8 = post_data orelse "";

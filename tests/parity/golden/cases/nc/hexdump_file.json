@@ -1,0 +1,16 @@
+{
+  "applet": "nc",
+  "name": "hexdump_file",
+  "stdout": "",
+  "stderr": "nc: 127.0.0.1 (127.0.0.1:1): Connection refused\n",
+  "exit": 1,
+  "tree": {
+    "trace.hex": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}
