@@ -1,0 +1,8 @@
+{
+  "applet": "cttyhack",
+  "name": "missing_prog",
+  "stdout": "",
+  "stderr": "cttyhack: can't open '/dev/tty0': Permission denied\ncttyhack: can't execute 'no-such-program-xyz': No such file or directory\n",
+  "exit": 127,
+  "tree": {}
+}

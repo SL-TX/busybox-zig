@@ -1,0 +1,13 @@
+{
+  "applet": "ash",
+  "name": "cd_dash",
+  "stdout": "<TMP>\n<TMP>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "sub": {
+      "type": "dir",
+      "mode": 509
+    }
+  }
+}

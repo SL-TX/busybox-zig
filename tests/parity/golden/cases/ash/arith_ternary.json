@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "arith_ternary",
+  "stdout": "10 20\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -430,9 +430,12 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "rpm2cpio")) return @import("archival").rpm2cpio_main;
     if (std.mem.eql(u8, name, "unzip")) return @import("archival").unzip_main;
     if (std.mem.eql(u8, name, "tar")) return @import("archival").tar_main;
-    // shell
+    // shell — sh and bash are ash aliases in the reference configuration
     if (std.mem.eql(u8, name, "ash")) return @import("shell").ash_main;
+    if (std.mem.eql(u8, name, "sh")) return @import("shell").ash_main;
+    if (std.mem.eql(u8, name, "bash")) return @import("shell").ash_main;
     if (std.mem.eql(u8, name, "hush")) return @import("shell").hush_main;
+    if (std.mem.eql(u8, name, "cttyhack")) return @import("shell").cttyhack_main;
     // loginutils
     if (std.mem.eql(u8, name, "login")) return @import("loginutils").login_main;
     if (std.mem.eql(u8, name, "passwd")) return @import("loginutils").passwd_main;

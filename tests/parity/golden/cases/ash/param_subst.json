@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "param_subst",
+  "stdout": "aZcabc aZcaZc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

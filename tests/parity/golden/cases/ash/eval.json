@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "eval",
+  "stdout": "evalworks\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "cttyhack",
+  "name": "false",
+  "stdout": "",
+  "stderr": "cttyhack: can't open '/dev/tty0': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

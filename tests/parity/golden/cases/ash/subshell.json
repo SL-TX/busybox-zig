@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "subshell",
+  "stdout": "sub=inner\nmain=outer\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

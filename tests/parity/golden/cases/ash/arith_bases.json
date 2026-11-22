@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "arith_bases",
+  "stdout": "255 63 255 5\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

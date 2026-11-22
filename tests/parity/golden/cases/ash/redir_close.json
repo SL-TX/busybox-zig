@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "redir_close",
+  "stdout": "hi\nok\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

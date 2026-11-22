@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "heredoc_expand",
+  "stdout": "hello world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

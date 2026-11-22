@@ -1,0 +1,30 @@
+{
+  "applet": "hush",
+  "name": "glob",
+  "stdout": "a.txt b.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "c.sh": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "b.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "a.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

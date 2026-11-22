@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "argv0",
+  "stdout": "custom0:A:B\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

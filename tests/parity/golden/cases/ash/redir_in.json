@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "redir_in",
+  "stdout": "content\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "in.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "Y29udGVudAo="
+      }
+    }
+  }
+}

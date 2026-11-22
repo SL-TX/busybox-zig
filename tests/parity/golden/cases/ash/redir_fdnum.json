@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "redir_fdnum",
+  "stdout": "",
+  "stderr": "fd2\n",
+  "exit": 0,
+  "tree": {}
+}

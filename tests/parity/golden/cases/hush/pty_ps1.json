@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "pty_ps1",
+  "stdout": "~/.local/share/opencode/worktree/a0537f/parity $ echo P=$PS1\r\nP=\\w \\$\r\n~/.local/share/opencode/worktree/a0537f/parity $ exit\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

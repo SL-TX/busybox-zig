@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "export_existing",
+  "stdout": "bar\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

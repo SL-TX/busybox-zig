@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "test_not",
+  "stdout": "not\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

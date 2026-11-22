@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "printf_repeat",
+  "stdout": "[a][b][c]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

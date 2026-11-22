@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "stdin_script",
+  "stdout": "fromstdin\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

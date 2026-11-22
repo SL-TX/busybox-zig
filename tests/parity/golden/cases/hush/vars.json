@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "vars",
+  "stdout": "hello-world\nworld\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

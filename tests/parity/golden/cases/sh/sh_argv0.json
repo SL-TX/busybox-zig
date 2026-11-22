@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_argv0",
+  "stdout": "mysh\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "alias",
+  "stdout": "",
+  "stderr": "ash: line 0: xxx: not found\n",
+  "exit": 127,
+  "tree": {}
+}

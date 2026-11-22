@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "script_file",
+  "stdout": "script:script.sh:X:Y\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "script.sh": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ZWNobyBzY3JpcHQ6JDA6JDE6JDIK"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "heredoc",
+  "stdout": "line one\nline two\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

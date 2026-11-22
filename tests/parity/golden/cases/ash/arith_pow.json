@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "arith_pow",
+  "stdout": "256\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

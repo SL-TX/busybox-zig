@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "pipeline_multi",
+  "stdout": "CBA\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

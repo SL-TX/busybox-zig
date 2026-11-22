@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "set_noglob",
+  "stdout": "*.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

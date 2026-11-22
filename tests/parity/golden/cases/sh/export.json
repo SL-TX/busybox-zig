@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "export",
+  "stdout": "bar\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

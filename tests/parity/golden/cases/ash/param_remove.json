@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "param_remove",
+  "stdout": "cdef def abcd a\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "set_errexit_cond",
+  "stdout": "survived\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

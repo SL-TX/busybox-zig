@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "echo_quotes",
+  "stdout": "single quoted double  quoted plain\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

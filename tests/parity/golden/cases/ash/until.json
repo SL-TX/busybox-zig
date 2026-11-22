@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "until",
+  "stdout": "0\n1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

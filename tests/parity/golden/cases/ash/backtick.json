@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "backtick",
+  "stdout": "tick\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

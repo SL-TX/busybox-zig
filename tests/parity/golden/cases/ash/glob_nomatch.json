@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "glob_nomatch",
+  "stdout": "*.definitelynomatch\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

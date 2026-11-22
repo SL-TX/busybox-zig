@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "break_continue",
+  "stdout": "1\n3\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

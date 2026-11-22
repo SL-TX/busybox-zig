@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "group",
+  "stdout": "group=b\nmain=b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

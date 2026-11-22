@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "redir_append",
+  "stdout": "one\ntwo\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "b25lCnR3bwo="
+      }
+    }
+  }
+}

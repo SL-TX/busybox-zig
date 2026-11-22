@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "case",
+  "stdout": "match\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

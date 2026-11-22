@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "param_default",
+  "stdout": "default\nempty\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

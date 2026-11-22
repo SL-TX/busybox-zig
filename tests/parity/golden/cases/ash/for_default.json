@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "for_default",
+  "stdout": "p\nq\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
