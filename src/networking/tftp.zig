@@ -21,7 +21,7 @@ const OACK: u16 = 6;
 
 // MIN_BLKSIZE from the reference:
 // 2 + sizeof("blksize\0" "NNNNN\0" "tsize\0") + sizeof(off_t)*3 + 16
-const MIN_BLKSIZE: u32 = 2 + 9 + 7 + 7 + @sizeOf(i64) * 3 + 16;
+const MIN_BLKSIZE: u32 = 2 + 21 + @sizeOf(i64) * 3 + 16; // = 63
 const MAX_BLKSIZE: u32 = 65464;
 
 fn checkBlocksize(text: []const u8) ?u32 {
@@ -59,17 +59,18 @@ fn serverError(code: u16, payload: []const u8) void {
     n.plain("server error: ({d}) {s}", .{ code, msg });
 }
 
-fn transfer(fd: linux.fd_t, get: bool, local_fd: ?linux.fd_t, remote_file: []const u8, blksize: u32) void {
+fn transfer(fd: linux.fd_t, get: bool, local_fd_in: ?linux.fd_t, local_path: ?[]const u8, remote_file: []const u8, blksize: u32) bool {
+    var local_fd = local_fd_in;
     var buf: [MAX_BLKSIZE + 64]u8 = undefined;
     var at: usize = 2;
     std.mem.writeInt(u16, buf[0..2], if (get) RRQ else WRQ, .big);
     if (!appendZ(&buf, &at, remote_file) or !appendZ(&buf, &at, "octet")) {
         n.plain("remote filename is too long", .{});
-        return;
+        return false;
     }
     if (blksize != 512) {
         var bs: [16]u8 = undefined;
-        const bs_text = std.fmt.bufPrint(&bs, "{d}", .{blksize}) catch return;
+        const bs_text = std.fmt.bufPrint(&bs, "{d}", .{blksize}) catch return false;
         _ = appendZ(&buf, &at, "blksize") and appendZ(&buf, &at, bs_text);
         _ = appendZ(&buf, &at, "tsize") and appendZ(&buf, &at, "0");
     }
@@ -80,18 +81,22 @@ fn transfer(fd: linux.fd_t, get: bool, local_fd: ?linux.fd_t, remote_file: []con
     var sent_len = at;
     var expect_oack = blksize != 512;
     var finished = false;
+    var own_fd: ?linux.fd_t = null;
+    defer {
+        if (own_fd) |lf| _ = linux.close(lf);
+    }
 
     _ = sock.send(fd, buf[0..sent_len], 0) catch {};
 
     while (!finished) {
         var fds = [_]linux.pollfd{.{ .fd = fd, .events = linux.POLL.IN, .revents = 0 }};
         const pr = linux.poll(&fds, 1, wait_ms);
-        if (linux.errno(pr) != .SUCCESS) return;
+        if (linux.errno(pr) != .SUCCESS) return false;
         if (pr == 0) {
             retries -= 1;
             if (retries == 0) {
                 n.plain("timeout", .{});
-                return;
+                return false;
             }
             wait_ms += @divTrunc(wait_ms, 2);
             if (wait_ms > 2000) wait_ms = 2000;
@@ -104,7 +109,7 @@ fn transfer(fd: linux.fd_t, get: bool, local_fd: ?linux.fd_t, remote_file: []con
         const recv_block = std.mem.readInt(u16, buf[2..4], .big);
         if (opcode == ERROR) {
             serverError(recv_block, std.mem.trim(u8, buf[4..got], "\x00\r\n"));
-            return;
+            return false;
         }
         if (expect_oack) {
             expect_oack = false;
@@ -115,6 +120,16 @@ fn transfer(fd: linux.fd_t, get: bool, local_fd: ?linux.fd_t, remote_file: []con
             n.plain("falling back to blocksize 512", .{});
         }
         if (get and opcode == DATA and recv_block == block) {
+            if (local_fd == null and local_path != null) {
+                const pz = n.zstr(local_path.?) catch return false;
+                const orc = linux.open(pz, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o666);
+                if (linux.errno(orc) != .SUCCESS) {
+                    n.errorMsg(@intFromEnum(linux.errno(orc)), "can't create '{s}'", .{local_path.?});
+                    return false;
+                }
+                local_fd = @intCast(orc);
+                own_fd = local_fd;
+            }
             if (local_fd) |lf| {
                 _ = linux.write(lf, buf[4..got].ptr, got - 4);
             } else {
@@ -131,7 +146,7 @@ fn transfer(fd: linux.fd_t, get: bool, local_fd: ?linux.fd_t, remote_file: []con
             continue;
         }
         if (!get and opcode == ACK and recv_block == block -% 1) {
-            if (finished) return;
+            if (finished) return true;
             sentinel: {
                 if (local_fd) |lf| {
                     const got_data = linux.read(lf, buf[4 .. 4 + @as(usize, @intCast(blksize))].ptr, blksize);
@@ -152,6 +167,7 @@ fn transfer(fd: linux.fd_t, get: bool, local_fd: ?linux.fd_t, remote_file: []con
             continue;
         }
     }
+    return true;
 }
 
 pub fn tftpMain(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -164,24 +180,10 @@ pub fn tftpMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     const put_flag = (opts.flags & 2) != 0;
     if (get_flag == put_flag) n.usageDie("tftp");
 
-    // getopt32 cannot return pointers for -l/-r/-b; read them from argv.
-    var local_file: ?[]const u8 = null;
-    var remote_file: ?[]const u8 = null;
-    var blksize_text: []const u8 = "512";
-    var i: usize = 1;
-    while (i < args.len) : (i += 1) {
-        const a = args[i];
-        if (std.mem.eql(u8, a, "-l") and i + 1 < args.len) {
-            i += 1;
-            local_file = args[i];
-        } else if (std.mem.eql(u8, a, "-r") and i + 1 < args.len) {
-            i += 1;
-            remote_file = args[i];
-        } else if (std.mem.eql(u8, a, "-b") and i + 1 < args.len) {
-            i += 1;
-            blksize_text = args[i];
-        }
-    }
+    // Attached forms such as -b63 are accepted by getopt32 as well.
+    var local_file = cu.optionValue(args, 1, args.len, 'l', null, "gp");
+    var remote_file = cu.optionValue(args, 1, args.len, 'r', null, "gp");
+    const blksize_text = cu.optionValue(args, 1, args.len, 'b', null, "gp") orelse "512";
 
     const blksize = checkBlocksize(blksize_text) orelse return 1;
 
@@ -227,20 +229,6 @@ pub fn tftpMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         return 1;
     }
 
-    if (!get_flag) {
-        transfer(fd, false, local_fd, remote_file.?, blksize);
-    } else if (local_file) |path| {
-        const p = n.zstr(path) catch return 1;
-        const rc = linux.open(p, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o666);
-        if (linux.errno(rc) != .SUCCESS) {
-            n.errorMsg(@intFromEnum(linux.errno(rc)), "can't create '{s}'", .{path});
-            return 1;
-        }
-        const out_fd: linux.fd_t = @intCast(rc);
-        defer _ = linux.close(out_fd);
-        transfer(fd, true, out_fd, remote_file.?, blksize);
-    } else {
-        transfer(fd, true, null, remote_file.?, blksize);
-    }
-    return 0;
+    const ok = transfer(fd, get_flag, local_fd, local_file, remote_file.?, blksize);
+    return if (ok) 0 else 1;
 }

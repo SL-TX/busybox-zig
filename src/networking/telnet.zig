@@ -55,6 +55,6 @@ pub fn telnetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         const line = std.fmt.bufPrint(&login, "{s}\r\n", .{user}) catch "";
         _ = cu.sendAll(fd, line);
     }
-    cu.relay(fd, true, null);
+    _ = cu.relay(fd, .{ .telnet_mode = true });
     return 0;
 }

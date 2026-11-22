@@ -387,6 +387,101 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "read_timeout",
+      "argv": [
+        "-q",
+        "-T",
+        "1",
+        "-O",
+        "-",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
+    },
+    {
+      "name": "retries_exhausted",
+      "argv": [
+        "-q",
+        "-t",
+        "1",
+        "-O",
+        "out",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 12000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "partial_n",
+        "fail_count": 2
+      }
+    },
+    {
+      "name": "retries_succeed",
+      "argv": [
+        "-q",
+        "-t",
+        "2",
+        "-Oout",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 12000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "partial_n",
+        "fail_count": 2
+      }
+    },
+    {
+      "name": "attached_timeout",
+      "argv": [
+        "-qT1",
+        "-O",
+        "-",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
     }
   ]
 }

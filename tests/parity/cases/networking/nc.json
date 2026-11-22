@@ -338,6 +338,123 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "wait_timeout",
+      "argv": [
+        "-w",
+        "1",
+        "-vv",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "PONG\n"
+      }
+    },
+    {
+      "name": "wait_receives",
+      "argv": [
+        "-w",
+        "5",
+        "-vv",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "PONG\n"
+      }
+    },
+    {
+      "name": "interval_late",
+      "argv": [
+        "-i",
+        "1",
+        "-w",
+        "5",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": "A\nB\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 15000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "timed_echo",
+        "threshold_ms": 500
+      }
+    },
+    {
+      "name": "interval_early",
+      "argv": [
+        "-w",
+        "5",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": "A\nB\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 15000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "timed_echo",
+        "threshold_ms": 500
+      }
+    },
+    {
+      "name": "attached_wait",
+      "argv": [
+        "-w1",
+        "-vv",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "PONG\n"
+      }
     }
   ]
 }

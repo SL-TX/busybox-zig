@@ -149,48 +149,84 @@ fn writeOutput(path: ?[]const u8, prefix: ?[]const u8, body: []const u8) void {
     _ = linux.write(@intCast(fd), body.ptr, body.len);
 }
 
+const FetchResult = enum { ok, partial };
+
 fn fetch(fd: linux.fd_t, u: Url, agent: []const u8, extra_headers: []const u8,
-    post: ?[]const u8, cont: bool, show: bool, spider: bool, outpath: ?[]const u8, prefix: ?[]const u8) void
+    post: ?[]const u8, cont: bool, show: bool, spider: bool, outpath: ?[]const u8,
+    prefix: ?[]const u8, timeout_sec: u32) FetchResult
 {
     var req: [16384]u8 = undefined;
     var req_len: usize = 0;
     const method = if (post != null) "POST" else "GET";
     const head = std.fmt.bufPrint(req[req_len..], "{s} {s} HTTP/1.1\r\nHost: {s}:{d}\r\nUser-Agent: {s}\r\nConnection: close\r\n", .{
         method, u.path, u.host, u.port, agent,
-    }) catch return;
+    }) catch return .ok;
     req_len += head.len;
     if (extra_headers.len > 0) {
-        if (req_len + extra_headers.len > req.len) return;
+        if (req_len + extra_headers.len > req.len) return .ok;
         @memcpy(req[req_len .. req_len + extra_headers.len], extra_headers);
         req_len += extra_headers.len;
     }
     if (cont) {
-        const r = std.fmt.bufPrint(req[req_len..], "Range: bytes=0-\r\n", .{}) catch return;
+        const r = std.fmt.bufPrint(req[req_len..], "Range: bytes=0-\r\n", .{}) catch return .ok;
         req_len += r.len;
     }
     if (post) |p| {
-        const r = std.fmt.bufPrint(req[req_len..], "Content-Length: {d}\r\n", .{p.len}) catch return;
+        const r = std.fmt.bufPrint(req[req_len..], "Content-Length: {d}\r\n", .{p.len}) catch return .ok;
         req_len += r.len;
     }
-    req_len += (std.fmt.bufPrint(req[req_len..], "\r\n", .{}) catch return).len;
+    req_len += (std.fmt.bufPrint(req[req_len..], "\r\n", .{}) catch return .ok).len;
     if (post) |p| {
-        if (req_len + p.len > req.len) return;
+        if (req_len + p.len > req.len) return .ok;
         @memcpy(req[req_len .. req_len + p.len], p);
         req_len += p.len;
     }
     _ = linux.write(fd, req[0..req_len].ptr, req_len);
 
+    // -T SEC arms a receive deadline around the response reads; expiry is the
+    // reference's SIGALRM path: "wget: download timed out", exit 1.
+    if (timeout_sec > 0) {
+        var tv = linux.timeval{ .sec = @intCast(timeout_sec), .usec = 0 };
+        _ = linux.setsockopt(fd, linux.SOL.SOCKET, linux.SO.RCVTIMEO, @ptrCast(&tv), @sizeOf(linux.timeval));
+    }
     var raw: std.ArrayList(u8) = .empty;
     defer raw.deinit(n.A);
     var buf: [8192]u8 = undefined;
     while (true) {
-        const got = cu.readSome(fd, &buf);
-        if (got == 0) break;
-        raw.appendSlice(n.A, buf[0..got]) catch return;
+        const rc = linux.read(fd, &buf, buf.len);
+        const e = linux.errno(rc);
+        if (e != .SUCCESS) {
+            if (timeout_sec > 0 and e == .AGAIN) {
+                n.plain("download timed out", .{});
+                std.process.exit(1);
+            }
+            break;
+        }
+        if (rc == 0) break;
+        raw.appendSlice(n.A, buf[0..@as(usize, @intCast(rc))]) catch return .ok;
     }
-    const sep = std.mem.indexOf(u8, raw.items, "\r\n\r\n") orelse return;
+    const sep = std.mem.indexOf(u8, raw.items, "\r\n\r\n") orelse return .ok;
     if (show) n.out(raw.items[0 .. sep + 4]);
-    if (!spider) writeOutput(outpath, prefix, raw.items[sep + 4 ..]);
+    const body = raw.items[sep + 4 ..];
+    if (!spider) writeOutput(outpath, prefix, body);
+
+    // A short body compared to Content-Length is a partial download; the
+    // caller retries it up to -t times (each retry reopens the output file).
+    var expected: ?usize = null;
+    var lines = std.mem.splitSequence(u8, raw.items[0..sep], "\r\n");
+    while (lines.next()) |line| {
+        if (std.ascii.startsWithIgnoreCase(line, "Content-Length:")) {
+            const value = std.mem.trim(u8, line["Content-Length:".len..], " \t");
+            if (std.fmt.parseInt(usize, value, 10)) |v| expected = v else |_| {}
+        }
+    }
+    if (expected) |cl| {
+        if (cl != 0 and body.len < cl) {
+            n.plain("connection closed at byte {d}", .{body.len});
+            return .partial;
+        }
+    }
+    return .ok;
 }
 
 pub fn wgetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -199,65 +235,39 @@ pub fn wgetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     const opts = n.opts("wget", args, "^cqSO:o:P:Y:U:T:+t:+n::", &longopts);
     const urls = opts.args;
 
-    var outpath: ?[]const u8 = null;
-    var logfile: ?[]const u8 = null;
-    var prefix: ?[]const u8 = null;
-    var agent: []const u8 = "Wget";
-    var timeout_text: ?[]const u8 = null;
-    var tries_text: ?[]const u8 = null;
+    const outpath = cu.optionValue(args, 1, args.len, 'O', "output-document", "cqS");
+    const logfile = cu.optionValue(args, 1, args.len, 'o', "output-file", "cqS");
+    const prefix = cu.optionValue(args, 1, args.len, 'P', "directory-prefix", "cqS");
+    const proxy_flag = cu.optionValue(args, 1, args.len, 'Y', "proxy", "cqS") orelse "on";
+    const agent = cu.optionValue(args, 1, args.len, 'U', "user-agent", "cqS") orelse "Wget";
+    const timeout_text = cu.optionValue(args, 1, args.len, 'T', "timeout", "cqS");
+    const tries_text = cu.optionValue(args, 1, args.len, 't', "tries", "cqS");
+    const post_data = cu.optionValue(args, 1, args.len, 0, "post-data", "cqS");
+    const post_file = cu.optionValue(args, 1, args.len, 0, "post-file", "cqS");
     var extra_headers: std.ArrayList(u8) = .empty;
     defer extra_headers.deinit(n.A);
-    var post_data: ?[]const u8 = null;
-    var post_file: ?[]const u8 = null;
-    var quiet = false;
-    var spider = false;
-    var show = false;
-    var cont = false;
-    var proxy_flag: []const u8 = "on";
-
-    // Collect the values getopt32 cannot hand back through this API.
-    var i: usize = 1;
-    while (i < args.len) : (i += 1) {
-        const a = args[i];
-        if ((std.mem.eql(u8, a, "-O") or std.mem.eql(u8, a, "--output-document")) and i + 1 < args.len) {
-            i += 1; outpath = args[i];
-        } else if ((std.mem.eql(u8, a, "-o") or std.mem.eql(u8, a, "--output-file")) and i + 1 < args.len) {
-            i += 1; logfile = args[i];
-        } else if ((std.mem.eql(u8, a, "-P") or std.mem.eql(u8, a, "--directory-prefix")) and i + 1 < args.len) {
-            i += 1; prefix = args[i];
-        } else if ((std.mem.eql(u8, a, "-Y") or std.mem.eql(u8, a, "--proxy")) and i + 1 < args.len) {
-            i += 1; proxy_flag = args[i];
-        } else if ((std.mem.eql(u8, a, "-U") or std.mem.eql(u8, a, "--user-agent")) and i + 1 < args.len) {
-            i += 1; agent = args[i];
-        } else if ((std.mem.eql(u8, a, "-T") or std.mem.eql(u8, a, "--timeout")) and i + 1 < args.len) {
-            i += 1; timeout_text = args[i];
-        } else if ((std.mem.eql(u8, a, "-t") or std.mem.eql(u8, a, "--tries")) and i + 1 < args.len) {
-            i += 1; tries_text = args[i];
-        } else if ((std.mem.eql(u8, a, "--header")) and i + 1 < args.len) {
-            i += 1;
-            extra_headers.appendSlice(n.A, args[i]) catch {};
+    var hi: usize = 1;
+    while (hi < args.len) : (hi += 1) {
+        const a = args[hi];
+        if (std.mem.eql(u8, a, "--header") and hi + 1 < args.len) {
+            hi += 1;
+            extra_headers.appendSlice(n.A, args[hi]) catch {};
             extra_headers.appendSlice(n.A, "\r\n") catch {};
-        } else if (std.mem.eql(u8, a, "--post-data") and i + 1 < args.len) {
-            i += 1; post_data = args[i];
-        } else if (std.mem.eql(u8, a, "--post-file") and i + 1 < args.len) {
-            i += 1; post_file = args[i];
-        } else if (std.mem.eql(u8, a, "-q") or std.mem.eql(u8, a, "--quiet")) {
-            quiet = true;
-        } else if (std.mem.eql(u8, a, "--spider")) {
-            spider = true;
-        } else if (std.mem.eql(u8, a, "-S") or std.mem.eql(u8, a, "--server-response")) {
-            show = true;
-        } else if (std.mem.eql(u8, a, "-c") or std.mem.eql(u8, a, "--continue")) {
-            cont = true;
+        } else if (std.mem.startsWith(u8, a, "--header=")) {
+            extra_headers.appendSlice(n.A, a["--header=".len..]) catch {};
+            extra_headers.appendSlice(n.A, "\r\n") catch {};
         }
     }
+    const quiet = (opts.flags & 2) != 0;
+    const spider = (opts.flags & (1 << 11)) != 0; // --spider, first non-short long val
+    const show = (opts.flags & 4) != 0;
+    const cont = (opts.flags & 1) != 0;
+
     // getopt32 validates the '+' numeric options while parsing, before the
     // "-1" (at least one URL) complementary check, so do the same here.
-    if (timeout_text) |t| _ = parseNonNegative(t);
-    if (tries_text) |t| {
-        const tries = parseNonNegative(t);
-        if (tries == 0) n.usageDie("wget");
-    }
+    const timeout_sec: u32 = if (timeout_text) |t| parseNonNegative(t) else 0;
+    const tries: u32 = if (tries_text) |t| parseNonNegative(t) else 20;
+    if (tries == 0) n.usageDie("wget");
     if (post_data != null and post_file != null) n.usageDie("wget");
     if (urls.len == 0) n.usageDie("wget");
 
@@ -278,43 +288,51 @@ pub fn wgetMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     for (urls) |url_text| {
         const u = parseUrl(url_text);
         if (!cu.isNumericHost(u.host)) n.plainDie("bad address '{s}'", .{u.host});
-        var dotted_buf: [64]u8 = undefined;
-        var line_buf: [256]u8 = undefined;
-        if (!quiet) {
-            const line = std.fmt.bufPrint(&line_buf, "Connecting to {s} ({s})\n", .{
-                u.display, cu.dotted(u.host, u.port, &dotted_buf),
-            }) catch "";
-            n.errout(line);
-        }
         const ep = proxyEndpoint(proxy_flag);
         const connect_host = if (ep) |e| e.host else u.host;
         const connect_port = if (ep) |e| e.port else u.port;
         if (!cu.isNumericHost(connect_host)) n.plainDie("bad address '{s}'", .{connect_host});
-        const fd = cu.connectOrDie(connect_host, connect_port);
-        defer _ = linux.close(fd);
 
-        var body: []const u8 = post_data orelse "";
-        if (post_file) |pf| {
-            body = n.readWholeFile(pf) catch n.plainDie("can't open '{s}'", .{pf});
-        }
-        if (u.is_ftp) {
-            // Minimal FTP RETR over the already-open control socket.
-            _ = linux.write(fd, "USER anonymous\r\nPASS busybox\r\nTYPE I\r\n", 38);
-            var cmd: [1024]u8 = undefined;
-            const line = std.fmt.bufPrint(&cmd, "RETR {s}\r\n", .{u.path}) catch "";
-            _ = linux.write(fd, line.ptr, line.len);
-            var raw: std.ArrayList(u8) = .empty;
-            defer raw.deinit(n.A);
-            var buf: [8192]u8 = undefined;
-            while (true) {
-                const got = cu.readSome(fd, &buf);
-                if (got == 0) break;
-                raw.appendSlice(n.A, buf[0..got]) catch break;
+        var retries_left = tries;
+        while (true) {
+            var dotted_buf: [64]u8 = undefined;
+            var line_buf: [256]u8 = undefined;
+            if (!quiet) {
+                const line = std.fmt.bufPrint(&line_buf, "Connecting to {s} ({s})\n", .{
+                    u.display, cu.dotted(u.host, u.port, &dotted_buf),
+                }) catch "";
+                n.errout(line);
             }
-            if (!spider) writeOutput(outpath, prefix, raw.items);
-        } else {
-            fetch(fd, u, agent, extra_headers.items, if (post_data != null or post_file != null) body else null,
-                cont, show, spider, outpath, prefix);
+            const fd = cu.connectOrDie(connect_host, connect_port);
+            defer _ = linux.close(fd);
+
+            var body: []const u8 = post_data orelse "";
+            if (post_file) |pf| {
+                body = n.readWholeFile(pf) catch n.plainDie("can't open '{s}'", .{pf});
+            }
+            var result: FetchResult = .ok;
+            if (u.is_ftp) {
+                _ = linux.write(fd, "USER anonymous\r\nPASS busybox\r\nTYPE I\r\n", 38);
+                var cmd: [1024]u8 = undefined;
+                const line = std.fmt.bufPrint(&cmd, "RETR {s}\r\n", .{u.path}) catch "";
+                _ = linux.write(fd, line.ptr, line.len);
+                var raw: std.ArrayList(u8) = .empty;
+                defer raw.deinit(n.A);
+                var buf: [8192]u8 = undefined;
+                while (true) {
+                    const got = cu.readSome(fd, &buf);
+                    if (got == 0) break;
+                    raw.appendSlice(n.A, buf[0..got]) catch break;
+                }
+                if (!spider) writeOutput(outpath, prefix, raw.items);
+            } else {
+                result = fetch(fd, u, agent, extra_headers.items,
+                    if (post_data != null or post_file != null) body else null,
+                    cont, show, spider, outpath, prefix, timeout_sec);
+            }
+            if (result == .ok or retries_left == 0) break;
+            retries_left -= 1;
+            n.plain("restart failed", .{});
         }
     }
     return 0;

@@ -1,0 +1,16 @@
+{
+  "applet": "wget",
+  "name": "retries_succeed",
+  "stdout": "",
+  "stderr": "wget: connection closed at byte 5\nwget: restart failed\nwget: connection closed at byte 5\nwget: restart failed\n",
+  "exit": 0,
+  "tree": {
+    "out": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "SEVMTE9XT1JMRA=="
+      }
+    }
+  }
+}

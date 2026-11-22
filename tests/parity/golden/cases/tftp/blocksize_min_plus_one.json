@@ -1,0 +1,8 @@
+{
+  "applet": "tftp",
+  "name": "blocksize_min_plus_one",
+  "stdout": "",
+  "stderr": "tftp: server error: (1) file not found\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -254,6 +254,113 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "blocksize_below_min",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "62",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
+    },
+    {
+      "name": "blocksize_min",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "63",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
+    },
+    {
+      "name": "blocksize_min_plus_one",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "64",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
+    },
+    {
+      "name": "blocksize_attached",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b63",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
     }
   ]
 }

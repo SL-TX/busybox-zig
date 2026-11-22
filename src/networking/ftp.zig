@@ -12,6 +12,14 @@ const linux = std.os.linux;
 
 const A = n.A;
 
+const longopts = [_]n.LongOpt{
+    .{ .name = "continue", .has_arg = .required, .val = 'c' },
+    .{ .name = "verbose", .val = 'v' },
+    .{ .name = "username", .has_arg = .required, .val = 'u' },
+    .{ .name = "password", .has_arg = .required, .val = 'p' },
+    .{ .name = "port", .has_arg = .required, .val = 'P' },
+};
+
 const Session = struct {
     ctrl: linux.fd_t,
     verbose: bool,
@@ -102,7 +110,7 @@ fn run(applet: []const u8, argc: c_int, argv: [*][*:0]const u8, is_get: bool) c_
     n.setProg(argv);
     const args = n.argsFrom(argv, argc);
     // "^cvu:p:P:" — -c and -v are flags, -u/-p/-P take arguments.
-    const opts = n.opts(applet, args, "cvu:p:P:", &.{});
+    const opts = n.opts(applet, args, "cvu:p:P:", &longopts);
     const pos = opts.args;
     const do_continue = is_get and (opts.flags & 1) != 0; // -c: REST on download
 
@@ -110,26 +118,10 @@ fn run(applet: []const u8, argc: c_int, argv: [*][*:0]const u8, is_get: bool) c_
     if (pos.len < 2 or pos.len > 3) n.usageDie(applet);
 
     const host = pos[0];
-    var user: []const u8 = "anonymous";
-    var password: []const u8 = "busybox";
-    var port_text: ?[]const u8 = null;
-    var verbose = false;
-    var i: usize = 1;
-    while (i < args.len) : (i += 1) {
-        const a = args[i];
-        if (std.mem.eql(u8, a, "-u") and i + 1 < args.len) {
-            i += 1;
-            user = args[i];
-        } else if (std.mem.eql(u8, a, "-p") and i + 1 < args.len) {
-            i += 1;
-            password = args[i];
-        } else if (std.mem.eql(u8, a, "-P") and i + 1 < args.len) {
-            i += 1;
-            port_text = args[i];
-        } else if (std.mem.eql(u8, a, "-v")) {
-            verbose = true;
-        }
-    }
+    const user = cu.optionValue(args, 1, args.len, 'u', "username", "cv") orelse "anonymous";
+    const password = cu.optionValue(args, 1, args.len, 'p', "password", "cv") orelse "busybox";
+    const port_text = cu.optionValue(args, 1, args.len, 'P', "port", "cv");
+    const verbose = (opts.flags & 2) != 0;
 
     if (!cu.isNumericHost(host)) n.plainDie("bad address '{s}'", .{host});
     const port = cu.lookupPort(port_text, "tcp", 21);

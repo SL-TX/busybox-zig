@@ -184,71 +184,93 @@ def observe(
     rules = case.get("normalize") or []
     env_map = _environment(case, root, env)
     timeout = (timeout_ms if timeout_ms is not None else case.get("timeout_ms", 5000)) / 1000.0
-    # A case may refer to its own sandbox with the portable <TMP> placeholder
-    # in argv (env values already support it). Substituting per-root keeps the
-    # two observations independent while letting a case build a fake module
-    # tree inside each sandbox.
-    full_argv = [binary, *(a.replace("<TMP>", root) for a in argv)]
 
-    if case.get("tty") or case.get("use_pty"):
-        from scripts.parity.pty_helper import (  # lazy: optional helper
-            PtyTimeout,
-            PtyUnavailable,
-            run_pty,
-        )
+    # Optional deterministic loopback server.  Each observation gets its own
+    # server on an ephemeral port; <PORT> in argv/stdin is substituted with
+    # that port and normalized back to <PORT> in the output so the two
+    # observations (and later golden comparisons) stay comparable.
+    srv = None
+    if case.get("server"):
+        from scripts.parity.server import LoopbackServer
+        srv = LoopbackServer(case["server"])
+    try:
+        port_text = str(srv.port) if srv else None
 
-        if not _capability("tty"):
-            raise CapabilityUnavailable("tty", "no usable pseudo-terminal")
-        try:
-            stdout, exit_code = run_pty(full_argv, case.get("script") or [], timeout)
-        except PtyTimeout as exc:
-            raise HarnessTimeout(str(exc)) from exc
-        except PtyUnavailable as exc:
-            raise CapabilityUnavailable("tty", str(exc)) from exc
-        stderr = ""
-    elif case.get("ns") or case.get("use_ns"):
-        from scripts.parity.ns import NsTimeout, NsUnavailable, run_ns  # lazy: optional helper
+        def sub(text):
+            if port_text:
+                text = text.replace("<PORT>", port_text)
+            return text.replace("<TMP>", root)
 
-        kind = case.get("ns") or case.get("use_ns")
-        capability = _NS_CAPABILITY.get(kind, kind)
-        if not _capability(capability):
-            raise CapabilityUnavailable(capability, "namespace " + kind + " unavailable")
-        try:
-            proc = run_ns(kind, full_argv, timeout=timeout)
-        except NsTimeout as exc:
-            raise HarnessTimeout(str(exc)) from exc
-        except NsUnavailable as exc:
-            raise CapabilityUnavailable(capability, str(exc)) from exc
-        stdout = proc.stdout.decode("utf-8", "replace")
-        stderr = proc.stderr.decode("utf-8", "replace")
-        exit_code = proc.returncode
-    else:
-        kwargs: dict[str, Any] = {
-            "cwd": _case_cwd(case, root),
-            "env": env_map,
-            "stdout": subprocess.PIPE,
-            "stderr": subprocess.PIPE,
-            "timeout": timeout,
-        }
-        if case.get("stdin") is None:
-            kwargs["stdin"] = subprocess.DEVNULL
+        full_argv = [binary, *(sub(a) for a in argv)]
+
+        if case.get("tty") or case.get("use_pty"):
+            from scripts.parity.pty_helper import (  # lazy: optional helper
+                PtyTimeout,
+                PtyUnavailable,
+                run_pty,
+            )
+
+            if not _capability("tty"):
+                raise CapabilityUnavailable("tty", "no usable pseudo-terminal")
+            try:
+                stdout, exit_code = run_pty(full_argv, case.get("script") or [], timeout)
+            except PtyTimeout as exc:
+                raise HarnessTimeout(str(exc)) from exc
+            except PtyUnavailable as exc:
+                raise CapabilityUnavailable("tty", str(exc)) from exc
+            stderr = ""
+        elif case.get("ns") or case.get("use_ns"):
+            from scripts.parity.ns import NsTimeout, NsUnavailable, run_ns  # lazy: optional helper
+
+            kind = case.get("ns") or case.get("use_ns")
+            capability = _NS_CAPABILITY.get(kind, kind)
+            if not _capability(capability):
+                raise CapabilityUnavailable(capability, "namespace " + kind + " unavailable")
+            try:
+                proc = run_ns(kind, full_argv, timeout=timeout)
+            except NsTimeout as exc:
+                raise HarnessTimeout(str(exc)) from exc
+            except NsUnavailable as exc:
+                raise CapabilityUnavailable(capability, str(exc)) from exc
+            stdout = proc.stdout.decode("utf-8", "replace")
+            stderr = proc.stderr.decode("utf-8", "replace")
+            exit_code = proc.returncode
         else:
-            kwargs["input"] = str(case["stdin"]).encode("utf-8")
-        try:
-            proc = subprocess.run(full_argv, **kwargs)
-        except subprocess.TimeoutExpired as exc:
-            raise HarnessTimeout("timeout after %g s" % timeout) from exc
-        stdout = proc.stdout.decode("utf-8", "replace")
-        stderr = proc.stderr.decode("utf-8", "replace")
-        exit_code = proc.returncode
+            kwargs: dict[str, Any] = {
+                "cwd": _case_cwd(case, root),
+                "env": env_map,
+                "stdout": subprocess.PIPE,
+                "stderr": subprocess.PIPE,
+                "timeout": timeout,
+            }
+            if case.get("stdin") is None:
+                kwargs["stdin"] = subprocess.DEVNULL
+            else:
+                raw_stdin = str(case["stdin"])
+                if port_text:
+                    raw_stdin = raw_stdin.replace("<PORT>", port_text)
+                kwargs["input"] = raw_stdin.encode("utf-8")
+            try:
+                proc = subprocess.run(full_argv, **kwargs)
+            except subprocess.TimeoutExpired as exc:
+                raise HarnessTimeout("timeout after %g s" % timeout) from exc
+            stdout = proc.stdout.decode("utf-8", "replace")
+            stderr = proc.stderr.decode("utf-8", "replace")
+            exit_code = proc.returncode
 
-    tree = _normalize_tree(snapshot(root), rules, root)
-    return Observation(
-        stdout=normalize.apply(stdout, rules, root=root),
-        stderr=normalize.apply(stderr, rules, root=root),
-        exit=exit_code,
-        tree=tree,
-    )
+        if port_text:
+            stdout = stdout.replace(port_text, "<PORT>")
+            stderr = stderr.replace(port_text, "<PORT>")
+        tree = _normalize_tree(snapshot(root), rules, root)
+        return Observation(
+            stdout=normalize.apply(stdout, rules, root=root),
+            stderr=normalize.apply(stderr, rules, root=root),
+            exit=exit_code,
+            tree=tree,
+        )
+    finally:
+        if srv is not None:
+            srv.stop()
 
 
 def run_case(

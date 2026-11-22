@@ -108,18 +108,11 @@ pub fn whoisMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var host: []const u8 = "whois.iana.org";
     var port: u32 = 43;
     var show_redirects = false;
-    var i: usize = 1;
-    while (i < args.len) : (i += 1) {
-        const a = args[i];
-        if (std.mem.eql(u8, a, "-h") and i + 1 < args.len) {
-            i += 1;
-            host = args[i];
-        } else if (std.mem.eql(u8, a, "-p") and i + 1 < args.len) {
-            i += 1;
-            port = parseNonNegative(args[i]);
-        } else if (std.mem.eql(u8, a, "-i")) {
+    if (cu.optionValue(args, 1, args.len, 'h', null, "i")) |h| host = h;
+    if (cu.optionValue(args, 1, args.len, 'p', null, "i")) |p| port = parseNonNegative(p);
+    for (args[1..]) |a| {
+        if (std.mem.eql(u8, a, "-i") or (a.len > 2 and a[0] == '-' and std.mem.indexOfScalar(u8, a[1..], 'i') != null))
             show_redirects = true;
-        }
     }
 
     for (names) |name| recursive(host, port, name, show_redirects);

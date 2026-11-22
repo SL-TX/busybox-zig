@@ -26,6 +26,55 @@ pub fn dotted(ip_text: []const u8, port: u16, buf: []u8) []const u8 {
     return std.fmt.bufPrint(buf, "{s}:{d}", .{ ip, port }) catch ip_text;
 }
 
+/// Extract the value of an option from argv, accepting all the forms the
+/// reference getopt32 accepts: `-X value`, `-Xvalue`, `-abcXvalue` (attached
+/// to the end of a short-option cluster) and `--long=value` / `--long value`.
+pub fn optionValue(args: []const []const u8, start: usize, end: usize, short: u8, long: ?[]const u8, flag_chars: []const u8) ?[]const u8 {
+    var i = start;
+    while (i < end) : (i += 1) {
+        const a = args[i];
+        if (a.len < 2 or a[0] != '-') continue;
+        if (a[1] == '-') {
+            if (long) |l| {
+                const body = a[2..];
+                if (std.mem.startsWith(u8, body, l)) {
+                    if (body.len > l.len and body[l.len] == '=') return body[l.len + 1 ..];
+                    if (body.len == l.len and i + 1 < end) return args[i + 1];
+                }
+            }
+            continue;
+        }
+        // Walk the short-option cluster; everything after an argument-taking
+        // option is its value and must not be mistaken for another option.
+        var j: usize = 1;
+        while (j < a.len) : (j += 1) {
+            const ch = a[j];
+            if (ch == short) {
+                if (j + 1 < a.len) return a[j + 1 ..];
+                if (i + 1 < end) return args[i + 1];
+                return null;
+            }
+            if (std.mem.indexOfScalar(u8, flag_chars, ch) == null) break;
+        }
+    }
+    return null;
+}
+
+pub fn sleepSec(seconds: u32) void {
+    if (seconds == 0) return;
+    var req = linux.timespec{ .sec = @intCast(seconds), .nsec = 0 };
+    _ = linux.nanosleep(&req, &req);
+}
+
+pub fn stderrRaw(bytes: []const u8) void {
+    var done: usize = 0;
+    while (done < bytes.len) {
+        const rc = linux.write(2, bytes.ptr + done, bytes.len - done);
+        if (linux.errno(rc) != .SUCCESS or rc == 0) return;
+        done += @intCast(rc);
+    }
+}
+
 fn allDigits(s: []const u8) bool {
     if (s.len == 0) return false;
     for (s) |c| if (c < '0' or c > '9') return false;
@@ -125,33 +174,123 @@ fn hexLog(log_fd: ?linux.fd_t, direction: u8, bytes: []const u8) void {
     _ = linux.write(lf, line[0..at].ptr, at);
 }
 
-pub fn relay(fd: linux.fd_t, telnet_mode: bool, log_fd: ?linux.fd_t) void {
+pub const RelayOpts = struct {
+    wait_sec: u32 = 0,
+    interval_sec: u32 = 0,
+    verbose: u32 = 0,
+    telnet_mode: bool = false,
+    log_fd: ?linux.fd_t = null,
+};
+
+pub const RelayStats = struct {
+    sent: u64 = 0,
+    received: u64 = 0,
+    timed_out: bool = false,
+};
+
+/// The readwrite() loop from nc_bloaty.c: poll stdin and the socket, honour
+/// -w (poll timeout, with the two-strike `netretry` before "net timeout") and
+/// -i (sleep before the first write and between individual lines).
+pub fn relay(fd: linux.fd_t, opts: RelayOpts) RelayStats {
+    var stats = RelayStats{};
     var inbuf: [8192]u8 = undefined;
     var outbuf: [8192]u8 = undefined;
-    while (true) {
-        const nr = readSome(fd, &outbuf);
-        if (nr == 0) break;
-        hexLog(log_fd, '<', outbuf[0..nr]);
-        if (telnet_mode) {
-            var w: usize = 0;
-            var i: usize = 0;
-            while (i < nr) {
-                if (outbuf[i] == 0xff and i + 2 < nr) {
-                    i += 3; // skip IAC <verb> <option>
-                    continue;
-                }
-                outbuf[w] = outbuf[i];
-                w += 1;
-                i += 1;
-            }
-            n.out(outbuf[0..w]);
-        } else {
-            n.out(outbuf[0..nr]);
+    var in_len: usize = 0;
+    var out_len: usize = 0;
+    var stdin_open = true;
+    var net_open = true;
+    var netretry: u8 = 2;
+
+    if (opts.interval_sec != 0) sleepSec(opts.interval_sec);
+
+    while (stdin_open or net_open) {
+        var pfds: [2]linux.pollfd = undefined;
+        var count: usize = 0;
+        if (stdin_open) {
+            pfds[count] = .{ .fd = 0, .events = linux.POLL.IN, .revents = 0 };
+            count += 1;
         }
-        const nstdin = readSome(0, &inbuf);
-        if (nstdin == 0) break;
-        hexLog(log_fd, '>', inbuf[0..nstdin]);
-        if (!sendAll(fd, inbuf[0..nstdin])) break;
+        const net_index = count;
+        if (net_open) {
+            pfds[count] = .{ .fd = fd, .events = linux.POLL.IN, .revents = 0 };
+            count += 1;
+        }
+        const tmout: i32 = if (opts.wait_sec != 0) @intCast(opts.wait_sec * 1000) else -1;
+        const rr = linux.poll(&pfds, count, tmout);
+        if (linux.errno(rr) != .SUCCESS) break;
+        if (rr == 0) {
+            if (opts.wait_sec != 0 and in_len == 0) {
+                netretry -= 1;
+                if (netretry == 0) {
+                    if (opts.verbose > 1) stderrRaw("net timeout\n");
+                    stats.timed_out = true;
+                    break;
+                }
+            }
+            continue;
+        }
+
+        if (net_open and (pfds[net_index].revents & (linux.POLL.IN | linux.POLL.HUP | linux.POLL.ERR)) != 0) {
+            const got = readSome(fd, &outbuf);
+            if (got == 0) {
+                net_open = false;
+            } else {
+                out_len = got;
+            }
+        }
+        var stdin_ready = false;
+        if (stdin_open) {
+            for (pfds[0..net_index]) |p| {
+                if ((p.revents & (linux.POLL.IN | linux.POLL.HUP | linux.POLL.ERR)) != 0) stdin_ready = true;
+            }
+        }
+        if (stdin_ready and in_len == 0) {
+            const got = readSome(0, &inbuf);
+            if (got == 0) {
+                stdin_open = false;
+                _ = linux.shutdown(fd, linux.SHUT.WR);
+            } else {
+                in_len = got;
+            }
+        }
+
+        if (out_len > 0) {
+            hexLog(opts.log_fd, '<', outbuf[0..out_len]);
+            var write_buf = outbuf[0..out_len];
+            if (opts.telnet_mode) {
+                var w: usize = 0;
+                var k: usize = 0;
+                while (k < write_buf.len) {
+                    if (write_buf[k] == 0xff and k + 2 < write_buf.len) {
+                        k += 3; // IAC <verb> <option>
+                        continue;
+                    }
+                    outbuf[w] = write_buf[k];
+                    w += 1;
+                    k += 1;
+                }
+                write_buf = outbuf[0..w];
+            }
+            n.out(write_buf);
+            stats.received += write_buf.len;
+            out_len = 0;
+        }
+        if (in_len > 0 and net_open) {
+            var chunk = inbuf[0..in_len];
+            if (opts.interval_sec != 0) {
+                if (std.mem.indexOfScalar(u8, chunk, '\n')) |nl| chunk = chunk[0 .. nl + 1];
+            }
+            hexLog(opts.log_fd, '>', chunk);
+            if (sendAll(fd, chunk)) {
+                stats.sent += chunk.len;
+                in_len -= chunk.len;
+                if (in_len > 0) std.mem.copyForwards(u8, inbuf[0..in_len], inbuf[chunk.len .. chunk.len + in_len]);
+            } else {
+                net_open = false;
+            }
+            if (opts.interval_sec != 0) sleepSec(opts.interval_sec);
+        }
     }
     _ = linux.shutdown(fd, linux.SHUT.RDWR);
+    return stats;
 }

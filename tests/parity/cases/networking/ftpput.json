@@ -232,6 +232,27 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "long_options",
+      "argv": [
+        "--username=bob",
+        "--password=pw",
+        "--port=1",
+        "--verbose",
+        "127.0.0.1",
+        "remote",
+        "local"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

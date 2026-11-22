@@ -1,0 +1,16 @@
+{
+  "applet": "wget",
+  "name": "retries_exhausted",
+  "stdout": "",
+  "stderr": "wget: connection closed at byte 5\nwget: restart failed\nwget: connection closed at byte 5\n",
+  "exit": 0,
+  "tree": {
+    "out": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "U0hPUlQ="
+      }
+    }
+  }
+}

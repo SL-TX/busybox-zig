@@ -18,6 +18,12 @@ fn parseNonNegative(text: []const u8) u32 {
     return std.fmt.parseInt(u32, text, 10) catch n.plainDie("invalid number '{s}'", .{text});
 }
 
+fn reportStats(stats: cu.RelayStats) void {
+    var msg: [128]u8 = undefined;
+    const line = std.fmt.bufPrint(&msg, "sent {d}, rcvd {d}\n", .{ stats.sent, stats.received }) catch return;
+    cu.stderrRaw(line);
+}
+
 fn makeSocket(stream: bool) linux.fd_t {
     const sock_type: u32 = if (stream) linux.SOCK.STREAM else linux.SOCK.DGRAM;
     const sfd = linux.socket(linux.AF.INET, sock_type, 0);
@@ -58,58 +64,36 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     const opts = n.opts("nc", full[0..parse_end], "np:s:ubvw:+lki:o:z", &.{});
     const pos = opts.args;
 
-    var local_port_text: ?[]const u8 = null;
-    var source_text: ?[]const u8 = null;
-    var wait_text: ?[]const u8 = null;
+    const local_port_text = cu.optionValue(full, 1, parse_end, 'p', null, "nublkzv");
+    const source_text = cu.optionValue(full, 1, parse_end, 's', null, "nublkzv");
+    const wait_text = cu.optionValue(full, 1, parse_end, 'w', null, "nublkzv");
+    const interval_text = cu.optionValue(full, 1, parse_end, 'i', null, "nublkzv");
+    const ofile = cu.optionValue(full, 1, parse_end, 'o', null, "nublkzv");
     var listen = false;
     var persistent = false;
     var udp = false;
     var broadcast = false;
-    var ofile: ?[]const u8 = null;
     var verbose: usize = 0;
     var zero = false;
     var i: usize = 1;
     while (i < parse_end) : (i += 1) {
         const a = full[i];
-        if (std.mem.eql(u8, a, "-p") and i + 1 < parse_end) {
-            i += 1;
-            local_port_text = full[i];
-        } else if (std.mem.eql(u8, a, "-s") and i + 1 < parse_end) {
-            i += 1;
-            source_text = full[i];
-        } else if (std.mem.eql(u8, a, "-w") and i + 1 < parse_end) {
-            i += 1;
-            wait_text = full[i];
-        } else if (std.mem.eql(u8, a, "-i") and i + 1 < parse_end) {
-            i += 1;
-            _ = parseNonNegative(full[i]);
-        } else if (std.mem.eql(u8, a, "-l")) {
-            listen = true;
-        } else if (std.mem.eql(u8, a, "-k")) {
-            persistent = true;
-        } else if (std.mem.eql(u8, a, "-u")) {
-            udp = true;
-        } else if (std.mem.eql(u8, a, "-b")) {
-            broadcast = true;
-        } else if (std.mem.eql(u8, a, "-o") and i + 1 < parse_end) {
-            i += 1;
-            ofile = full[i];
-        } else if (std.mem.eql(u8, a, "-z")) {
-            zero = true;
-        } else if (a.len >= 2 and a[0] == '-') {
-            var j: usize = 1;
-            while (j < a.len) : (j += 1) {
-                switch (a[j]) {
-                    'v' => verbose += 1,
-                    'l' => listen = true,
-                    'k' => persistent = true,
-                    'u' => udp = true,
-                    'b' => broadcast = true,
-                    'n' => {}, // numeric-only is the effective default here
-                    else => {},
-                }
+        if (a.len < 2 or a[0] != '-' or a[1] == '-') continue;
+        var j: usize = 1;
+        while (j < a.len) : (j += 1) {
+            const ch = a[j];
+            // Characters after an argument-taking option are its value.
+            if (std.mem.indexOfScalar(u8, "pswio", ch) != null) break;
+            switch (ch) {
+                'v' => verbose += 1,
+                'l' => listen = true,
+                'k' => persistent = true,
+                'u' => udp = true,
+                'b' => broadcast = true,
+                'z' => zero = true,
+                'n' => {}, // numeric-only is the effective default here
+                else => {},
             }
-            if (std.mem.indexOfScalar(u8, a, 'v') != null and a.len > 2) verbose = a.len - 1;
         }
     }
 
@@ -123,7 +107,8 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     defer {
         if (log_fd) |lf| _ = linux.close(lf);
     }
-    if (wait_text) |w| _ = parseNonNegative(w);
+    const wait_sec: u32 = if (wait_text) |w| parseNonNegative(w) else 0;
+    const interval_sec: u32 = if (interval_text) |v| parseNonNegative(v) else 0;
 
     // "?2" complementary: at most two operands.  With -e there are none.
     if (pos.len > 2) n.usageDie("nc");
@@ -155,8 +140,6 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             }
         }
         if (verbose > 0) n.plain("listening on {s} ...", .{dotted_buf});
-        var peer: [1024]u8 = undefined;
-        _ = &peer;
         // Accept one connection and relay it.  (-k loops clients in the
         // reference; a single accepted session is sufficient here.)
         while (true) {
@@ -164,7 +147,11 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
                 n.errorMsg(@import("libbb_zig").process.errno, "accept", .{});
                 std.process.exit(1);
             };
-            cu.relay(cfd, false, log_fd);
+            const stats = cu.relay(cfd, .{
+                .wait_sec = wait_sec, .interval_sec = interval_sec,
+                .verbose = @intCast(verbose), .log_fd = log_fd,
+            });
+            if (verbose > 1) reportStats(stats);
             _ = linux.close(cfd);
             if (!persistent) break;
         }
@@ -198,7 +185,18 @@ pub fn ncMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         return 1;
     }
     defer _ = linux.close(fd);
-    if (!zero) cu.relay(fd, false, log_fd);
+    if (verbose > 0) {
+        var msg: [512]u8 = undefined;
+        const line = std.fmt.bufPrint(&msg, "{s} ({s}) open\n", .{ host, themdotted }) catch "";
+        cu.stderrRaw(line);
+    }
+    if (!zero) {
+        const stats = cu.relay(fd, .{
+            .wait_sec = wait_sec, .interval_sec = interval_sec,
+            .verbose = @intCast(verbose), .log_fd = log_fd,
+        });
+        if (verbose > 1) reportStats(stats);
+    }
     return 0;
 }
 
@@ -231,6 +229,6 @@ pub fn netcatMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         break :blk cu.connectOrDie(host, port);
     };
     defer _ = linux.close(fd);
-    cu.relay(fd, false, null);
+    _ = cu.relay(fd, .{});
     return 0;
 }
