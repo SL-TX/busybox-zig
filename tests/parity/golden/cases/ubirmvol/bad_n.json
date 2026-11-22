@@ -1,0 +1,8 @@
+{
+  "applet": "ubirmvol",
+  "name": "bad_n",
+  "stdout": "",
+  "stderr": "ubirmvol: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ubiupdatevol",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ubiupdatevol -t UBI_DEVICE | [-s SIZE] UBI_DEVICE IMG_FILE\n\nUpdate UBI volume\n\n\t-t\tTruncate to zero size\n\t-s SIZE\tSize in bytes to resize to\n",
+  "exit": 1,
+  "tree": {}
+}

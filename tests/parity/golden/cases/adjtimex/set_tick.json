@@ -1,0 +1,8 @@
+{
+  "applet": "adjtimex",
+  "name": "set_tick",
+  "stdout": "",
+  "stderr": "adjtimex: : Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "raidautorun",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: raidautorun DEVICE\n\nTell the kernel to automatically search and start RAID arrays\n",
+  "exit": 1,
+  "tree": {}
+}

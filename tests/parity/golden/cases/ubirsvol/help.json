@@ -1,0 +1,8 @@
+{
+  "applet": "ubirsvol",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ubirsvol -n VOLID -s SIZE UBI_DEVICE\n\nResize UBI volume\n\n\t-n VOLID\tVolume ID\n\t-s SIZE\t\tSize in bytes\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

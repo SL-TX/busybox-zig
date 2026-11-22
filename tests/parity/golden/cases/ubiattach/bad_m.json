@@ -1,0 +1,8 @@
+{
+  "applet": "ubiattach",
+  "name": "bad_m",
+  "stdout": "",
+  "stderr": "ubiattach: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

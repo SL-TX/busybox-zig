@@ -1,0 +1,23 @@
+{
+  "applet": "ubiupdatevol",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "ubiupdatevol: invalid option -- 'X'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ubiupdatevol -t UBI_DEVICE | [-s SIZE] UBI_DEVICE IMG_FILE\n\nUpdate UBI volume\n\n\t-t\tTruncate to zero size\n\t-s SIZE\tSize in bytes to resize to\n",
+  "exit": 1,
+  "tree": {
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ubirmvol",
+  "name": "no_id_option",
+  "stdout": "",
+  "stderr": "ubirmvol: can't open 'nofile': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

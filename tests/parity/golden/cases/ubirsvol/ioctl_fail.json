@@ -1,0 +1,23 @@
+{
+  "applet": "ubirsvol",
+  "name": "ioctl_fail",
+  "stdout": "",
+  "stderr": "ubirsvol: UBI_IOCRSVOL: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

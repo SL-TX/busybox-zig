@@ -1,0 +1,8 @@
+{
+  "applet": "adjtimex",
+  "name": "invalid_number",
+  "stdout": "",
+  "stderr": "adjtimex: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

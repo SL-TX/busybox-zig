@@ -1,0 +1,8 @@
+{
+  "applet": "ubidetach",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ubidetach -d UBI_NUM UBI_CTRL_DEV\n\nDetach MTD device from UBI\n\n\t-d UBI_NUM\tUBI device number\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ubimkvol",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ubimkvol -N NAME [-s SIZE | -m] UBI_DEVICE\n\nCreate UBI volume\n\n\t-a ALIGNMENT\tVolume alignment (default 1)\n\t-m\t\tSet volume size to maximum available\n\t-n VOLID\tVolume ID. If not specified,\n\t\t\tassigned automatically\n\t-N NAME\t\tVolume name\n\t-s SIZE\t\tSize in bytes\n\t-t TYPE\t\tVolume type (static|dynamic)\n",
+  "exit": 1,
+  "tree": {}
+}

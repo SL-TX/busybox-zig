@@ -1,0 +1,30 @@
+{
+  "applet": "nanddump",
+  "name": "output_file",
+  "stdout": "",
+  "stderr": "nanddump: MEMGETINFO: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {
+    "out.bin": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

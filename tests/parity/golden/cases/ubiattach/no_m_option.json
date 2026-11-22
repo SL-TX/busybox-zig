@@ -1,0 +1,8 @@
+{
+  "applet": "ubiattach",
+  "name": "no_m_option",
+  "stdout": "",
+  "stderr": "ubiattach: can't open 'nofile': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

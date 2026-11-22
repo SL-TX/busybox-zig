@@ -1,0 +1,8 @@
+{
+  "applet": "adjtimex",
+  "name": "all_opts_quiet",
+  "stdout": "",
+  "stderr": "adjtimex: : Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

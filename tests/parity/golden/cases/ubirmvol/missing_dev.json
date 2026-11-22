@@ -1,0 +1,8 @@
+{
+  "applet": "ubirmvol",
+  "name": "missing_dev",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ubirmvol -n VOLID | -N VOLNAME UBI_DEVICE\n\nRemove UBI volume\n\n\t-n VOLID\tVolume ID\n\t-N VOLNAME\tVolume name\n",
+  "exit": 1,
+  "tree": {}
+}

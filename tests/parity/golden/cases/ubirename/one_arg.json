@@ -1,0 +1,8 @@
+{
+  "applet": "ubirename",
+  "name": "one_arg",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ubirename UBI_DEVICE OLD_VOLNAME NEW_VOLNAME [OLD2 NEW2]...\n\nRename UBI volumes on UBI_DEVICE\n",
+  "exit": 1,
+  "tree": {}
+}

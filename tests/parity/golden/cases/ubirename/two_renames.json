@@ -1,0 +1,8 @@
+{
+  "applet": "ubirename",
+  "name": "two_renames",
+  "stdout": "",
+  "stderr": "ubirename: volume 'old' not found\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,23 @@
+{
+  "applet": "ubirmvol",
+  "name": "name_not_ubi",
+  "stdout": "",
+  "stderr": "ubirmvol: not an UBI device: 'infile'\n",
+  "exit": 1,
+  "tree": {
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

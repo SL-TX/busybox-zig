@@ -1,0 +1,8 @@
+{
+  "applet": "nanddump",
+  "name": "bb_skipbad",
+  "stdout": "",
+  "stderr": "nanddump: can't open 'nofile': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

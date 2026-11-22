@@ -1,0 +1,23 @@
+{
+  "applet": "ubiupdatevol",
+  "name": "devname_cant_open",
+  "stdout": "",
+  "stderr": "ubiupdatevol: can't open '/dev/ubi0_0': No such file or directory\n",
+  "exit": 1,
+  "tree": {
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

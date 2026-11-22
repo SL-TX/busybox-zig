@@ -1,0 +1,8 @@
+{
+  "applet": "ubidetach",
+  "name": "bad_d",
+  "stdout": "",
+  "stderr": "ubidetach: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}
