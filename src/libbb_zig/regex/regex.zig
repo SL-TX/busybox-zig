@@ -38,6 +38,22 @@ pub const Regex = struct {
         }
         return 0;
     }
+
+    /// POSIX leftmost-longest matching, needed by BRE/ERE shell and editor
+    /// applets (grep/sed/awk/vi). Additive API: `exec` keeps its historical
+    /// leftmost-first behaviour for existing callers.
+    pub fn execLongestAt(self: *const Regex, text: []const u8, start: usize, matches: []Match) !?usize {
+        return execmod.execLongestAt(&self.prog, text, start, matches, self.max_steps);
+    }
+
+    /// Find the leftmost-longest match anywhere in `text`.
+    pub fn execLongest(self: *const Regex, text: []const u8, matches: []Match) !usize {
+        var start: usize = 0;
+        while (start <= text.len) : (start += 1) {
+            if (try execmod.execLongestAt(&self.prog, text, start, matches, self.max_steps)) |n| return n;
+        }
+        return 0;
+    }
 };
 
 pub fn compile(allocator: std.mem.Allocator, pattern: []const u8, flags: Flags) !Regex {

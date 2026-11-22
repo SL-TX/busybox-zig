@@ -53,6 +53,12 @@ pub const ParseError = error{
     OutOfMemory,
 };
 
+/// Bounds parser/compiler recursion for hostile or random patterns. Well below
+/// the native stack limit, but high enough for ordinary nested expressions.
+const MAX_DEPTH: usize = 256;
+/// Cap the emitted program size so nested bounded repeats cannot blow up memory.
+const MAX_INSTS: usize = 65_536;
+
 const NodeIdx = u32;
 const Node = union(enum) {
     empty,
@@ -76,10 +82,41 @@ const Parser = struct {
     nodes: std.ArrayList(Node) = .empty,
     classes: std.ArrayList(CharClass) = .empty,
     group_count: u8 = 0,
+    closed_groups: u32 = 0,
+    depth: usize = 0,
 
     fn newNode(self: *Parser, node: Node) ParseError!NodeIdx {
         try self.nodes.append(self.a, node);
         return @intCast(self.nodes.items.len - 1);
+    }
+
+    fn enterDepth(self: *Parser) ParseError!void {
+        self.depth += 1;
+        if (self.depth > MAX_DEPTH) return error.PatternTooLarge;
+    }
+
+    fn leaveDepth(self: *Parser) void {
+        self.depth -= 1;
+    }
+
+    /// POSIX numbers groups in the order their opening parenthesis is seen
+    /// (pre-order), which is what backreferences and captures must use.
+    fn openGroup(self: *Parser) ParseError!u8 {
+        if (self.group_count >= 16) return error.TooManyGroups;
+        self.group_count += 1;
+        return self.group_count;
+    }
+
+    fn closeGroup(self: *Parser, index: u8) void {
+        self.closed_groups |= @as(u32, 1) << @intCast(index - 1);
+    }
+
+    fn noteBackref(self: *Parser, n: u8) ParseError!void {
+        // Forward references, self references and references past the last
+        // group are invalid in both BRE and ERE; reject them instead of
+        // silently matching empty (matches reference regexec behaviour).
+        if (n == 0 or n > 16) return error.InvalidPattern;
+        if ((self.closed_groups & (@as(u32, 1) << @intCast(n - 1))) == 0) return error.InvalidPattern;
     }
 
     fn peek(self: *Parser) ?u8 {
@@ -162,6 +199,8 @@ const Parser = struct {
     }
 
     fn parseRepeat(self: *Parser) ParseError!NodeIdx {
+        try self.enterDepth();
+        defer self.leaveDepth();
         var atom = try self.parseAtom();
         while (true) {
             const c = self.peek() orelse break;
@@ -202,32 +241,39 @@ const Parser = struct {
         const c = self.peek() orelse return self.newNode(.empty);
         if (c == '(' and self.flags.extended) {
             self.pos += 1;
+            const index = try self.openGroup();
+            try self.enterDepth();
+            defer self.leaveDepth();
             const child = try self.parseAlt();
             if (!self.isClose()) return error.UnmatchedParen;
             self.pos += 1;
-            if (self.group_count >= 16) return error.TooManyGroups;
-            self.group_count += 1;
-            return self.newNode(.{ .group = .{ .index = self.group_count, .child = child } });
+            self.closeGroup(index);
+            return self.newNode(.{ .group = .{ .index = index, .child = child } });
         }
-        if (c == '\\' and self.pos + 1 < self.pat.len) {
+        if (c == '\\') {
+            if (self.pos + 1 >= self.pat.len) return error.InvalidPattern;
             const n = self.pat[self.pos + 1];
             if (!self.flags.extended) {
                 if (n == '(') {
                     self.pos += 2;
+                    const index = try self.openGroup();
+                    try self.enterDepth();
+                    defer self.leaveDepth();
                     const child = try self.parseAlt();
                     if (!self.isClose()) return error.UnmatchedParen;
                     self.pos += 2;
-                    if (self.group_count >= 16) return error.TooManyGroups;
-                    self.group_count += 1;
-                    return self.newNode(.{ .group = .{ .index = self.group_count, .child = child } });
+                    self.closeGroup(index);
+                    return self.newNode(.{ .group = .{ .index = index, .child = child } });
                 }
                 if (n >= '1' and n <= '9') {
                     self.pos += 2;
+                    try self.noteBackref(n - '0');
                     return self.newNode(.{ .backref = n - '0' });
                 }
             } else {
                 if (n >= '1' and n <= '9') {
                     self.pos += 2;
+                    try self.noteBackref(n - '0');
                     return self.newNode(.{ .backref = n - '0' });
                 }
             }
@@ -294,9 +340,11 @@ const Parser = struct {
         var ranges: std.ArrayList(ClassRange) = .empty;
         errdefer ranges.deinit(self.a);
         var first = true;
+        var closed = false;
         while (self.pos < self.pat.len) {
             if (self.pat[self.pos] == ']' and !first) {
                 self.pos += 1;
+                closed = true;
                 break;
             }
             first = false;
@@ -315,12 +363,15 @@ const Parser = struct {
             if (self.pos + 1 < self.pat.len and self.pat[self.pos] == '-' and self.pat[self.pos + 1] != ']') {
                 self.pos += 1;
                 const hi = self.readClassChar();
-                try ranges.append(self.a, .{ .lo = @min(lo, hi), .hi = @max(lo, hi) });
+                if (lo > hi) return error.InvalidClass;
+                try ranges.append(self.a, .{ .lo = lo, .hi = hi });
             } else {
                 try ranges.append(self.a, .{ .lo = lo, .hi = lo });
             }
         }
-        if (ranges.items.len == 0) return error.InvalidClass;
+        // An unclosed '[' consumed the rest of the pattern: reject it instead
+        // of silently compiling a class that swallows trailing literals.
+        if (!closed or ranges.items.len == 0) return error.InvalidClass;
         try self.classes.append(self.a, .{ .negated = negated, .ranges = try ranges.toOwnedSlice(self.a) });
         return self.newNode(.{ .class = @intCast(self.classes.items.len - 1) });
     }
@@ -332,6 +383,7 @@ const Compiler = struct {
     loop_slots: usize = 0,
 
     fn emit(self: *Compiler, inst: Inst) ParseError!u32 {
+        if (self.insts.items.len >= MAX_INSTS) return error.PatternTooLarge;
         try self.insts.append(self.a, inst);
         return @intCast(self.insts.items.len - 1);
     }

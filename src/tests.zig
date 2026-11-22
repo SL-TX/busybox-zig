@@ -20,6 +20,8 @@ test {
     _ = @import("libbb_zig/getopt_test.zig");
     _ = @import("libbb_zig/path_test.zig");
     _ = @import("libbb_zig/regex_test.zig");
+    // Task 21 — regex hardening for the shell/editor waves.
+    _ = @import("libbb_zig/regex/hardening_test.zig");
     _ = @import("libbb_zig/file_test.zig");
     _ = @import("libbb_zig/copy_test.zig");
     _ = @import("libbb_zig/recursive_test.zig");

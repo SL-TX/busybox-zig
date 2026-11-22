@@ -1,9 +1,8 @@
 //! findutils grep / egrep / fgrep — search for patterns in files or stdin.
 //!
-//! The Task 6 regex engine is leftmost-first/greedy. POSIX grep requires
-//! leftmost-LONGEST, so this applet uses a local backtracking VM over the same
-//! compiled program which records the furthest accepting state instead of the
-//! first one. The global engine is left untouched for sed/awk.
+//! POSIX grep needs leftmost-LONGEST matching; the shared engine now provides
+//! that via `Regex.execLongest` (iterative VM, step budget, no stack recursion),
+//! so this applet no longer carries its own local duplicate of the bytecode VM.
 
 const std = @import("std");
 const c = @import("common.zig");
@@ -11,137 +10,16 @@ const bb = c.bb;
 const regex = bb.regex;
 const A = std.heap.page_allocator;
 
-// ---- POSIX leftmost-longest VM over the Task 6 bytecode ------------------
-
-fn Longest(comptime Prog: type) type {
-    return struct {
-        prog: *const Prog,
-        text: []const u8,
-        step: usize = 0,
-        max_steps: usize,
-        best_end: ?usize = null,
-        best_caps: [32]?usize = undefined,
-        loop_pos: [32]usize = undefined,
-
-        const Self = @This();
-
-        fn eq(self: *const Self, a: u8, b: u8) bool {
-            if (a == b) return true;
-            if (!self.prog.flags.ignore_case) return false;
-            return std.ascii.toLower(a) == std.ascii.toLower(b);
-        }
-
-        fn classHit(self: *const Self, ci: u32, ch: u8) bool {
-            const cl = self.prog.classes[ci];
-            var hit = false;
-            for (cl.ranges) |r| {
-                if (ch >= r.lo and ch <= r.hi) {
-                    hit = true;
-                    break;
-                }
-                if (self.prog.flags.ignore_case) {
-                    const s = if (std.ascii.isUpper(ch)) std.ascii.toLower(ch) else std.ascii.toUpper(ch);
-                    if (s >= r.lo and s <= r.hi) {
-                        hit = true;
-                        break;
-                    }
-                }
-            }
-            return hit != cl.negated;
-        }
-
-        fn run(self: *Self, pc: u32, pos: usize, caps: *[32]?usize) void {
-            self.step += 1;
-            if (self.step > self.max_steps) return;
-            const inst = self.prog.insts[pc];
-            switch (inst) {
-                .match => {
-                    if (self.best_end == null or pos > self.best_end.?) {
-                        self.best_end = pos;
-                        self.best_caps = caps.*;
-                    }
-                },
-                .char => |ch| {
-                    if (pos < self.text.len and self.eq(self.text[pos], ch))
-                        self.run(pc + 1, pos + 1, caps);
-                },
-                .any => {
-                    if (pos < self.text.len) self.run(pc + 1, pos + 1, caps);
-                },
-                .class => |ci| {
-                    if (pos < self.text.len and self.classHit(ci, self.text[pos]))
-                        self.run(pc + 1, pos + 1, caps);
-                },
-                .bol => {
-                    if (pos == 0 or (self.prog.flags.newline and pos > 0 and self.text[pos - 1] == '\n'))
-                        self.run(pc + 1, pos, caps);
-                },
-                .eol => {
-                    if (pos == self.text.len or (self.prog.flags.newline and pos < self.text.len and self.text[pos] == '\n'))
-                        self.run(pc + 1, pos, caps);
-                },
-                .save => |slot| {
-                    const old = caps[slot];
-                    caps[slot] = pos;
-                    self.run(pc + 1, pos, caps);
-                    caps[slot] = old;
-                },
-                .backref => |n| {
-                    const s = caps[2 * n] orelse return self.run(pc + 1, pos, caps);
-                    const e = caps[2 * n + 1] orelse return self.run(pc + 1, pos, caps);
-                    if (e < s) return self.run(pc + 1, pos, caps);
-                    const sub = self.text[s..e];
-                    if (pos + sub.len > self.text.len) return;
-                    for (sub, 0..) |ch, k| {
-                        if (!self.eq(ch, self.text[pos + k])) return;
-                    }
-                    self.run(pc + 1, pos + sub.len, caps);
-                },
-                .split => |sp| {
-                    self.run(sp.x, pos, caps);
-                    self.run(sp.y, pos, caps);
-                },
-                .jmp => |target| self.run(target, pos, caps),
-                .loop_enter => |slot| {
-                    const old = self.loop_pos[slot];
-                    self.loop_pos[slot] = pos;
-                    self.run(pc + 1, pos, caps);
-                    self.loop_pos[slot] = old;
-                },
-                .loop_check => |lc| {
-                    if (pos == self.loop_pos[lc.marker])
-                        self.run(lc.no_progress, pos, caps)
-                    else
-                        self.run(pc + 1, pos, caps);
-                },
-            }
-        }
-    };
-}
-
 const Span = struct { start: usize, end: usize };
 
 fn regexAt(re: *const regex.Regex, text: []const u8, start: usize, spans: []Span) ?usize {
-    var caps: [32]?usize = undefined;
-    @memset(&caps, null);
-    var vm = Longest(@TypeOf(re.prog)){
-        .prog = &re.prog,
-        .text = text,
-        .max_steps = re.max_steps,
-    };
-    vm.run(0, start, &caps);
-    const end = vm.best_end orelse return null;
-    if (spans.len > 0) {
-        spans[0] = .{ .start = start, .end = end };
-        var g: usize = 1;
-        while (g <= re.prog.group_count and g < spans.len) : (g += 1) {
-            const s = vm.best_caps[2 * g] orelse start;
-            const e = vm.best_caps[2 * g + 1] orelse s;
-            spans[g] = .{ .start = s, .end = e };
-        }
-        return g;
-    }
-    return 1;
+    var matches: [36]regex.Match = undefined;
+    const filled = re.execLongestAt(text, start, &matches) catch return null;
+    const n = filled orelse return null;
+    if (spans.len == 0) return 1;
+    const take = @min(n, spans.len);
+    for (0..take) |i| spans[i] = .{ .start = matches[i].start, .end = matches[i].end };
+    return take;
 }
 
 fn fixedAt(needle: []const u8, text: []const u8, start: usize, ci: bool) ?Span {
