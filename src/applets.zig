@@ -272,6 +272,13 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "tunctl")) return @import("networking").tunctl_main;
     if (std.mem.eql(u8, name, "vconfig")) return @import("networking").vconfig_main;
     if (std.mem.eql(u8, name, "zcip")) return @import("networking").zcip_main;
+    // Task 13b — network clients
+    if (std.mem.eql(u8, name, "ftpget")) return @import("networking").ftpget_main;
+    if (std.mem.eql(u8, name, "ftpput")) return @import("networking").ftpput_main;
+    if (std.mem.eql(u8, name, "telnet")) return @import("networking").telnet_main;
+    if (std.mem.eql(u8, name, "tftp")) return @import("networking").tftp_main;
+    if (std.mem.eql(u8, name, "whois")) return @import("networking").whois_main;
+    if (std.mem.eql(u8, name, "netcat")) return @import("networking").netcat_main;
     // miscutils
     if (std.mem.eql(u8, name, "ionice")) return @import("miscutils").ionice_main;
     if (std.mem.eql(u8, name, "renice")) return @import("miscutils").renice_main;

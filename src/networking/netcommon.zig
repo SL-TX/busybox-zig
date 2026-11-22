@@ -64,6 +64,11 @@ pub fn msg(errnum: c_int, comptime fmt: []const u8, args: anytype) void {
     bb.messages.errorMsg(errnum, fmt, args);
 }
 
+/// Non-fatal `<prog>: <msg>: <strerror>` diagnostic (bb_error_msg).
+pub fn errorMsg(errnum: c_int, comptime fmt: []const u8, args: anytype) void {
+    bb.messages.errorMsg(errnum, fmt, args);
+}
+
 pub fn plain(comptime fmt: []const u8, args: anytype) void {
     bb.messages.plainMsg(fmt, args);
 }

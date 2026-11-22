@@ -353,6 +353,12 @@ fn legacy_ping_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13b audit: the meta-CLI path uses the reference-faithful client;
+    // the legacy helpers below stay available for the pure unit tests.
+    return @import("wget.zig").wgetMain(argc, argv);
+}
+
+fn legacy_wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     const a = std.heap.page_allocator;
     var outfile: ?[]const u8 = null;
@@ -425,7 +431,21 @@ pub const tunctl_main = @import("tunctl.zig").tunctlMain;
 pub const vconfig_main = @import("vconfig.zig").vconfigMain;
 pub const zcip_main = @import("zcip.zig").zcipMain;
 
+// Task 13b — network clients.
+pub const ftpget_main = @import("ftp.zig").ftpgetMain;
+pub const ftpput_main = @import("ftp.zig").ftpputMain;
+pub const telnet_main = @import("telnet.zig").telnetMain;
+pub const tftp_main = @import("tftp.zig").tftpMain;
+pub const whois_main = @import("whois.zig").whoisMain;
+pub const netcat_main = @import("nc.zig").netcatMain;
+
 pub fn nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13b audit: replace the simplified option-ignoring client with the
+    // reference-faithful bloaty-nc implementation in nc.zig.
+    return @import("nc.zig").ncMain(argc, argv);
+}
+
+fn legacy_nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     if (args.len < 3) return 1;
     const port = std.fmt.parseInt(u16, args[2], 10) catch return 1;

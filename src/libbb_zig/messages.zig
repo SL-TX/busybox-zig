@@ -49,6 +49,7 @@ pub fn strerror(errnum: c_int) []const u8 {
         36 => "File name too long",
         39 => "Directory not empty",
         95 => "Operation not supported",
+        99 => "Cannot assign requested address",
         110 => "Connection timed out",
         111 => "Connection refused",
         40 => "Too many levels of symbolic links",
