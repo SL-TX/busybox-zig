@@ -9,7 +9,31 @@ const cert = bb.tls.cert;
 const prf = bb.tls.prf;
 const rec = bb.tls.record;
 const sha = bb.tls.sha;
+const tls_core = @import("networking").tls_core;
 const a = std.testing.allocator;
+
+var rng_calls: usize = 0;
+
+fn rngFail(buf: []u8) error{ Retry, Failed }!usize {
+    _ = buf;
+    return error.Failed;
+}
+
+fn rngRetryOnceThenFill(buf: []u8) error{ Retry, Failed }!usize {
+    rng_calls += 1;
+    if (rng_calls == 1) return error.Retry; // EINTR
+    @memset(buf, 0x5a);
+    return buf.len;
+}
+
+fn rngShortThenFail(buf: []u8) error{ Retry, Failed }!usize {
+    rng_calls += 1;
+    if (rng_calls == 1) {
+        buf[0] = 0x11;
+        return 1; // short read, then failure on the remainder
+    }
+    return error.Failed;
+}
 
 const CERT = [_]u8{
     0x30, 0x82, 0x02, 0xd4, 0x30, 0x82, 0x01, 0xbc, 0xa0, 0x03, 0x02, 0x01, 0x02, 0x02, 0x14, 0x2f,
@@ -157,4 +181,45 @@ test "TLS 1.2 PRF and record framing basics" {
     var digest: [32]u8 = undefined;
     sha.sha256("body", &digest);
     try std.testing.expectEqual(@as(usize, 32), digest.len);
+}
+
+test "TLS randomness: getrandom failure is a hard error, never a fallback" {
+    var buf: [48]u8 = undefined;
+    @memset(&buf, 0xa5);
+    try std.testing.expectError(error.RngFailed, tls_core.fillRandomWith(&buf, rngFail));
+    for (buf) |b| try std.testing.expectEqual(@as(u8, 0xa5), b);
+
+    var conn = tls_core.Conn.init(a, 0, 1, .client);
+    defer conn.deinit();
+    conn.rng = rngFail;
+    try std.testing.expectError(error.RngFailed, conn.random(&buf));
+    for (buf) |b| try std.testing.expectEqual(@as(u8, 0xa5), b);
+}
+
+test "TLS randomness: EINTR retried, short reads looped, later error fatal" {
+    rng_calls = 0;
+    var buf: [32]u8 = undefined;
+    try tls_core.fillRandomWith(&buf, rngRetryOnceThenFill);
+    try std.testing.expectEqual(@as(usize, 2), rng_calls);
+    for (buf) |b| try std.testing.expectEqual(@as(u8, 0x5a), b);
+
+    rng_calls = 0;
+    var short_buf: [4]u8 = undefined;
+    @memset(&short_buf, 0);
+    try std.testing.expectError(error.RngFailed, tls_core.fillRandomWith(&short_buf, rngShortThenFail));
+    try std.testing.expectEqual(@as(usize, 2), rng_calls);
+    try std.testing.expectEqual(@as(u8, 0x11), short_buf[0]);
+}
+
+test "TLS randomness: normal getrandom path fills the buffer" {
+    var buf: [32]u8 = undefined;
+    try tls_core.fillRandom(&buf);
+    var non_zero = false;
+    for (buf) |b| {
+        if (b != 0) {
+            non_zero = true;
+            break;
+        }
+    }
+    try std.testing.expect(non_zero);
 }

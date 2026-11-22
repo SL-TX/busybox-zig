@@ -1,0 +1,8 @@
+{
+  "applet": "ssl_client",
+  "name": "s_attached_invalid_with_e",
+  "stdout": "",
+  "stderr": "ssl_client: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

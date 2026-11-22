@@ -466,9 +466,11 @@ pub const telnetd_main = @import("telnetd.zig").telnetdMain;
 pub const tc_main = @import("tc.zig").tcMain;
 
 // Task 13d — TLS applets and the NBD client.
+pub const tls_core = @import("tls_core.zig");
 pub const ssl_client_main = @import("ssl_client.zig").sslClientMain;
 pub const ssl_server_main = @import("ssl_server.zig").sslServerMain;
-pub const nbdclient_main = @import("nbd_client.zig").nbdClientMain;
+pub const nbdclient = @import("nbd_client.zig");
+pub const nbdclient_main = nbdclient.nbdClientMain;
 // Re-exported so the focused unit tests can reach the pure formatter/parser
 // through the `networking` module (a file cannot belong to two modules).
 pub const tc = @import("tc.zig");

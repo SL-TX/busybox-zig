@@ -151,6 +151,60 @@
         "echo",
         "WORLD"
       ]
+    },
+    {
+      "name": "f_last_wins",
+      "argv": [
+        "-f",
+        "missingA.pem",
+        "-f",
+        "missingB.pem",
+        "echo",
+        "hi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "f_clustered",
+      "argv": [
+        "-vfmissingC.pem",
+        "echo",
+        "hi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "f_cluster_value",
+      "argv": [
+        "-fv",
+        "echo",
+        "hi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

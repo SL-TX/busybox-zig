@@ -8,6 +8,7 @@ const linux = std.os.linux;
 test {
     _ = @import("tc_test.zig");
     _ = @import("tls_core_test.zig");
+    _ = @import("nbd_client_test.zig");
 }
 
 test "parseUrl handles scheme, host, port and path" {

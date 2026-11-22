@@ -308,6 +308,97 @@
       "timeout_ms": 6000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "s_invalid_with_e",
+      "argv": [
+        "-s",
+        "abc",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "s_attached_invalid_with_e",
+      "argv": [
+        "-sabc",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "r_invalid_with_e",
+      "argv": [
+        "-r",
+        "abc",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "numbers_valid_with_e",
+      "argv": [
+        "-s",
+        "3",
+        "-r",
+        "4",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "e_then_nonoption",
+      "argv": [
+        "-e",
+        "true",
+        "-s",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

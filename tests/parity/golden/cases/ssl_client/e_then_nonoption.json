@@ -1,0 +1,8 @@
+{
+  "applet": "ssl_client",
+  "name": "e_then_nonoption",
+  "stdout": "",
+  "stderr": "ssl_client: got bad TLS record (len:0) while expecting handshake record\n",
+  "exit": 1,
+  "tree": {}
+}

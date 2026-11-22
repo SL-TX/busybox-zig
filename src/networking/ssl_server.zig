@@ -67,6 +67,7 @@ fn handshakeError(e: anyerror) noreturn {
         error.InvalidKey => n.plainDie("can't load private key", .{}),
         error.BadFinished => n.plainDie("bad Finished message", .{}),
         error.BadMac => n.plainDie("bad record MAC", .{}),
+        error.RngFailed => n.plainDie("can't get random bytes", .{}),
         else => n.plainDie("TLS handshake error", .{}),
     }
 }
@@ -87,15 +88,11 @@ pub fn sslServerMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     const parsed = n.opts("ssl_server", args, "+vf:", &.{});
     if ((parsed.flags & 2) == 0 or parsed.args.len == 0) n.usageDie("ssl_server");
 
-    // getopt32 stores only the last optarg; recover -f by scanning argv.
-    var pem_path: []const u8 = "";
-    var i: usize = 1;
-    while (i < args.len) : (i += 1) {
-        if (args[i].len >= 2 and args[i][0] == '-' and args[i][1] == 'f') {
-            pem_path = if (args[i].len > 2) args[i][2..] else if (i + 1 < args.len) args[i + 1] else "";
-            break;
-        }
-    }
+    // getopt32 keeps the LAST -f argument and accepts clusters such as
+    // -vfFILE or -fv (where "v" is the -f argument). Use what it parsed
+    // instead of re-scanning argv: the old scan took the first -f and
+    // mishandled attached cluster arguments.
+    const pem_path = parsed.optarg orelse n.usageDie("ssl_server");
 
     const a = std.heap.page_allocator;
     const pem = loadPem(a, pem_path) catch n.plainDie("invalid PEM file", .{});
@@ -123,6 +120,7 @@ pub fn sslServerMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     conn.copyLoop(true) catch |e| {
         if (e == error.WriteFailed) n.errorDie(conn.last_errno, "write error", .{});
         if (e == error.ConnectionClosed or e == error.ReadFailed) return 0;
+        if (e == error.RngFailed) n.plainDie("can't get random bytes", .{});
         n.plainDie("TLS I/O error", .{});
     };
     return 0;

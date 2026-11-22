@@ -31,7 +31,42 @@ pub const Failure = error{
     ReadFailed,
     OutOfMemory,
     InvalidKey,
+    /// getrandom() failed or returned a short read. Never fall back to
+    /// predictable bytes: randoms, premaster secrets and IVs all depend on it.
+    RngFailed,
 };
+
+/// Injectable randomness source. `Retry` mirrors EINTR; `Failed` covers every
+/// other errno. Returning fewer bytes than requested is treated as a hard
+/// failure by `fillRandomWith` unless the source is called again for the rest.
+pub const RandomFn = *const fn (buf: []u8) error{ Retry, Failed }!usize;
+
+fn sysRandom(buf: []u8) error{ Retry, Failed }!usize {
+    const rc = linux.getrandom(buf.ptr, buf.len, 0);
+    return switch (linux.errno(rc)) {
+        .SUCCESS => @intCast(rc),
+        .INTR => error.Retry,
+        else => error.Failed,
+    };
+}
+
+/// Fill `buf` completely or fail. Short reads are looped, EINTR is retried,
+/// every other error (and a zero-length progress report) is fatal.
+pub fn fillRandomWith(buf: []u8, source: RandomFn) Failure!void {
+    var off: usize = 0;
+    while (off < buf.len) {
+        const n = source(buf[off..]) catch |e| switch (e) {
+            error.Retry => continue,
+            error.Failed => return error.RngFailed,
+        };
+        if (n == 0 or n > buf.len - off) return error.RngFailed;
+        off += n;
+    }
+}
+
+pub fn fillRandom(buf: []u8) Failure!void {
+    return fillRandomWith(buf, sysRandom);
+}
 
 const Keys = struct {
     client_mac: [32]u8,
@@ -68,6 +103,8 @@ pub const Conn = struct {
     privkey: ?rsa.PrivateKey = null,
     hostname: ?[]const u8 = null,
     renegotiation: bool = false,
+    /// Injectable for the failure-path unit test; production uses getrandom.
+    rng: RandomFn = sysRandom,
 
     pub fn init(a: std.mem.Allocator, ifd: linux.fd_t, ofd: linux.fd_t, side: role) Conn {
         return .{ .a = a, .ifd = ifd, .ofd = ofd, .side = side };
@@ -79,12 +116,10 @@ pub const Conn = struct {
         if (self.privkey) |*k| k.deinit(self.a);
     }
 
-    fn random(self: *Conn, buf: []u8) void {
-        _ = self;
-        const rc = linux.getrandom(buf.ptr, buf.len, 0);
-        if (linux.errno(rc) == .SUCCESS and rc == buf.len) return;
-        // Fallback only for kernels without getrandom; never used on Linux.
-        for (buf, 0..) |*b, i| b.* = @truncate(i *% 131 +% 7);
+    /// Public so the failure-injection unit test can exercise the exact
+    /// production path. No deterministic fallback exists anywhere in TLS.
+    pub fn random(self: *Conn, buf: []u8) Failure!void {
+        try fillRandomWith(buf, self.rng);
     }
 
     // ------------------------------------------------------------- raw I/O
@@ -231,7 +266,7 @@ pub const Conn = struct {
         if (pad == 0) pad = 16;
         body.appendNTimes(self.a, @as(u8, @intCast(pad - 1)), pad) catch return error.OutOfMemory;
         var iv: [16]u8 = undefined;
-        self.random(&iv);
+        try self.random(&iv);
         const cipher = aes.cbcEncryptNoPad(self.a, self.writeKey(), iv, body.items) catch return error.OutOfMemory;
         defer self.a.free(cipher);
         var frag = std.ArrayList(u8).empty;
@@ -342,7 +377,7 @@ pub const Conn = struct {
         const ap = self.a;
         body.appendSlice(ap, &.{ @truncate(version >> 8), @truncate(version) }) catch return error.OutOfMemory;
         var cl_rand: [32]u8 = undefined;
-        self.random(&cl_rand);
+        try self.random(&cl_rand);
         @memcpy(&self.client_random, &cl_rand);
         body.appendSlice(ap, &cl_rand) catch return error.OutOfMemory;
         body.append(ap, 0) catch return error.OutOfMemory; // empty session id
@@ -450,7 +485,7 @@ pub const Conn = struct {
         var premaster: [48]u8 = undefined;
         premaster[0] = 3;
         premaster[1] = 3;
-        self.random(premaster[2..]);
+        try self.random(premaster[2..]);
         @memcpy(&self.pre_master, &premaster);
 
         const em = self.a.alloc(u8, pubkey.modulus.len) catch return error.OutOfMemory;
@@ -461,7 +496,7 @@ pub const Conn = struct {
         while (i < em.len - 49) : (i += 1) {
             var one: [1]u8 = undefined;
             while (true) {
-                self.random(&one);
+                try self.random(&one);
                 if (one[0] != 0) break;
             }
             em[i] = one[0];
@@ -526,7 +561,7 @@ pub const Conn = struct {
         // The ClientHello random is the first 32 bytes after the 2-byte version.
         if (hs.body.len < 34) return error.MalformedHandshake;
         @memcpy(&self.client_random, hs.body[2..34]);
-        self.random(&self.server_random);
+        try self.random(&self.server_random);
         try self.buildServerHello();
         try self.sendCertificate();
         try self.sendHandshake(14, &.{});
