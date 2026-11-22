@@ -288,6 +288,12 @@ pub fn pingHost(host: []const u8, count: u16, timeout_ms: u32) !PingStats {
 // ------------------------------------------------------------------- applets
 
 pub fn ifconfig_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13a audit: route the meta-CLI through the reference-faithful
+    // implementation; the legacy helpers below remain for unit tests.
+    return @import("ifconfig.zig").ifconfigMain(argc, argv);
+}
+
+fn legacy_ifconfig_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     _ = argc;
     _ = argv;
     const a = std.heap.page_allocator;

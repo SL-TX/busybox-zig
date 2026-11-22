@@ -1,0 +1,8 @@
+{
+  "applet": "ifconfig",
+  "name": "missing_device",
+  "stdout": "",
+  "stderr": "ifconfig: nosuch0: error fetching interface information: Device not found\n",
+  "exit": 1,
+  "tree": {}
+}
