@@ -254,6 +254,42 @@
         "-c",
         "python3 -m http.server 38974 --bind ::1 >/dev/null 2>&1 & p=$!; sleep 0.4; <BB> fuser -s -6 38974/tcp; r=$?; kill $p 2>/dev/null; exit $r"
       ]
+    },
+    {
+      "name": "ipv6_table_accept",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "sh",
+        "-c",
+        "python3 -m http.server 38975 --bind ::1 >/dev/null 2>&1 & p=$!; sleep 0.4; <BB> fuser -s -6 38975/tcp6; r=$?; kill $p 2>/dev/null; exit $r"
+      ]
+    },
+    {
+      "name": "ipv6_table_reject",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "sh",
+        "-c",
+        "python3 -m http.server 38975 --bind ::1 >/dev/null 2>&1 & p=$!; sleep 0.4; <BB> fuser -s -4 38975/tcp6; r=$?; kill $p 2>/dev/null; exit $r"
+      ]
     }
   ]
 }

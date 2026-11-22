@@ -38,6 +38,23 @@ const Cpu = struct {
     }
 };
 
+/// Parse one /proc/interrupts line into its per-CPU counters. Exported so a
+/// unit test can feed synthetic rows whose CPU columns differ.
+pub fn parseIrqCounts(line: []const u8, ncpu: usize, out: []u64) u64 {
+    @memset(out[0..@min(out.len, ncpu)], 0);
+    const colon = std.mem.indexOfScalar(u8, line, ':') orelse return 0;
+    var it = std.mem.tokenizeAny(u8, line[colon + 1 ..], " \t");
+    var idx: usize = 0;
+    var total: u64 = 0;
+    while (it.next()) |tok| {
+        const v = std.fmt.parseInt(u64, tok, 10) catch 0;
+        if (idx < ncpu and idx < out.len) out[idx] = v;
+        total += v;
+        idx += 1;
+    }
+    return total;
+}
+
 fn parseCpu(line: []const u8) ?Cpu {
     var it = std.mem.tokenizeAny(u8, line, " \t");
     _ = it.next() orelse return null;
@@ -194,7 +211,8 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     }
 
     if (irq_kind) |kind| {
-        c.printfOut("{s}     CPU    intr/s\n", .{stamp});
+        const want_sum = std.mem.eql(u8, kind, "SUM") or std.mem.eql(u8, kind, "ALL");
+        if (want_sum) c.printfOut("{s}     CPU    intr/s\n", .{stamp});
         var total_irq: u64 = 0;
         if (c.readFile(a, "/proc/stat")) |irq_data| {
             defer a.free(irq_data);
@@ -206,10 +224,10 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
                 while (it.next()) |tok| total_irq += std.fmt.parseInt(u64, tok, 10) catch 0;
             }
         }
-        c.printfOut("{s}     all    {d: >9.2}\n", .{ stamp, @as(f64, @floatFromInt(total_irq)) / 100.0 });
+        if (want_sum) c.printfOut("{s}     all    {d: >9.2}\n", .{ stamp, @as(f64, @floatFromInt(total_irq)) / 100.0 });
         if (std.mem.eql(u8, kind, "ALL") or std.mem.eql(u8, kind, "CPU") or std.mem.eql(u8, kind, "SCPU")) {
-            c.out("\n");
-            const Irq = struct { name: []const u8, count: u64 };
+            if (want_sum) c.out("\n");
+            const Irq = struct { name: []const u8, counts: [64]u64 = std.mem.zeroes([64]u64) };
             var names: std.ArrayList(Irq) = .empty;
             if (c.readFile(a, "/proc/interrupts")) |irq_data| {
                 // Sum each IRQ's per-CPU counters: the rate is count / itv.
@@ -218,10 +236,9 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
                     const colon = std.mem.indexOfScalar(u8, line, ':') orelse continue;
                     const name = std.mem.trim(u8, line[0..colon], " \t");
                     if (name.len == 0) continue;
-                    var count: u64 = 0;
-                    var it = std.mem.tokenizeAny(u8, line[colon + 1 ..], " \t");
-                    while (it.next()) |tok| count += std.fmt.parseInt(u64, tok, 10) catch 0;
-                    names.append(a, .{ .name = name, .count = count }) catch {};
+                    var counts: [64]u64 = std.mem.zeroes([64]u64);
+                    _ = parseIrqCounts(line, cpus.items.len, &counts);
+                    names.append(a, .{ .name = name, .counts = counts }) catch {};
                 }
                 var iticks: u64 = 1;
                 if (c.readFile(a, "/proc/stat")) |sd| {
@@ -239,7 +256,8 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
                 for (cpus.items, 0..) |_, idx| {
                     c.printfOut("{s}    {d: >4}", .{ stamp, idx });
                     for (names.items) |irq| {
-                        c.printfOut(" {d: >8.2}", .{@as(f64, @floatFromInt(irq.count)) / @as(f64, @floatFromInt(iticks)) * 100.0});
+                        const count = if (idx < irq.counts.len) irq.counts[idx] else 0;
+                        c.printfOut(" {d: >9.2}", .{@as(f64, @floatFromInt(count)) / @as(f64, @floatFromInt(iticks)) * 100.0});
                     }
                     c.out("\n");
                 }

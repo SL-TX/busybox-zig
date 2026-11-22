@@ -9,33 +9,117 @@ const bb = @import("libbb_zig");
 pub const RowValues = struct {
     uid: u32,
     rss_kb: u64,
-    rss_pct: u64,
-    cpu_pct: u64,
+    rss_pct: u64, // percent * 10, i.e. the numerator of "%3u.%c"
+    cpu_pct: u64, // percent * 10, i.e. the numerator of "%3u.%c"
+    cpu_index: i64, // last_seen_on_cpu (stat field 39)
 };
+
+/// /proc/PID/stat field 39 (zero-based token 36 after the comm) is the
+/// processor the task was last seen on; top displays it in the CPU column.
+pub fn cpuIndexOf(pid: i32) i64 {
+    const path = c.procPath(std.heap.page_allocator, pid, "stat") catch return 0;
+    defer std.heap.page_allocator.free(path);
+    const data = c.readFile(std.heap.page_allocator, path) orelse return 0;
+    defer std.heap.page_allocator.free(data);
+    const close = std.mem.lastIndexOfScalar(u8, data, ')') orelse return 0;
+    var it = std.mem.tokenizeAny(u8, data[close + 1 ..], " \t");
+    var idx: usize = 0;
+    while (it.next()) |tok| : (idx += 1) {
+        if (idx == 36) return std.fmt.parseInt(i64, tok, 10) catch 0;
+    }
+    return 0;
+}
 
 /// CPU percentages use tenths of a percent before SANITIZE, matching the
 /// reference's UPSCALE=1000 path with FEATURE_TOP_DECIMALS enabled.
-pub fn rowValues(st: bb.procps.Stat, uid: u32, total_mem_kb: u64, cpu_total: u64) RowValues {
+/// top.c uses a 100 ms initial sample, then computes %CPU from the tick
+/// delta over that interval (not from the since-boot cumulative counters).
+pub fn pcpuFromDelta(curr: u64, prev: u64, total_delta: u64) u64 {
+    if (total_delta == 0) return 0;
+    return @min((curr -| prev) * 1000 / total_delta, 999);
+}
+
+pub fn rowValues(st: bb.procps.Stat, uid: u32, total_mem_kb: u64, cpu_total: u64, cpu_index: i64) RowValues {
     const rss_kb: u64 = @intCast(@as(u64, @intCast(@max(st.rss, 0))) * 4);
     const rss_pct: u64 = if (total_mem_kb != 0)
-        @intCast((@as(u128, rss_kb) * 10000) / @as(u128, total_mem_kb))
+        @intCast((@as(u128, rss_kb) * 1000) / @as(u128, total_mem_kb))
     else
         0;
     const cpu_pct: u64 = if (cpu_total != 0)
         @intCast((@as(u128, st.utime + st.stime) * 1000) / @as(u128, cpu_total))
     else
         0;
-    return .{ .uid = uid, .rss_kb = rss_kb, .rss_pct = @min(rss_pct, 9900), .cpu_pct = @min(cpu_pct, 9900) };
+    return .{ .uid = uid, .rss_kb = rss_kb, .rss_pct = @min(rss_pct, 999), .cpu_pct = @min(cpu_pct, 999), .cpu_index = cpu_index };
 }
 
-fn smartSize(v: u64, buf: []u8) []const u8 {
-    const units = " kmgtpezy";
-    if (v < 1000) return std.fmt.bufPrint(buf, "{d}", .{v}) catch "0";
-    var n = v;
+/// The six numeric columns after COMMAND, exactly as top.c prints them:
+/// RSS (compact 5 chars), %RSS as "%3u.%c", CPU as "%3d", %CPU as "%3u.%c".
+pub fn formatColumns(buf: []u8, v: RowValues, rss5: []const u8) []const u8 {
+    const first = std.fmt.bufPrint(buf, "{s: >5}{d: >3}.{d} ", .{
+        rss5, v.rss_pct / 10, v.rss_pct % 10,
+    }) catch return "";
+    var cpu_buf: [16]u8 = undefined;
+    const cpu_text = std.fmt.bufPrint(&cpu_buf, "{d}", .{v.cpu_index}) catch "0";
+    var n = first.len;
+    const pad = 3 -| @min(3, cpu_text.len);
+    @memset(buf[n .. n + pad], ' ');
+    n += pad;
+    @memcpy(buf[n .. n + cpu_text.len], cpu_text);
+    n += cpu_text.len;
+    const tail = std.fmt.bufPrint(buf[n..], "{d: >3}.{d}", .{ v.cpu_pct / 10, v.cpu_pct % 10 }) catch "";
+    return buf[0 .. n + tail.len];
+}
+
+/// top.c shrinks the USER field so the "PID PPID USER" prefix is exactly 20
+/// columns wide, even when PIDs are seven digits.
+fn pidPpidUser(buf: []u8, pid: u32, ppid: u32, user: []const u8) []const u8 {
+    var tmp: [32]u8 = undefined;
+    const head = std.fmt.bufPrint(&tmp, "{d: >5} {d: >5} ", .{ pid, ppid }) catch "";
+    const width = 20 -| head.len;
+    @memcpy(buf[0..head.len], head);
+    const n = @min(user.len, width);
+    @memcpy(buf[head.len .. head.len + n], user[0..n]);
+    @memset(buf[head.len + n .. 20], ' ');
+    return buf[0..20];
+}
+
+/// libbb smart_ulltoa5(): exactly five characters, e.g. "  329", " 329m".
+pub fn smartSize5(v_in: u64, buf: []u8) []const u8 {
+    const units = " mgtpezy";
+    var v = v_in;
     var idx: usize = 0;
-    while (n >= 1024 and idx + 1 < units.len) : (idx += 1) n /= 1024;
-    if (idx == 0) return std.fmt.bufPrint(buf, "{d}", .{n}) catch "0";
-    return std.fmt.bufPrint(buf, "{d}{c}", .{ n, units[idx] }) catch "0";
+    if (v > 99999) {
+        v *= 10;
+        while (v >= 100000) {
+            v /= 1024;
+            idx += 1;
+        }
+    }
+    const whole = v / 10;
+    const frac = v % 10;
+    if (idx == 0) {
+        var n: usize = 0;
+        while (n < 4) : (n += 1) buf[n] = ' ';
+        var tbuf: [16]u8 = undefined;
+        const text = std.fmt.bufPrint(&tbuf, "{d}", .{v_in}) catch "0";
+        const start = 5 - @min(text.len, 5);
+        @memcpy(buf[start .. start + text.len], text);
+        return buf[0..5];
+    }
+    if (whole >= 10) {
+        var t: [8]u8 = undefined;
+        const s = std.fmt.bufPrint(&t, "{d}", .{whole}) catch "0";
+        var n: usize = 0;
+        while (n < 4 - s.len) : (n += 1) buf[n] = ' ';
+        @memcpy(buf[4 - s.len .. 4], s);
+    } else {
+        buf[0] = @as(u8, @intCast('0' + whole));
+        buf[1] = '.';
+        buf[2] = @as(u8, @intCast('0' + frac));
+        buf[3] = ' ';
+    }
+    buf[4] = units[@min(idx, units.len - 1)];
+    return buf[0..5];
 }
 
 fn parsePositive(s: []const u8) ?u64 {
@@ -145,10 +229,31 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const info = c.sysinfo();
     const stat_data = c.readFile(a, "/proc/stat") orelse return 1;
     defer a.free(stat_data);
-    const cpu = cpuLine(stat_data);
+    var cpu = cpuLine(stat_data);
     var cpu_total: u64 = 1;
     for (cpu) |v| cpu_total += v;
     const total_mem_kb: u64 = info.totalram / 1024;
+
+    // top.c takes one throwaway sample, sleeps 100 ms, then reports deltas.
+    var prev_ticks = std.AutoHashMap(i32, u64).init(a);
+    defer prev_ticks.deinit();
+    const sample_pids = c.listPids(a, "/proc") catch &.{};
+    defer if (sample_pids.len != 0) a.free(sample_pids);
+    for (sample_pids) |spid| {
+        if (bb.procps.parseProcStat(@intCast(spid)) catch null) |sst| {
+            prev_ticks.put(spid, sst.utime + sst.stime) catch {};
+        }
+    }
+    const prev_cpu_total = cpu_total;
+    var nap = linux.timespec{ .sec = 0, .nsec = 100_000_000 };
+    _ = linux.nanosleep(&nap, null);
+    if (c.readFile(a, "/proc/stat")) |stat2| {
+        defer a.free(stat2);
+        cpu = cpuLine(stat2);
+        cpu_total = 1;
+        for (cpu) |v| cpu_total += v;
+    }
+
     const load_data = c.readFile(a, "/proc/loadavg") orelse return 1;
     defer a.free(load_data);
     const load = loadLine(load_data);
@@ -209,16 +314,18 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
             const st = bb.procps.parseProcStat(@intCast(pid)) catch continue;
             const cmd = c.cmdline(a, @intCast(pid)) orelse st.commSlice();
             defer if (cmd.ptr != st.commSlice().ptr) a.free(@constCast(cmd));
-            const vals = rowValues(st, c.procUid(@intCast(pid)), total_mem_kb, cpu_total);
+            var vals = rowValues(st, c.procUid(@intCast(pid)), total_mem_kb, cpu_total, cpuIndexOf(@intCast(pid)));
+            const pt = prev_ticks.get(pid) orelse (st.utime + st.stime);
+            vals.cpu_pct = pcpuFromDelta(st.utime + st.stime, pt, cpu_total -| prev_cpu_total);
             const uname = c.userName(a, vals.uid);
             defer if (uname.len != 0) a.free(@constCast(uname));
             const user = if (uname.len != 0) uname[0..@min(uname.len, 8)] else "0";
             var rss_buf: [16]u8 = undefined;
-            c.printfOut("{d: >5} {d: >5} {s: <8} {c}   {s: >5} {d: >4} {d: >3} {d: >4} {s}{s}\n", .{
-                @as(u32, @intCast(pid)), @as(u32, @bitCast(st.ppid)), user, st.state,
-                smartSize(vals.rss_kb, &rss_buf), vals.rss_pct / 100, vals.cpu_pct / 100,
-                @as(u64, 0), cmd, suffix,
-            });
+            var col_buf: [64]u8 = undefined;
+            var ppu_buf: [32]u8 = undefined;
+            const ppu = pidPpidUser(&ppu_buf, @intCast(pid), @as(u32, @bitCast(st.ppid)), user);
+            const cols = formatColumns(&col_buf, vals, smartSize5(vals.rss_kb, &rss_buf));
+            c.printfOut("{s} {c}    {s} {s}{s}\n", .{ ppu, st.state, cols, cmd, suffix });
             if (show_threads) {
                 const task_path = c.procPath(a, @intCast(pid), "task") catch continue;
                 defer a.free(task_path);
@@ -248,10 +355,13 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
                     var tname_buf: [64]u8 = undefined;
                     const tcomm = tst.commSlice();
                     const tname = std.fmt.bufPrint(&tname_buf, "{{{s}}}", .{tcomm[0..@min(tcomm.len, 15)]}) catch continue;
-                    c.printfOut("{d: >5} {d: >5} {s: <8} {c}   {d: >5} {d: >4} {d: >3} {d: >4} {s}{s}\n", .{
-                        @as(u32, @intCast(tid)), @as(u32, @bitCast(st.ppid)), user, tst.state,
-                        @as(u64, 0), @as(u64, 0), @as(u64, 0), @as(u64, 0), tname, suffix,
-                    });
+                    const tvals = rowValues(tst, vals.uid, total_mem_kb, cpu_total, cpuIndexOf(tid));
+                    var trss_buf: [16]u8 = undefined;
+                    var tcol_buf: [64]u8 = undefined;
+                    const tcols = formatColumns(&tcol_buf, tvals, smartSize5(tvals.rss_kb, &trss_buf));
+                    var tppu_buf: [32]u8 = undefined;
+                    const tppu = pidPpidUser(&tppu_buf, @intCast(tid), @as(u32, @bitCast(st.ppid)), user);
+                    c.printfOut("{s} {c}    {s} {s}{s}\n", .{ tppu, tst.state, tcols, tname, suffix });
                 }
             }
         }

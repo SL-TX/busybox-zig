@@ -25,6 +25,49 @@ fn timeOfDay(buf: []u8) []const u8 {
     return std.fmt.bufPrint(buf, "{d:0>2}:{d:0>2}:{d:0>2}", .{ tod / 3600, (tod / 60) % 60, tod % 60 }) catch "00:00:00";
 }
 
+pub const CpuPcts = struct {
+    user: f64,
+    nice: f64,
+    system: f64,
+    iowait: f64,
+    steal: f64,
+    idle: f64,
+};
+
+/// iostat.c:get_cpu_statistics() sums fields 0..7 into GLOBAL_UPTIME and
+/// computes each column as (curr - prev) / itv * 100. On the first report prev
+/// is zero and itv is that sum, so each column is a plain fraction.
+pub fn cpuPercents(data: []const u8) CpuPcts {
+    var fields: [9]u64 = std.mem.zeroes([9]u64);
+    var total: u64 = 0;
+    var lines = std.mem.splitScalar(u8, data, '\n');
+    while (lines.next()) |line| {
+        if (!std.mem.startsWith(u8, line, "cpu ")) continue;
+        var it = std.mem.tokenizeAny(u8, line, " \t");
+        _ = it.next();
+        var idx: usize = 0;
+        while (it.next()) |tok| : (idx += 1) {
+            if (idx >= fields.len) break;
+            fields[idx] = std.fmt.parseInt(u64, tok, 10) catch 0;
+            if (idx < 8) total += fields[idx];
+        }
+        break;
+    }
+    const pct = struct {
+        fn f(v: u64, t: u64) f64 {
+            return @as(f64, @floatFromInt(v)) / @as(f64, @floatFromInt(@max(t, 1))) * 100;
+        }
+    }.f;
+    return .{
+        .user = pct(fields[0], total),
+        .nice = pct(fields[1], total),
+        .system = pct(fields[2] + fields[5] + fields[6], total),
+        .iowait = pct(fields[4], total),
+        .steal = pct(fields[7], total),
+        .idle = pct(fields[3], total),
+    };
+}
+
 fn fullUint(s: ?[]const u8) ?u64 {
     const text = s orelse return null;
     return std.fmt.parseInt(u64, text, 10) catch null;
@@ -92,33 +135,13 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     while (lines.next()) |line| {
         if (std.mem.startsWith(u8, line, "cpu")) ncpu += 1;
     }
-    // iostat.c:get_cpu_statistics() sums fields 0..7 into GLOBAL_UPTIME and
-    // computes each column as (curr - prev) / itv * 100. On the first report
-    // prev is zero and itv is that sum, i.e. each column is a plain fraction.
-    var cpu_fields: [9]u64 = std.mem.zeroes([9]u64);
-    var total: u64 = 0;
-    lines = std.mem.splitScalar(u8, stat, '\n');
-    if (lines.next()) |line| {
-        var it = std.mem.tokenizeAny(u8, line, " \t");
-        _ = it.next();
-        var idx: usize = 0;
-        while (it.next()) |tok| : (idx += 1) {
-            if (idx >= cpu_fields.len) break;
-            cpu_fields[idx] = std.fmt.parseInt(u64, tok, 10) catch 0;
-            if (idx < 8) total += cpu_fields[idx];
-        }
-    }
-    const pct = struct {
-        fn f(v: u64, t: u64) f64 {
-            return @as(f64, @floatFromInt(v)) / @as(f64, @floatFromInt(@max(t, 1))) * 100;
-        }
-    }.f;
-    const user_pct = pct(cpu_fields[0], total);
-    const nice_pct = pct(cpu_fields[1], total);
-    const system_pct = pct(cpu_fields[2] + cpu_fields[5] + cpu_fields[6], total);
-    const iowait_pct = pct(cpu_fields[4], total);
-    const steal_pct = pct(cpu_fields[7], total);
-    const idle_pct = pct(cpu_fields[3], total);
+    const pcts = cpuPercents(stat);
+    const user_pct = pcts.user;
+    const nice_pct = pcts.nice;
+    const system_pct = pcts.system;
+    const iowait_pct = pcts.iowait;
+    const steal_pct = pcts.steal;
+    const idle_pct = pcts.idle;
 
     c.printfOut("{s} {s} ({s}) \t{s} \t_{s}_\t({d} CPU)\n\n", .{
         std.mem.sliceTo(&uts.sysname, 0), release, std.mem.trimEnd(u8, host, "\n"),

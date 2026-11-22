@@ -37,6 +37,10 @@ fn matches(list: []const FileId, id: FileId, mount: bool) bool {
 /// Read a /proc/net/{tcp,tcp6,udp,udp6} table and collect inodes of sockets
 /// bound to `port`, honouring -4/-6 (address text length 8 vs >8).
 fn scanProcNet(path: []const u8, port: u64, opts: Opts, ids: *std.ArrayList(FileId)) void {
+    // The family comes from the table itself: /proc/net/tcp6 and udp6 hold
+    // 32-hex-digit addresses, tcp/udp hold 8-hex-digit addresses. Deriving it
+    // from the port text (4 chars) or colon count is always wrong.
+    const v6_table = std.mem.endsWith(u8, path, "6");
     const data = c.readFile(A, path) orelse return;
     defer A.free(data);
     var socket_dev = FileId{ .dev_major = 0, .dev_minor = 0, .inode = 0 };
@@ -67,7 +71,8 @@ fn scanProcNet(path: []const u8, port: u64, opts: Opts, ids: *std.ArrayList(File
         const local = fields[1];
         const colon = std.mem.lastIndexOfScalar(u8, local, ':') orelse continue;
         if (std.fmt.parseInt(u64, local[colon + 1 ..], 16) catch continue != port) continue;
-        const is_v6 = local.len - colon - 1 > 8 or std.mem.indexOfScalar(u8, local, ':') != colon;
+        const addr_hex = local[0..colon];
+        const is_v6 = v6_table or addr_hex.len == 32;
         if ((opts.ip4 and is_v6) or (opts.ip6 and !is_v6)) continue;
         // /proc/net/tcp fields: sl, local, rem, st, tx:rx, tr:tm, retrnsmt,
         // uid, timeout, inode, ...  The inode is token 9.

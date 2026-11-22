@@ -1,0 +1,8 @@
+{
+  "applet": "fuser",
+  "name": "ipv6_table_reject",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

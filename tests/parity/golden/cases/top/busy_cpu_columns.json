@@ -1,0 +1,16 @@
+{
+  "applet": "top",
+  "name": "busy_cpu_columns",
+  "stdout": "<MATCH> <MATCH> sl   R     <MATCH>  <MATCH>.<MATCH>   <MATCH>  <MATCH>.<MATCH> sh -c while :; do :; done\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "driver.py": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aW1wb3J0IHN1YnByb2Nlc3Msc3lzLHRpbWUKYmI9c3lzLmFyZ3ZbPE1BVENIPl0KYz1zdWJwcm9jZXNzLlBvcGVuKFsic2giLCItYyIsIndoaWxlIDo7IGRvIDo7IGRvbmUiXSxzdGRvdXQ9c3VicHJvY2Vzcy5ERVZOVUxMLHN0ZGVycj1zdWJwcm9jZXNzLkRFVk5VTEwpCnRpbWUuc2xlZXAoPE1BVENIPi48TUFUQ0g+KQp0cnk6CiBvdXQ9c3VicHJvY2Vzcy5ydW4oW2JiLCJ0b3AiLCItYiIsIi1uIiwiPE1BVENIPiJdLHN0ZG91dD1zdWJwcm9jZXNzLlBJUEUsc3RkZXJyPXN1YnByb2Nlc3MuREVWTlVMTCx0aW1lb3V0PTxNQVRDSD4pLnN0ZG91dC5kZWNvZGUoInV0ZjxNQVRDSD4iLCJyZXBsYWNlIikKIGZvciBsaW5lIGluIG91dC5zcGxpdGxpbmVzKCk6CiAgaWYgbGluZS5zdGFydHN3aXRoKHN0cihjLnBpZCkrIiAiKTogcHJpbnQobGluZSkKZmluYWxseToKIGMudGVybWluYXRlKCk7IGMud2FpdCgpCg=="
+      }
+    }
+  }
+}

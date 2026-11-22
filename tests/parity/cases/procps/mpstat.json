@@ -76,7 +76,7 @@
       "normalize": [
         "regex:\\d+:\\d+:\\d+",
         "regex:\\d+/\\d+/\\d+",
-        "regex:\\d+\\.\\d+",
+        "regex:\\s+\\d+\\.\\d+",
         "regex:\\(.*CPU\\)",
         "regex:\\s+\\d+"
       ],
@@ -97,7 +97,7 @@
       "normalize": [
         "regex:\\d+:\\d+:\\d+",
         "regex:\\d+/\\d+/\\d+",
-        "regex:\\d+\\.\\d+",
+        "regex:\\s+\\d+\\.\\d+",
         "regex:\\(.*CPU\\)",
         "regex:\\s+\\d+"
       ],
@@ -119,7 +119,7 @@
       "normalize": [
         "regex:\\d+:\\d+:\\d+",
         "regex:\\d+/\\d+/\\d+",
-        "regex:\\d+\\.\\d+",
+        "regex:\\s+\\d+\\.\\d+",
         "regex:\\(.*CPU\\)",
         "regex:\\s+\\d+"
       ],
@@ -141,7 +141,7 @@
       "normalize": [
         "regex:\\d+:\\d+:\\d+",
         "regex:\\d+/\\d+/\\d+",
-        "regex:\\d+\\.\\d+",
+        "regex:\\s+\\d+\\.\\d+",
         "regex:\\(.*CPU\\)",
         "regex:\\s+\\d+"
       ],
@@ -163,7 +163,29 @@
       "normalize": [
         "regex:\\d+:\\d+:\\d+",
         "regex:\\d+/\\d+/\\d+",
-        "regex:\\d+\\.\\d+",
+        "regex:\\s+\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "cpu_interrupts",
+      "argv": [
+        "-I",
+        "CPU"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\s+\\d+\\.\\d+",
         "regex:\\(.*CPU\\)",
         "regex:\\s+\\d+"
       ],
@@ -185,7 +207,7 @@
         "regex:(?s)\\n\\n(?=\\S+     CPU    intr/s).*",
         "regex:\\d+:\\d+:\\d+",
         "regex:\\d+/\\d+/\\d+",
-        "regex:\\d+\\.\\d+",
+        "regex:\\s+\\d+\\.\\d+",
         "regex:\\(.*CPU\\)",
         "regex:\\s+\\d+"
       ],

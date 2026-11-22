@@ -150,6 +150,28 @@
       "script": [
         "q"
       ]
+    },
+    {
+      "name": "busy_cpu_columns",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import subprocess,sys,time\nbb=sys.argv[1]\nc=subprocess.Popen([\"sh\",\"-c\",\"while :; do :; done\"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)\ntime.sleep(0.35)\ntry:\n out=subprocess.run([bb,\"top\",\"-b\",\"-n\",\"1\"],stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,timeout=5).stdout.decode(\"utf8\",\"replace\")\n for line in out.splitlines():\n  if line.startswith(str(c.pid)+\" \"): print(line)\nfinally:\n c.terminate(); c.wait()\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+"
+      ],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>"
+      ]
     }
   ]
 }

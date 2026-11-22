@@ -55,6 +55,25 @@
       "requires": []
     },
     {
+      "name": "cpu_exact",
+      "argv": [
+        "-c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+"
+      ],
+      "requires": []
+    },
+    {
       "name": "disk",
       "argv": [
         "-d"
