@@ -343,6 +343,12 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "man")) return @import("miscutils").man_main;
     if (std.mem.eql(u8, name, "microcom")) return @import("miscutils").microcom_main;
     if (std.mem.eql(u8, name, "rx")) return @import("miscutils").rx_main;
+    if (std.mem.eql(u8, name, "flash_eraseall")) return @import("miscutils").flash_eraseall_main;
+    if (std.mem.eql(u8, name, "flash_lock")) return @import("miscutils").flash_lock_main;
+    if (std.mem.eql(u8, name, "flash_unlock")) return @import("miscutils").flash_unlock_main;
+    if (std.mem.eql(u8, name, "flashcp")) return @import("miscutils").flashcp_main;
+    if (std.mem.eql(u8, name, "inotifyd")) return @import("miscutils").inotifyd_main;
+    if (std.mem.eql(u8, name, "rfkill")) return @import("miscutils").rfkill_main;
     if (std.mem.eql(u8, name, "seedrng")) return @import("miscutils").seedrng_main;
     if (std.mem.eql(u8, name, "setfattr")) return @import("miscutils").setfattr_main;
     // procps
