@@ -1,0 +1,8 @@
+{
+  "applet": "ping6",
+  "name": "bad_size",
+  "stdout": "",
+  "stderr": "ping6: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ping6",
+  "name": "ipv4_rejected",
+  "stdout": "",
+  "stderr": "ping6: bad address '127.0.0.1'\n",
+  "exit": 1,
+  "tree": {}
+}

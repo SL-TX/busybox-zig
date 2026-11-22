@@ -309,6 +309,12 @@ pub fn ifconfig_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn ping_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13a audit: the meta-CLI reference path is delegated to the exact
+    // ping implementation (raw-socket permission error, numeric validation).
+    return @import("ping.zig").pingMain(argc, argv);
+}
+
+fn legacy_ping_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     var count: u16 = 4;
     var timeout: u32 = 1000;
@@ -384,6 +390,7 @@ pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 // Task 13a — diagnostics and addressing applets. Each lives in its own file;
 // this module root only re-exports their entry points.
 pub const ipcalc_main = @import("ipcalc.zig").ipcalcMain;
+pub const ping6_main = @import("ping.zig").ping6Main;
 pub const ip_main = @import("ip_common.zig").ipMainDispatch;
 pub const ipaddr_main = @import("ip_common.zig").ipaddrMain;
 pub const iplink_main = @import("ip_common.zig").iplinkMain;

@@ -1,0 +1,8 @@
+{
+  "applet": "ping",
+  "name": "bad_address",
+  "stdout": "",
+  "stderr": "ping: bad address '256.1.1.1'\n",
+  "exit": 1,
+  "tree": {}
+}
