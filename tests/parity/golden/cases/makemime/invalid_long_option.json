@@ -1,0 +1,30 @@
+{
+  "applet": "makemime",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "makemime: unrecognized option '--bogus'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: makemime [OPTIONS] [FILE]...\n\nCreate multipart MIME-encoded message from FILEs\n\n\t-o FILE\tOutput. Default: stdout\n\t-a HDR\tAdd header(s). Examples:\n\t\t\"From: user@host.org\", \"Date: `date -R`\"\n\t-c CT\tContent type. Default: application/octet-stream\n\t-C CS\tCharset. Default: us-ascii\n\nOther options are silently ignored\n",
+  "exit": 1,
+  "tree": {
+    "big.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB"
+      }
+    },
+    "B.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "c2Vjb25kIGZpbGUK"
+      }
+    },
+    "A.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQK"
+      }
+    }
+  }
+}

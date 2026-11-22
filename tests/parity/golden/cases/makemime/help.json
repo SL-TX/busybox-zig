@@ -1,0 +1,8 @@
+{
+  "applet": "makemime",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: makemime [OPTIONS] [FILE]...\n\nCreate multipart MIME-encoded message from FILEs\n\n\t-o FILE\tOutput. Default: stdout\n\t-a HDR\tAdd header(s). Examples:\n\t\t\"From: user@host.org\", \"Date: `date -R`\"\n\t-c CT\tContent type. Default: application/octet-stream\n\t-C CS\tCharset. Default: us-ascii\n\nOther options are silently ignored\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

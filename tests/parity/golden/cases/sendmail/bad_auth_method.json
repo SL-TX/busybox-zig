@@ -1,0 +1,8 @@
+{
+  "applet": "sendmail",
+  "name": "bad_auth_method",
+  "stdout": "",
+  "stderr": "sendmail: unsupported AUTH method BAD\n",
+  "exit": 1,
+  "tree": {}
+}

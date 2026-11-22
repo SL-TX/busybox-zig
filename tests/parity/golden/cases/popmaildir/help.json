@@ -1,0 +1,8 @@
+{
+  "applet": "popmaildir",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: popmaildir [OPTIONS] MAILDIR [CONN_HELPER ARGS]\n\nFetch content of remote mailbox to local maildir\n\n\t-s\t\tSkip authorization\n\t-T\t\tGet messages with TOP instead of RETR\n\t-k\t\tKeep retrieved messages on the server\n\t-t SEC\t\tNetwork timeout\n\t-F 'PROG ARGS'\tFilter program (may be repeated)\n\t-M 'PROG ARGS'\tDelivery program\n\nFetch from plain POP3 server:\npopmaildir -k DIR nc pop3.server.com 110 <user_and_pass.txt\nFetch from SSLed POP3 server and delete fetched emails:\npopmaildir DIR -- openssl s_client -quiet -connect pop3.server.com:995 <user_and_pass.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

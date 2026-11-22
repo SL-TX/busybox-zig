@@ -1,0 +1,16 @@
+{
+  "applet": "reformime",
+  "name": "crlf",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "crlf.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "b25lDQp0d28NCg=="
+      }
+    }
+  }
+}

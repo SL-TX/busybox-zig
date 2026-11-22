@@ -1,0 +1,16 @@
+{
+  "applet": "sendmail",
+  "name": "recipients_from_body",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "transcript.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "QzogRUhMTyA8SE9TVD4KQzogTUFJTCBGUk9NOjxhQGI+CkM6IFJDUFQgVE86PGNhcm9sQGV4YW1wbGUuY29tPgpDOiBSQ1BUIFRPOjxkYXZlQGV4YW1wbGUuY29tPgpDOiBSQ1BUIFRPOjxzZWNyZXRAZXhhbXBsZS5jb20+CkM6IERBVEEKQzogU3ViamVjdDogdApDOiBUbzogY2Fyb2xAZXhhbXBsZS5jb20sIGRhdmVAZXhhbXBsZS5jb20KQzogQm9keSBsaW5lCkM6IC4KQzogUVVJVAo="
+      }
+    }
+  }
+}

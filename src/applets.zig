@@ -349,6 +349,11 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "modinfo")) return @import("modutils").modinfo_main;
     if (std.mem.eql(u8, name, "modprobe")) return @import("modutils").modprobe_main;
     if (std.mem.eql(u8, name, "rmmod")) return @import("modutils").rmmod_main;
+    // Task 14 — mailutils
+    if (std.mem.eql(u8, name, "makemime")) return @import("mailutils").makemime_main;
+    if (std.mem.eql(u8, name, "popmaildir")) return @import("mailutils").popmaildir_main;
+    if (std.mem.eql(u8, name, "reformime")) return @import("mailutils").reformime_main;
+    if (std.mem.eql(u8, name, "sendmail")) return @import("mailutils").sendmail_main;
     // remaining
     if (std.mem.eql(u8, name, "ascii")) return @import("remaining").ascii_main;
     if (std.mem.eql(u8, name, "dc")) return @import("remaining").dc_main;

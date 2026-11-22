@@ -1,0 +1,35 @@
+{
+  "applet": "popmaildir",
+  "name": "fetch",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "transcript.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "QzogU1RBVApDOiBSRVRSIDEKQzogREVMRSAxCkM6IFFVSVQK"
+      }
+    },
+    "md": {
+      "type": "dir",
+      "mode": 509
+    },
+    "md/new": {
+      "type": "dir",
+      "mode": 493
+    },
+    "md/new/<MATCH><HOST>": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "RnJvbTogYUBiDQpTdWJqZWN0OiBvbmUNCg0KRmlyc3QgbWVzc2FnZSBib2R5DQo="
+      }
+    },
+    "md/tmp": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

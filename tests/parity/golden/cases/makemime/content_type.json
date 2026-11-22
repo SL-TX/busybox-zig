@@ -1,0 +1,30 @@
+{
+  "applet": "makemime",
+  "name": "content_type",
+  "stdout": "Mime-Version: 1.0\nContent-Type: multipart/mixed; boundary=\"<MATCH>\"\n\n--<MATCH>\nContent-Type: text/plain; charset=us-ascii\nContent-Disposition: inline; filename=\"A.txt\"\nContent-Transfer-Encoding: base64\n\naGVsbG8gd29ybGQK\n--<MATCH>--\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "big.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB"
+      }
+    },
+    "B.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "c2Vjb25kIGZpbGUK"
+      }
+    },
+    "A.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQK"
+      }
+    }
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "applet": "makemime",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": "abc\n",
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "content_type",
+      "argv": [
+        "-c",
+        "text/plain",
+        "A.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "charset",
+      "argv": [
+        "-c",
+        "text/plain",
+        "-C",
+        "utf-8",
+        "A.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "two_headers",
+      "argv": [
+        "-a",
+        "X: Y",
+        "-a",
+        "Z: W",
+        "-c",
+        "text/plain",
+        "A.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "ignored_opts",
+      "argv": [
+        "-c",
+        "text/plain",
+        "-e",
+        "7bit",
+        "-N",
+        "foo",
+        "A.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "output_file",
+      "argv": [
+        "-c",
+        "text/plain",
+        "-o",
+        "out.eml",
+        "A.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "two_files",
+      "argv": [
+        "-c",
+        "text/plain",
+        "A.txt",
+        "B.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "big_file",
+      "argv": [
+        "-c",
+        "text/plain",
+        "big.bin"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "dash_file",
+      "argv": [
+        "-c",
+        "text/plain",
+        "-"
+      ],
+      "stdin": "from stdin\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z",
+        "A.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogus",
+        "A.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "A.txt": "hello world\n",
+        "B.txt": "second file\n",
+        "big.bin": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "-c",
+        "text/plain",
+        "missing.txt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+-[0-9]+-[0-9]+"
+      ],
+      "requires": []
+    }
+  ]
+}

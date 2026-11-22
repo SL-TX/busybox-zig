@@ -1,0 +1,30 @@
+{
+  "applet": "reformime",
+  "name": "multipart_two_sections",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "<MATCH>": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "two.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "c2Vjb25kCg=="
+      }
+    },
+    "one.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "Zmlyc3QK"
+      }
+    }
+  }
+}

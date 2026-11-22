@@ -1,0 +1,313 @@
+{
+  "applet": "sendmail",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "basic_verbose",
+      "argv": [
+        "-v",
+        "-f",
+        "alice@example.com",
+        "-S",
+        "127.0.0.1:<PORT>",
+        "bob@example.com"
+      ],
+      "stdin": "Subject: test\r\nTo: bob@example.com\r\n\r\nHello body\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt"
+      }
+    },
+    {
+      "name": "helper",
+      "argv": [
+        "-v",
+        "-f",
+        "alice@example.com",
+        "-H",
+        "exec <BB> nc 127.0.0.1 <PORT> 2>/dev/null",
+        "bob@example.com"
+      ],
+      "stdin": "Subject: test\r\nTo: bob@example.com\r\n\r\nHello body\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt"
+      }
+    },
+    {
+      "name": "auth_plain",
+      "argv": [
+        "-v",
+        "-f",
+        "a@b",
+        "-amPLAIN",
+        "-auuser",
+        "-appass",
+        "-S",
+        "127.0.0.1:<PORT>",
+        "bob@example.com"
+      ],
+      "stdin": "Subject: test\r\nTo: bob@example.com\r\n\r\nHello body\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt"
+      }
+    },
+    {
+      "name": "auth_login",
+      "argv": [
+        "-v",
+        "-f",
+        "a@b",
+        "-amLOGIN",
+        "-auuser",
+        "-appass",
+        "-S",
+        "127.0.0.1:<PORT>",
+        "bob@example.com"
+      ],
+      "stdin": "Subject: test\r\nTo: bob@example.com\r\n\r\nHello body\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt"
+      }
+    },
+    {
+      "name": "recipients_from_body",
+      "argv": [
+        "-t",
+        "-f",
+        "a@b",
+        "-S",
+        "127.0.0.1:<PORT>"
+      ],
+      "stdin": "Subject: t\r\nTo: carol@example.com, dave@example.com\r\nBcc: secret@example.com\r\n\r\nBody line\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt"
+      }
+    },
+    {
+      "name": "dot_stuffing",
+      "argv": [
+        "-v",
+        "-f",
+        "a@b",
+        "-S",
+        "127.0.0.1:<PORT>",
+        "bob@example.com"
+      ],
+      "stdin": "Subject: t\r\n\r\n.first\r\n..second\r\nlast\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt"
+      }
+    },
+    {
+      "name": "reject_rcpt",
+      "argv": [
+        "-v",
+        "-f",
+        "a@b",
+        "-S",
+        "127.0.0.1:<PORT>",
+        "bad@example.com"
+      ],
+      "stdin": "Subject: test\r\nTo: bob@example.com\r\n\r\nHello body\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt",
+        "reject_rcpt": true
+      }
+    },
+    {
+      "name": "no_recipients",
+      "argv": [
+        "-f",
+        "a@b",
+        "-S",
+        "127.0.0.1:<PORT>"
+      ],
+      "stdin": "",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "smtp",
+        "transcript": "transcript.txt"
+      }
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_a_arg",
+      "argv": [
+        "-a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_auth_method",
+      "argv": [
+        "-amBAD"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "h_and_s",
+      "argv": [
+        "-H",
+        "x",
+        "-S",
+        "y"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_number",
+      "argv": [
+        "-w",
+        "abc",
+        "-S",
+        "127.0.0.1:1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

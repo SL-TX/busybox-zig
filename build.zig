@@ -145,6 +145,15 @@ pub fn build(b: *std.Build) void {
     modutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("modutils", modutils);
 
+    // Task 14 — mailutils applets.
+    const mailutils = b.addModule("mailutils", .{
+        .root_source_file = b.path("src/mailutils/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    mailutils.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("mailutils", mailutils);
+
     // Small applets from the remaining categories that are in the registry.
     const remaining = b.addModule("remaining", .{
         .root_source_file = b.path("src/remaining/main.zig"),
@@ -185,6 +194,7 @@ pub fn build(b: *std.Build) void {
     test_module.addImport("klibc", klibc);
     test_module.addImport("e2fsprogs", e2fsprogs);
     test_module.addImport("modutils", modutils);
+    test_module.addImport("mailutils", mailutils);
     test_module.addImport("remaining", remaining);
     const tests = b.addTest(.{ .root_module = test_module });
     const run_tests = b.addRunArtifact(tests);

@@ -1,0 +1,34 @@
+{
+  "applet": "reformime",
+  "name": "extract_prefix",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "OUT": {
+      "type": "dir",
+      "mode": 493
+    },
+    "OUT/<MATCH>": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "OUT/two.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "c2Vjb25kCg=="
+      }
+    },
+    "OUT/one.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "Zmlyc3QK"
+      }
+    }
+  }
+}

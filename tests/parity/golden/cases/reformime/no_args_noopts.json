@@ -1,0 +1,16 @@
+{
+  "applet": "reformime",
+  "name": "no_args_noopts",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "hello.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "aGVsbG8K"
+      }
+    }
+  }
+}

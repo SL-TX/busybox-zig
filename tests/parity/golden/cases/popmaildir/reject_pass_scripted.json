@@ -1,0 +1,21 @@
+{
+  "applet": "popmaildir",
+  "name": "reject_pass_scripted",
+  "stdout": "USER user\r\nPASS pass\r\n",
+  "stderr": "popmaildir: PASS pass failed, reply was: -ERR authentication failed\r\n",
+  "exit": 1,
+  "tree": {
+    "md": {
+      "type": "dir",
+      "mode": 509
+    },
+    "md/new": {
+      "type": "dir",
+      "mode": 493
+    },
+    "md/tmp": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

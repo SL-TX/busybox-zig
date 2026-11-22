@@ -157,16 +157,19 @@ def _case_cwd(case: dict, root: str) -> str:
     return target
 
 
-def _normalize_tree(tree: Tree, rules: list[str], root: str) -> Tree:
+def _normalize_tree(tree: Tree, rules: list[str], root: str, normalize_paths: bool = False) -> Tree:
     out: Tree = {}
     for path, node in tree.items():
         item = dict(node)
+        # Applets which generate volatile file names (mail spoolers using
+        # monotonic_us()/pid/hostname) may opt in to normalizing tree keys.
+        key = normalize.apply(path, rules, root=root) if normalize_paths else path
         if item.get("type") == "file" and isinstance(item.get("content"), bytes):
             text = item["content"].decode("utf-8", "replace")
             item["content"] = normalize.apply(text, rules, root=root).encode("utf-8", "replace")
         elif item.get("type") == "symlink":
             item["target"] = normalize.apply(item["target"], rules, root=root)
-        out[path] = item
+        out[key] = item
     return out
 
 
@@ -192,7 +195,16 @@ def observe(
     srv = None
     if case.get("server"):
         from scripts.parity.server import LoopbackServer
-        srv = LoopbackServer(case["server"])
+        server_spec = dict(case["server"])
+        # A loopback server may record its dialog inside the sandbox so the
+        # tree snapshot captures the exact protocol exchange.
+        if isinstance(server_spec.get("transcript"), str):
+            transcript = server_spec["transcript"].replace("<TMP>", root)
+            if not os.path.isabs(transcript):
+                transcript = os.path.join(root, transcript)
+            os.makedirs(os.path.dirname(transcript), exist_ok=True)
+            server_spec["transcript"] = transcript
+        srv = LoopbackServer(server_spec)
     try:
         port_text = str(srv.port) if srv else None
 
@@ -272,7 +284,8 @@ def observe(
         if port_text:
             stdout = stdout.replace(port_text, "<PORT>")
             stderr = stderr.replace(port_text, "<PORT>")
-        tree = _normalize_tree(snapshot(root), rules, root)
+        tree = _normalize_tree(snapshot(root), rules, root,
+                               normalize_paths=bool(case.get("normalize_paths")))
         return Observation(
             stdout=normalize.apply(stdout, rules, root=root),
             stderr=normalize.apply(stderr, rules, root=root),
