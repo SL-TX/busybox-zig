@@ -1,0 +1,156 @@
+{
+  "applet": "ssl_server",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_f",
+      "argv": [
+        "-f"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "v_only",
+      "argv": [
+        "-v"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_prog",
+      "argv": [
+        "-f",
+        "crt.pem"
+      ],
+      "stdin": null,
+      "files": {
+        "crt.pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF3HAw\n2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqBIkZ7\n8R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfujZFEs\n5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmiZeDR\n9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJArqn8+\nk3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABAoIBAFZuKYIaVB+UY5my\ncZCJI4gE60ri1veobWMDa12sJO/ZGk+PacihQw0BUCYqd/EE1k1YrY2Mchogcrg1\n4wwa6UEhlTpuX8W71DbkosWILEAheU4D2Knc6OSPlWfb2ph3tYL8VVzbDg/sYMK4\npwKBI/xF2rtlr9jGEoq84xVnfTsOC8a/mSq77fXj10wfIfNzIDuc6pRPGnHEOGVN\nsSgi9wJke9GuS4zwR0sqyLXNkOR545TRp7lmN9aCDqQ84pK387RG/OWO8m3+9Ain\nsrcP4BPLcLRMXOH7m9NXJCRvPiD5FJdHHhG4CS5ViRZEs+Oy0+gWjQ0QOLChuaN0\nZIiuI/ECgYEA75Mjst52WtbxrNqgx404t41tFVxqP757PhWC53yFBvTeWrFXNeKP\nYiiMzGPsK2wL8lkcBf0leHQ6apkdE4IrGD4MS2sgagk+yA/2pepI8wD4p64rMe6Z\nfE9X9ulj4vkcQ2hJ9as8DKgdeOU/RCZ7oLfyUT1rv26mOwa76mjRbDECgYEAz3Aq\nM1FEcgUNqGNo7tKtMDauJST0LGktuVf98BhAtvGSmZyr4SaL2bDH57cOUeRBoQX2\ndrCLhbrvqYjzSB7K2R1NpbPc0SinW3SR0WFRfaxSZnWcRReKuRNyouE+6VOt7Aly\nFAsc/8nCC1h22jNroDjie9IUb6KGfqaS7xx8dsMCgYEA4Ro1rrlMJ6pSxgFelGFi\n60SdPDbrNh26GumHaA4dyB2IV1rOALlx098Z/Gne3CXXS8zigdYLwRQkV0iqg0wJ\nRev3DV4IxNkO/lfRfq+V/43oFVWXDIGOAbljg4Jj8j3yinuREp3j/Fhx6MguG9C0\n1JxBuIenl+VVl5yKMIRwUeECgYEAztvhmW8vPCzB4+vOVmqM/olou+3P+QGh8TRI\nLUdiMY1RThIobMwNpjZeAzpO82cV80eI8e84E1HJcVz6ji72xfAs4FMunv1VdyQV\nzaCorRRMz5P1FAlX8xvrs3W/UNp7k+gPdOFoN8Ow17OOQiYI66wOXr+uVWzThjUC\nTaQwkhUCgYEAyDnTxef/fTjaS/k+gonzeuV8bZkWcNEvYEcSWsF3Y7MWIfflOz7m\nwCavF2nkY+x1YsQopIJwCKbAUTOsUpMgJTHw/O8WDtJRezd0IoKnh238jawRwOAr\n34B3LFoq48tNwWBhwbbTjdk70CNhk/4bniESJzDMJc0iUsGTIDJxGNE=\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIC1DCCAbygAwIBAgIULySunkBYe21cQTE05LWYq3JVeYcwDQYJKoZIhvcNAQEL\nBQAwFDESMBAGA1UEAwwJbG9jYWxob3N0MB4XDTIwMDEwMTAwMDAwMFoXDTQwMDEw\nMTAwMDAwMFowFDESMBAGA1UEAwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEF\nAAOCAQ8AMIIBCgKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF\n3HAw2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqB\nIkZ78R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfuj\nZFEs5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmi\nZeDR9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJAr\nqn8+k3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABox4wHDAaBgNVHREE\nEzARgglsb2NhbGhvc3SHBH8AAAEwDQYJKoZIhvcNAQELBQADggEBAFyWP8h8YylK\noeV0+6/gh75lk1eIEEpI+mWSOYAs8+14erxwO4VN5DaYsm0iMKKRLvgLncmlffIh\nlrU5MWPa+p7duO8+ZJWuz0ac+xFtHzvlp431nUw6FL0O53GUkUJYyd4xnV34Nh/Z\nbS7j77L3hzXa7xZvBxywy+RAp823JQyncRn5umDiiSKdAcI2o8pvTxZsWc/h34Lf\n6ljSEmCwfVSHPDu2QfNLN/o+MvHuJhaaj45o9vqNkPKnU8hZuM9UmACT5ZaKgcZe\nJDHVEhSKZb6VwIJ4OSSXVvlgpUjV/UzI63cCo0EBecBssuFfr40nD5WO0CtcT2pI\nP1jo5M3e+lg=\n-----END CERTIFICATE-----\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_cert_file",
+      "argv": [
+        "-f",
+        "missing.pem",
+        "echo",
+        "hi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "tls_python_client",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "crt.pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF3HAw\n2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqBIkZ7\n8R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfujZFEs\n5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmiZeDR\n9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJArqn8+\nk3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABAoIBAFZuKYIaVB+UY5my\ncZCJI4gE60ri1veobWMDa12sJO/ZGk+PacihQw0BUCYqd/EE1k1YrY2Mchogcrg1\n4wwa6UEhlTpuX8W71DbkosWILEAheU4D2Knc6OSPlWfb2ph3tYL8VVzbDg/sYMK4\npwKBI/xF2rtlr9jGEoq84xVnfTsOC8a/mSq77fXj10wfIfNzIDuc6pRPGnHEOGVN\nsSgi9wJke9GuS4zwR0sqyLXNkOR545TRp7lmN9aCDqQ84pK387RG/OWO8m3+9Ain\nsrcP4BPLcLRMXOH7m9NXJCRvPiD5FJdHHhG4CS5ViRZEs+Oy0+gWjQ0QOLChuaN0\nZIiuI/ECgYEA75Mjst52WtbxrNqgx404t41tFVxqP757PhWC53yFBvTeWrFXNeKP\nYiiMzGPsK2wL8lkcBf0leHQ6apkdE4IrGD4MS2sgagk+yA/2pepI8wD4p64rMe6Z\nfE9X9ulj4vkcQ2hJ9as8DKgdeOU/RCZ7oLfyUT1rv26mOwa76mjRbDECgYEAz3Aq\nM1FEcgUNqGNo7tKtMDauJST0LGktuVf98BhAtvGSmZyr4SaL2bDH57cOUeRBoQX2\ndrCLhbrvqYjzSB7K2R1NpbPc0SinW3SR0WFRfaxSZnWcRReKuRNyouE+6VOt7Aly\nFAsc/8nCC1h22jNroDjie9IUb6KGfqaS7xx8dsMCgYEA4Ro1rrlMJ6pSxgFelGFi\n60SdPDbrNh26GumHaA4dyB2IV1rOALlx098Z/Gne3CXXS8zigdYLwRQkV0iqg0wJ\nRev3DV4IxNkO/lfRfq+V/43oFVWXDIGOAbljg4Jj8j3yinuREp3j/Fhx6MguG9C0\n1JxBuIenl+VVl5yKMIRwUeECgYEAztvhmW8vPCzB4+vOVmqM/olou+3P+QGh8TRI\nLUdiMY1RThIobMwNpjZeAzpO82cV80eI8e84E1HJcVz6ji72xfAs4FMunv1VdyQV\nzaCorRRMz5P1FAlX8xvrs3W/UNp7k+gPdOFoN8Ow17OOQiYI66wOXr+uVWzThjUC\nTaQwkhUCgYEAyDnTxef/fTjaS/k+gonzeuV8bZkWcNEvYEcSWsF3Y7MWIfflOz7m\nwCavF2nkY+x1YsQopIJwCKbAUTOsUpMgJTHw/O8WDtJRezd0IoKnh238jawRwOAr\n34B3LFoq48tNwWBhwbbTjdk70CNhk/4bniESJzDMJc0iUsGTIDJxGNE=\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIC1DCCAbygAwIBAgIULySunkBYe21cQTE05LWYq3JVeYcwDQYJKoZIhvcNAQEL\nBQAwFDESMBAGA1UEAwwJbG9jYWxob3N0MB4XDTIwMDEwMTAwMDAwMFoXDTQwMDEw\nMTAwMDAwMFowFDESMBAGA1UEAwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEF\nAAOCAQ8AMIIBCgKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF\n3HAw2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqB\nIkZ78R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfuj\nZFEs5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmi\nZeDR9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJAr\nqn8+k3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABox4wHDAaBgNVHREE\nEzARgglsb2NhbGhvc3SHBH8AAAEwDQYJKoZIhvcNAQELBQADggEBAFyWP8h8YylK\noeV0+6/gh75lk1eIEEpI+mWSOYAs8+14erxwO4VN5DaYsm0iMKKRLvgLncmlffIh\nlrU5MWPa+p7duO8+ZJWuz0ac+xFtHzvlp431nUw6FL0O53GUkUJYyd4xnV34Nh/Z\nbS7j77L3hzXa7xZvBxywy+RAp823JQyncRn5umDiiSKdAcI2o8pvTxZsWc/h34Lf\n6ljSEmCwfVSHPDu2QfNLN/o+MvHuJhaaj45o9vqNkPKnU8hZuM9UmACT5ZaKgcZe\nJDHVEhSKZb6VwIJ4OSSXVvlgpUjV/UzI63cCo0EBecBssuFfr40nD5WO0CtcT2pI\nP1jo5M3e+lg=\n-----END CERTIFICATE-----\n",
+        "tls_client_wrapper.py": "import os, sys, ssl, socket, subprocess\nbb, args = sys.argv[1], sys.argv[2:]\na, b = socket.socketpair()\np = subprocess.Popen([bb] + args, stdin=a.fileno(), stdout=a.fileno(),\n                     stderr=subprocess.PIPE, close_fds=False)\na.close()\nctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)\nctx.check_hostname = False\nctx.verify_mode = ssl.CERT_NONE\nctx.minimum_version = ssl.TLSVersion.TLSv1_2\nctx.maximum_version = ssl.TLSVersion.TLSv1_2\nctx.set_ciphers('AES128-SHA256:@SECLEVEL=1')\ntry:\n    tls = ctx.wrap_socket(b, server_hostname='localhost')\n    tls.settimeout(4)\n    tls.sendall(b'PING\\n')\n    data = b''\n    while b'\\n' not in data:\n        c = tls.recv(4096)\n        if not c: break\n        data += c\n    os.write(1, b'CLI:' + data)\n    tls.close()\nexcept Exception as e:\n    os.write(2, ('wrapper: %r\\n' % e).encode())\ntry:\n    rc = p.wait(timeout=4)\nexcept subprocess.TimeoutExpired:\n    p.kill(); rc = 124\nos.write(2, p.stderr.read())\nsys.exit(rc)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "/usr/bin/python3",
+        "tls_client_wrapper.py",
+        "<BB>",
+        "ssl_server",
+        "-f",
+        "crt.pem",
+        "<BB>",
+        "echo",
+        "WORLD"
+      ]
+    }
+  ]
+}

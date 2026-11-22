@@ -7,6 +7,7 @@ const linux = std.os.linux;
 // in differential mode because the comparison reference is built CONFIG_TC=n).
 test {
     _ = @import("tc_test.zig");
+    _ = @import("tls_core_test.zig");
 }
 
 test "parseUrl handles scheme, host, port and path" {

@@ -199,9 +199,19 @@ def observe(
         def sub(text):
             if port_text:
                 text = text.replace("<PORT>", port_text)
-            return text.replace("<TMP>", root)
+            # <BB> expands to the binary under test. Cases for applets which
+            # exec helper programs (ssl_client -e, ssl_server PROG) use it so
+            # each side of a differential run execs its own build.
+            return text.replace("<TMP>", root).replace("<BB>", binary)
 
-        full_argv = [binary, *(sub(a) for a in argv)]
+        # Most cases run an applet of the multi-call binary. Applets which
+        # need an external driver (an independent TLS client for ssl_server)
+        # may provide ``exec_argv`` instead; <BB> expands to the binary under
+        # test so each differential side drives its own build.
+        if case.get("exec_argv"):
+            full_argv = [sub(a) for a in case["exec_argv"]]
+        else:
+            full_argv = [binary, *(sub(a) for a in argv)]
 
         if case.get("tty") or case.get("use_pty"):
             from scripts.parity.pty_helper import (  # lazy: optional helper
@@ -249,6 +259,7 @@ def observe(
                 raw_stdin = str(case["stdin"])
                 if port_text:
                     raw_stdin = raw_stdin.replace("<PORT>", port_text)
+                raw_stdin = raw_stdin.replace("<TMP>", root).replace("<BB>", binary)
                 kwargs["input"] = raw_stdin.encode("utf-8")
             try:
                 proc = subprocess.run(full_argv, **kwargs)

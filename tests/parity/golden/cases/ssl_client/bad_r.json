@@ -1,0 +1,8 @@
+{
+  "applet": "ssl_client",
+  "name": "bad_r",
+  "stdout": "",
+  "stderr": "ssl_client: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

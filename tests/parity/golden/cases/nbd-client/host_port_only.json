@@ -1,0 +1,8 @@
+{
+  "applet": "nbd-client",
+  "name": "host_port_only",
+  "stdout": "",
+  "stderr": "nbd-client: can't open '10809': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

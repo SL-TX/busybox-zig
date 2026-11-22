@@ -1,0 +1,8 @@
+{
+  "applet": "ssl_client",
+  "name": "missing_n",
+  "stdout": "",
+  "stderr": "ssl_client: option requires an argument -- 'n'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ssl_client [-n SNI] { -s FD [-r FD] | HOST | -e PROG ARGS }\n",
+  "exit": 1,
+  "tree": {}
+}

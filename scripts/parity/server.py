@@ -83,6 +83,9 @@ class LoopbackServer:
         if conn is None:
             return
         try:
+            if mode in ("nbd_old", "nbd_new", "nbd_bad"):
+                self._run_nbd(conn, mode)
+                return
             if mode == "echo":
                 data = self._read_all(conn)
                 conn.sendall(data)
@@ -128,6 +131,41 @@ class LoopbackServer:
                     conn.close()
                 except OSError:
                     pass
+
+    def _run_nbd(self, conn, mode: str) -> None:
+        """Deterministic NBD handshake peek (no real block device is touched).
+
+        Sends the fixed-size handshake the client expects, optionally consumes
+        the new-style option request, then holds the socket open briefly so the
+        client can finish its (failing) device ioctl path.
+        """
+        import struct
+
+        conn.settimeout(1.0)
+        try:
+            if mode == "nbd_bad":
+                conn.sendall(b"BADMAGIC!" + b"\0" * 8)
+            elif mode == "nbd_old":
+                conn.sendall(b"NBDMAGIC" + bytes.fromhex("0000420281861253")
+                             + struct.pack(">Q", 1024 * 1024)
+                             + struct.pack(">I", 0) + b"\0" * 124)
+            else:
+                conn.sendall(b"NBDMAGIC" + b"IHAVEOPT" + struct.pack(">H", 0))
+                # The client sends client_flags (4 bytes) followed by the
+                # NBD_OPT_EXPORT_NAME request (16-byte header + name).
+                req = self.spec.get("expect_request", "")
+                want = 4 + 16 + len(req)
+                buf = b""
+                while len(buf) < want:
+                    chunk = conn.recv(4096)
+                    if not chunk:
+                        break
+                    buf += chunk
+                conn.sendall(struct.pack(">Q", 1024 * 1024)
+                             + struct.pack(">H", 0) + b"\0" * 124)
+            self._read_all(conn, timeout=1.0)
+        except OSError:
+            pass
 
     def _run_udp(self, mode: str) -> None:
         self.sock.settimeout(0.1)

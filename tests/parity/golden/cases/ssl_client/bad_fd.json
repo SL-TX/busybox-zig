@@ -1,0 +1,8 @@
+{
+  "applet": "ssl_client",
+  "name": "bad_fd",
+  "stdout": "",
+  "stderr": "ssl_client: write error: Bad file descriptor\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "nbd-client",
+  "name": "missing_dev",
+  "stdout": "",
+  "stderr": "nbd-client: can't open 'dev': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

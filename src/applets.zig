@@ -297,6 +297,10 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "udhcpd")) return @import("networking").udhcpd_main;
     if (std.mem.eql(u8, name, "telnetd")) return @import("networking").telnetd_main;
     if (std.mem.eql(u8, name, "tc")) return @import("networking").tc_main;
+    // Task 13d — TLS and special network applets
+    if (std.mem.eql(u8, name, "ssl_client")) return @import("networking").ssl_client_main;
+    if (std.mem.eql(u8, name, "ssl_server")) return @import("networking").ssl_server_main;
+    if (std.mem.eql(u8, name, "nbd-client")) return @import("networking").nbdclient_main;
     // miscutils
     if (std.mem.eql(u8, name, "ionice")) return @import("miscutils").ionice_main;
     if (std.mem.eql(u8, name, "renice")) return @import("miscutils").renice_main;

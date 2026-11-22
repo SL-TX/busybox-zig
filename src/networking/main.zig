@@ -464,6 +464,11 @@ pub const udhcpc6_main = @import("udhcp.zig").udhcpc6Main;
 pub const udhcpd_main = @import("udhcp.zig").udhcpdMain;
 pub const telnetd_main = @import("telnetd.zig").telnetdMain;
 pub const tc_main = @import("tc.zig").tcMain;
+
+// Task 13d — TLS applets and the NBD client.
+pub const ssl_client_main = @import("ssl_client.zig").sslClientMain;
+pub const ssl_server_main = @import("ssl_server.zig").sslServerMain;
+pub const nbdclient_main = @import("nbd_client.zig").nbdClientMain;
 // Re-exported so the focused unit tests can reach the pure formatter/parser
 // through the `networking` module (a file cannot belong to two modules).
 pub const tc = @import("tc.zig");
