@@ -1,4 +1,5 @@
-//! miscutils applet implementations (renice, ionice, crontab).
+//! miscutils applet implementations (renice, ionice, crontab plus the
+//! Task 16a safe-miscutils wave).
 
 const std = @import("std");
 const linux = std.os.linux;
@@ -411,3 +412,20 @@ pub fn crontab_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         },
     }
 }
+
+// ---------------------------------------------------------------- Task 16a
+// Re-exports of the safe miscutils implemented in sibling files. The registry
+// (src/applets.zig) resolves each applet name through mainFor().
+
+pub const common = @import("common.zig");
+pub const ascii_main = @import("ascii.zig").main;
+pub const ttysize_main = @import("ttysize.zig").main;
+pub const tree_main = @import("tree.zig").main;
+pub const strings_main = @import("strings.zig").main;
+pub const ts_main = @import("ts.zig").main;
+pub const time_main = @import("time.zig").main;
+pub const runlevel_main = @import("runlevel.zig").main;
+pub const mim_main = @import("mim.zig").main;
+pub const dc_main = @import("dc.zig").main;
+pub const bc_main = @import("bc.zig").main;
+pub const bbconfig_main = @import("bbconfig.zig").main;

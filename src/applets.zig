@@ -305,6 +305,18 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "ionice")) return @import("miscutils").ionice_main;
     if (std.mem.eql(u8, name, "renice")) return @import("miscutils").renice_main;
     if (std.mem.eql(u8, name, "crontab")) return @import("miscutils").crontab_main;
+    // Task 16a — safe miscutils wave
+    if (std.mem.eql(u8, name, "ascii")) return @import("miscutils").ascii_main;
+    if (std.mem.eql(u8, name, "bbconfig")) return @import("miscutils").bbconfig_main;
+    if (std.mem.eql(u8, name, "bc")) return @import("miscutils").bc_main;
+    if (std.mem.eql(u8, name, "dc")) return @import("miscutils").dc_main;
+    if (std.mem.eql(u8, name, "mim")) return @import("miscutils").mim_main;
+    if (std.mem.eql(u8, name, "runlevel")) return @import("miscutils").runlevel_main;
+    if (std.mem.eql(u8, name, "strings")) return @import("miscutils").strings_main;
+    if (std.mem.eql(u8, name, "time")) return @import("miscutils").time_main;
+    if (std.mem.eql(u8, name, "tree")) return @import("miscutils").tree_main;
+    if (std.mem.eql(u8, name, "ts")) return @import("miscutils").ts_main;
+    if (std.mem.eql(u8, name, "ttysize")) return @import("miscutils").ttysize_main;
     // procps
     if (std.mem.eql(u8, name, "ps")) return @import("procps").ps_main;
     if (std.mem.eql(u8, name, "top")) return @import("procps").top_main;
@@ -354,9 +366,7 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "popmaildir")) return @import("mailutils").popmaildir_main;
     if (std.mem.eql(u8, name, "reformime")) return @import("mailutils").reformime_main;
     if (std.mem.eql(u8, name, "sendmail")) return @import("mailutils").sendmail_main;
-    // remaining
-    if (std.mem.eql(u8, name, "ascii")) return @import("remaining").ascii_main;
-    if (std.mem.eql(u8, name, "dc")) return @import("remaining").dc_main;
+    // remaining (ascii/dc were moved to the Task 16a miscutils implementations)
     return stubMain;
 }
 
