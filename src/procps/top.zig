@@ -298,7 +298,7 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
         const home: []const u8 = if (batch) "" else "\x1b[H";
         c.printfOut("{s}Mem: {d}K used, {d}K free, {d}K shrd, {d}K buff, {d}K {s}{s}\n", .{
             home, (info.totalram -| info.freeram) / 1024, info.freeram / 1024, info.sharedram / 1024,
-            info.bufferram / 1024, @as(u64, 0), if (batch) "cached" else "cache", suffix,
+            info.bufferram / 1024, @as(u64, 0), "cached", suffix,
         });
         c.printfOut("CPU:  {d:.1}% usr  {d:.1}% sys  {d:.1}% nic  {d:.1}% idle  {d:.1}% io  {d:.1}% irq  {d:.1}% sirq{s}\n", .{
             pct(cpu[0], total), pct(cpu[2], total), pct(cpu[1], total),
