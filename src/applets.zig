@@ -334,6 +334,17 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "setserial")) return @import("miscutils").setserial_main;
     if (std.mem.eql(u8, name, "volname")) return @import("miscutils").volname_main;
     if (std.mem.eql(u8, name, "watchdog")) return @import("miscutils").watchdog_main;
+    if (std.mem.eql(u8, name, "chat")) return @import("miscutils").chat_main;
+    if (std.mem.eql(u8, name, "crond")) return @import("miscutils").crond_main;
+    if (std.mem.eql(u8, name, "getfattr")) return @import("miscutils").getfattr_main;
+    if (std.mem.eql(u8, name, "hexedit")) return @import("miscutils").hexedit_main;
+    if (std.mem.eql(u8, name, "less")) return @import("miscutils").less_main;
+    if (std.mem.eql(u8, name, "makedevs")) return @import("miscutils").makedevs_main;
+    if (std.mem.eql(u8, name, "man")) return @import("miscutils").man_main;
+    if (std.mem.eql(u8, name, "microcom")) return @import("miscutils").microcom_main;
+    if (std.mem.eql(u8, name, "rx")) return @import("miscutils").rx_main;
+    if (std.mem.eql(u8, name, "seedrng")) return @import("miscutils").seedrng_main;
+    if (std.mem.eql(u8, name, "setfattr")) return @import("miscutils").setfattr_main;
     // procps
     if (std.mem.eql(u8, name, "ps")) return @import("procps").ps_main;
     if (std.mem.eql(u8, name, "top")) return @import("procps").top_main;

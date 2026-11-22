@@ -66,6 +66,10 @@ pub fn errorMsg(errnum: c_int, comptime fmt: []const u8, args: anytype) void {
     bb.messages.errorMsg(errnum, fmt, args);
 }
 
+pub fn strerrorFor(e: linux.E) []const u8 {
+    return bb.messages.strerror(@intFromEnum(e));
+}
+
 pub fn plainMsg(comptime fmt: []const u8, args: anytype) void {
     bb.messages.plainMsg(fmt, args);
 }
