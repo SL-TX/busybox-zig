@@ -22,6 +22,10 @@ pub const Tag = enum(u32) {
     version = 1001,
     release = 1002,
     buildtime = 1006,
+    dirindexes = 1116,
+    basenames = 1117,
+    dirnames = 1118,
+    fileflags = 1037,
     summary = 1004,
     description = 1005,
     license = 1014,
@@ -147,14 +151,27 @@ pub fn getInt(header: Header, tag: Tag) ?u32 {
     return std.mem.readInt(u32, bytes[0..4], .big);
 }
 
+/// Read an int32 array tag (e.g. DIRINDEXES / FILEFLAGS).
+pub fn getInts(header: Header, tag: Tag, allocator: Allocator) Error![]u32 {
+    const entry = header.find(tag) orelse return allocator.alloc(u32, 0);
+    if (entry.kind != 4) return error.Unsupported;
+    // count is the element count for int arrays, not a byte length.
+    const bytes = try entryRaw(header, entry);
+    const count = @min(@as(usize, entry.count), bytes.len / 4);
+    const out = try allocator.alloc(u32, count);
+    for (out, 0..) |*v, i| v.* = std.mem.readInt(u32, bytes[i * 4 ..][0..4], .big);
+    return out;
+}
+
 pub fn getStrings(header: Header, tag: Tag, allocator: Allocator) Error![][]const u8 {
     const entry = header.find(tag) orelse return &.{};
     if (entry.kind != 8) return error.Unsupported;
-    const bytes = try entryData(header, entry);
+    // RPM stores the element count (not byte length) in string-array tags.
+    const bytes = try entryRaw(header, entry);
     var list: std.ArrayList([]const u8) = .empty;
     errdefer list.deinit(allocator);
     var pos: usize = 0;
-    while (pos < bytes.len) {
+    while (pos < bytes.len and list.items.len < entry.count) {
         const end = std.mem.indexOfScalarPos(u8, bytes, pos, 0) orelse bytes.len;
         try list.append(allocator, bytes[pos..end]);
         pos = end + 1;
@@ -169,9 +186,21 @@ pub const BuildOptions = struct {
     arch: []const u8,
     payload: []const u8,
     payload_compressor: []const u8 = "none",
+    /// Optional file list (full paths). Emits RPMTAG_DIRINDEXES/BASENAMES/
+    /// DIRNAMES/FILEFLAGS so `rpm -qp[l|d|c]` has real data to query.
+    files: []const []const u8 = &.{},
+    file_flags: []const u32 = &.{},
 };
 
-const TagValue = struct { tag: Tag, kind: u32, value: []const u8 };
+const TagValue = struct {
+    tag: Tag,
+    kind: u32,
+    value: []const u8,
+    /// RPM stores byte-length for string arrays and element-count for ints.
+    count: ?u32 = null,
+    /// Plain strings need one terminating NUL appended to the store.
+    extra_nul: bool = true,
+};
 
 fn appendHeader(out: *std.ArrayList(u8), allocator: Allocator, tags: []const TagValue) Error!void {
     var index: std.ArrayList(u8) = .empty;
@@ -181,12 +210,13 @@ fn appendHeader(out: *std.ArrayList(u8), allocator: Allocator, tags: []const Tag
     for (tags) |t| {
         const off: u32 = @intCast(store.items.len);
         try store.appendSlice(allocator, t.value);
-        try store.append(allocator, 0);
+        if (t.extra_nul) try store.append(allocator, 0);
+        const count: u32 = t.count orelse @intCast(t.value.len + @as(usize, if (t.extra_nul) 1 else 0));
         var b: [16]u8 = undefined;
         std.mem.writeInt(u32, b[0..4], @backingInt(t.tag), .big);
         std.mem.writeInt(u32, b[4..8], t.kind, .big);
         std.mem.writeInt(u32, b[8..12], off, .big);
-        std.mem.writeInt(u32, b[12..16], 1, .big);
+        std.mem.writeInt(u32, b[12..16], count, .big);
         try index.appendSlice(allocator, &b);
     }
     try out.appendSlice(allocator, &.{ 0x8e, 0xad, 0xe8, 0x01, 0, 0, 0, 0 });
@@ -211,7 +241,20 @@ pub fn build(allocator: Allocator, opts: BuildOptions) Error![]u8 {
     try out.appendNTimes(allocator, 0, 16);
     try appendHeader(&out, allocator, &.{}); // signature header
     while (out.items.len % 8 != 0) try out.append(allocator, 0);
-    try appendHeader(&out, allocator, &.{
+    var tags: std.ArrayList(TagValue) = .empty;
+    defer tags.deinit(allocator);
+    // File-list buffers must outlive the appendHeader() call below.
+    var basenames: std.ArrayList(u8) = .empty;
+    defer basenames.deinit(allocator);
+    var dirnames: std.ArrayList(u8) = .empty;
+    defer dirnames.deinit(allocator);
+    var dirs: std.ArrayList([]const u8) = .empty;
+    defer dirs.deinit(allocator);
+    var indexes: std.ArrayList(u8) = .empty;
+    defer indexes.deinit(allocator);
+    var flags: std.ArrayList(u8) = .empty;
+    defer flags.deinit(allocator);
+    try tags.appendSlice(allocator, &.{
         .{ .tag = .name, .kind = 6, .value = opts.name },
         .{ .tag = .version, .kind = 6, .value = opts.version },
         .{ .tag = .release, .kind = 6, .value = opts.release },
@@ -220,6 +263,39 @@ pub fn build(allocator: Allocator, opts: BuildOptions) Error![]u8 {
         .{ .tag = .payload_format, .kind = 6, .value = "cpio" },
         .{ .tag = .payload_compressor, .kind = 6, .value = opts.payload_compressor },
     });
+    if (opts.files.len != 0) {
+        for (opts.files, 0..) |path, i| {
+            const slash = std.mem.lastIndexOfScalar(u8, path, '/') orelse 0;
+            const dir = path[0 .. slash + 1];
+            const base = path[slash + 1 ..];
+            var idx: usize = 0;
+            while (idx < dirs.items.len and !std.mem.eql(u8, dirs.items[idx], dir)) : (idx += 1) {}
+            if (idx == dirs.items.len) {
+                try dirs.append(allocator, dir);
+                try dirnames.appendSlice(allocator, dir);
+                try dirnames.append(allocator, 0);
+            }
+            try basenames.appendSlice(allocator, base);
+            try basenames.append(allocator, 0);
+            var ib: [4]u8 = undefined;
+            std.mem.writeInt(u32, &ib, @intCast(idx), .big);
+            try indexes.appendSlice(allocator, &ib);
+            std.mem.writeInt(u32, &ib, if (i < opts.file_flags.len) opts.file_flags[i] else 0, .big);
+            try flags.appendSlice(allocator, &ib);
+        }
+        try tags.append(allocator, .{ .tag = .dirindexes, .kind = 4, .value = indexes.items, .count = @intCast(indexes.items.len / 4), .extra_nul = false });
+        try tags.append(allocator, .{ .tag = .basenames, .kind = 8, .value = basenames.items, .count = @intCast(opts.files.len), .extra_nul = false });
+        try tags.append(allocator, .{ .tag = .dirnames, .kind = 8, .value = dirnames.items, .count = @intCast(dirs.items.len), .extra_nul = false });
+        try tags.append(allocator, .{ .tag = .fileflags, .kind = 4, .value = flags.items, .count = @intCast(flags.items.len / 4), .extra_nul = false });
+    }
+    // RPM headers are searched with bsearch(), so index entries must be
+    // sorted by tag number.
+    std.mem.sort(TagValue, tags.items, {}, struct {
+        fn lessThan(_: void, a: TagValue, b: TagValue) bool {
+            return @backingInt(a.tag) < @backingInt(b.tag);
+        }
+    }.lessThan);
+    try appendHeader(&out, allocator, tags.items);
     try out.appendSlice(allocator, opts.payload);
     return out.toOwnedSlice(allocator);
 }

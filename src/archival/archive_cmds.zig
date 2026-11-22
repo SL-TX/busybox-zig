@@ -168,9 +168,17 @@ fn rpmMainInner(argc: c_int, argv: [*][*:0]const u8) c_int {
                 c.put("Description :\n{s}\n", .{rpm.getString(r.header, .description) orelse "(null)"});
             },
             'l', 'd', 'c' => {
-                // Our builder does not record RPM filename tags, so these
-                // queries legitimately list no files for this fixture.
-                {}
+                const bases = rpm.getStrings(r.header, .basenames, c.A) catch &.{};
+                const dirs = rpm.getStrings(r.header, .dirnames, c.A) catch &.{};
+                const idxs = rpm.getInts(r.header, .dirindexes, c.A) catch &.{};
+                const flags = rpm.getInts(r.header, .fileflags, c.A) catch &.{};
+                for (bases, 0..) |base, i| {
+                    const flag: u32 = if (i < flags.len) flags[i] else 0;
+                    if (mode == 'd' and (flag & 2) == 0) continue;
+                    if (mode == 'c' and (flag & 1) == 0) continue;
+                    const dir: []const u8 = if (i < idxs.len and idxs[i] < dirs.len) dirs[idxs[i]] else "";
+                    c.put("{s}{s}\n", .{ dir, base });
+                }
             },
             else => {},
         }
@@ -187,7 +195,7 @@ fn rpmMainInner(argc: c_int, argv: [*][*:0]const u8) c_int {
         return 1;
     };
     defer cpio.freeEntries(c.A, entries);
-    return extractCpioEntries(entries, ".", false, false, false, false);
+    return extractCpioEntries(entries, ".", false, false, false, false, false, true, null);
 }
 
 pub fn rpmMain(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -201,9 +209,9 @@ pub fn modeStringPublic(mode: u32, buf: *[10]u8) []const u8 {
 }
 
 fn modeString(mode: u32, buf: *[10]u8) []const u8 {
-    const is_dir = (mode & 0o170000) == 0o040000;
+    const kind = mode & 0o170000;
     const perm = mode & 0o777;
-    buf[0] = if (is_dir) 'd' else '-';
+    buf[0] = if (kind == 0o120000) 'l' else if (kind == 0o040000) 'd' else '-';
     const bits = [_]u9{ 0o400, 0o200, 0o100, 0o040, 0o020, 0o010, 0o004, 0o002, 0o001 };
     const chars = "rwxrwxrwx";
     for (bits, 0..) |b, i| buf[1 + i] = if (perm & b != 0) chars[i] else '-';
@@ -242,28 +250,61 @@ fn join(base: []const u8, name: []const u8) ![]u8 {
     return std.fmt.allocPrint(c.A, "{s}/{s}", .{ base, clean });
 }
 
+/// Metadata restoration flags shared by the tar/cpio extractors. BusyBox
+/// never restores permissions for a non-root user, so `restore_perm` follows
+/// the same rule; `-o`/`--no-same-permissions` and `-m` are explicit overrides.
+pub const Owner = struct { uid: u32, gid: u32 };
+
+pub const MetaOpts = struct {
+    restore_mtime: bool = false,
+    restore_owner: bool = true,
+    restore_perm: bool = false,
+    no_same_perms: bool = false,
+    owner_override: ?Owner = null,
+};
+
+/// Apply archived ownership, mode and mtime to an extracted file. Failures
+/// (notably chown as non-root) are ignored, just as in BusyBox.
+pub fn applyMeta(path: []const u8, mode: u32, uid: u32, gid: u32, mtime: i64, opts: MetaOpts) void {
+    const p = c.A.dupeSentinel(u8, path, 0) catch return;
+    if (opts.restore_owner) {
+        const owner: Owner = opts.owner_override orelse Owner{ .uid = uid, .gid = gid };
+        _ = linux.chown(p.ptr, owner.uid, owner.gid);
+    }
+    if (opts.restore_perm and !opts.no_same_perms)
+        _ = linux.chmod(p.ptr, mode & 0o7777);
+    if (opts.restore_mtime)
+        bb.io.setTimes(path, mtime, 0) catch {};
+}
+
 pub fn extractTarEntryPublic(e: tar.Entry, base: []const u8, verbose: bool, no_perm: bool) bool {
     return extractTarEntry(e, base, verbose, no_perm, false);
 }
 
 /// Write an entry at an explicitly computed path (used by tar's
 /// --strip-components support).
-pub fn writeEntryAt(e: tar.Entry, path: []const u8, verbose: bool, no_perm: bool) bool {
-    _ = no_perm;
+pub fn writeEntryAtOpts(e: tar.Entry, path: []const u8, verbose: bool, opts: MetaOpts) bool {
     mkdirParents(path);
     if (verbose) c.put("{s}\n", .{e.name});
     const is_dir = (e.mode & 0o170000) == 0o040000 or std.mem.endsWith(u8, e.name, "/");
     if (is_dir) {
         const z = c.A.dupeSentinel(u8, path, 0) catch return false;
-        _ = linux.mkdir(z.ptr, 0o777);
+        _ = linux.mkdir(z.ptr, if (opts.no_same_perms) 0o777 else @as(linux.mode_t, @intCast(e.mode & 0o777)));
+        applyMeta(path, e.mode, e.uid, e.gid, @intCast(e.mtime), opts);
         return true;
     }
-    return c.writeFile(path, e.data);
+    if (!c.writeFileMode(path, e.data, @intCast(e.mode & 0o777))) return false;
+    applyMeta(path, e.mode, e.uid, e.gid, @intCast(e.mtime), opts);
+    return true;
+}
+
+pub fn writeEntryAt(e: tar.Entry, path: []const u8, verbose: bool, no_perm: bool) bool {
+    return writeEntryAtOpts(e, path, verbose, .{ .no_same_perms = no_perm });
 }
 
 fn extractTarEntry(e: tar.Entry, base: []const u8, verbose: bool, no_perm: bool, keep_old: bool) bool {
-    _ = keep_old;
     const path = join(base, e.name) catch return false;
+    if (keep_old and c.exists(path)) return true;
     mkdirParents(path);
     if (verbose) c.put("{s}\n", .{e.name});
     const is_dir = (e.mode & 0o170000) == 0o040000 or std.mem.endsWith(u8, e.name, "/");
@@ -272,11 +313,14 @@ fn extractTarEntry(e: tar.Entry, base: []const u8, verbose: bool, no_perm: bool,
         _ = linux.mkdir(z.ptr, if (no_perm) 0o777 else @intCast(e.mode & 0o777));
         return true;
     }
-    if (!c.writeFile(path, e.data)) return false;
+    if (!c.writeFileMode(path, e.data, @intCast(e.mode & 0o777))) return false;
+    applyMeta(path, e.mode, e.uid, e.gid, @intCast(e.mtime), .{
+        .restore_mtime = false, .restore_owner = true, .no_same_perms = no_perm,
+    });
     return true;
 }
 
-fn extractCpioEntries(entries: []const cpio.Entry, base: []const u8, verbose: bool, make_dirs: bool, overwrite: bool, no_perm: bool) c_int {
+fn extractCpioEntries(entries: []const cpio.Entry, base: []const u8, verbose: bool, make_dirs: bool, overwrite: bool, no_perm: bool, restore_mtime: bool, restore_owner: bool, owner_override: ?Owner) c_int {
     var rc: c_int = 0;
     for (entries) |e| {
         const path = join(base, e.name) catch {
@@ -289,16 +333,28 @@ fn extractCpioEntries(entries: []const cpio.Entry, base: []const u8, verbose: bo
             if (verbose) c.put("{s}\n", .{e.name});
             continue;
         }
-        const is_dir = (e.mode & 0o170000) == 0o040000 or std.mem.endsWith(u8, e.name, "/");
+        const kind = e.mode & 0o170000;
+        const is_dir = kind == 0o040000 or std.mem.endsWith(u8, e.name, "/");
+        const zpath = c.A.dupeSentinel(u8, path, 0) catch {
+            rc = 1;
+            continue;
+        };
         if (is_dir) {
-            const z = c.A.dupeSentinel(u8, path, 0) catch {
+            _ = linux.mkdir(zpath.ptr, if (no_perm) 0o777 else @intCast(e.mode & 0o777));
+        } else if (kind == 0o120000) {
+            const target = c.A.dupeSentinel(u8, e.data, 0) catch {
                 rc = 1;
                 continue;
             };
-            _ = linux.mkdir(z.ptr, if (no_perm) 0o777 else @intCast(e.mode & 0o777));
-        } else if (!c.writeFile(path, e.data)) {
+            _ = linux.symlink(target.ptr, zpath.ptr);
+        } else if (!c.writeFileMode(path, e.data, @intCast(e.mode & 0o777))) {
             rc = 1;
+            continue;
         }
+        applyMeta(path, e.mode, e.uid, e.gid, @intCast(e.mtime), .{
+            .restore_mtime = restore_mtime, .restore_owner = restore_owner,
+            .no_same_perms = no_perm, .owner_override = owner_override,
+        });
         if (verbose) c.put("{s}\n", .{e.name});
     }
     return rc;
@@ -415,6 +471,57 @@ pub fn dpkgDebMain(argc: c_int, argv: [*][*:0]const u8) c_int {
 
 // ------------------------------------------------------------------- dpkg --
 
+fn dpkgGlob(name: []const u8, pat: []const u8) bool {
+    if (pat.len == 0) return true;
+    if (std.mem.indexOfScalar(u8, pat, '*') == null)
+        return std.mem.eql(u8, name, pat);
+    var parts = std.mem.splitScalar(u8, pat, '*');
+    const first = parts.next() orelse "";
+    if (!std.mem.startsWith(u8, name, first)) return false;
+    var rest = name[first.len..];
+    while (parts.next()) |part| {
+        if (part.len == 0) continue;
+        const p = std.mem.indexOf(u8, rest, part) orelse return false;
+        rest = rest[p + part.len ..];
+    }
+    return true;
+}
+
+fn getField(text: []const u8, key: []const u8) ?[]const u8 {
+    var it = std.mem.splitScalar(u8, text, '\n');
+    while (it.next()) |line| {
+        if (std.mem.startsWith(u8, line, key) and line.len > key.len and line[key.len] == ':')
+            return std.mem.trim(u8, line[key.len + 1 ..], " \t");
+    }
+    return null;
+}
+
+/// Real `dpkg -l`: parse the dpkg status database and apply the requested
+/// package-name pattern, exactly like BusyBox's list_packages().
+fn listPackages(pattern: ?[]const u8) void {
+    c.out("    Name           Version\n+++-==============-==============\n");
+    const data = c.readAll("/var/lib/dpkg/status") orelse return;
+    var paragraphs = std.mem.splitSequence(u8, data, "\n\n");
+    while (paragraphs.next()) |para| {
+        const name = getField(para, "Package") orelse continue;
+        if (pattern) |p| {
+            if (!dpkgGlob(name, p)) continue;
+        }
+        const version = getField(para, "Version") orelse "";
+        const status = getField(para, "Status") orelse "";
+        const s1: u8 = if (status.len > 0 and status[0] == 'i') 'i' else 'r';
+        var j: usize = 0;
+        var spaces: usize = 0;
+        while (j < status.len and spaces < 2) : (j += 1) {
+            if (status[j] == ' ') spaces += 1;
+        }
+        const s2: u8 = if (j < status.len) status[j] else '?';
+        c.put("{c}{c}  {s}", .{ s1, s2, name });
+        if (name.len < 14) for (0..14 - name.len) |_| c.out(" ");
+        c.put(" {s}\n", .{version});
+    }
+}
+
 pub fn dpkgMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     c.setProg(argv);
     const av = c.argsFrom(argv, argc);
@@ -422,6 +529,9 @@ pub fn dpkgMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     if (av_slice.len < 2) bb.usage.die("dpkg");
     var action: u8 = 0;
     var file: ?[]const u8 = null;
+    var force_confnew = false;
+    var force_confold = false;
+    var force_depends = false;
     for (av_slice[1..]) |a| {
         if (std.mem.eql(u8, a, "-i") or std.mem.eql(u8, a, "--install")) action = 'i'
         else if (std.mem.eql(u8, a, "-r") or std.mem.eql(u8, a, "--remove")) action = 'r'
@@ -429,13 +539,19 @@ pub fn dpkgMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         else if (std.mem.eql(u8, a, "--unpack")) action = 'u'
         else if (std.mem.eql(u8, a, "--configure")) action = 'c'
         else if (std.mem.eql(u8, a, "-l") or std.mem.eql(u8, a, "--list")) action = 'l'
-        else if (std.mem.startsWith(u8, a, "--force-")) {}
+        else if (std.mem.eql(u8, a, "--force-depends")) force_depends = true
+        else if (std.mem.eql(u8, a, "--force-confnew")) force_confnew = true
+        else if (std.mem.eql(u8, a, "--force-confold")) force_confold = true
         else if (a.len > 0 and a[0] == '-') bb.usage.die("dpkg")
         else file = a;
     }
+    if (force_depends) {
+        // BusyBox 1.39 has no dependency resolver here; the flag is accepted
+        // and recorded but never needs to override a check.
+    }
     if (action == 0) bb.usage.die("dpkg");
     if (action == 'l') {
-        c.out("    Name           Version\n+++-==============-==============\n");
+        listPackages(file);
         return 0;
     }
     const path = file orelse bb.usage.die("dpkg");
@@ -457,7 +573,10 @@ pub fn dpkgMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     defer dpkg.freeDeb(c.A, deb);
     const entries = dpkg.dataEntries(c.A, deb) catch return 1;
     defer tar.freeEntries(c.A, entries);
-    for (entries) |e| _ = extractTarEntry(e, ".", false, false, false);
+    // --force-confold (and the default) keep existing files; --force-confnew
+    // replaces them.
+    const keep_old = !force_confnew or force_confold;
+    for (entries) |e| _ = extractTarEntry(e, ".", false, false, keep_old);
     return 0;
 }
 
@@ -487,7 +606,6 @@ fn cpioMainInner(argc: c_int, argv: [*][*:0]const u8) c_int {
     const create = c.flagged(o, 2);
     const make_dirs = c.flagged(o, 3);
     const restore_mtime = c.flagged(o, 4);
-    _ = restore_mtime;
     const verbose = c.flagged(o, 5);
     const overwrite = c.flagged(o, 6);
     const nul = c.flagged(o, 7);
@@ -496,17 +614,28 @@ fn cpioMainInner(argc: c_int, argv: [*][*:0]const u8) c_int {
     const has_file = c.flagged(o, 9);
     var input_file: ?[]const u8 = null;
     var copy_target_raw: ?[]const u8 = null;
+    var format: ?[]const u8 = null;
+    var owner_spec: ?[]const u8 = null;
     {
         var ai: usize = 1;
         while (ai + 1 < av_slice.len) : (ai += 1) {
             if (std.mem.eql(u8, av_slice[ai], "-F") and input_file == null) input_file = av_slice[ai + 1];
             if (std.mem.eql(u8, av_slice[ai], "-p") and copy_target_raw == null) copy_target_raw = av_slice[ai + 1];
+            if (std.mem.eql(u8, av_slice[ai], "-H") and format == null) format = av_slice[ai + 1];
+            if (std.mem.eql(u8, av_slice[ai], "-R") and owner_spec == null) owner_spec = av_slice[ai + 1];
         }
     }
     if (!has_file) input_file = null;
-    if (c.flagged(o, 10)) {} // -H newc
-    if (c.flagged(o, 11)) _ = o.optarg; // -R
-    if (c.flagged(o, 12)) {} // -L
+    const dereference = c.flagged(o, 12); // -L
+    var owner_override: ?Owner = null;
+    if (owner_spec) |spec| {
+        const colon = std.mem.indexOfScalar(u8, spec, ':');
+        const uid_text = if (colon) |p2| spec[0..p2] else spec;
+        const gid_text = if (colon) |p2| spec[p2 + 1 ..] else spec;
+        const uid = std.fmt.parseInt(u32, uid_text, 10) catch 0;
+        const gid = std.fmt.parseInt(u32, gid_text, 10) catch 0;
+        owner_override = .{ .uid = uid, .gid = gid };
+    }
 
     if (list or extract) {
         const data = if (input_file) |f|
@@ -533,13 +662,14 @@ fn cpioMainInner(argc: c_int, argv: [*][*:0]const u8) c_int {
             }
         }
         var rc: c_int = 0;
-        if (extract) rc = extractCpioEntries(entries, ".", verbose, make_dirs, overwrite, false);
+        if (extract) rc = extractCpioEntries(entries, ".", verbose, make_dirs, overwrite, false, restore_mtime, true, owner_override);
         const blocks = (data.len + 511) / 512;
         c.eput("{d} blocks\n", .{blocks});
         return rc;
     }
 
     if (create or copy_pass) {
+        if (format == null or !std.mem.eql(u8, format.?, "newc")) bb.usage.die("cpio");
         const name_data = if (input_file) |f| c.readAll(f) orelse return 1 else c.readStdin();
         var names: std.ArrayList([]const u8) = .empty;
         defer names.deinit(c.A);
@@ -551,15 +681,32 @@ fn cpioMainInner(argc: c_int, argv: [*][*:0]const u8) c_int {
         var entries: std.ArrayList(cpio.Entry) = .empty;
         defer entries.deinit(c.A);
         for (names.items) |n| {
+            const nz = c.A.dupeSentinel(u8, n, 0) catch return 1;
+            var stx: linux.Statx = undefined;
+            const is_link = !dereference and
+                linux.errno(linux.statx(linux.AT.FDCWD, nz.ptr, linux.AT.SYMLINK_NOFOLLOW, .BASIC_STATS, &stx)) == .SUCCESS and
+                (stx.mode & linux.S.IFMT) == linux.S.IFLNK;
+            if (is_link) {
+                var buf: [4096]u8 = undefined;
+                const len = linux.readlink(nz.ptr, &buf, buf.len);
+                if (linux.errno(len) != .SUCCESS) return 1;
+                const target = c.A.dupe(u8, buf[0..@intCast(len)]) catch return 1;
+                entries.append(c.A, .{ .name = n, .data = target, .mode = 0o120777, .mtime = @intCast(@max(stx.mtime.sec, 0)) }) catch return 1;
+                continue;
+            }
             const content = c.readAll(n) orelse {
                 c.msg("can't open '{s}'", .{n});
                 return 1;
             };
-            entries.append(c.A, .{ .name = n, .data = content }) catch return 1;
+            var mtime: u32 = 0;
+            var stat_buf: linux.Statx = undefined;
+            if (linux.errno(linux.statx(linux.AT.FDCWD, nz.ptr, 0, .BASIC_STATS, &stat_buf)) == .SUCCESS)
+                mtime = @intCast(@max(stat_buf.mtime.sec, 0));
+            entries.append(c.A, .{ .name = n, .data = content, .mtime = mtime }) catch return 1;
         }
         if (copy_pass) {
             const target = copy_target_raw orelse copy_target orelse ".";
-            return extractCpioEntries(entries.items, target, verbose, make_dirs, overwrite, false);
+            return extractCpioEntries(entries.items, target, verbose, make_dirs, overwrite, false, restore_mtime, true, owner_override);
         }
         const out_data = cpio.build(c.A, entries.items) catch return 1;
         if (input_file) |f| {

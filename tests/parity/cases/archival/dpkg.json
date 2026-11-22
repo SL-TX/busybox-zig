@@ -141,9 +141,65 @@
       }
     },
     {
-      "name": "force_depends",
+      "name": "list_package",
+      "argv": [
+        "-l",
+        "python3"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "force_force_depends",
       "argv": [
         "--force-depends",
+        "-i",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "QkFEIQ=="
+      }
+    },
+    {
+      "name": "force_force_confnew",
+      "argv": [
+        "--force-confnew",
+        "-i",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "QkFEIQ=="
+      }
+    },
+    {
+      "name": "force_force_confold",
+      "argv": [
+        "--force-confold",
         "-i",
         "bad"
       ],

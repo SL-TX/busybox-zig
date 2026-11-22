@@ -130,14 +130,102 @@ fn excluded(name: []const u8, cfg: *const Config) bool {
     return false;
 }
 
+fn zstr(s: []const u8) [*:0]const u8 {
+    const p = std.mem.concatWithSentinel(c.A, u8, &.{s}, 0) catch linux.exit(127);
+    return p.ptr;
+}
+
+/// BusyBox passes TAR_* metadata to --to-command children. Build an envp with
+/// those values appended to the inherited environment.
+fn commandEnv(e: tar.Entry) []?[*:0]const u8 {
+    const base = bb.env.buildEnvp(c.A) catch linux.exit(127);
+    var env: std.ArrayList(?[*:0]const u8) = .empty;
+    for (base) |item| if (item) |v| env.append(c.A, v) catch linux.exit(127);
+    const extra = [_][]const u8{
+        // BusyBox ORs S_IFREG into the mode it exports (its header reader
+        // stores the file type bits alongside the permissions).
+        std.fmt.allocPrint(c.A, "TAR_MODE={o}", .{e.mode | 0o100000}) catch linux.exit(127),
+        std.fmt.allocPrint(c.A, "TAR_FILENAME={s}", .{e.name}) catch linux.exit(127),
+        std.fmt.allocPrint(c.A, "TAR_REALNAME={s}", .{e.name}) catch linux.exit(127),
+        std.fmt.allocPrint(c.A, "TAR_SIZE={d}", .{e.realsize}) catch linux.exit(127),
+        std.fmt.allocPrint(c.A, "TAR_UID={d}", .{e.uid}) catch linux.exit(127),
+        std.fmt.allocPrint(c.A, "TAR_GID={d}", .{e.gid}) catch linux.exit(127),
+    };
+    for (extra) |v| env.append(c.A, zstr(v)) catch linux.exit(127);
+    env.append(c.A, null) catch linux.exit(127);
+    return env.toOwnedSlice(c.A) catch linux.exit(127);
+}
+
+fn ignoreSigpipe() void {
+    var act = linux.Sigaction{
+        .handler = .{ .handler = @ptrFromInt(1) }, // SIG_IGN
+        .mask = std.mem.zeroes(linux.sigset_t),
+        .flags = 0,
+    };
+    _ = linux.sigaction(linux.SIG.PIPE, &act, null);
+}
+
+/// Pipe one member's payload to `/bin/sh -c COMMAND`, reproducing BusyBox's
+/// --to-command semantics: child stdout/stderr are inherited and a nonzero
+/// child status is fatal.
+fn runToCommand(e: tar.Entry, cmd: []const u8, data: []const u8) bool {
+    var fds: [2]linux.fd_t = undefined;
+    if (linux.errno(linux.pipe2(&fds, .{})) != .SUCCESS) {
+        c.msg("pipe failed", .{});
+        return false;
+    }
+    const pid = linux.fork();
+    if (linux.errno(pid) != .SUCCESS) {
+        c.msg("fork failed", .{});
+        return false;
+    }
+    if (pid == 0) {
+        _ = linux.close(fds[1]);
+        _ = linux.dup2(fds[0], 0);
+        if (fds[0] > 0) _ = linux.close(fds[0]);
+        const shell = "/bin/sh";
+        const args = [_:null]?[*:0]const u8{ zstr(shell), zstr("-c"), zstr(cmd), null };
+        const envp = commandEnv(e);
+        _ = linux.execve(zstr(shell), @ptrCast(&args), bb.env.envpPtr(envp));
+        linux.exit(127);
+    }
+    _ = linux.close(fds[0]);
+    ignoreSigpipe();
+    var written: usize = 0;
+    while (written < data.len) {
+        const n = linux.write(fds[1], data.ptr + written, data.len - written);
+        if (linux.errno(n) != .SUCCESS or n == 0) break;
+        written += @intCast(n);
+    }
+    _ = linux.close(fds[1]);
+    var status: c_int = 0;
+    _ = linux.waitpid(@intCast(pid), &status, 0);
+    const sig: u32 = @as(u32, @bitCast(status)) & 0x7f;
+    const code: u32 = (@as(u32, @bitCast(status)) >> 8) & 0xff;
+    if (sig != 0) {
+        c.eput("tar: '{s}' terminated by signal {d}\n", .{ cmd, sig });
+        return false;
+    }
+    if (code != 0) {
+        c.eput("tar: '{s}' returned status {d}\n", .{ cmd, code });
+        return false;
+    }
+    return true;
+}
+
 fn decompress(cfg: *const Config, data: []const u8) ?[]u8 {
+    if (data.len == 0) return null;
     if (data.len >= 2 and data[0] == 0x1f and data[1] == 0x8b)
         return compression.gzip.decompress(c.A, data) catch null;
     if (data.len >= 3 and data[0] == 'B' and data[1] == 'Z' and data[2] == 'h')
         return compression.bzip2.decompress(c.A, data) catch null;
     if (data.len >= 6 and std.mem.eql(u8, data[0..6], &.{ 0xfd, '7', 'z', 'X', 'Z', 0 }))
         return compression.xz.decompress(c.A, data) catch null;
-    if (data[0] < 225 and data.len >= 5 and data[1] == 0 and data[2] == 0)
+    // LZMA "alone" headers have a props byte followed by a little-endian
+    // dictionary size (typically 0x00800000); a tar whose first filename is a
+    // single letter also starts with "<letter>\0\0", so check the high bytes.
+    if (data.len >= 13 and data[0] < 225 and data[1] == 0 and data[2] == 0 and
+        (data[3] == 0x80 or data[4] == 0x80))
         return compression.lzma.decompress(c.A, data) catch null;
     _ = cfg;
     return null;
@@ -162,16 +250,22 @@ fn strippedName(name: []const u8, n: usize) []const u8 {
 }
 
 fn extractData(data: []const u8, cfg: *const Config) c_int {
-    var result: c_int = 0;
+    if (data.len == 0) {
+        c.msg("short read", .{});
+        return 1;
+    }
     if (decompress(cfg, data)) |unpacked| {
+        if (unpacked.len == 0) {
+            c.msg("short read", .{});
+            return 1;
+        }
         return extractTarBytes(unpacked, cfg);
     }
     if (cfg.gzip or cfg.bzip2 or cfg.xz or cfg.lzma or cfg.autodetect) {
         c.msg("invalid magic", .{});
         return 1;
     }
-    result = extractTarBytes(data, cfg);
-    return result;
+    return extractTarBytes(data, cfg);
 }
 
 fn extractTarBytes(bytes: []const u8, cfg: *const Config) c_int {
@@ -199,26 +293,31 @@ fn extractTarBytes(bytes: []const u8, cfg: *const Config) c_int {
             return 1;
         }
         if (cfg.to_command) |cmd| {
-            // Feed the member through the requested command via a pipeline.
-            const spec = std.fmt.allocPrint(c.A, "{s}", .{cmd}) catch {
-                rc = 1;
-                continue;
-            };
-            _ = spec;
-            // BusyBox pipes the file to COMMAND's stdin; without a shell we
-            // cannot expand arbitrary command lines, so report the limitation
-            // rather than silently ignoring the option.
-            c.msg("cannot execute '{s}'", .{cmd});
-            rc = 1;
+            // With --to-command the payload is piped to the command and no
+            // file is created. BusyBox dies on the first failing command.
+            if (!runToCommand(e, cmd, e.data)) return 1;
             continue;
         }
-        if (!archive_cmds.writeEntryAt(e, name, cfg.verbose, cfg.no_same_perms)) rc = 1;
+        const meta = archive_cmds.MetaOpts{
+            .restore_mtime = !cfg.no_mtime,
+            .restore_owner = !cfg.no_owner,
+            .no_same_perms = cfg.no_same_perms,
+        };
+        if (!archive_cmds.writeEntryAtOpts(e, name, cfg.verbose, meta)) rc = 1;
     }
     return rc;
 }
 
 fn listData(data: []const u8, cfg: *const Config) c_int {
+    if (data.len == 0) {
+        c.msg("short read", .{});
+        return 1;
+    }
     const bytes = decompress(cfg, data) orelse data;
+    if (bytes.len == 0) {
+        c.msg("short read", .{});
+        return 1;
+    }
     const entries = tar.parse(c.A, bytes) catch {
         c.msg("invalid tar magic", .{});
         return 1;
@@ -247,9 +346,28 @@ fn collectFiles(operands: []const []const u8, cfg: *const Config) std.ArrayList(
     }
     for (names.items) |n| {
         if (excluded(n, cfg)) continue;
-        const content = c.readAll(n) orelse continue;
         // tar.freeEntries() frees names, so hand it an owned copy.
         const owned_name = c.A.dupe(u8, n) catch continue;
+        const nz = c.A.dupeSentinel(u8, n, 0) catch continue;
+        var stx: linux.Statx = undefined;
+        const is_link = !cfg.follow and
+            linux.errno(linux.statx(linux.AT.FDCWD, nz.ptr, linux.AT.SYMLINK_NOFOLLOW, .BASIC_STATS, &stx)) == .SUCCESS and
+            (stx.mode & linux.S.IFMT) == linux.S.IFLNK;
+        if (is_link) {
+            var target_buf: [4096]u8 = undefined;
+            const len = linux.readlink(nz.ptr, &target_buf, target_buf.len);
+            if (linux.errno(len) != .SUCCESS) continue;
+            const target = c.A.dupe(u8, target_buf[0..@intCast(len)]) catch continue;
+            entries.append(c.A, .{
+                .name = owned_name,
+                .linkname = target,
+                .mode = 0o120777,
+                .typeflag = '2',
+                .mtime = @intCast(@max(stx.mtime.sec, 0)),
+            }) catch {};
+            continue;
+        }
+        const content = c.readAll(n) orelse continue;
         entries.append(c.A, .{ .name = owned_name, .data = content }) catch {};
     }
     return entries;

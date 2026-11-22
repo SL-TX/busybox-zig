@@ -20,6 +20,8 @@ pub const Entry = struct {
     dos_date: u16,
     local_offset: u32,
     is_dir: bool,
+    /// Unix mode from the ZIP central directory's external attributes.
+    mode: u32 = 0,
 };
 
 fn u16le(data: []const u8, pos: usize) Error!u16 {
@@ -60,6 +62,7 @@ pub fn parse(allocator: std.mem.Allocator, data: []const u8) Error![]Entry {
         const extra_len = try u16le(data, pos + 30);
         const comment_len = try u16le(data, pos + 32);
         const local = try u32le(data, pos + 42);
+        const external = try u32le(data, pos + 38);
         const name_start = pos + 46;
         if (name_start + name_len > data.len) return error.Corrupt;
         const name = try allocator.dupe(u8, data[name_start .. name_start + name_len]);
@@ -73,6 +76,7 @@ pub fn parse(allocator: std.mem.Allocator, data: []const u8) Error![]Entry {
             .dos_date = try u16le(data, pos + 14),
             .local_offset = local,
             .is_dir = name.len > 0 and name[name.len - 1] == '/',
+            .mode = external >> 16,
         });
         pos = name_start + name_len + extra_len + comment_len;
     }

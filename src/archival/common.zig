@@ -111,14 +111,18 @@ pub fn readStdin() []u8 {
     return readFd(0) catch &.{};
 }
 
-pub fn writeFile(path: []const u8, data: []const u8) bool {
+pub fn writeFileMode(path: []const u8, data: []const u8, mode: u32) bool {
     const p = pathZ(path) orelse return false;
-    const rc = linux.open(p, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o644);
+    const rc = linux.open(p, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, mode);
     if (linux.errno(rc) != .SUCCESS) return false;
     const fd: linux.fd_t = @intCast(rc);
     defer _ = linux.close(fd);
     writeAll(fd, data);
     return true;
+}
+
+pub fn writeFile(path: []const u8, data: []const u8) bool {
+    return writeFileMode(path, data, 0o644);
 }
 
 /// Apply a mode to an already-created file (used for archive members whose

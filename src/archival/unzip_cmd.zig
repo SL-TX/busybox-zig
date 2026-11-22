@@ -75,7 +75,7 @@ pub fn unzipMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     const print = c.flagged(o, 4);
     const quiet = c.flagged(o, 5);
     const test_mode = c.flagged(o, 7);
-    _ = c.flagged(o, 6); // -K keep suid bit
+    const keep_suid = c.flagged(o, 6); // -K keep suid bit
     // getopt32 exposes only the *last* option argument, so recover -d/-x
     // values from argv (a later flag such as -j clears optarg).
     var excluded: ?[]const u8 = null;
@@ -185,11 +185,15 @@ pub fn unzipMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             };
             makeDirs(parent);
         }
-        if (!c.writeFile(target, content)) {
+        // BusyBox takes the Unix mode from the ZIP external attributes and
+        // clears SUID/SGID unless -K is given. (Writing to the new file may
+        // clear those bits again on non-root systems, as in the reference.)
+        var stored_mode: u32 = if ((e.mode & 0o170000) == 0) 0o600 else e.mode & 0o7777;
+        if (!keep_suid) stored_mode &= ~@as(u32, 0o6000);
+        if (!c.writeFileMode(target, content, stored_mode)) {
             rc = 1;
             continue;
         }
-        c.chmod(target, 0o600);
         if (!quiet) {
             var shown = e.name;
             if (junk) {

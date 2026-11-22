@@ -1,0 +1,8 @@
+{
+  "applet": "tar",
+  "name": "cross_binary_create_reference_list",
+  "stdout": "OK\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

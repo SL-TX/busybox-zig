@@ -1,0 +1,16 @@
+{
+  "applet": "tar",
+  "name": "empty_archive",
+  "stdout": "",
+  "stderr": "tar: short read\n",
+  "exit": 1,
+  "tree": {
+    "empty": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

@@ -65,9 +65,14 @@ fn parseOctal(field: []const u8) Error!u64 {
     return value;
 }
 
+/// ustar numeric field: leading octal zeroes, right-aligned digits and a
+/// terminating NUL (e.g. "0000644\\0" in an 8-byte mode field). BusyBox's
+/// getOctal() uses strtoull(), so a leading NUL would silently decode as zero
+/// and desynchronise the archive; leading spaces are also accepted but zeroes
+/// are what GNU/BusyBox write.
 fn writeOctal(field: []u8, value: u64) void {
-    @memset(field, 0);
     if (field.len == 0) return;
+    @memset(field, '0');
     var digits: [32]u8 = undefined;
     var n: usize = 0;
     var v = value;
@@ -76,10 +81,11 @@ fn writeOctal(field: []u8, value: u64) void {
         n += 1;
         v >>= 3;
     }
-    const total = field.len - 1;
+    const total = field.len - 1; // leave room for the terminating NUL
     if (n > total) n = total;
     var i: usize = 0;
     while (i < n) : (i += 1) field[total - n + i] = digits[n - 1 - i];
+    field[total] = 0;
 }
 
 fn cstr(field: []const u8) []const u8 {

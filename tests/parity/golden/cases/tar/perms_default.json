@@ -1,0 +1,8 @@
+{
+  "applet": "tar",
+  "name": "perms_default",
+  "stdout": "0o775\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

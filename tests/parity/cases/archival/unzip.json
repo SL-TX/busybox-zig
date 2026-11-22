@@ -231,6 +231,28 @@
       "files_b64": {
         "bad": "QkFEIQ=="
       }
+    },
+    {
+      "name": "keep_suid",
+      "argv": [
+        "-o",
+        "-K",
+        "z",
+        "-d",
+        "out"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "z": "UEsDBBQAAAAAAAAAIQCCxcHmBQAAAAUAAAAIAAAAc3VpZC50eHRkYXRhClBLAQIUAxQAAAAAAAAAIQCCxcHmBQAAAAUAAAAIAAAAAAAAAAAAAADtiQAAAABzdWlkLnR4dFBLBQYAAAAAAQABADYAAAArAAAAAAA="
+      }
     }
   ]
 }
