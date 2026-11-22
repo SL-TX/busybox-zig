@@ -1,0 +1,8 @@
+{
+  "applet": "pidof",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: pidof [-s] [-o PID] [NAME]...\n\nList PIDs of all processes with names that match NAMEs\n\n\t-s\tShow only one PID\n\t-o PID\tOmit given pid\n\t\tUse %PPID to omit pid of pidof's parent\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

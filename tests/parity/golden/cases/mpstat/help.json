@@ -1,0 +1,8 @@
+{
+  "applet": "mpstat",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: mpstat [-A] [-I SUM|CPU|ALL|SCPU] [-u] [-P num|ALL] [INTERVAL [COUNT]]\n\nPer-processor statistics\n\n\t-A\t\t\tSame as -I ALL -u -P ALL\n\t-I SUM|CPU|ALL|SCPU\tReport interrupt statistics\n\t-P num|ALL\t\tProcessor to monitor\n\t-u\t\t\tReport CPU utilization\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

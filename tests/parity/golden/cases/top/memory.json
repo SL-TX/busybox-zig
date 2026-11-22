@@ -1,0 +1,8 @@
+{
+  "applet": "top",
+  "name": "memory",
+  "stdout": "Mem total:<MATCH> anon:<MATCH> map:<MATCH> free:<MATCH>\n slab:<MATCH> buf:<MATCH> cache:<MATCH> dirty:<MATCH> write:<MATCH>\nSwap total:<MATCH> free:<MATCH>\n  PID^^^VSZ^VSZRW   RSS (SHR) DIRTY (SHR) STACK COMMAND<MATCH>",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

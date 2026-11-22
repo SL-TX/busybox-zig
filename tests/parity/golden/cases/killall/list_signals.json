@@ -1,0 +1,8 @@
+{
+  "applet": "killall",
+  "name": "list_signals",
+  "stdout": " 1) HUP\n 2) INT\n 3) QUIT\n 4) ILL\n 5) TRAP\n 6) ABRT\n 7) BUS\n 8) FPE\n 9) KILL\n10) USR1\n11) SEGV\n12) USR2\n13) PIPE\n14) ALRM\n15) TERM\n16) STKFLT\n17) CHLD\n18) CONT\n19) STOP\n20) TSTP\n21) TTIN\n22) TTOU\n23) URG\n24) XCPU\n25) XFSZ\n26) VTALRM\n27) PROF\n28) WINCH\n29) POLL\n30) PWR\n31) SYS\n34) RTMIN\n64) RTMAX\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

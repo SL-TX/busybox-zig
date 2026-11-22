@@ -1,0 +1,195 @@
+{
+  "applet": "mpstat",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_ppid_num",
+      "argv": [
+        "-P",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_interrupt",
+      "argv": [
+        "-I",
+        "bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "cpu_util",
+      "argv": [
+        "-u"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "all_cpus",
+      "argv": [
+        "-P",
+        "ALL"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "cpu_number",
+      "argv": [
+        "-P",
+        "0"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "sum_interrupts",
+      "argv": [
+        "-I",
+        "SUM"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "all",
+      "argv": [
+        "-A"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:(?s)\\n\\n(?=\\S+     CPU    intr/s).*",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    }
+  ]
+}

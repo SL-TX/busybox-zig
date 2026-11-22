@@ -364,12 +364,30 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "ubirmvol")) return @import("miscutils").ubirmvol_main;
     if (std.mem.eql(u8, name, "ubirsvol")) return @import("miscutils").ubirsvol_main;
     if (std.mem.eql(u8, name, "ubiupdatevol")) return @import("miscutils").ubiupdatevol_main;
-    // procps
-    if (std.mem.eql(u8, name, "ps")) return @import("procps").ps_main;
-    if (std.mem.eql(u8, name, "top")) return @import("procps").top_main;
+    // Task 17 — procps wave (24 applets)
+    if (std.mem.eql(u8, name, "free")) return @import("procps").free_main;
+    if (std.mem.eql(u8, name, "fuser")) return @import("procps").fuser_main;
+    if (std.mem.eql(u8, name, "iostat")) return @import("procps").iostat_main;
     if (std.mem.eql(u8, name, "kill")) return @import("procps").kill_main;
     if (std.mem.eql(u8, name, "killall")) return @import("procps").killall_main;
-    if (std.mem.eql(u8, name, "free")) return @import("procps").free_main;
+    if (std.mem.eql(u8, name, "killall5")) return @import("procps").killall5_main;
+    if (std.mem.eql(u8, name, "lsof")) return @import("procps").lsof_main;
+    if (std.mem.eql(u8, name, "mpstat")) return @import("procps").mpstat_main;
+    if (std.mem.eql(u8, name, "nmeter")) return @import("procps").nmeter_main;
+    if (std.mem.eql(u8, name, "pgrep")) return @import("procps").pgrep_main;
+    if (std.mem.eql(u8, name, "pidof")) return @import("procps").pidof_main;
+    if (std.mem.eql(u8, name, "pkill")) return @import("procps").pkill_main;
+    if (std.mem.eql(u8, name, "pmap")) return @import("procps").pmap_main;
+    if (std.mem.eql(u8, name, "powertop")) return @import("procps").powertop_main;
+    if (std.mem.eql(u8, name, "ps")) return @import("procps").ps_main;
+    if (std.mem.eql(u8, name, "pstree")) return @import("procps").pstree_main;
+    if (std.mem.eql(u8, name, "pwdx")) return @import("procps").pwdx_main;
+    if (std.mem.eql(u8, name, "smemcap")) return @import("procps").smemcap_main;
+    if (std.mem.eql(u8, name, "sysctl")) return @import("procps").sysctl_main;
+    if (std.mem.eql(u8, name, "top")) return @import("procps").top_main;
+    if (std.mem.eql(u8, name, "uptime")) return @import("procps").uptime_main;
+    if (std.mem.eql(u8, name, "vmstat")) return @import("procps").vmstat_main;
+    if (std.mem.eql(u8, name, "watch")) return @import("procps").watch_main;
     // shell
     if (std.mem.eql(u8, name, "ash")) return @import("shell").ash_main;
     if (std.mem.eql(u8, name, "hush")) return @import("shell").hush_main;

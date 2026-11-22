@@ -1,0 +1,8 @@
+{
+  "applet": "pgrep",
+  "name": "ppid",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

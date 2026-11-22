@@ -1,0 +1,8 @@
+{
+  "applet": "top",
+  "name": "batch_threads",
+  "stdout": "Mem:<MATCH> used,<MATCH> free,<MATCH> shrd,<MATCH> buff,<MATCH> cached\nCPU:<MATCH> usr<MATCH> sys<MATCH> nic<MATCH> idle<MATCH> io<MATCH> irq<MATCH> sirq\nLoad average:<MATCH><MATCH><MATCH><MATCH>/<MATCH><MATCH>\n  PID  PPID USER     STAT   RSS %RSS CPU %CPU COMMAND<MATCH>",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

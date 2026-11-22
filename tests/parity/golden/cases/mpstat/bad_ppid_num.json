@@ -1,0 +1,8 @@
+{
+  "applet": "mpstat",
+  "name": "bad_ppid_num",
+  "stdout": "",
+  "stderr": "mpstat: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

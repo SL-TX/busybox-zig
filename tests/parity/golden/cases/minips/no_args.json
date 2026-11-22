@@ -1,0 +1,8 @@
+{
+  "applet": "minips",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "minips: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

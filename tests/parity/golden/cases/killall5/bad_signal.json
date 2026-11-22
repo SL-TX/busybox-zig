@@ -1,0 +1,8 @@
+{
+  "applet": "killall5",
+  "name": "bad_signal",
+  "stdout": "",
+  "stderr": "killall5: bad signal name 'BOGUS'\n",
+  "exit": 1,
+  "tree": {}
+}

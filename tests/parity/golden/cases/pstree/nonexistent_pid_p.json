@@ -1,0 +1,8 @@
+{
+  "applet": "pstree",
+  "name": "nonexistent_pid_p",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "pgrep",
+  "name": "invert",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

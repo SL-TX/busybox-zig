@@ -1,0 +1,8 @@
+{
+  "applet": "watch",
+  "name": "pty_exec",
+  "stdout": "<MATCH>",
+  "stderr": "",
+  "exit": -15,
+  "tree": {}
+}

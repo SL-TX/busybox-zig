@@ -1,0 +1,172 @@
+{
+  "applet": "iostat",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+ CPU",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "cpu",
+      "argv": [
+        "-c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+ CPU",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "disk",
+      "argv": [
+        "-d"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+ CPU",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "timestamp",
+      "argv": [
+        "-t"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+ CPU",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "kilobytes",
+      "argv": [
+        "-k"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+ CPU",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "megabytes",
+      "argv": [
+        "-m"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+ CPU",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "omit_zero",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+/\\d+/\\d+",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+\\.\\d+",
+        "regex:\\(.*CPU\\)",
+        "regex:\\d+ CPU",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    }
+  ]
+}

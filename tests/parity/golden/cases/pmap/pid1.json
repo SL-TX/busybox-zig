@@ -1,0 +1,8 @@
+{
+  "applet": "pmap",
+  "name": "pid1",
+  "stdout": "1: /sbin/init splash\n",
+  "stderr": "",
+  "exit": 42,
+  "tree": {}
+}

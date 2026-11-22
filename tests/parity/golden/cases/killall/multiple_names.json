@@ -1,0 +1,8 @@
+{
+  "applet": "killall",
+  "name": "multiple_names",
+  "stdout": "",
+  "stderr": "killall: nonexistentproc_xyz: no process killed\nkillall: another_missing_xyz: no process killed\n",
+  "exit": 2,
+  "tree": {}
+}

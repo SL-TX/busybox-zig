@@ -1,0 +1,8 @@
+{
+  "applet": "top",
+  "name": "bad_delay",
+  "stdout": "",
+  "stderr": "top: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

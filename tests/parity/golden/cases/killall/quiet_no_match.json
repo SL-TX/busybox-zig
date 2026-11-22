@@ -1,0 +1,8 @@
+{
+  "applet": "killall",
+  "name": "quiet_no_match",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

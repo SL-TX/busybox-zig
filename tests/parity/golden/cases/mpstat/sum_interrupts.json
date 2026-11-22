@@ -1,0 +1,8 @@
+{
+  "applet": "mpstat",
+  "name": "sum_interrupts",
+  "stdout": "Linux <MATCH>.111+deb13-amd64 <MATCH>\n\n<MATCH>     CPU    intr/s\n<MATCH>     all    <MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

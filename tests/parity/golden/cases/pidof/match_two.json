@@ -1,0 +1,8 @@
+{
+  "applet": "pidof",
+  "name": "match_two",
+  "stdout": "<MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

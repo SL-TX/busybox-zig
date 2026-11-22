@@ -1,0 +1,8 @@
+{
+  "applet": "ps",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ps [-o COL1,COL2=HEADER] [-T]\n\nShow list of processes\n\n\t-o COL1,COL2=HEADER\tSelect columns for display\n\t-T\t\t\tShow threads\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

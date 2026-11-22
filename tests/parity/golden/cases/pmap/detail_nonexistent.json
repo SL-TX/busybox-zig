@@ -1,0 +1,8 @@
+{
+  "applet": "pmap",
+  "name": "detail_nonexistent",
+  "stdout": "",
+  "stderr": "",
+  "exit": 42,
+  "tree": {}
+}

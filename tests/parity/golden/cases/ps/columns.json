@@ -1,0 +1,8 @@
+{
+  "applet": "ps",
+  "name": "columns",
+  "stdout": "PID   COMMAND\n<MATCH>",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

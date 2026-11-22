@@ -1,0 +1,8 @@
+{
+  "applet": "iostat",
+  "name": "megabytes",
+  "stdout": "Linux <MATCH>.111+deb13-amd64 <MATCH>\n\navg-cpu:  %user   %nice %system %iowait  %steal   %idle\n           <MATCH>    <MATCH>    <MATCH>    <MATCH>    <MATCH>   <MATCH>\n\nDevice:            tps    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn\nnvme0n1          <MATCH>         <MATCH>         <MATCH><MATCH><MATCH><MATCH>           <MATCH>         <MATCH>         <MATCH><MATCH><MATCH>\nnvme0n1p1         <MATCH>         <MATCH>         <MATCH><MATCH><MATCH>\nnvme0n1p2         <MATCH>         <MATCH>         <MATCH><MATCH><MATCH>\nnvme0n1p3        <MATCH>         <MATCH>         <MATCH><MATCH><MATCH><MATCH>                 <MATCH>         <MATCH>         <MATCH><MATCH><MATCH>\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

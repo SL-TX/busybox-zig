@@ -1,0 +1,8 @@
+{
+  "applet": "nmeter",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "nmeter: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: nmeter [-d MSEC] FORMAT_STRING\n\nMonitor system in real time\n\n -d MSEC\tMilliseconds between updates, default:1000, none:-1\n\nFormat specifiers:\n %Nc or %[cN]\tCPU. N - bar size (default 10)\n\t\t(displays: S:system U:user N:niced D:iowait I:irq i:softirq)\n %[nINTERFACE]\tNetwork INTERFACE (if error counters change, prepends *)\n %m\t\tAllocated memory\n %[md]\t\tDirty file-backed memory\n %[mw]\t\tMemory being written to storage\n %[mf]\t\tFree memory\n %[mt]\t\tTotal memory\n %s\t\tAllocated swap\n %f\t\tNumber of used file descriptors\n %Ni\t\tTotal/specific IRQ rate\n %x\t\tContext switch rate\n %p\t\tForks\n %[pn]\t\t# of processes\n %b\t\tBlock io\n %Nt\t\tTime (with N decimal points)\n %NT\t\tZero-based timestamp (with N decimal points)\n %r\t\tPrint <cr> instead of <lf> at EOL\n",
+  "exit": 1,
+  "tree": {}
+}

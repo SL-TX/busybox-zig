@@ -1,0 +1,8 @@
+{
+  "applet": "smemcap",
+  "name": "no_args",
+  "stdout": "<MATCH><MATCH>",
+  "stderr": "<MATCH>",
+  "exit": 0,
+  "tree": {}
+}

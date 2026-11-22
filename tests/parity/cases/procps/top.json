@@ -1,0 +1,155 @@
+{
+  "applet": "top",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_delay",
+      "argv": [
+        "-d",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "batch_once",
+      "argv": [
+        "-b",
+        "-n",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:(?s)(?<=COMMAND).*",
+        "regex:\\s+\\d+\\.?\\d*%",
+        "regex:\\s+\\d+\\.?\\d*[mK]?",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+",
+        "regex:\\b\\d+\\b"
+      ],
+      "requires": []
+    },
+    {
+      "name": "batch_threads",
+      "argv": [
+        "-b",
+        "-H",
+        "-n",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:(?s)(?<=COMMAND).*",
+        "regex:\\s+\\d+\\.?\\d*%",
+        "regex:\\s+\\d+\\.?\\d*[mK]?",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+",
+        "regex:\\b\\d+\\b"
+      ],
+      "requires": []
+    },
+    {
+      "name": "memory",
+      "argv": [
+        "-m",
+        "-b",
+        "-n",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:(?s)(?<=COMMAND\\n).*",
+        "regex:(?s)(?<=COMMAND).*",
+        "regex:\\s+\\d+\\.?\\d*%",
+        "regex:\\s+\\d+\\.?\\d*[mK]?",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+",
+        "regex:\\b\\d+\\b"
+      ],
+      "requires": []
+    },
+    {
+      "name": "pty_quit",
+      "argv": [
+        "-d",
+        "0.2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [
+        "regex:(?s)(?<=COMMAND).*",
+        "regex:\\s+\\d+\\.?\\d*%",
+        "regex:\\s+\\d+\\.?\\d*[mK]?",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+/\\d+",
+        "regex:\\b\\d+\\b"
+      ],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": [
+        "q"
+      ]
+    }
+  ]
+}

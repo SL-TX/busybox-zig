@@ -1,0 +1,8 @@
+{
+  "applet": "top",
+  "name": "pty_quit",
+  "stdout": "\u001b[HMem:<MATCH> used,<MATCH> free,<MATCH> shrd,<MATCH> buff,<MATCH> cache\u001b[K\r\nCPU:<MATCH> usr<MATCH> sys<MATCH> nic<MATCH> idle<MATCH> io<MATCH> irq<MATCH> sirq\u001b[K\r\nLoad average:<MATCH><MATCH><MATCH><MATCH>/<MATCH><MATCH>\u001b[K\r\n\u001b[7m  PID  PPID USER     STAT   RSS %RSS CPU %CPU COMMAND<MATCH>",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

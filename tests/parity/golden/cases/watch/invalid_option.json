@@ -1,0 +1,8 @@
+{
+  "applet": "watch",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "watch: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: watch [-n SEC] [-tx] PROG ARGS\n\nRun PROG periodically\n\n\t-n SEC\tPeriod (default 2)\n\t-t\tDon't print header\n\t-x\texec(PROG,ARGS) instead of sh -c 'PROG ARGS'\n",
+  "exit": 1,
+  "tree": {}
+}

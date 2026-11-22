@@ -1,0 +1,8 @@
+{
+  "applet": "pidof",
+  "name": "single",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "iostat",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: iostat [-c] [-d] [-t] [-z] [-k|-m] [ALL|BLOCKDEV...] [INTERVAL [COUNT]]\n\nReport CPU and I/O statistics\n\n\t-c\tShow CPU utilization\n\t-d\tShow device utilization\n\t-t\tPrint current time\n\t-z\tOmit devices with no activity\n\t-k\tUse kb/s\n\t-m\tUse Mb/s\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

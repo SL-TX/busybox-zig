@@ -1,0 +1,8 @@
+{
+  "applet": "killall",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "killall: you need to specify whom to kill\n",
+  "exit": 1,
+  "tree": {}
+}

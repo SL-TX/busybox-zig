@@ -1,0 +1,8 @@
+{
+  "applet": "fuser",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "fuser: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fuser [-msk46] [-SIGNAL] FILE or PORT/PROTO\n\nFind processes which use FILEs or PORTs\n\n\t-m\tFind processes which use same fs as FILEs\n\t-4,-6\tSearch only IPv4/IPv6 space\n\t-s\tDon't display PIDs\n\t-k\tKill found processes\n\t-SIGNAL\tSignal to send (default: KILL)\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "pgrep",
+  "name": "newest",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

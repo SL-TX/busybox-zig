@@ -1,0 +1,8 @@
+{
+  "applet": "nmeter",
+  "name": "literal",
+  "stdout": "<MATCH>^C",
+  "stderr": "",
+  "exit": -2,
+  "tree": {}
+}

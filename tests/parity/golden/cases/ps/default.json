@@ -1,0 +1,8 @@
+{
+  "applet": "ps",
+  "name": "default",
+  "stdout": "PID   USER     TIME  COMMAND\n<MATCH>",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

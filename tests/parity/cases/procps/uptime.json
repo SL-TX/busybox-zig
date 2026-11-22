@@ -1,0 +1,75 @@
+{
+  "applet": "uptime",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+:\\d+",
+        "regex:\\d+ days",
+        "regex:load average:[^\\n]*"
+      ],
+      "requires": []
+    },
+    {
+      "name": "extra_arg",
+      "argv": [
+        "extra"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp",
+        "regex:\\d+:\\d+:\\d+",
+        "regex:\\d+:\\d+",
+        "regex:\\d+ days",
+        "regex:load average:[^\\n]*"
+      ],
+      "requires": []
+    }
+  ]
+}

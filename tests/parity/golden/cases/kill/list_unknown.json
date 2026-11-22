@@ -1,0 +1,8 @@
+{
+  "applet": "kill",
+  "name": "list_unknown",
+  "stdout": "",
+  "stderr": "kill: unknown signal 'BOGUS'\n",
+  "exit": 1,
+  "tree": {}
+}

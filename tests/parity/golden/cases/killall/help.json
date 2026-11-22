@@ -1,0 +1,8 @@
+{
+  "applet": "killall",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: killall [-lq] [-SIG] PROCESS_NAME...\n\nSend a signal (default: TERM) to given processes\n\n\t-l\tList all signal names and numbers\n\t-q\tDon't complain if no processes were killed\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

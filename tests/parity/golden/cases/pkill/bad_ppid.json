@@ -1,0 +1,8 @@
+{
+  "applet": "pkill",
+  "name": "bad_ppid",
+  "stdout": "",
+  "stderr": "pkill: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}
