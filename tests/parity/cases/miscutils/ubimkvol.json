@@ -1,0 +1,140 @@
+{
+  "applet": "ubimkvol",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "missing_dev",
+      "argv": [
+        "-N",
+        "foo"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open",
+      "argv": [
+        "-N",
+        "foo",
+        "-s",
+        "100",
+        "nofile"
+      ]
+    },
+    {
+      "name": "no_N_option",
+      "argv": [
+        "-s",
+        "100",
+        "nofile"
+      ]
+    },
+    {
+      "name": "no_size",
+      "argv": [
+        "-N",
+        "foo",
+        "nofile"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X",
+        "-N",
+        "foo",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "bad_s",
+      "argv": [
+        "-N",
+        "foo",
+        "-s",
+        "abc",
+        "nofile"
+      ]
+    },
+    {
+      "name": "suffix",
+      "argv": [
+        "-N",
+        "foo",
+        "-s",
+        "1KiB",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "all_opts",
+      "argv": [
+        "-N",
+        "foo",
+        "-s",
+        "100",
+        "-n",
+        "1",
+        "-a",
+        "2",
+        "-t",
+        "static",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "max_size",
+      "argv": [
+        "-m",
+        "-N",
+        "foo",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "ioctl_fail",
+      "argv": [
+        "-N",
+        "foo",
+        "-s",
+        "100",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    }
+  ]
+}

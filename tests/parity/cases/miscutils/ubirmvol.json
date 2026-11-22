@@ -1,0 +1,89 @@
+{
+  "applet": "ubirmvol",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "missing_dev",
+      "argv": [
+        "-n",
+        "1"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open",
+      "argv": [
+        "-n",
+        "1",
+        "nofile"
+      ]
+    },
+    {
+      "name": "no_id_option",
+      "argv": [
+        "nofile"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X",
+        "-n",
+        "1",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "bad_n",
+      "argv": [
+        "-n",
+        "abc",
+        "nofile"
+      ]
+    },
+    {
+      "name": "ioctl_fail",
+      "argv": [
+        "-n",
+        "1",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "name_not_ubi",
+      "argv": [
+        "-N",
+        "foo",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    }
+  ]
+}

@@ -463,3 +463,18 @@ pub const flash_unlock_main = @import("batch4.zig").flash_unlock_main;
 pub const flashcp_main = @import("batch4.zig").flashcp_main;
 pub const inotifyd_main = @import("batch4.zig").inotifyd_main;
 pub const rfkill_main = @import("batch4.zig").rfkill_main;
+
+// Task 16b — privileged/device-bound miscutils wave
+pub const priv = @import("privileged.zig");
+pub const adjtimex_main = priv.adjtimex_main;
+pub const devfsd_main = priv.devfsd_main;
+pub const nanddump_main = priv.nanddump_main;
+pub const nandwrite_main = priv.nandwrite_main;
+pub const raidautorun_main = priv.raidautorun_main;
+pub const ubiattach_main = priv.ubiattach_main;
+pub const ubidetach_main = priv.ubidetach_main;
+pub const ubimkvol_main = priv.ubimkvol_main;
+pub const ubirename_main = priv.ubirename_main;
+pub const ubirmvol_main = priv.ubirmvol_main;
+pub const ubirsvol_main = priv.ubirsvol_main;
+pub const ubiupdatevol_main = priv.ubiupdatevol_main;

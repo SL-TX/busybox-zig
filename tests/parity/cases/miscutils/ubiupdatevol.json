@@ -1,0 +1,118 @@
+{
+  "applet": "ubiupdatevol",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "missing_dev",
+      "argv": [
+        "-t"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open_trunc",
+      "argv": [
+        "-t",
+        "nofile"
+      ]
+    },
+    {
+      "name": "trunc_ioctl",
+      "argv": [
+        "-t",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "bad_devname",
+      "argv": [
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "bad_devname_s",
+      "argv": [
+        "-s",
+        "100",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "bad_s",
+      "argv": [
+        "-s",
+        "abc",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "devname_cant_open",
+      "argv": [
+        "/dev/ubi0_0",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "trunc_devname_cant_open",
+      "argv": [
+        "-t",
+        "/dev/ubi0_0"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      },
+      "normalize": [
+        "timestamp"
+      ]
+    }
+  ]
+}

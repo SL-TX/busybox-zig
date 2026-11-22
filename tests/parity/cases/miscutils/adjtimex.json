@@ -1,0 +1,109 @@
+{
+  "applet": "adjtimex",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp",
+        "regex:(?<=maxerror:     )\\d+",
+        "regex:(?<=esterror:     )\\d+",
+        "regex:(?<=offset:       )-?\\d+",
+        "regex:(?<=freq.adjust:  )-?\\d+",
+        "regex:(?<=time\\.tv_sec:  )\\d+",
+        "regex:(?<=time\\.tv_usec: )\\d+"
+      ]
+    },
+    {
+      "name": "quiet",
+      "argv": [
+        "-q"
+      ]
+    },
+    {
+      "name": "set_offset",
+      "argv": [
+        "-o",
+        "100"
+      ]
+    },
+    {
+      "name": "set_freq",
+      "argv": [
+        "-f",
+        "1000"
+      ]
+    },
+    {
+      "name": "set_tconst",
+      "argv": [
+        "-p",
+        "5"
+      ]
+    },
+    {
+      "name": "set_tick",
+      "argv": [
+        "-t",
+        "10000"
+      ]
+    },
+    {
+      "name": "all_opts_quiet",
+      "argv": [
+        "-o",
+        "100",
+        "-f",
+        "1000",
+        "-p",
+        "5",
+        "-t",
+        "10000",
+        "-q"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "invalid_number",
+      "argv": [
+        "-o",
+        "abc"
+      ]
+    },
+    {
+      "name": "missing_arg",
+      "argv": [
+        "-o"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "extra_arg",
+      "argv": [
+        "foo"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    }
+  ]
+}

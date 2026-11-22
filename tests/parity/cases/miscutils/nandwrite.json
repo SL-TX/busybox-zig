@@ -1,0 +1,97 @@
+{
+  "applet": "nandwrite",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open",
+      "argv": [
+        "nofile"
+      ]
+    },
+    {
+      "name": "all_opts",
+      "argv": [
+        "-n",
+        "-p",
+        "-s",
+        "0",
+        "nofile",
+        "image.bin"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "ioctl_fail",
+      "argv": [
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "ioctl_fail_with_file",
+      "argv": [
+        "infile",
+        "image.bin"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "too_many_args",
+      "argv": [
+        "infile",
+        "image.bin",
+        "extra"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      },
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "bad_s_arg",
+      "argv": [
+        "-s"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    }
+  ]
+}

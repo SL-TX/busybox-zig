@@ -351,6 +351,19 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "rfkill")) return @import("miscutils").rfkill_main;
     if (std.mem.eql(u8, name, "seedrng")) return @import("miscutils").seedrng_main;
     if (std.mem.eql(u8, name, "setfattr")) return @import("miscutils").setfattr_main;
+    // Task 16b — privileged/device-bound miscutils wave
+    if (std.mem.eql(u8, name, "adjtimex")) return @import("miscutils").adjtimex_main;
+    if (std.mem.eql(u8, name, "devfsd")) return @import("miscutils").devfsd_main;
+    if (std.mem.eql(u8, name, "nanddump")) return @import("miscutils").nanddump_main;
+    if (std.mem.eql(u8, name, "nandwrite")) return @import("miscutils").nandwrite_main;
+    if (std.mem.eql(u8, name, "raidautorun")) return @import("miscutils").raidautorun_main;
+    if (std.mem.eql(u8, name, "ubiattach")) return @import("miscutils").ubiattach_main;
+    if (std.mem.eql(u8, name, "ubidetach")) return @import("miscutils").ubidetach_main;
+    if (std.mem.eql(u8, name, "ubimkvol")) return @import("miscutils").ubimkvol_main;
+    if (std.mem.eql(u8, name, "ubirename")) return @import("miscutils").ubirename_main;
+    if (std.mem.eql(u8, name, "ubirmvol")) return @import("miscutils").ubirmvol_main;
+    if (std.mem.eql(u8, name, "ubirsvol")) return @import("miscutils").ubirsvol_main;
+    if (std.mem.eql(u8, name, "ubiupdatevol")) return @import("miscutils").ubiupdatevol_main;
     // procps
     if (std.mem.eql(u8, name, "ps")) return @import("procps").ps_main;
     if (std.mem.eql(u8, name, "top")) return @import("procps").top_main;
