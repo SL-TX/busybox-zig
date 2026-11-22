@@ -28,6 +28,27 @@
       "normalize": [
         "timestamp"
       ]
+    },
+    {
+      "name": "version",
+      "argv": [
+        "/dev",
+        "-v"
+      ]
+    },
+    {
+      "name": "foreground",
+      "argv": [
+        "/dev",
+        "-fg"
+      ]
+    },
+    {
+      "name": "no_polling",
+      "argv": [
+        "/dev",
+        "-np"
+      ]
     }
   ]
 }

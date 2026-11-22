@@ -141,6 +141,20 @@
       "normalize": [
         "timestamp"
       ]
+    },
+    {
+      "name": "raw_mode_ioctl",
+      "argv": [
+        "-n",
+        "-s",
+        "0",
+        "-l",
+        "4",
+        "/dev/mtd0"
+      ],
+      "requires": [
+        "root"
+      ]
     }
   ]
 }

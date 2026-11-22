@@ -125,6 +125,27 @@ fn doIoctl(fd: linux.fd_t, req: u32, arg: usize, label: []const u8) bool {
     return true;
 }
 
+/// Issue the MTD_FILE_MODE_RAW switch when `enabled`. Returns the errno when
+/// the ioctl fails, or null when it succeeded / was not requested. Factored
+/// out so the flag-to-ioctl wiring can be unit-tested without an MTD device
+/// and without emitting a diagnostic from the test runner.
+pub fn mtdRawModeErrno(fd: linux.fd_t, enabled: bool) ?c_int {
+    if (!enabled) return null;
+    const rc = linux.ioctl(fd, MTDFILEMODE, 3);
+    const e = linux.errno(rc);
+    if (e == .SUCCESS) return null;
+    return @intFromEnum(e);
+}
+
+/// MTD_FILE_MODE_RAW switch shared by `nanddump -n` and `nandwrite -n`.
+pub fn setMtdRawMode(fd: linux.fd_t, enabled: bool) bool {
+    if (mtdRawModeErrno(fd, enabled)) |en| {
+        c.errorMsg(en, "MTDFILEMODE", .{});
+        return false;
+    }
+    return true;
+}
+
 // ---------------------------------------------------------- option parsing
 // The shared libbb getopt32 keeps only the last optarg, while several applets
 // below need the argument of every option. This parser follows the same
@@ -346,8 +367,18 @@ pub fn devfsd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     c.setName("devfsd");
     if (args.len < 2) c.usageDie("devfsd");
     var print_version = false;
+    var do_daemon = true;
+    var no_polling = false;
     for (args[2..]) |arg| {
-        if (std.mem.eql(u8, arg, "-v")) print_version = true else if (std.mem.eql(u8, arg, "-fg") or std.mem.eql(u8, arg, "-np")) {} else c.usageDie("devfsd");
+        if (std.mem.eql(u8, arg, "-v")) {
+            print_version = true;
+        } else if (std.mem.eql(u8, arg, "-fg")) {
+            // ENABLE_DEVFSD_FG_NP: stay in the foreground, do not fork.
+            do_daemon = false;
+        } else if (std.mem.eql(u8, arg, "-np")) {
+            // ENABLE_DEVFSD_FG_NP: return after the synthetic REGISTER scan.
+            no_polling = true;
+        } else c.usageDie("devfsd");
     }
     // xchdir(mntpnt); xopen(".devfsd"); xioctl(GET_PROTO_REV)
     var dir = args[1];
@@ -367,8 +398,32 @@ pub fn devfsd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             c.plainMsg("protocol revision mismatch!", .{});
             return 1;
         }
+        if (print_version) return 0;
     }
-    return 0;
+    // Tell the kernel we see hidden entries, then scan the synthetic REGISTER
+    // events (a real devfs mount is required for the scan to produce anything).
+    if (!doIoctl(fd, 0x40046402, 0, "DEVFSDIOC_SET_EVENT_MASK")) return 1;
+    c.printfOut("devfsd v1.3.25 started for {s}\n", .{dir});
+
+    // -np: exit right after parsing the config and the synthetic scan.
+    if (no_polling) return 0;
+    if (do_daemon) {
+        // Release the event queue so the daemon child can grab it.
+        if (!doIoctl(fd, 0x40046403, 0, "DEVFSDIOC_RELEASE_EVENT_QUEUE")) return 1;
+        // bb_daemonize_or_rexec(0, argv) forks here on a real devfs system.
+    } else {
+        // -fg: become process group leader instead of daemonizing.
+        _ = linux.setpgid(0, 0);
+    }
+    // Event delivery loop: read() blocks for devfs events on a real mount.
+    var event: [1032]u8 = undefined; // sizeof(struct devfsd_notify_struct)
+    while (true) {
+        const got = linux.read(fd, &event, event.len);
+        if (linux.errno(got) != .SUCCESS or got == 0) {
+            c.plainMsg("read error on control file", .{});
+            return 1;
+        }
+    }
 }
 
 // ----------------------------------------------------------------- nanddump
@@ -410,6 +465,9 @@ pub fn nanddump_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     defer _ = linux.close(fd);
     var mi: MtdInfo = undefined;
     if (!doIoctl(fd, MEMGETINFO, @intFromPtr(&mi), "MEMGETINFO")) return 1;
+    // nand.c:153-154: -n switches the MTD file to raw mode (no ECC) *after*
+    // MEMGETINFO succeeded. MTD_FILE_MODE_RAW == 3.
+    if (!setMtdRawMode(fd, p.has('n'))) return 1;
 
     var mtdoffset: u32 = 0;
     if (p.has('s')) mtdoffset = @truncate(parseBase0(p.val('s').?));
@@ -485,9 +543,7 @@ pub fn nandwrite_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     defer _ = linux.close(fd);
     var mi: MtdInfo = undefined;
     if (!doIoctl(fd, MEMGETINFO, @intFromPtr(&mi), "MEMGETINFO")) return 1;
-    if (p.has('n')) {
-        if (!doIoctl(fd, MTDFILEMODE, 3, "MTDFILEMODE")) return 1;
-    }
+    if (!setMtdRawMode(fd, p.has('n'))) return 1;
     var mtdoffset: u32 = 0;
     if (p.has('s')) mtdoffset = @truncate(parseBase0(p.val('s').?));
     const ws = mi.writesize;

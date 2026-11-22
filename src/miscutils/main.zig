@@ -466,6 +466,8 @@ pub const rfkill_main = @import("batch4.zig").rfkill_main;
 
 // Task 16b — privileged/device-bound miscutils wave
 pub const priv = @import("privileged.zig");
+pub const setMtdRawMode = priv.setMtdRawMode;
+pub const mtdRawModeErrno = priv.mtdRawModeErrno;
 pub const adjtimex_main = priv.adjtimex_main;
 pub const devfsd_main = priv.devfsd_main;
 pub const nanddump_main = priv.nanddump_main;
