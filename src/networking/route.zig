@@ -3,6 +3,7 @@
 const std = @import("std");
 const n = @import("netcommon.zig");
 const linux = std.os.linux;
+const display = @import("display.zig");
 
 pub fn routeMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     n.setProg(argv);
@@ -14,9 +15,7 @@ pub fn routeMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         if (!std.mem.eql(u8, family, "inet") and !std.mem.eql(u8, family, "inet6")) n.usageDie("route");
     }
     if (args.len == 0) {
-        // Display mode reads /proc/net/route; host state is not fabricated.
-        _ = n.readWholeFile("/proc/net/route") catch {};
-        return 0;
+        return display.routeDisplay(false, (o.flags & (1 << 1)) != 0);
     }
     const verb = args[0];
     if (!std.mem.eql(u8, verb, "add") and !std.mem.eql(u8, verb, "del") and !std.mem.eql(u8, verb, "delete"))

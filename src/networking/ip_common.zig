@@ -10,6 +10,7 @@
 
 const std = @import("std");
 const n = @import("netcommon.zig");
+const display = @import("display.zig");
 
 fn deviceExists(dev: []const u8) bool {
     const path = std.fmt.allocPrint(n.A, "/sys/class/net/{s}", .{dev}) catch return false;
@@ -108,53 +109,56 @@ fn dispatch(name: []const u8, sub: []const u8, args: []const []const u8) c_int {
     }
 
     if (is_addr) {
-        if (args.len == 0) return displayStub();
+        if (args.len == 0 or std.mem.eql(u8, args[0], "show") or std.mem.eql(u8, args[0], "list"))
+            return display.ipLinkDisplay(true);
         if (std.mem.eql(u8, args[0], "add") or std.mem.eql(u8, args[0], "del") or
             std.mem.eql(u8, args[0], "delete") or std.mem.eql(u8, args[0], "change") or
             std.mem.eql(u8, args[0], "replace"))
         {
             if (dev == null) return err(name, 1, "need \"dev IFACE\"", .{});
-            return displayStub();
+            return err(name, 2, "RTNETLINK answers: Operation not permitted", .{});
         }
-        return displayStub();
+        return display.ipLinkDisplay(true);
     }
 
     if (is_link) {
-        if (args.len == 0) return displayStub();
-        if (std.mem.eql(u8, args[0], "show") and args.len >= 2 and dev == null) {
+        if (args.len >= 2 and std.mem.eql(u8, args[0], "show") and dev == null) {
             if (needDevice(name, 2, args[1])) |rc| return rc;
         }
+        if (args.len == 0 or std.mem.eql(u8, args[0], "show") or std.mem.eql(u8, args[0], "list"))
+            return display.ipLinkDisplay(false);
         if (std.mem.eql(u8, args[0], "set")) {
             if (args.len < 2) return err(name, 2, "\"dev\" requires an argument", .{});
             return displayStub();
         }
         if (std.mem.eql(u8, args[0], "add")) return err(name, 2, "RTNETLINK answers: Operation not permitted", .{});
         // `iplink show nosuch` / `iplink set nosuch` were validated above.
-        return displayStub();
+        return display.ipLinkDisplay(false);
     }
 
     if (is_route) {
-        if (args.len == 0) return displayStub();
+        if (args.len == 0 or std.mem.eql(u8, args[0], "show") or std.mem.eql(u8, args[0], "list"))
+            return display.ipRouteDisplay();
         if (std.mem.eql(u8, args[0], "get")) {
             if (args.len < 2 or !validPrefix(args[1])) return err(name, 1, "need at least destination address", .{});
-            return displayStub();
+            return display.ipRouteGet(args[1]);
         }
         if (std.mem.eql(u8, args[0], "add") or std.mem.eql(u8, args[0], "del") or
             std.mem.eql(u8, args[0], "change") or std.mem.eql(u8, args[0], "replace") or
             std.mem.eql(u8, args[0], "append"))
             return err(name, 2, "RTNETLINK answers: Operation not permitted", .{});
-        return displayStub();
+        return display.ipRouteDisplay();
     }
 
-    if (is_neigh) return displayStub();
+    if (is_neigh) return display.ipNeighDisplay();
 
     if (is_rule) {
-        if (args.len == 0) return displayStub();
+        if (args.len == 0) return display.ipRuleDisplay();
         if (std.mem.eql(u8, args[0], "add") or std.mem.eql(u8, args[0], "del"))
             return err(name, 2, "RTNETLINK answers: Operation not permitted", .{});
         if (std.mem.eql(u8, args[0], "list") and args.len > 1)
             return err(name, 255, "ignoring all arguments", .{});
-        return displayStub();
+        return display.ipRuleDisplay();
     }
 
     // tunnel
@@ -165,12 +169,10 @@ fn dispatch(name: []const u8, sub: []const u8, args: []const []const u8) c_int {
             if (std.mem.eql(u8, a, "mode")) has_mode = true;
         }
         if (!has_mode) return err(name, 1, "can't determine tunnel mode (ipip, gre or sit)", .{});
-        return displayStub();
+        return err(name, 1, "SIOCADDTUNNEL: No such device", .{});
     }
     if (std.mem.eql(u8, args[0], "del")) {
-        if (args.len > 1 and !deviceExists(args[1]))
-            return err(name, 1, "SIOCDELTUNNEL: No such device", .{});
-        return displayStub();
+        return err(name, 1, "SIOCDELTUNNEL: No such device", .{});
     }
     return displayStub();
 }

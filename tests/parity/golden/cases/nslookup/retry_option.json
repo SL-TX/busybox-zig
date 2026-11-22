@@ -1,0 +1,8 @@
+{
+  "applet": "nslookup",
+  "name": "retry_option",
+  "stdout": ";; connection timed out; no servers could be reached\n\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

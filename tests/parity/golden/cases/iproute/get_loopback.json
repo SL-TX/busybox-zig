@@ -1,0 +1,8 @@
+{
+  "applet": "iproute",
+  "name": "get_loopback",
+  "stdout": "local 127.0.0.1 dev lo  src 127.0.0.1 \n    cache \n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

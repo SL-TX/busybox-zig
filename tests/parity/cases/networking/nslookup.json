@@ -120,7 +120,9 @@
       "env": {},
       "cwd": ".",
       "timeout_ms": 5000,
-      "normalize": [],
+      "normalize": [
+        "regex:completed in \\d+ms"
+      ],
       "requires": []
     },
     {
@@ -201,6 +203,61 @@
       "env": {},
       "cwd": ".",
       "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "nonstandard_port",
+      "argv": [
+        "-port=5353",
+        "-timeout=1",
+        "host",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 8000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "timeout_alias",
+      "argv": [
+        "-t=1",
+        "-port=5353",
+        "host",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 8000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "retry_option",
+      "argv": [
+        "-port=5353",
+        "-timeout=1",
+        "-retry=3",
+        "host",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 8000,
       "normalize": [],
       "requires": []
     }

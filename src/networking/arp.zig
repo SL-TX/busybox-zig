@@ -3,6 +3,7 @@
 const std = @import("std");
 const n = @import("netcommon.zig");
 const linux = std.os.linux;
+const display = @import("display.zig");
 
 const OPT_a = 1 << 5;
 const OPT_d = 1 << 6;
@@ -29,26 +30,10 @@ pub fn arpMain(argc: c_int, argv: [*][*:0]const u8) c_int {
         return 1;
     }
 
+    const numeric = (o.flags & (1 << 7)) != 0; // -n
     if ((o.flags & OPT_a) != 0 and args.len != 0) {
         if (n.ipToInt(args[0]) == null) n.plainDie("{s}: Unknown host", .{args[0]});
-        // Scan the real ARP cache for the requested address.
-        const data = n.readWholeFile("/proc/net/arp") catch return 0;
-        defer n.A.free(data);
-        var count: usize = 0;
-        var found = false;
-        var lines = std.mem.splitScalar(u8, data, '\n');
-        _ = lines.next();
-        while (lines.next()) |line| {
-            var it = std.mem.tokenizeAny(u8, line, " \t");
-            const ip = it.next() orelse continue;
-            count += 1;
-            if (std.mem.eql(u8, ip, args[0])) found = true;
-        }
-        if (!found) n.put("No match found in {d} entries\n", .{count});
-        return 0;
+        return display.arpDisplay(numeric, args[0]);
     }
-    // Display mode reads /proc/net/arp; host state is intentionally not
-    // fabricated here. The differential cases exercise validation paths.
-    _ = n.readWholeFile("/proc/net/arp") catch {};
-    return 0;
+    return display.arpDisplay(numeric, null);
 }

@@ -1,13 +1,14 @@
 //! nslookup — query DNS about a host (reference nslookup.c, musl flavour).
 //!
 //! Implements the bind-utils style command line (-type=, -debug, -port=,
-//! -timeout=...), reads /etc/resolv.conf for the default server, issues real
-//! UDP DNS queries and prints the reference answer format. Test cases use the
-//! loopback resolver only.
+//! -retry=, -t=, -timeout=). The server port, per-attempt timeout and retry
+//! count all affect the real UDP queries; test cases exercise the loopback
+//! resolver on port 53 as well as non-53 ports that do not answer.
 
 const std = @import("std");
 const n = @import("netcommon.zig");
 const sock = @import("libbb_zig").socket;
+const linux = std.os.linux;
 
 fn qtypeFromName(name: []const u8) ?u16 {
     const table = .{
@@ -118,38 +119,54 @@ fn printAnswer(reply: []const u8, qname: []const u8) void {
     }
 }
 
-fn queryOne(server: []const u8, host: []const u8, qtype: u16, id: u16, debug: bool, header_printed: *bool, qn: usize) bool {
+fn showHeader(server: []const u8, port: u16, printed: *bool) void {
+    if (printed.*) return;
+    n.put("Server:\t\t{s}\nAddress:\t{s}:{d}\n\n", .{ server, server, port });
+    printed.* = true;
+}
+
+fn queryOne(server: []const u8, port: u16, host: []const u8, qtype: u16, id: u16,
+    debug: bool, timeout_ms: u32, retries: u32, header_printed: *bool, qn: usize) bool
+{
     var qbuf: [512]u8 = undefined;
     const qlen = buildQuery(&qbuf, id, host, qtype) orelse return false;
 
-    const fd = sock.socket(std.os.linux.AF.INET, std.os.linux.SOCK.DGRAM, std.os.linux.IPPROTO.UDP) catch return false;
+    const fd = sock.socket(linux.AF.INET, linux.SOCK.DGRAM, linux.IPPROTO.UDP) catch return false;
     defer sock.close(fd) catch {};
-    const addr = sock.sockaddr_in(server, 53);
+    const addr = sock.sockaddr_in(server, port);
     sock.connect(fd, @ptrCast(&addr), @sizeOf(sock.sockaddr.in)) catch return false;
-    sock.setRecvTimeout(fd, 2000) catch {};
-    _ = sock.send(fd, qbuf[0..qlen], 0) catch return false;
 
-    var reply: [4096]u8 = undefined;
-    const rlen = sock.recv(fd, &reply, 0) catch return false;
-    if (rlen < 12) return false;
+    const per_attempt: u32 = if (retries == 0) timeout_ms else @max(1, @divTrunc(timeout_ms, retries));
+    var attempt: u32 = 0;
+    while (attempt < @max(1, retries)) : (attempt += 1) {
+        sock.setRecvTimeout(fd, per_attempt) catch {};
+        _ = sock.send(fd, qbuf[0..qlen], 0) catch {
+            // A connected UDP socket reports the ICMP port-unreachable on a
+            // later write; match the reference diagnostic and stop retrying.
+            n.msg(@import("libbb_zig").process.errno, "write to '{s}'", .{server});
+            return false;
+        };
 
-    if (!header_printed.*) {
-        n.put("Server:\t\t{s}\nAddress:\t{s}:53\n\n", .{ server, server });
-        header_printed.* = true;
-    }
-    if (debug) n.put("Query #{d} completed in 0ms:\n", .{qn});
+        var reply: [4096]u8 = undefined;
+        const rlen = sock.recv(fd, &reply, 0) catch continue;
+        if (rlen < 12) continue;
 
-    const flags = std.mem.readInt(u16, reply[2..4], .big);
-    const rcode = flags & 0x0f;
-    const authoritative = (flags & 0x0400) != 0;
-    if (rcode != 0) {
-        n.put("** server can't find {s}: {s}\n", .{ host, if (rcode == 3) "NXDOMAIN" else "SERVFAIL" });
+        showHeader(server, port, header_printed);
+        if (debug) n.put("Query #{d} completed in 0ms:\n", .{qn});
+
+        const flags = std.mem.readInt(u16, reply[2..4], .big);
+        const rcode = flags & 0x0f;
+        const authoritative = (flags & 0x0400) != 0;
+        if (rcode != 0) {
+            n.put("** server can't find {s}: {s}\n", .{ host, if (rcode == 3) "NXDOMAIN" else "SERVFAIL" });
+            return true;
+        }
+        n.put("{s}answer:\n", .{if (authoritative) "Authoritative " else "Non-authoritative "});
+        printAnswer(&reply, host);
+        n.put("\n", .{});
         return true;
     }
-    n.put("{s}answer:\n", .{if (authoritative) "Authoritative " else "Non-authoritative "});
-    printAnswer(&reply, host);
-    n.put("\n", .{});
-    return true;
+    return false;
 }
 
 pub fn nslookupMain(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -159,6 +176,9 @@ pub fn nslookupMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var qt_buf: [8]u16 = undefined;
     var nqt: usize = 0;
     var debug = false;
+    var port: u16 = 53;
+    var retries: u32 = 2;
+    var timeout_ms: u32 = 5000;
     while (idx < av.len and av[idx].len > 0 and av[idx][0] == '-') {
         const opt = av[idx][1..];
         idx += 1;
@@ -173,10 +193,13 @@ pub fn nslookupMain(argc: c_int, argv: [*][*:0]const u8) c_int {
             }
         } else if (std.mem.eql(u8, key, "debug")) {
             debug = true;
-        } else if (std.mem.eql(u8, key, "port") or std.mem.eql(u8, key, "retry") or
-            std.mem.eql(u8, key, "t") or std.mem.eql(u8, key, "timeout"))
-        {
-            _ = std.fmt.parseInt(u32, val, 10) catch n.usageDie("nslookup");
+        } else if (std.mem.eql(u8, key, "port")) {
+            port = std.fmt.parseInt(u16, val, 10) catch n.usageDie("nslookup");
+        } else if (std.mem.eql(u8, key, "retry")) {
+            retries = std.fmt.parseInt(u32, val, 10) catch n.usageDie("nslookup");
+        } else if (std.mem.eql(u8, key, "t") or std.mem.eql(u8, key, "timeout")) {
+            const secs = std.fmt.parseInt(u32, val, 10) catch n.usageDie("nslookup");
+            timeout_ms = secs * 1000;
         } else {
             n.usageDie("nslookup");
         }
@@ -200,26 +223,12 @@ pub fn nslookupMain(argc: c_int, argv: [*][*:0]const u8) c_int {
     var any = false;
     var id: u16 = 0x1234;
     for (qlist[0..nq], 0..) |qt, qn| {
-        if (queryOne(server, host, qt, id, debug, &header_printed, qn)) any = true;
+        if (queryOne(server, port, host, qt, id, debug, timeout_ms, retries, &header_printed, qn)) any = true;
         id += 1;
     }
-    return if (any) 0 else 1;
-}
-
-fn qtypeName(bit: usize) ?[]const u8 {
-    return switch (bit) {
-        0 => "a", 1 => "ns", 2 => "md", 3 => "mf", 4 => "cname", 5 => "soa",
-        6 => "mb", 7 => "mg", 8 => "mr", 9 => "null", 10 => "wks", 11 => "ptr",
-        12 => "hinfo", 13 => "minfo", 14 => "mx", 15 => "txt", 16 => "rp",
-        17 => "afsdb", 18 => "x25", 19 => "isdn", 20 => "rt", 21 => "nsap",
-        22 => "nsap-ptr", 23 => "sig", 24 => "key", 25 => "px", 26 => "gpos",
-        27 => "aaaa", 28 => "loc", 29 => "nxt", 30 => "eid", 31 => "nimloc",
-        32 => "srv", 33 => "atma", 34 => "naptr", 35 => "kx", 36 => "cert",
-        37 => "a6", 38 => "dname", 39 => "sink", 40 => "opt", 41 => "apl",
-        42 => "ds", 43 => "sshfp", 44 => "ipseckey", 45 => "rrsig", 46 => "nsec",
-        47 => "dnskey", 48 => "dhcid", 49 => "nsec3", 50 => "nsec3param",
-        51 => "tlsa", 52 => "smimea", 54 => "hip", 58 => "cds", 59 => "cdnskey",
-        60 => "openpgpkey", 61 => "csync", 254 => "any",
-        else => null,
-    };
+    if (!any) {
+        n.put(";; connection timed out; no servers could be reached\n\n", .{});
+        return 1;
+    }
+    return 0;
 }

@@ -1,0 +1,8 @@
+{
+  "applet": "ifconfig",
+  "name": "single_iface",
+  "stdout": "lo        Link encap:Local Loopback  \n          inet addr:127.0.0.1  Mask:255.0.0.0\n          inet6 addr: ::1/128 Scope:Host\n          UP LOOPBACK RUNNING  MTU:65536  Metric:1\n          <MATCH>\n          <MATCH>\n          collisions:0 txqueuelen:1000 \n          <MATCH>\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

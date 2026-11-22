@@ -2,7 +2,7 @@
   "applet": "arp",
   "name": "invalid_long_option",
   "stdout": "",
-  "stderr": "arp: unrecognized option '--bogusoption'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: arp\n[-vn]\t[-H HWTYPE] [-i IF] -a [HOSTNAME]\n[-v]\t\t    [-i IF] -d HOSTNAME [pub]\n[-v]\t[-H HWTYPE] [-i IF] -s HOSTNAME HWADDR [temp]\n[-v]\t[-H HWTYPE] [-i IF] -s HOSTNAME HWADDR [netmask MASK] pub\n[-v]\t[-H HWTYPE] [-i IF] -Ds HOSTNAME IFACE [netmask MASK] pub\n\nManipulate ARP cache\n\n\t-a\t\tDisplay (all) hosts\n\t-d\t\tDelete ARP entry\n\t-s\t\tSet new entry\n\t-v\t\tVerbose\n\t-n\t\tDon't resolve names\n\t-i IF\t\tNetwork interface\n\t-D\t\tRead HWADDR from IFACE\n\t-A,-p AF\tProtocol family\n\t-H HWTYPE\tHardware address type\n",
+  "stderr": "arp: unrecognized option '--bogusoption'\nBusyBox <MATCH>(2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: arp\n[-vn]\t[-H HWTYPE] [-i IF] -a [HOSTNAME]\n[-v]\t\t    [-i IF] -d HOSTNAME [pub]\n[-v]\t[-H HWTYPE] [-i IF] -s HOSTNAME HWADDR [temp]\n[-v]\t[-H HWTYPE] [-i IF] -s HOSTNAME HWADDR [netmask MASK] pub\n[-v]\t[-H HWTYPE] [-i IF] -Ds HOSTNAME IFACE [netmask MASK] pub\n\nManipulate ARP cache\n\n\t-a\t\t<MATCH>(all) hosts\n\t-d\t\tDelete ARP entry\n\t-s\t\tSet new entry\n\t-v\t\tVerbose\n\t-n\t\tDon't resolve names\n\t-i IF\t\tNetwork interface\n\t-D\t\tRead HWADDR from IFACE\n\t-A,-p AF\tProtocol family\n\t-H HWTYPE\tHardware address type\n",
   "exit": 1,
   "tree": {}
 }

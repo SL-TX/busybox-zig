@@ -1,0 +1,8 @@
+{
+  "applet": "iprule",
+  "name": "no_args",
+  "stdout": "0:\tfrom all lookup local \n105:\tfrom all lookup main suppress_prefixlength 0 \n110:\tfrom all fwmark 0x1bd00 lookup 7120 \n32766:\tfrom all lookup main \n32767:\tfrom all lookup default \n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

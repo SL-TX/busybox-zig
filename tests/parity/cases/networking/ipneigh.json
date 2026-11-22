@@ -62,6 +62,38 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:used \\d+/\\d+/\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "show",
+      "argv": [
+        "show"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:used \\d+/\\d+/\\d+"
+      ],
+      "requires": []
     }
   ]
 }

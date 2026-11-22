@@ -1,0 +1,8 @@
+{
+  "applet": "route",
+  "name": "no_args",
+  "stdout": "Kernel IP routing table\nDestination     Gateway         Genmask         Flags Metric Ref    Use Iface\ndefault         _gateway        0.0.0.0         UG    100    0        0 enp1s0\n100.89.0.0      *               255.255.0.0     U     0      0        0 wt0\n172.17.0.0      *               255.255.0.0     U     0      0        0 docker0\n172.21.0.0      *               255.255.0.0     U     0      0        0 br-3de834829072\n192.168.0.0     *               255.255.255.0   U     100    0        0 enp1s0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "iptunnel",
+  "name": "add_with_mode",
+  "stdout": "",
+  "stderr": "iptunnel: SIOCADDTUNNEL: No such device\n",
+  "exit": 1,
+  "tree": {}
+}

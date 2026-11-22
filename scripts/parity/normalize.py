@@ -35,6 +35,15 @@ _PID_RE = re.compile(r"\b(pid[=:]\s*|PID\s+)(\d+)")
 _UID_RE = re.compile(r"\b(uid[=:]\s*|UID\s+)(\d+)")
 _GID_RE = re.compile(r"\b(gid[=:]\s*|GID\s+)(\d+)")
 _TIMESTAMP_RES = (
+    # ctime-style "current date" output (e.g. "Sat Nov 21 17:35:34 UTC 2026"):
+    # weekday, day-of-month, clock and year all change between recordings.
+    # This must run before the clock-only pattern below, which would otherwise
+    # leave the volatile weekday/day/year in the golden.
+    re.compile(
+        r"\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+"
+        r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+"
+        r"\d{1,2}\s+\d{2}:\d{2}:\d{2}(?:\.\d+)?\s+[A-Za-z]{2,5}\s+\d{4}\b"
+    ),
     re.compile(r"\b\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:\s+[A-Za-z]{2,5})?"),
     re.compile(
         r"\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+"

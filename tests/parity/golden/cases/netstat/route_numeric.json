@@ -1,0 +1,8 @@
+{
+  "applet": "netstat",
+  "name": "route_numeric",
+  "stdout": "Kernel IP routing table\nDestination     Gateway         Genmask         Flags   MSS Window  irtt Iface\n0.0.0.0         192.168.0.1     0.0.0.0         UG        0 0          0 enp1s0\n100.89.0.0      0.0.0.0         255.255.0.0     U         0 0          0 wt0\n172.17.0.0      0.0.0.0         255.255.0.0     U         0 0          0 docker0\n172.21.0.0      0.0.0.0         255.255.0.0     U         0 0          0 br-3de834829072\n192.168.0.0     0.0.0.0         255.255.255.0   U         0 0          0 enp1s0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
