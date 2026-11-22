@@ -1,0 +1,8 @@
+{
+  "applet": "setconsole",
+  "name": "device",
+  "stdout": "",
+  "stderr": "setconsole: can't open '/no/such': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

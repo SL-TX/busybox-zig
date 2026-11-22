@@ -1,0 +1,8 @@
+{
+  "applet": "openvt",
+  "name": "flags",
+  "stdout": "",
+  "stderr": "openvt: can't open '/dev/tty2': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "fgconsole",
+  "name": "extra",
+  "stdout": "",
+  "stderr": "fgconsole: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

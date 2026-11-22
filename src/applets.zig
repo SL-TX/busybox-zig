@@ -388,6 +388,23 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "uptime")) return @import("procps").uptime_main;
     if (std.mem.eql(u8, name, "vmstat")) return @import("procps").vmstat_main;
     if (std.mem.eql(u8, name, "watch")) return @import("procps").watch_main;
+    // Task 18 — console-tools wave (16 applets)
+    if (std.mem.eql(u8, name, "chvt")) return @import("console_tools").chvt_main;
+    if (std.mem.eql(u8, name, "clear")) return @import("console_tools").clear_main;
+    if (std.mem.eql(u8, name, "deallocvt")) return @import("console_tools").deallocvt_main;
+    if (std.mem.eql(u8, name, "dumpkmap")) return @import("console_tools").dumpkmap_main;
+    if (std.mem.eql(u8, name, "fgconsole")) return @import("console_tools").fgconsole_main;
+    if (std.mem.eql(u8, name, "kbd_mode")) return @import("console_tools").kbd_mode_main;
+    if (std.mem.eql(u8, name, "loadfont")) return @import("console_tools").loadfont_main;
+    if (std.mem.eql(u8, name, "setfont")) return @import("console_tools").setfont_main;
+    if (std.mem.eql(u8, name, "loadkmap")) return @import("console_tools").loadkmap_main;
+    if (std.mem.eql(u8, name, "openvt")) return @import("console_tools").openvt_main;
+    if (std.mem.eql(u8, name, "reset")) return @import("console_tools").reset_main;
+    if (std.mem.eql(u8, name, "resize")) return @import("console_tools").resize_main;
+    if (std.mem.eql(u8, name, "setconsole")) return @import("console_tools").setconsole_main;
+    if (std.mem.eql(u8, name, "setkeycodes")) return @import("console_tools").setkeycodes_main;
+    if (std.mem.eql(u8, name, "setlogcons")) return @import("console_tools").setlogcons_main;
+    if (std.mem.eql(u8, name, "showkey")) return @import("console_tools").showkey_main;
     // shell
     if (std.mem.eql(u8, name, "ash")) return @import("shell").ash_main;
     if (std.mem.eql(u8, name, "hush")) return @import("shell").hush_main;

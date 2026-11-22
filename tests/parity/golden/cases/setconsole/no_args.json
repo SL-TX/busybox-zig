@@ -1,0 +1,8 @@
+{
+  "applet": "setconsole",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "setconsole: can't open '/dev/tty': No such device or address\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "deallocvt",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "deallocvt: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

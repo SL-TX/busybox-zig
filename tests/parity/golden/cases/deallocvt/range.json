@@ -1,0 +1,8 @@
+{
+  "applet": "deallocvt",
+  "name": "range",
+  "stdout": "",
+  "stderr": "deallocvt: number 64 is not in 1..63 range\n",
+  "exit": 1,
+  "tree": {}
+}

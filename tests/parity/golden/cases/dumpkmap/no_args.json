@@ -1,0 +1,8 @@
+{
+  "applet": "dumpkmap",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "dumpkmap: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

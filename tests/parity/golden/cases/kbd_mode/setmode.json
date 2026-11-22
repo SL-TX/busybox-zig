@@ -1,0 +1,8 @@
+{
+  "applet": "kbd_mode",
+  "name": "setmode",
+  "stdout": "",
+  "stderr": "kbd_mode: KDSKBMODE: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {}
+}

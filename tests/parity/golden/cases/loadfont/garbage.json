@@ -1,0 +1,8 @@
+{
+  "applet": "loadfont",
+  "name": "garbage",
+  "stdout": "",
+  "stderr": "loadfont: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

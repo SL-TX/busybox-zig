@@ -1,0 +1,8 @@
+{
+  "applet": "kbd_mode",
+  "name": "ascii",
+  "stdout": "",
+  "stderr": "kbd_mode: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

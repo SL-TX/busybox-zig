@@ -1,0 +1,8 @@
+{
+  "applet": "setfont",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: setfont [-m MAPFILE] [-C TTY] FILE\n\nLoad a console font\n\n\t-m MAPFILE\tLoad console screen map\n\t-C TTY\t\tAffect TTY instead of /dev/tty\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

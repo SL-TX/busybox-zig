@@ -1,0 +1,8 @@
+{
+  "applet": "setlogcons",
+  "name": "one",
+  "stdout": "",
+  "stderr": "setlogcons: can't open '/dev/tty1': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

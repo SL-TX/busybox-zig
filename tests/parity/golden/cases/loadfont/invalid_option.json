@@ -1,0 +1,8 @@
+{
+  "applet": "loadfont",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "loadfont: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: loadfont < font\n\nLoad a console font from stdin\n",
+  "exit": 1,
+  "tree": {}
+}

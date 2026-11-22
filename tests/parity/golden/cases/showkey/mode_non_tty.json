@@ -1,0 +1,8 @@
+{
+  "applet": "showkey",
+  "name": "mode_non_tty",
+  "stdout": "",
+  "stderr": "showkey: can't tcsetattr for stdin: Inappropriate ioctl for device\nshowkey: KDGKBMODE: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {}
+}

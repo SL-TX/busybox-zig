@@ -1,0 +1,8 @@
+{
+  "applet": "deallocvt",
+  "name": "invalid",
+  "stdout": "",
+  "stderr": "deallocvt: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

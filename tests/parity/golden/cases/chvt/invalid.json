@@ -1,0 +1,8 @@
+{
+  "applet": "chvt",
+  "name": "invalid",
+  "stdout": "",
+  "stderr": "chvt: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

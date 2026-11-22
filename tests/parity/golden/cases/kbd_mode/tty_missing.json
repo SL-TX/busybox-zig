@@ -1,0 +1,8 @@
+{
+  "applet": "kbd_mode",
+  "name": "tty_missing",
+  "stdout": "",
+  "stderr": "kbd_mode: can't open '/no/such/file': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "resize",
+  "name": "no_args",
+  "stdout": "COLUMNS=0;LINES=0;export COLUMNS LINES;\n",
+  "stderr": "\u001b7\u001b[r\u001b[999;999H\u001b[6n\u001b8",
+  "exit": 255,
+  "tree": {}
+}

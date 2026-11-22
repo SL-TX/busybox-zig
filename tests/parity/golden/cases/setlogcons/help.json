@@ -1,0 +1,8 @@
+{
+  "applet": "setlogcons",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: setlogcons [N]\n\nPin kernel output to VT console N. Default:0 (do not pin)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

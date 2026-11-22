@@ -1,0 +1,8 @@
+{
+  "applet": "showkey",
+  "name": "ascii_pty",
+  "stdout": "Press any keys, program terminates on EOF (ctrl-D):\r\n\n 65 0101 0x41\r\n 66 0102 0x42\r\n 67 0103 0x43\r\n  4 0004 0x04\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
