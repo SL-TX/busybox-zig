@@ -445,6 +445,26 @@ pub fn nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return @import("nc.zig").ncMain(argc, argv);
 }
 
+// Task 13c — network servers. Each lives in its own file; the module root
+// only re-exports their entry points.
+pub const dumpleases_main = @import("dumpleases.zig").dumpleasesMain;
+pub const dhcprelay_main = @import("dhcprelay.zig").dhcprelayMain;
+pub const dnsd_main = @import("dnsd.zig").dnsdMain;
+pub const httpd_main = @import("httpd.zig").httpdMain;
+pub const fakeidentd_main = @import("fakeidentd.zig").fakeidentdMain;
+pub const pscan_main = @import("pscan.zig").pscanMain;
+pub const ftpd_main = @import("ftpd.zig").ftpdMain;
+pub const tftpd_main = @import("tftpd.zig").tftpdMain;
+pub const inetd_main = @import("inetd.zig").inetdMain;
+pub const ntpd_main = @import("ntpd.zig").ntpdMain;
+pub const tcpsvd_main = @import("tcpsvd.zig").tcpsvdMain;
+pub const udpsvd_main = @import("tcpsvd.zig").udpsvdMain;
+pub const udhcpc_main = @import("udhcp.zig").udhcpcMain;
+pub const udhcpc6_main = @import("udhcp.zig").udhcpc6Main;
+pub const udhcpd_main = @import("udhcp.zig").udhcpdMain;
+pub const telnetd_main = @import("telnetd.zig").telnetdMain;
+pub const tc_main = @import("tc.zig").tcMain;
+
 fn legacy_nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     if (args.len < 3) return 1;

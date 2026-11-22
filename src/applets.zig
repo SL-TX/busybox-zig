@@ -279,6 +279,24 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "tftp")) return @import("networking").tftp_main;
     if (std.mem.eql(u8, name, "whois")) return @import("networking").whois_main;
     if (std.mem.eql(u8, name, "netcat")) return @import("networking").netcat_main;
+    // Task 13c — network servers
+    if (std.mem.eql(u8, name, "dumpleases")) return @import("networking").dumpleases_main;
+    if (std.mem.eql(u8, name, "dhcprelay")) return @import("networking").dhcprelay_main;
+    if (std.mem.eql(u8, name, "dnsd")) return @import("networking").dnsd_main;
+    if (std.mem.eql(u8, name, "httpd")) return @import("networking").httpd_main;
+    if (std.mem.eql(u8, name, "fakeidentd")) return @import("networking").fakeidentd_main;
+    if (std.mem.eql(u8, name, "pscan")) return @import("networking").pscan_main;
+    if (std.mem.eql(u8, name, "ftpd")) return @import("networking").ftpd_main;
+    if (std.mem.eql(u8, name, "tftpd")) return @import("networking").tftpd_main;
+    if (std.mem.eql(u8, name, "inetd")) return @import("networking").inetd_main;
+    if (std.mem.eql(u8, name, "ntpd")) return @import("networking").ntpd_main;
+    if (std.mem.eql(u8, name, "tcpsvd")) return @import("networking").tcpsvd_main;
+    if (std.mem.eql(u8, name, "udpsvd")) return @import("networking").udpsvd_main;
+    if (std.mem.eql(u8, name, "udhcpc")) return @import("networking").udhcpc_main;
+    if (std.mem.eql(u8, name, "udhcpc6")) return @import("networking").udhcpc6_main;
+    if (std.mem.eql(u8, name, "udhcpd")) return @import("networking").udhcpd_main;
+    if (std.mem.eql(u8, name, "telnetd")) return @import("networking").telnetd_main;
+    if (std.mem.eql(u8, name, "tc")) return @import("networking").tc_main;
     // miscutils
     if (std.mem.eql(u8, name, "ionice")) return @import("miscutils").ionice_main;
     if (std.mem.eql(u8, name, "renice")) return @import("miscutils").renice_main;
