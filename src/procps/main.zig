@@ -253,3 +253,8 @@ pub const sysctl_main = @import("sysctl.zig").main;
 pub const uptime_main = @import("uptime.zig").main;
 pub const vmstat_main = @import("vmstat.zig").main;
 pub const watch_main = @import("watch.zig").main;
+
+// Exposed for the unit tests that verify non-trivial computed values.
+pub const formatTime = @import("ps.zig").formatTime;
+pub const rowValues = @import("top.zig").rowValues;
+pub const nmeterScale = @import("nmeter.zig").scale;

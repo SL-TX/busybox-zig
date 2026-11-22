@@ -40,6 +40,33 @@ test "parseSignal accepts numbers, names and SIG-prefixed names" {
     try std.testing.expectError(error.InvalidSignal, ps.parseSignal("BOGUS"));
 }
 
+// Fix round 1: direct tests for values that were previously fabricated.
+test "top rowValues derives RSS, %RSS and %CPU from proc fields" {
+    var st: @import("libbb_zig").procps.Stat = .{};
+    st.rss = 80000; // pages -> 320000 KB
+    st.utime = 600;
+    st.stime = 400;
+    const v = ps.rowValues(st, 1000, 16_000_000, 100_000);
+    try std.testing.expectEqual(@as(u32, 1000), v.uid);
+    try std.testing.expectEqual(@as(u64, 320000), v.rss_kb);
+    try std.testing.expectEqual(@as(u64, 200), v.rss_pct); // 2.00% in 1/100 percent
+    try std.testing.expectEqual(@as(u64, 10), v.cpu_pct); // 1.00% in 1/1000 percent
+}
+
+test "ps elapsed time formats days, hours and minutes" {
+    var buf: [32]u8 = undefined;
+    try std.testing.expectEqualStrings(" 5d03", ps.formatTime(&buf, 5 * 86400 + 3 * 3600));
+    try std.testing.expectEqualStrings(" 2h05", ps.formatTime(&buf, 2 * 3600 + 5 * 60));
+    try std.testing.expectEqualStrings("12:34", ps.formatTime(&buf, 12 * 60 + 34));
+}
+
+test "nmeter scale produces unit-suffixed four-character fields" {
+    var buf: [8]u8 = undefined;
+    try std.testing.expectEqualStrings(" 15g", ps.nmeterScale(16113332 * 1024, &buf));
+    try std.testing.expectEqualStrings("900m", ps.nmeterScale(900 * 1024 * 1024, &buf));
+    try std.testing.expectEqualStrings("2176", ps.nmeterScale(2176, &buf));
+}
+
 test "parseMemInfo reads the fields free needs" {
     const data = "MemTotal:       16384256 kB\nMemFree:         1234567 kB\nMemAvailable:    4567890 kB\nBuffers:          100000 kB\nCached:          2000000 kB\nSwapTotal:       1000000 kB\nSwapFree:         900000 kB\n";
     const m = try ps.parseMemInfo(data);

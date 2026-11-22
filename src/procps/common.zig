@@ -305,6 +305,49 @@ pub fn sysinfo() linux.Sysinfo {
     return info;
 }
 
+/// Real uid of a process from /proc/PID/status.
+pub fn procUid(pid: pid_t) u32 {
+    const path = procPath(std.heap.page_allocator, pid, "status") catch return 0;
+    defer std.heap.page_allocator.free(path);
+    const data = readFile(std.heap.page_allocator, path) orelse return 0;
+    defer std.heap.page_allocator.free(data);
+    var lines = std.mem.splitScalar(u8, data, '\n');
+    while (lines.next()) |line| {
+        if (!std.mem.startsWith(u8, line, "Uid:")) continue;
+        var it = std.mem.tokenizeAny(u8, line[4..], " \t");
+        return std.fmt.parseInt(u32, it.next() orelse "0", 10) catch 0;
+    }
+    return 0;
+}
+
+/// Login name for a uid from /etc/passwd, truncated by the caller's width.
+pub fn userName(a: Allocator, uid: u32) []const u8 {
+    const data = readFile(a, "/etc/passwd") orelse return "";
+    defer a.free(data);
+    var lines = std.mem.splitScalar(u8, data, '\n');
+    while (lines.next()) |line| {
+        var it = std.mem.splitScalar(u8, line, ':');
+        const name = it.next() orelse continue;
+        _ = it.next();
+        const uid_s = it.next() orelse continue;
+        if ((std.fmt.parseInt(u32, uid_s, 10) catch continue) == uid) return a.dupe(u8, name) catch "";
+    }
+    return "";
+}
+
+/// (dev_major, dev_minor, inode) of a path, using statx so it works without
+/// libc. Returns null when the path cannot be stat'ed.
+pub const FileId = struct { dev_major: u32, dev_minor: u32, inode: u64 };
+
+pub fn fileId(path: []const u8) ?FileId {
+    const z = zstr(std.heap.page_allocator, path) catch return null;
+    defer std.heap.page_allocator.free(z);
+    var buf: linux.Statx = undefined;
+    const rc = linux.statx(linux.AT.FDCWD, z.ptr, 0, linux.STATX.BASIC_STATS, &buf);
+    if (linux.errno(rc) != .SUCCESS) return null;
+    return .{ .dev_major = buf.dev_major, .dev_minor = buf.dev_minor, .inode = buf.ino };
+}
+
 /// PIDs whose comm, argv[0] or exe matches `name` (Task 15 helper).
 pub fn findPidByName(name: []const u8) []pid_t {
     return bb.procps.findPidByName(name) catch &.{};

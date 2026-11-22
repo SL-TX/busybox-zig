@@ -88,6 +88,20 @@ fn userName(uid: u32) []const u8 {
     return "";
 }
 
+pub fn formatTime(buf: []u8, tt_in: u64) []const u8 {
+    var tt = tt_in; // seconds
+    var ff = tt % 60;
+    tt /= 60; // minutes
+    if (tt < 60) return std.fmt.bufPrint(buf, "{d: >2}:{d:0>2}", .{ tt, ff }) catch "0:00";
+    ff = tt % 60;
+    tt /= 60; // hours
+    if (tt < 24) return std.fmt.bufPrint(buf, "{d: >2}h{d:0>2}", .{ tt, ff }) catch "0h00";
+    ff = tt % 24;
+    tt /= 24; // days
+    if (tt < 100) return std.fmt.bufPrint(buf, "{d: >2}d{d:0>2}", .{ tt, ff }) catch "0d00";
+    return std.fmt.bufPrint(buf, "{d: >4}d", .{tt}) catch "0d";
+}
+
 fn smartTime(buf: []u8, ticks: u64) []const u8 {
     var tt = ticks / 100; // seconds
     var ff = tt % 60;
@@ -115,6 +129,7 @@ const Row = struct {
     st: bb.procps.Stat,
     uid: u32,
     cmdline: []const u8,
+    uptime: u64 = 0,
 };
 
 fn uidOf(pid: i32) u32 {
@@ -189,7 +204,7 @@ fn cell(buf: []u8, col: Column, row: Row) []const u8 {
     }
     if (std.mem.eql(u8, name, "stat")) return std.fmt.bufPrint(buf, "{c}", .{st.state}) catch "";
     if (std.mem.eql(u8, name, "time")) return smartTime(buf, st.utime + st.stime);
-    if (std.mem.eql(u8, name, "etime")) return std.fmt.bufPrint(buf, "00:00", .{}) catch "";
+    if (std.mem.eql(u8, name, "etime")) return formatTime(buf, row.uptime -| (st.starttime / 100));
     if (std.mem.eql(u8, name, "pid")) return alignRight(buf, std.fmt.bufPrint(buf[1024..], "{d}", .{st.pid}) catch "", w);
     if (std.mem.eql(u8, name, "ppid")) return alignRight(buf, std.fmt.bufPrint(buf[1024..], "{d}", .{st.ppid}) catch "", w);
     if (std.mem.eql(u8, name, "pgid")) return alignRight(buf, std.fmt.bufPrint(buf[1024..], "{d}", .{st.pgrp}) catch "", w);
@@ -263,12 +278,15 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
 
     const pids = c.listPids(A, "/proc") catch return 1;
     defer A.free(pids);
+    const si = c.sysinfo();
+    const uptime: u64 = @intCast(@max(si.uptime, 0));
     for (pids) |pid| {
         const st = bb.procps.parseProcStat(@intCast(pid)) catch continue;
         const row = Row{
             .st = st,
             .uid = uidOf(@intCast(pid)),
             .cmdline = displayCommand(@intCast(pid), st.commSlice(), MAX_WIDTH),
+            .uptime = uptime,
         };
         defer A.free(@constCast(row.cmdline));
         n = 0;
@@ -315,7 +333,7 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
                 const tst = bb.procps.parseProcStat(tid) catch continue;
                 var tcomm: [64]u8 = undefined;
                 const tname = std.fmt.bufPrint(&tcomm, "{{{s}}}", .{commOf(tst)}) catch continue;
-                const trow = Row{ .st = tst, .uid = row.uid, .cmdline = A.dupe(u8, tname) catch continue };
+                const trow = Row{ .st = tst, .uid = row.uid, .cmdline = A.dupe(u8, tname) catch continue, .uptime = uptime };
                 defer A.free(@constCast(trow.cmdline));
                 for (cols, 0..) |col, idx| {
                     var cbuf: [MAX_WIDTH + 1]u8 = undefined;

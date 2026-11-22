@@ -185,6 +185,75 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "mount_silent_off",
+      "argv": [
+        "-s",
+        "/etc/hosts"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "mount_silent_on",
+      "argv": [
+        "-s",
+        "-m",
+        "/etc/hosts"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ipv4_port",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "sh",
+        "-c",
+        "python3 -m http.server 38974 --bind 127.0.0.1 >/dev/null 2>&1 & p=$!; sleep 0.4; <BB> fuser -s -4 38974/tcp; r=$?; kill $p 2>/dev/null; exit $r"
+      ]
+    },
+    {
+      "name": "ipv6_port",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "sh",
+        "-c",
+        "python3 -m http.server 38974 --bind ::1 >/dev/null 2>&1 & p=$!; sleep 0.4; <BB> fuser -s -6 38974/tcp; r=$?; kill $p 2>/dev/null; exit $r"
+      ]
     }
   ]
 }

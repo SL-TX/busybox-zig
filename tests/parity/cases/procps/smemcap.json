@@ -27,7 +27,10 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [
-        "regex:(?s).*"
+        "regex:(?s)(\\d{1,7}/smaps).*",
+        "regex:\\s+\\d+",
+        "regex:[0-9a-f]{6,}",
+        "regex:\\d+"
       ],
       "requires": []
     },
@@ -44,7 +47,10 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [
-        "regex:(?s).*"
+        "regex:(?s)(\\d{1,7}/smaps).*",
+        "regex:\\s+\\d+",
+        "regex:[0-9a-f]{6,}",
+        "regex:\\d+"
       ],
       "requires": []
     }

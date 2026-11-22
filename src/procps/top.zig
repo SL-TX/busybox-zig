@@ -5,6 +5,39 @@ const linux = std.os.linux;
 const c = @import("common.zig");
 const bb = @import("libbb_zig");
 
+/// Values shown in one top process row, derived from real /proc fields.
+pub const RowValues = struct {
+    uid: u32,
+    rss_kb: u64,
+    rss_pct: u64,
+    cpu_pct: u64,
+};
+
+/// CPU percentages use tenths of a percent before SANITIZE, matching the
+/// reference's UPSCALE=1000 path with FEATURE_TOP_DECIMALS enabled.
+pub fn rowValues(st: bb.procps.Stat, uid: u32, total_mem_kb: u64, cpu_total: u64) RowValues {
+    const rss_kb: u64 = @intCast(@as(u64, @intCast(@max(st.rss, 0))) * 4);
+    const rss_pct: u64 = if (total_mem_kb != 0)
+        @intCast((@as(u128, rss_kb) * 10000) / @as(u128, total_mem_kb))
+    else
+        0;
+    const cpu_pct: u64 = if (cpu_total != 0)
+        @intCast((@as(u128, st.utime + st.stime) * 1000) / @as(u128, cpu_total))
+    else
+        0;
+    return .{ .uid = uid, .rss_kb = rss_kb, .rss_pct = @min(rss_pct, 9900), .cpu_pct = @min(cpu_pct, 9900) };
+}
+
+fn smartSize(v: u64, buf: []u8) []const u8 {
+    const units = " kmgtpezy";
+    if (v < 1000) return std.fmt.bufPrint(buf, "{d}", .{v}) catch "0";
+    var n = v;
+    var idx: usize = 0;
+    while (n >= 1024 and idx + 1 < units.len) : (idx += 1) n /= 1024;
+    if (idx == 0) return std.fmt.bufPrint(buf, "{d}", .{n}) catch "0";
+    return std.fmt.bufPrint(buf, "{d}{c}", .{ n, units[idx] }) catch "0";
+}
+
 fn parsePositive(s: []const u8) ?u64 {
     return std.fmt.parseInt(u64, s, 10) catch null;
 }
@@ -113,6 +146,9 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const stat_data = c.readFile(a, "/proc/stat") orelse return 1;
     defer a.free(stat_data);
     const cpu = cpuLine(stat_data);
+    var cpu_total: u64 = 1;
+    for (cpu) |v| cpu_total += v;
+    const total_mem_kb: u64 = info.totalram / 1024;
     const load_data = c.readFile(a, "/proc/loadavg") orelse return 1;
     defer a.free(load_data);
     const load = loadLine(load_data);
@@ -173,9 +209,15 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
             const st = bb.procps.parseProcStat(@intCast(pid)) catch continue;
             const cmd = c.cmdline(a, @intCast(pid)) orelse st.commSlice();
             defer if (cmd.ptr != st.commSlice().ptr) a.free(@constCast(cmd));
-            c.printfOut("{d: >5} {d: >5} root     {c}   {d: >5} {d: >4} {d: >3} {d: >4} {s}{s}\n", .{
-                @as(u32, @intCast(pid)), @as(u32, @bitCast(st.ppid)), st.state,
-                @as(u64, 0), @as(u64, 0), @as(u64, 0), @as(u64, 0), cmd, suffix,
+            const vals = rowValues(st, c.procUid(@intCast(pid)), total_mem_kb, cpu_total);
+            const uname = c.userName(a, vals.uid);
+            defer if (uname.len != 0) a.free(@constCast(uname));
+            const user = if (uname.len != 0) uname[0..@min(uname.len, 8)] else "0";
+            var rss_buf: [16]u8 = undefined;
+            c.printfOut("{d: >5} {d: >5} {s: <8} {c}   {s: >5} {d: >4} {d: >3} {d: >4} {s}{s}\n", .{
+                @as(u32, @intCast(pid)), @as(u32, @bitCast(st.ppid)), user, st.state,
+                smartSize(vals.rss_kb, &rss_buf), vals.rss_pct / 100, vals.cpu_pct / 100,
+                @as(u64, 0), cmd, suffix,
             });
             if (show_threads) {
                 const task_path = c.procPath(a, @intCast(pid), "task") catch continue;
@@ -206,8 +248,8 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
                     var tname_buf: [64]u8 = undefined;
                     const tcomm = tst.commSlice();
                     const tname = std.fmt.bufPrint(&tname_buf, "{{{s}}}", .{tcomm[0..@min(tcomm.len, 15)]}) catch continue;
-                    c.printfOut("{d: >5} {d: >5} root     {c}   {d: >5} {d: >4} {d: >3} {d: >4} {s}{s}\n", .{
-                        @as(u32, @intCast(tid)), @as(u32, @bitCast(st.ppid)), tst.state,
+                    c.printfOut("{d: >5} {d: >5} {s: <8} {c}   {d: >5} {d: >4} {d: >3} {d: >4} {s}{s}\n", .{
+                        @as(u32, @intCast(tid)), @as(u32, @bitCast(st.ppid)), user, tst.state,
                         @as(u64, 0), @as(u64, 0), @as(u64, 0), @as(u64, 0), tname, suffix,
                     });
                 }

@@ -1,7 +1,7 @@
 {
   "applet": "iostat",
   "name": "cpu",
-  "stdout": "Linux <MATCH>.111+deb13-amd64 <MATCH>\n\navg-cpu:  %user   %nice %system %iowait  %steal   %idle\n           <MATCH>    <MATCH>    <MATCH>    <MATCH>    <MATCH>   <MATCH>\n\n",
+  "stdout": "Linux<MATCH>+deb<MATCH>-amd<MATCH> <MATCH>\n\navg-cpu<MATCH>  %user   %nice %system %iowait  %steal   %idle<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\n\n",
   "stderr": "",
   "exit": 0,
   "tree": {}

@@ -209,22 +209,38 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
         c.printfOut("{s}     all    {d: >9.2}\n", .{ stamp, @as(f64, @floatFromInt(total_irq)) / 100.0 });
         if (std.mem.eql(u8, kind, "ALL") or std.mem.eql(u8, kind, "CPU") or std.mem.eql(u8, kind, "SCPU")) {
             c.out("\n");
-            var names: std.ArrayList([]const u8) = .empty;
+            const Irq = struct { name: []const u8, count: u64 };
+            var names: std.ArrayList(Irq) = .empty;
             if (c.readFile(a, "/proc/interrupts")) |irq_data| {
-                // Keep the buffer alive for the whole section.
+                // Sum each IRQ's per-CPU counters: the rate is count / itv.
                 var ilines = std.mem.splitScalar(u8, irq_data, '\n');
                 while (ilines.next()) |line| {
                     const colon = std.mem.indexOfScalar(u8, line, ':') orelse continue;
                     const name = std.mem.trim(u8, line[0..colon], " \t");
                     if (name.len == 0) continue;
-                    names.append(a, name) catch {};
+                    var count: u64 = 0;
+                    var it = std.mem.tokenizeAny(u8, line[colon + 1 ..], " \t");
+                    while (it.next()) |tok| count += std.fmt.parseInt(u64, tok, 10) catch 0;
+                    names.append(a, .{ .name = name, .count = count }) catch {};
+                }
+                var iticks: u64 = 1;
+                if (c.readFile(a, "/proc/stat")) |sd| {
+                    defer a.free(sd);
+                    var sl = std.mem.splitScalar(u8, sd, '\n');
+                    if (sl.next()) |first| {
+                        var sit = std.mem.tokenizeAny(u8, first, " \t");
+                        _ = sit.next();
+                        while (sit.next()) |tok| iticks += std.fmt.parseInt(u64, tok, 10) catch 0;
+                    }
                 }
                 c.printfOut("{s}     CPU", .{stamp});
-                for (names.items) |name| c.printfOut("{s: >8}/s", .{name});
+                for (names.items) |irq| c.printfOut("{s: >8}/s", .{irq.name});
                 c.out("\n");
                 for (cpus.items, 0..) |_, idx| {
                     c.printfOut("{s}    {d: >4}", .{ stamp, idx });
-                    for (names.items) |_| c.printfOut(" {d: >8.2}", .{@as(f64, @floatFromInt(total_irq)) / 100.0});
+                    for (names.items) |irq| {
+                        c.printfOut(" {d: >8.2}", .{@as(f64, @floatFromInt(irq.count)) / @as(f64, @floatFromInt(iticks)) * 100.0});
+                    }
                     c.out("\n");
                 }
                 a.free(irq_data);

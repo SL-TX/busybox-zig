@@ -111,6 +111,26 @@
         "regex:(?s)(?<=COMMAND\\n).*"
       ],
       "requires": []
+    },
+    {
+      "name": "etime",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\b\\d+\\b"
+      ],
+      "requires": [],
+      "exec_argv": [
+        "sh",
+        "-c",
+        "<BB> ps -o pid,etime 2>/dev/null | head -3"
+      ]
     }
   ]
 }

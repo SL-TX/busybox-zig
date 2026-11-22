@@ -1,7 +1,7 @@
 {
   "applet": "iostat",
   "name": "kilobytes",
-  "stdout": "Linux <MATCH>.111+deb13-amd64 <MATCH>\n\navg-cpu:  %user   %nice %system %iowait  %steal   %idle\n           <MATCH>    <MATCH>    <MATCH>    <MATCH>    <MATCH>   <MATCH>\n\nDevice:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn\nnvme0n1          <MATCH>      <MATCH>       <MATCH><MATCH><MATCH><MATCH>           <MATCH>         <MATCH>         <MATCH><MATCH><MATCH>\nnvme0n1p1         <MATCH>         <MATCH>         <MATCH><MATCH><MATCH>\nnvme0n1p2         <MATCH>         <MATCH>        <MATCH><MATCH><MATCH>\nnvme0n1p3        <MATCH>      <MATCH>       <MATCH><MATCH><MATCH><MATCH>                 <MATCH>         <MATCH>         <MATCH><MATCH><MATCH>\n\n",
+  "stdout": "Linux<MATCH>+deb<MATCH>-amd<MATCH> <MATCH>\n\navg-cpu<MATCH>  %user   %nice %system %iowait  %steal   %idle<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\n\nDevice<MATCH>            tps    kB_read<MATCH>s    kB_wrtn<MATCH>s    kB_read    kB_wrtn\nnvme<MATCH>n<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\nnvme<MATCH>n<MATCH>p<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\nnvme<MATCH>n<MATCH>p<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\nnvme<MATCH>n<MATCH>p<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\n\n",
   "stderr": "",
   "exit": 0,
   "tree": {}

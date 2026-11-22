@@ -83,6 +83,84 @@
       "script": [
         "\u0003"
       ]
+    },
+    {
+      "name": "total_memory",
+      "argv": [
+        "-d",
+        "-1",
+        "%[mt]"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [
+        "regex:(?s)(?<=\\r\\n).*",
+        "regex:\\d+"
+      ],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": [
+        "\u0003"
+      ]
+    },
+    {
+      "name": "used_memory",
+      "argv": [
+        "-d",
+        "-1",
+        "%m"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [
+        "regex:(?s)(?<=\\r\\n).*",
+        "regex:\\d+"
+      ],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": [
+        "\u0003"
+      ]
+    },
+    {
+      "name": "swap",
+      "argv": [
+        "-d",
+        "-1",
+        "%s"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [
+        "regex:(?s)(?<=\\r\\n).*",
+        "regex:\\d+"
+      ],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": [
+        "\u0003"
+      ]
     }
   ]
 }

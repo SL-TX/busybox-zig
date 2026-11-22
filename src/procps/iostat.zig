@@ -25,6 +25,11 @@ fn timeOfDay(buf: []u8) []const u8 {
     return std.fmt.bufPrint(buf, "{d:0>2}:{d:0>2}:{d:0>2}", .{ tod / 3600, (tod / 60) % 60, tod % 60 }) catch "00:00:00";
 }
 
+fn fullUint(s: ?[]const u8) ?u64 {
+    const text = s orelse return null;
+    return std.fmt.parseInt(u64, text, 10) catch null;
+}
+
 fn firstUint(s: []const u8) u64 {
     var it = std.mem.tokenizeAny(u8, s, " \t");
     const tok = it.next() orelse return 0;
@@ -41,6 +46,7 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     var cpu = false;
     var disk = false;
     var stamp = false;
+    var omit_zero = false;
     var unit_str: []const u8 = "Blk";
     var unit_div: f64 = 1;
     var i: usize = 1;
@@ -51,7 +57,7 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
             'c' => cpu = true,
             'd' => disk = true,
             't' => stamp = true,
-            'z' => {},
+            'z' => omit_zero = true,
             'k' => {
                 unit_str = " kB";
                 unit_div = 2;
@@ -86,7 +92,10 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     while (lines.next()) |line| {
         if (std.mem.startsWith(u8, line, "cpu")) ncpu += 1;
     }
-    var idle_sum: u64 = 0;
+    // iostat.c:get_cpu_statistics() sums fields 0..7 into GLOBAL_UPTIME and
+    // computes each column as (curr - prev) / itv * 100. On the first report
+    // prev is zero and itv is that sum, i.e. each column is a plain fraction.
+    var cpu_fields: [9]u64 = std.mem.zeroes([9]u64);
     var total: u64 = 0;
     lines = std.mem.splitScalar(u8, stat, '\n');
     if (lines.next()) |line| {
@@ -94,13 +103,22 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
         _ = it.next();
         var idx: usize = 0;
         while (it.next()) |tok| : (idx += 1) {
-            const v = std.fmt.parseInt(u64, tok, 10) catch 0;
-            total += v;
-            if (idx == 3) idle_sum += v;
-            if (idx == 8) idle_sum += v;
+            if (idx >= cpu_fields.len) break;
+            cpu_fields[idx] = std.fmt.parseInt(u64, tok, 10) catch 0;
+            if (idx < 8) total += cpu_fields[idx];
         }
     }
-    const idle_pct = if (total != 0) @as(f64, @floatFromInt(idle_sum)) / @as(f64, @floatFromInt(total)) * 100 else 0;
+    const pct = struct {
+        fn f(v: u64, t: u64) f64 {
+            return @as(f64, @floatFromInt(v)) / @as(f64, @floatFromInt(@max(t, 1))) * 100;
+        }
+    }.f;
+    const user_pct = pct(cpu_fields[0], total);
+    const nice_pct = pct(cpu_fields[1], total);
+    const system_pct = pct(cpu_fields[2] + cpu_fields[5] + cpu_fields[6], total);
+    const iowait_pct = pct(cpu_fields[4], total);
+    const steal_pct = pct(cpu_fields[7], total);
+    const idle_pct = pct(cpu_fields[3], total);
 
     c.printfOut("{s} {s} ({s}) \t{s} \t_{s}_\t({d} CPU)\n\n", .{
         std.mem.sliceTo(&uts.sysname, 0), release, std.mem.trimEnd(u8, host, "\n"),
@@ -115,8 +133,7 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
     if (cpu) {
         c.out("avg-cpu:  %user   %nice %system %iowait  %steal   %idle\n");
         c.printfOut("        {d: >7.2} {d: >7.2} {d: >7.2} {d: >7.2} {d: >7.2} {d: >7.2}\n", .{
-            @as(f64, @floatFromInt(total -| idle_sum)) / @as(f64, @floatFromInt(@max(total, 1))) * 100 * 0.4,
-            @as(f64, 0), @as(f64, 0.15), @as(f64, 0.03), @as(f64, 0), idle_pct,
+            user_pct, nice_pct, system_pct, iowait_pct, steal_pct, idle_pct,
         });
         if (disk) c.out("\n");
     }
@@ -149,16 +166,23 @@ pub fn main(argc: c_int, argv: [*][*:0]const u8) c_int {
             _ = it.next(); // read merges
             const rd_sectors = firstUint(it.next() orelse "0");
             _ = it.next(); // read time
-            const wr_ops = firstUint(it.next() orelse "0");
+            var wr_ops = firstUint(it.next() orelse "0");
             _ = it.next(); // write merges
-            const wr_sectors = firstUint(it.next() orelse "0");
+            const wr_sectors = fullUint(it.next());
+            // iostat.c falls back when its sscanf gets fewer than six fields:
+            // wr_ops becomes rd_sectors, so short (128-byte-chunk) records are
+            // never treated as idle by -z.
+            const full = wr_sectors != null;
+            if (!full) wr_ops = rd_sectors;
+            const wr_sec = wr_sectors orelse rd_sectors;
+            if (omit_zero and full and rd_ops == 0 and wr_ops == 0) continue;
             c.printfOut("{s: <13} {d: >8.2} {d: >12.2} {d: >12.2} {d: >10} {d: >10}\n", .{
                 name,
                 @as(f64, @floatFromInt(rd_ops + wr_ops)) / itv,
                 @as(f64, @floatFromInt(rd_sectors)) / itv / unit_div,
-                @as(f64, @floatFromInt(wr_sectors)) / itv / unit_div,
+                @as(f64, @floatFromInt(wr_sec)) / itv / unit_div,
                 rd_sectors / @as(u64, @intFromFloat(unit_div)),
-                wr_sectors / @as(u64, @intFromFloat(unit_div)),
+                wr_sec / @as(u64, @intFromFloat(unit_div)),
             });
         }
     }

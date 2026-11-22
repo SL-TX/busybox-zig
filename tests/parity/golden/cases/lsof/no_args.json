@@ -1,8 +1,16 @@
 {
   "applet": "lsof",
   "name": "no_args",
-  "stdout": "<MATCH><MATCH>",
-  "stderr": "<MATCH>",
+  "stdout": "<PID>\t/usr/bin/sleep\t0\t/dev/null\n<PID>\t/usr/bin/sleep\t1\t/dev/null\n<PID>\t/usr/bin/sleep\t2\t/dev/null\n",
+  "stderr": "",
   "exit": 0,
-  "tree": {}
+  "tree": {
+    "driver.py": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ICBpZiBsaW5lLnN0YXJ0c3dpdGgoc3RyKGMucGlkKSsiXHQiKTogcHJpbnQocmUuc3ViKHIiXlxkK1x0IiwiPFBJRD5cdCIsbGluZSkpCiBhcmdzPVtiYiwibHNvZiJdK3N5cy5hcmd2WzI6XQogYy50ZXJtaW5hdGUoKTsgYy53YWl0KCkKIGZvciBsaW5lIGluIG91dC5zcGxpdGxpbmVzKCk6CiBvdXQ9c3VicHJvY2Vzcy5ydW4oYXJncyxzdGRvdXQ9c3VicHJvY2Vzcy5QSVBFLHN0ZGVycj1zdWJwcm9jZXNzLkRFVk5VTEwsdGltZW91dD01KS5zdGRvdXQuZGVjb2RlKCJ1dGY4IiwicmVwbGFjZSIpCmJiPXN5cy5hcmd2PE1BVENIPgpjPXN1YnByb2Nlc3MuUG9wZW4oWyJzbGVlcCIsIjIwIl0sc3Rkb3V0PXN1YnByb2Nlc3MuREVWTlVMTCxzdGRlcnI9c3VicHJvY2Vzcy5ERVZOVUxMKQpmaW5hbGx5OgppbXBvcnQgc3VicHJvY2VzcyxzeXMsdGltZSxyZQp0aW1lLnNsZWVwKDAuMjUpCnRyeToK"
+      }
+    }
+  }
 }
