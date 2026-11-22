@@ -1,0 +1,8 @@
+{
+  "applet": "getfattr",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: getfattr [-h] {-d|-n ATTR} FILE...\n\n\nGet extended attributes\n\n\t-h\t\tDo not follow symlinks\n\t-d\t\tDump all attributes\n\t-n ATTR\t\tGet attribute ATTR\n",
+  "exit": 1,
+  "tree": {}
+}

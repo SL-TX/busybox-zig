@@ -1,0 +1,8 @@
+{
+  "applet": "man",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: man [-aw] [SECTION] MANPAGE[.SECTION]...\n\nDisplay manual page\n\n\t-a\tDisplay all pages\n\t-w\tShow page locations\n\n$COLUMNS overrides output width\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

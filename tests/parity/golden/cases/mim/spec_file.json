@@ -1,0 +1,16 @@
+{
+  "applet": "mim",
+  "name": "spec_file",
+  "stdout": "from other\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "Otherfile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b3RoZXI6CgllY2hvIGZyb20gb3RoZXIK"
+      }
+    }
+  }
+}

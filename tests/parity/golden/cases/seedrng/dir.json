@@ -1,0 +1,8 @@
+{
+  "applet": "seedrng",
+  "name": "dir",
+  "stdout": "",
+  "stderr": "seedrng: you must be root\n",
+  "exit": 1,
+  "tree": {}
+}

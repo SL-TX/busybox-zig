@@ -1,0 +1,8 @@
+{
+  "applet": "tree",
+  "name": "no_args",
+  "stdout": ".\n\n0 directories, 0 files\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

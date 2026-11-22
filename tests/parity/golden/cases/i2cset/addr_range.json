@@ -1,0 +1,8 @@
+{
+  "applet": "i2cset",
+  "name": "addr_range",
+  "stdout": "",
+  "stderr": "i2cset: number 0x80 is not in 3..119 range\n",
+  "exit": 1,
+  "tree": {}
+}

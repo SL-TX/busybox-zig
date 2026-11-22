@@ -1,0 +1,8 @@
+{
+  "applet": "mim",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mim [-f FILE] [SHELL_OPTIONS] [TARGET] ...\n\nRun a script from a Makefile-like specification file\n\n\t-f FILE\t\tSpec file (default Mimfile)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

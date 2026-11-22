@@ -1,0 +1,8 @@
+{
+  "applet": "makedevs",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: makedevs [-d device_table] rootdir\n\nCreate a range of special files as specified in a device table.\nDevice table entries take the form of:\n<name> <type> <mode> <uid> <gid> <major> <minor> <start> <inc> <count>\nWhere name is the file name, type can be one of:\n\tf\tRegular file\n\td\tDirectory\n\tc\tCharacter device\n\tb\tBlock device\n\tp\tFifo (named pipe)\nuid is the user id for the target file, gid is the group id for the\ntarget file. The rest of the entries (major, minor, etc) apply to\nto device special files. A '-' may be used for blank entries.\n",
+  "exit": 1,
+  "tree": {}
+}

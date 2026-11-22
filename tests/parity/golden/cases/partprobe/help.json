@@ -1,0 +1,8 @@
+{
+  "applet": "partprobe",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: partprobe DEVICE...\n\nAsk kernel to rescan partition table\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

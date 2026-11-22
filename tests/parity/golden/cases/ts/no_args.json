@@ -1,0 +1,8 @@
+{
+  "applet": "ts",
+  "name": "no_args",
+  "stdout": "Nov 22 <TIMESTAMP> hello\nNov 22 <TIMESTAMP> world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

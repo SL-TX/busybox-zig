@@ -1,0 +1,8 @@
+{
+  "applet": "crontab",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: crontab [-c DIR] [-u USER] [-ler]|[FILE]\n\n\t-c\tCrontab directory\n\t-u\tUser\n\t-l\tList crontab\n\t-e\tEdit crontab\n\t-r\tDelete crontab\n\tFILE\tReplace crontab by FILE ('-': stdin)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

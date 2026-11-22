@@ -1,0 +1,16 @@
+{
+  "applet": "dc",
+  "name": "file",
+  "stdout": "5\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "script.dc": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MiAzICsgcAo="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "conspy",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "conspy: invalid option -- 'l'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: conspy [-vcsndfFQ] [-x COL] [-y LINE] [CONSOLE_NO]\n\nA text-mode VNC like program for Linux virtual consoles.\nTo exit, quickly press ESC 3 times.\n\n\t-v\tDon't send keystrokes to the console\n\t-c\tCreate missing /dev/{tty,vcsa}N\n\t-s\tOpen a SHELL session\n\t-n\tBlack & white\n\t-d\tDump console to stdout\n\t-f\tFollow cursor\n\t-F\tAssume console is on a framebuffer device\n\t-Q\tDisable exit on ESC-ESC-ESC\n\t-x COL\tStarting column\n\t-y LINE\tStarting line\n",
+  "exit": 1,
+  "tree": {}
+}

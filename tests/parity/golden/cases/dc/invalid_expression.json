@@ -1,0 +1,8 @@
+{
+  "applet": "dc",
+  "name": "invalid_expression",
+  "stdout": "",
+  "stderr": "dc: stack has too few elements\n",
+  "exit": 1,
+  "tree": {}
+}

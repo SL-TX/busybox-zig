@@ -1,0 +1,16 @@
+{
+  "applet": "mim",
+  "name": "unknown_target",
+  "stdout": "Unknown command nope\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "Mimfile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWxsOgoJZWNobyBoZWxsbyBmcm9tIGFsbAo="
+      }
+    }
+  }
+}

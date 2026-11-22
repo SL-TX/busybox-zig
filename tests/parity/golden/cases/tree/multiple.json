@@ -1,0 +1,31 @@
+{
+  "applet": "tree",
+  "name": "multiple",
+  "stdout": "a\n└── f\nb\n└── g\n\n0 directories, 2 files\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "dir",
+      "mode": 493
+    },
+    "b/g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mg=="
+      }
+    },
+    "a": {
+      "type": "dir",
+      "mode": 493
+    },
+    "a/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQ=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "partprobe",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

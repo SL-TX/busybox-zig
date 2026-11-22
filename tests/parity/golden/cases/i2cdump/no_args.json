@@ -1,0 +1,8 @@
+{
+  "applet": "i2cdump",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: i2cdump [-fy] [-r FIRST-LAST] BUS ADDR [MODE]\n\nExamine I2C registers\n\n\tI2CBUS\tI2C bus number\n\tADDRESS\t0x03-0x77\nMODE is:\n\tb\tByte (default)\n\tw\tWord\n\tW\tWord on even register addresses\n\ti\tI2C block\n\ts\tSMBus block\n\tc\tConsecutive byte\n\tAppend p for SMBus PEC\n\n\t-f\tForce access\n\t-y\tDisable interactive mode\n\t-r\tLimit the number of registers being accessed\n",
+  "exit": 1,
+  "tree": {}
+}

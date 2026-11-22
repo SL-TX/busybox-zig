@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "bc: can't open '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "readahead",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: readahead [FILE]...\n\nPreload FILEs to RAM\n",
+  "exit": 1,
+  "tree": {}
+}

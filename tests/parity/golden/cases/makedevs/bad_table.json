@@ -1,0 +1,20 @@
+{
+  "applet": "makedevs",
+  "name": "bad_table",
+  "stdout": "rootdir=root\ntable='table'\n",
+  "stderr": "makedevs: table: No such file or directory\n",
+  "exit": 0,
+  "tree": {
+    "table": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ZmlsZSBmIDY0NCAwIDAgIC0gLSAtIC0gLQo="
+      }
+    },
+    "root": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

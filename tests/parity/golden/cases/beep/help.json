@@ -1,0 +1,8 @@
+{
+  "applet": "beep",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: beep -f FREQ -l LEN -d DELAY -r COUNT -n\n\n\t-f\tFrequency in Hz\n\t-l\tLength in ms\n\t-d\tDelay in ms\n\t-r\tRepetitions\n\t-n\tStart new tone\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

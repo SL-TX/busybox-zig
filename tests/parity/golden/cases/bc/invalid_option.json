@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "bc: invalid option -- 'h'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: bc [-sqlw] [FILE]...\n\nArbitrary precision calculator\n\n\t-q\tQuiet\n\t-l\tLoad standard library\n\t-s\tBe POSIX compatible\n\t-w\tWarn if extensions are used\n\n$BC_LINE_LENGTH changes output width\n",
+  "exit": 1,
+  "tree": {}
+}

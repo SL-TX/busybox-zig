@@ -1,0 +1,8 @@
+{
+  "applet": "lsscsi",
+  "name": "size",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

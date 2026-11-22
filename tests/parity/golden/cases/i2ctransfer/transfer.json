@@ -1,0 +1,8 @@
+{
+  "applet": "i2ctransfer",
+  "name": "transfer",
+  "stdout": "",
+  "stderr": "i2ctransfer: can't open '/dev/i2c-0': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

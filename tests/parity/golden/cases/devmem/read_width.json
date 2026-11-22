@@ -1,0 +1,8 @@
+{
+  "applet": "devmem",
+  "name": "read_width",
+  "stdout": "",
+  "stderr": "devmem: can't open '/dev/mem': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

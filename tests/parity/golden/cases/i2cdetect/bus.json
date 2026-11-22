@@ -1,0 +1,8 @@
+{
+  "applet": "i2cdetect",
+  "name": "bus",
+  "stdout": "",
+  "stderr": "i2cdetect: can't open '/dev/i2c-0': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "setserial",
+  "name": "get_all",
+  "stdout": "/dev/ttyS0, UART: unknown, Port: 0x03f8, IRQ: 4\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

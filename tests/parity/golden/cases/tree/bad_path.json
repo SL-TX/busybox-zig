@@ -1,0 +1,8 @@
+{
+  "applet": "tree",
+  "name": "bad_path",
+  "stdout": "-a [error opening dir]\n\n0 directories, 0 files\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

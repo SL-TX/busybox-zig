@@ -1,0 +1,8 @@
+{
+  "applet": "microcom",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: microcom [-d DELAY_MS] [-t TIMEOUT_MS ] [-s SPEED] [-X] TTY\n\nCopy bytes from stdin to TTY and from TTY to stdout\n\n\t-d DELAY\tWait up to DELAY ms for TTY output before sending\n\t\t\tevery next byte to it\n\t-t TIMEOUT\tExit if both stdin and TTY are silent for TIMEOUT ms\n\t-s SPEED\tSet serial line to SPEED\n\t-X\t\tDisable special meaning of NUL and Ctrl-X from stdin\n",
+  "exit": 1,
+  "tree": {}
+}

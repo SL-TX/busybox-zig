@@ -1,0 +1,8 @@
+{
+  "applet": "chat",
+  "name": "expect_send",
+  "stdout": "ATZ\r",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

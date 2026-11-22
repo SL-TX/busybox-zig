@@ -1,0 +1,8 @@
+{
+  "applet": "mt",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mt [-f DEVICE] OPCODE VALUE\n\nControl magnetic tape drive operation\n\nOpcodes:\n\nbsf bsfm bsr bss datacompression drvbuffer eof eom erase\nfsf fsfm fsr fss load lock mkpart nop offline ras1 ras2\nras3 reset retension rewind rewoffline seek setblk setdensity\nsetpart tell unload unlock weof wset\n",
+  "exit": 1,
+  "tree": {}
+}

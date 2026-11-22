@@ -1,0 +1,8 @@
+{
+  "applet": "i2cdetect",
+  "name": "list",
+  "stdout": "",
+  "stderr": "i2cdetect: can't open '/dev/i2c-3': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

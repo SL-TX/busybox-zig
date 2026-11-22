@@ -1,0 +1,8 @@
+{
+  "applet": "watchdog",
+  "name": "daemon",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

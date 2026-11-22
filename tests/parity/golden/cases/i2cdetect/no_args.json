@@ -1,0 +1,8 @@
+{
+  "applet": "i2cdetect",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: i2cdetect -l | -F I2CBUS | [-ya] [-q|-r] I2CBUS [FIRST LAST]\n\nDetect I2C chips\n\n\t-l\tList installed buses\n\t-F BUS#\tList functionalities on this bus\n\t-y\tDisable interactive mode\n\t-a\tForce scanning of non-regular addresses\n\t-q\tUse smbus quick write commands for probing (default)\n\t-r\tUse smbus read byte commands for probing\n\tFIRST and LAST limit probing range\n",
+  "exit": 1,
+  "tree": {}
+}

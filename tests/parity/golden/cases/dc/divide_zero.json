@@ -1,0 +1,8 @@
+{
+  "applet": "dc",
+  "name": "divide_zero",
+  "stdout": "",
+  "stderr": "dc: divide by zero\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "runlevel",
+  "name": "no_args",
+  "stdout": "unknown\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

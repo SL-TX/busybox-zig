@@ -1,0 +1,8 @@
+{
+  "applet": "setfattr",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: setfattr [-h] -n|-x ATTR [-v VALUE] FILE...\n\nSet extended attributes\n\n\t-h\t\tDo not follow symlinks\n\t-x ATTR\t\tRemove attribute ATTR\n\t-n ATTR\t\tSet attribute ATTR to VALUE\n\t-v VALUE\t(default: empty)\n",
+  "exit": 1,
+  "tree": {}
+}

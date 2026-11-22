@@ -1,0 +1,8 @@
+{
+  "applet": "i2cget",
+  "name": "bus_addr",
+  "stdout": "",
+  "stderr": "i2cget: can't open '/dev/i2c-0': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

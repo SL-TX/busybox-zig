@@ -1,0 +1,16 @@
+{
+  "applet": "less",
+  "name": "two_files",
+  "stdout": "line1\nline2\nline1\nline2\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bGluZTEKbGluZTIK"
+      }
+    }
+  }
+}

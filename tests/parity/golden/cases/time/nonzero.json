@@ -1,0 +1,8 @@
+{
+  "applet": "time",
+  "name": "nonzero",
+  "stdout": "",
+  "stderr": "Command exited with non-zero status 1\nreal\t0m <MATCH>s\nuser\t0m <MATCH>s\nsys\t0m <MATCH>s\n",
+  "exit": 1,
+  "tree": {}
+}

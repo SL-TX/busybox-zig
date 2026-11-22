@@ -1,0 +1,8 @@
+{
+  "applet": "mim",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "mim: line 7: can't open Mimfile: no such file\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "watchdog",
+  "name": "foreground",
+  "stdout": "",
+  "stderr": "watchdog: can't open '/dev/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

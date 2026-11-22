@@ -1,0 +1,8 @@
+{
+  "applet": "strings",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "strings: /nonexistent: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ttysize",
+  "name": "width",
+  "stdout": "80\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

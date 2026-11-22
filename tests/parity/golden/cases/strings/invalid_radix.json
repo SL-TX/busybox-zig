@@ -1,0 +1,16 @@
+{
+  "applet": "strings",
+  "name": "invalid_radix",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: strings [-fo] [-t o|d|x] [-n LEN] [FILE]...\n\nDisplay printable strings in a binary file\n\n\t-f\t\tPrecede strings with filenames\n\t-o\t\tPrecede strings with octal offsets\n\t-t o|d|x\tPrecede strings with offsets in base 8/10/16\n\t-n LEN\t\tAt least LEN characters form a string (default 4)\n",
+  "exit": 1,
+  "tree": {
+    "bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "AGFiYwAAaGVsbG93b3JsZAABeHkAaGkA"
+      }
+    }
+  }
+}

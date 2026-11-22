@@ -1,0 +1,8 @@
+{
+  "applet": "crond",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "crond: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: crond [-fbS] [-l N] [-d N] [-L LOGFILE] [-c DIR]\n\n\t-f\tForeground\n\t-b\tBackground (default)\n\t-S\tLog to syslog (default)\n\t-l N\tSet log level. Most verbose 0, default 8\n\t-d N\tSet log level, log to stderr\n\t-L FILE\tLog to FILE\n\t-c DIR\tCron dir. Default:/var/spool/cron/crontabs\n",
+  "exit": 1,
+  "tree": {}
+}

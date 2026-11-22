@@ -1,0 +1,8 @@
+{
+  "applet": "hdparm",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "hdparm: invalid option -- 'v'\nhdparm: can't open '/dev/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}
