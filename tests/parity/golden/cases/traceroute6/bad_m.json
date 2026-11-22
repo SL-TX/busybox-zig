@@ -1,0 +1,8 @@
+{
+  "applet": "traceroute6",
+  "name": "bad_m",
+  "stdout": "",
+  "stderr": "traceroute6: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

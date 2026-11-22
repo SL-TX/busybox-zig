@@ -391,6 +391,8 @@ pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 // this module root only re-exports their entry points.
 pub const ipcalc_main = @import("ipcalc.zig").ipcalcMain;
 pub const ping6_main = @import("ping.zig").ping6Main;
+pub const traceroute_main = @import("traceroute.zig").tracerouteMain;
+pub const traceroute6_main = @import("traceroute.zig").traceroute6Main;
 pub const ip_main = @import("ip_common.zig").ipMainDispatch;
 pub const ipaddr_main = @import("ip_common.zig").ipaddrMain;
 pub const iplink_main = @import("ip_common.zig").iplinkMain;

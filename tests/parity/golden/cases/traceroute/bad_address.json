@@ -1,0 +1,8 @@
+{
+  "applet": "traceroute",
+  "name": "bad_address",
+  "stdout": "",
+  "stderr": "traceroute: bad address 'badhost'\n",
+  "exit": 1,
+  "tree": {}
+}

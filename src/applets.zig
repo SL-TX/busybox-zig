@@ -241,6 +241,8 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "ifconfig")) return @import("networking").ifconfig_main;
     if (std.mem.eql(u8, name, "ping")) return @import("networking").ping_main;
     if (std.mem.eql(u8, name, "ping6")) return @import("networking").ping6_main;
+    if (std.mem.eql(u8, name, "traceroute")) return @import("networking").traceroute_main;
+    if (std.mem.eql(u8, name, "traceroute6")) return @import("networking").traceroute6_main;
     if (std.mem.eql(u8, name, "wget")) return @import("networking").wget_main;
     if (std.mem.eql(u8, name, "nc")) return @import("networking").nc_main;
     // Task 13a — diagnostics and addressing

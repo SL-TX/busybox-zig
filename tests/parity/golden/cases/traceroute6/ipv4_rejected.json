@@ -1,0 +1,8 @@
+{
+  "applet": "traceroute6",
+  "name": "ipv4_rejected",
+  "stdout": "",
+  "stderr": "traceroute6: bad address '127.0.0.1'\n",
+  "exit": 1,
+  "tree": {}
+}
