@@ -32,6 +32,17 @@ pub const identity = @import("identity.zig");
 pub const utmp = @import("utmp.zig");
 pub const mtab = @import("mtab.zig");
 
+// Task 15 — process/terminal helpers (Wave 4 prerequisites).
+pub const procps = @import("procps.zig");
+pub const signals_more = @import("signals_more.zig");
+pub const pty = @import("pty.zig");
+pub const term = struct {
+    pub const termios = @import("term/termios.zig");
+    pub const console = @import("term/console.zig");
+    pub const keyboard = @import("term/keyboard.zig");
+    pub const fb = @import("term/fb.zig");
+};
+
 // Wave 3 networking helpers.
 pub const dns = @import("net/dns.zig");
 pub const http = @import("net/http.zig");

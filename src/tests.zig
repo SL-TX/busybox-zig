@@ -27,6 +27,14 @@ test {
     _ = @import("libbb_zig/identity_test.zig");
     _ = @import("libbb_zig/utmp_test.zig");
     _ = @import("libbb_zig/mtab_test.zig");
+    // Task 15 — libbb process/terminal helpers (Wave 4 prerequisites).
+    _ = @import("libbb_zig/procps_test.zig");
+    _ = @import("libbb_zig/signals_more_test.zig");
+    _ = @import("libbb_zig/pty_test.zig");
+    _ = @import("libbb_zig/term/termios_test.zig");
+    _ = @import("libbb_zig/term/keyboard_test.zig");
+    _ = @import("libbb_zig/term/console_test.zig");
+    _ = @import("libbb_zig/term/fb_test.zig");
     _ = @import("applets_test.zig");
     _ = @import("meta_test.zig");
     _ = @import("usage_test.zig");
