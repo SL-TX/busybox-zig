@@ -1,0 +1,8 @@
+{
+  "applet": "ifenslave",
+  "name": "missing_device",
+  "stdout": "",
+  "stderr": "ifenslave: eth0: SIOCETHTOOL error: No such device\n",
+  "exit": 1,
+  "tree": {}
+}

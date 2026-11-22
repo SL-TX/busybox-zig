@@ -1,0 +1,8 @@
+{
+  "applet": "brctl",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "brctl: invalid argument '-Z' to 'brctl'\n",
+  "exit": 1,
+  "tree": {}
+}

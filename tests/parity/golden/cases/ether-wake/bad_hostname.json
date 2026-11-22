@@ -1,0 +1,8 @@
+{
+  "applet": "ether-wake",
+  "name": "bad_hostname",
+  "stdout": "",
+  "stderr": "ether-wake: socket: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "vconfig",
+  "name": "set_name_type",
+  "stdout": "",
+  "stderr": "vconfig: ioctl error for set_name_type: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "hostname",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "hostname: unrecognized option '--bogusoption'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: hostname [-sidf] [HOSTNAME | -F FILE]\n\nShow or set hostname or DNS domain name\n\n\t-s\tShort\n\t-i\tAddresses for the hostname\n\t-d\tDNS domain name\n\t-f\tFully qualified domain name\n\t-F FILE\tUse FILE's content as hostname\n",
+  "exit": 1,
+  "tree": {}
+}

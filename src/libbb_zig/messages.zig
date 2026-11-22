@@ -11,7 +11,7 @@ const linux = std.os.linux;
 /// Prefix used by all diagnostics. Mutated by tests and by the meta-CLI.
 pub var program_name: []const u8 = "busybox";
 
-fn strerror(errnum: c_int) []const u8 {
+pub fn strerror(errnum: c_int) []const u8 {
     return switch (errnum) {
         1 => "Operation not permitted",
         2 => "No such file or directory",

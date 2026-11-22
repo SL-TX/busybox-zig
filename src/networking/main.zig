@@ -384,6 +384,20 @@ pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 // Task 13a — diagnostics and addressing applets. Each lives in its own file;
 // this module root only re-exports their entry points.
 pub const ipcalc_main = @import("ipcalc.zig").ipcalcMain;
+pub const arping_main = @import("arping.zig").arpingMain;
+pub const brctl_main = @import("brctl.zig").brctlMain;
+pub const dnsdomainname_main = @import("hostname.zig").dnsdomainnameMain;
+pub const ether_wake_main = @import("etherwake.zig").etherwakeMain;
+pub const hostname_main = @import("hostname.zig").hostnameMain;
+pub const ifdown_main = @import("ifupdown.zig").ifdownMain;
+pub const ifenslave_main = @import("ifenslave.zig").ifenslaveMain;
+pub const ifplugd_main = @import("ifplugd.zig").ifplugdMain;
+pub const ifup_main = @import("ifupdown.zig").ifupMain;
+pub const nameif_main = @import("nameif.zig").nameifMain;
+pub const slattach_main = @import("slattach.zig").slattachMain;
+pub const tunctl_main = @import("tunctl.zig").tunctlMain;
+pub const vconfig_main = @import("vconfig.zig").vconfigMain;
+pub const zcip_main = @import("zcip.zig").zcipMain;
 
 pub fn nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);

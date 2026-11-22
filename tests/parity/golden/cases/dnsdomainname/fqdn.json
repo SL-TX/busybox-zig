@@ -1,0 +1,8 @@
+{
+  "applet": "dnsdomainname",
+  "name": "fqdn",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -77,6 +77,33 @@ pub fn errorDie(errnum: c_int, comptime fmt: []const u8, args: anytype) noreturn
     bb.messages.errorMsgAndDie(errnum, fmt, args);
 }
 
+/// `<prog>: <strerror>\n` — used where the reference calls
+/// bb_perror_msg_and_die() with no message text.
+pub fn errnoOnly(errnum: c_int) void {
+    plain("{s}", .{bb.messages.strerror(errnum)});
+}
+
+pub fn zstr(s: []const u8) ![:0]const u8 {
+    return std.mem.concatWithSentinel(A, u8, &.{s}, 0);
+}
+
+pub fn readWholeFile(path: []const u8) ![]u8 {
+    const p = try zstr(path);
+    const rc = linux.open(p, .{ .ACCMODE = .RDONLY }, 0);
+    if (linux.errno(rc) != .SUCCESS) return error.OpenFailed;
+    const fd: linux.fd_t = @intCast(rc);
+    defer _ = linux.close(fd);
+    var result: std.ArrayList(u8) = .empty;
+    errdefer result.deinit(A);
+    var buf: [8192]u8 = undefined;
+    while (true) {
+        const count = linux.read(fd, &buf, buf.len);
+        if (linux.errno(count) != .SUCCESS or count == 0) break;
+        try result.appendSlice(A, buf[0..count]);
+    }
+    return result.toOwnedSlice(A);
+}
+
 // ---------------------------------------------------------------- IP helpers
 
 /// Parse a dotted-quad IPv4 address into a host-order integer.

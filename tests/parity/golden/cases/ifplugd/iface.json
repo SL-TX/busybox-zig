@@ -1,0 +1,8 @@
+{
+  "applet": "ifplugd",
+  "name": "iface",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

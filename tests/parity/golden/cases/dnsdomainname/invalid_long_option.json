@@ -1,0 +1,8 @@
+{
+  "applet": "dnsdomainname",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "dnsdomainname: unrecognized option '--bogusoption'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nNo help available\n",
+  "exit": 1,
+  "tree": {}
+}

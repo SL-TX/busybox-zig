@@ -1,0 +1,8 @@
+{
+  "applet": "brctl",
+  "name": "addbr",
+  "stdout": "",
+  "stderr": "brctl: bridge br0: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "arping",
+  "name": "with_target",
+  "stdout": "",
+  "stderr": "arping: socket: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

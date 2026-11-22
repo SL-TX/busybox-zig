@@ -1,0 +1,8 @@
+{
+  "applet": "tunctl",
+  "name": "create",
+  "stdout": "",
+  "stderr": "tunctl: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

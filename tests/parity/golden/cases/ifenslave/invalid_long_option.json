@@ -1,0 +1,8 @@
+{
+  "applet": "ifenslave",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "ifenslave: unrecognized option '--bogusoption'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ifenslave [-cdf] MASTER_IFACE SLAVE_IFACE...\n\nConfigure network interfaces for parallel routing\n\n\t-c\tChange active slave\n\t-d\tRemove slave interface from bonding device\n\t-f\tForce, even if interface is not Ethernet\n",
+  "exit": 1,
+  "tree": {}
+}

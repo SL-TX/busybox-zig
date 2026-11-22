@@ -1,0 +1,8 @@
+{
+  "applet": "zcip",
+  "name": "run",
+  "stdout": "",
+  "stderr": "zcip: socket: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

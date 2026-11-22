@@ -1,0 +1,8 @@
+{
+  "applet": "zcip",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: zcip [OPTIONS] IFACE SCRIPT\n\nManage a ZeroConf IPv4 link-local address\n\n\t-f\t\tRun in foreground\n\t-q\t\tQuit after obtaining address\n\t-r 169.254.x.x\tRequest this address first\n\t-l x.x.0.0\tUse this range instead of 169.254\n\t-v\t\tVerbose\n\n$LOGGING=none\t\tSuppress logging\n$LOGGING=syslog \tLog to syslog\n\nWith no -q, runs continuously monitoring for ARP conflicts,\nexits only on I/O errors (link down etc)\n",
+  "exit": 1,
+  "tree": {}
+}
