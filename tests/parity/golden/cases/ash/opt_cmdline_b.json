@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "opt_cmdline_b",
+  "stdout": "notifyok\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "opt_reject_nolog",
+  "stdout": "ok\n",
+  "stderr": "ash: set: line 0: illegal option -o nolog\n",
+  "exit": 0,
+  "tree": {}
+}

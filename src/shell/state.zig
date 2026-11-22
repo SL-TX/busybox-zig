@@ -40,11 +40,8 @@ pub const Options = struct {
     monitor: bool = false,
     interactive: bool = false,
     ignoreeof: bool = false,
-    nolog: bool = false,
-    posix: bool = false,
-    physical: bool = false,
-    hashall: bool = false,
-    emacs: bool = false,
+    notify: bool = false,
+    errtrace: bool = false,
     vi: bool = false,
 };
 
@@ -56,6 +53,8 @@ pub const Callbacks = struct {
     capture: *const fn (ctx: *anyopaque, text: []const u8) []const u8,
     /// Run a simple command, bypassing shell-function lookup (for `command`).
     runDirect: *const fn (ctx: *anyopaque, words: []const []const u8) i32,
+    /// Print the interactive history list (used by the `history` builtin).
+    printHistory: *const fn (ctx: *anyopaque) void,
 };
 
 pub const Shell = struct {
@@ -81,9 +80,15 @@ pub const Shell = struct {
     suppress_errexit: usize = 0,
     last_bg_pid: i32 = 0,
     background_jobs: std.ArrayList(i32) = .empty,
+    hashes: std.ArrayList(struct { name: []const u8, path: []const u8 }) = .empty,
+    history: std.ArrayList([]const u8) = .empty,
     line_number: usize = 0,
     /// Legacy Context compatibility: keep command-scoped assignments.
     legacy_persist_assigns: bool = false,
+    count_lines: bool = true,
+    line_base: usize = 1,
+    hush: bool = false,
+    last_set_error: ?[]const u8 = null,
 
     pub fn init(a: std.mem.Allocator) Shell {
         return .{ .a = a };
@@ -117,7 +122,10 @@ pub const Shell = struct {
             vi -= 1;
             const v = &self.vars.items[vi];
             if (std.mem.eql(u8, v.name, name)) {
-                if (v.readonly) return;
+                if (v.readonly) {
+                    self.last_set_error = name;
+                    return;
+                }
                 v.value = try self.a.dupe(u8, value);
                 if (self.opts.allexport) v.exported = true;
                 return;
@@ -285,10 +293,4 @@ pub const Shell = struct {
         }
     }
 
-    pub fn optionLetters(self: *const Shell) []const u8 {
-        // BusyBox - lists the currently enabled single-letter options in a
-        // stable order; callers build the full string with a leading '-'.
-        _ = self;
-        return "";
-    }
 };

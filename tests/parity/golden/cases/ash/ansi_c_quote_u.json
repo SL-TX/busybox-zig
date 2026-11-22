@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "ansi_c_quote_u",
+  "stdout": "\\u0042\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

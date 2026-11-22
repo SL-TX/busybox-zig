@@ -1,0 +1,23 @@
+{
+  "applet": "ash",
+  "name": "test_mtime",
+  "stdout": "ot\nnt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "new": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "old": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

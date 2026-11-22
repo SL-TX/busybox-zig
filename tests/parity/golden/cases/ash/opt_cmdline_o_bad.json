@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "opt_cmdline_o_bad",
+  "stdout": "",
+  "stderr": "ash: illegal option -o nosuch\n",
+  "exit": 0,
+  "tree": {}
+}

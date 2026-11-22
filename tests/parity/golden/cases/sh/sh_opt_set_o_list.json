@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_opt_set_o_list",
+  "stdout": "errexit         off\nnoglob          off\nignoreeof       off\nmonitor         off\nnoexec          off\nxtrace          off\nverbose         off\nnoclobber       off\nallexport       off\nnotify          off\nnounset         off\nerrtrace        off\nvi              off\npipefail        off\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

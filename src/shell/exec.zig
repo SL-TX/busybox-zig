@@ -27,6 +27,91 @@ fn errOut(s: []const u8) void {
     if (s.len != 0) _ = linux.write(2, s.ptr, s.len);
 }
 
+fn appendTraceWord(a: std.mem.Allocator, list: *std.ArrayList(u8), word: []const u8) !void {
+    if (word.len == 0) {
+        if (g_trace_hush) {
+            try list.appendSlice(a, "''");
+        }
+        return;
+    }
+    var safe = true;
+    for (word) |c| {
+        if (!(std.ascii.isAlphanumeric(c) or c == '_' or c == '@' or c == ':' or c == '.' or c == '/' or c == '+' or c == '-' or (g_trace_hush and c == '='))) {
+            safe = false;
+            break;
+        }
+    }
+    if (safe) {
+        try list.appendSlice(a, word);
+        return;
+    }
+    try list.append(a, '\'');
+    for (word) |c| {
+        if (c == '\'') {
+            if (g_trace_hush) {
+                try list.appendSlice(a, "'\\''");
+            } else {
+                try list.appendSlice(a, "'\"'\"'");
+            }
+        } else {
+            try list.append(a, c);
+        }
+    }
+    try list.append(a, '\'');
+}
+
+const ReplParts = struct { pattern: []const u8, replacement: []const u8 };
+
+fn splitReplacement(a: std.mem.Allocator, raw: []const u8) ReplParts {
+    var i: usize = 0;
+    var quote: u8 = 0;
+    var sep: ?usize = null;
+    while (i < raw.len) : (i += 1) {
+        const c = raw[i];
+        if (c == '\\' and quote != '\'') {
+            i += 1;
+            continue;
+        }
+        if (quote != 0) {
+            if (c == quote) quote = 0;
+            continue;
+        }
+        if (c == '\'' or c == '"') {
+            quote = c;
+            continue;
+        }
+        if (c == '/') {
+            sep = i;
+            break;
+        }
+    }
+    const pat_raw = if (sep) |p| raw[0..p] else raw;
+    const repl_raw = if (sep) |p| raw[p + 1 ..] else "";
+    return .{ .pattern = unquoteWord(a, pat_raw), .replacement = repl_raw };
+}
+
+fn unquoteWord(a: std.mem.Allocator, raw: []const u8) []const u8 {
+    var outl: std.ArrayList(u8) = .empty;
+    var i: usize = 0;
+    var quote: u8 = 0;
+    while (i < raw.len) : (i += 1) {
+        const c = raw[i];
+        if (c == '\\' and i + 1 < raw.len) {
+            i += 1;
+            outl.append(a, raw[i]) catch {};
+            continue;
+        }
+        if (quote != 0) {
+            if (c == quote) quote = 0 else outl.append(a, c) catch {};
+            continue;
+        }
+        if (c == '\'' or c == '"') quote = c else outl.append(a, c) catch {};
+    }
+    return outl.toOwnedSlice(a) catch raw;
+}
+
+var g_trace_hush: bool = false;
+
 pub const ExpandError = std.mem.Allocator.Error;
 
 pub const Exec = struct {
@@ -44,6 +129,7 @@ pub const Exec = struct {
             .evalString = evalCallback,
             .capture = captureCallback,
             .runDirect = runDirectCallback,
+            .printHistory = printHistoryCallback,
         };
         const sigs = [_]linux.SIG{ .INT, .TERM, .HUP, .QUIT, .USR1, .USR2 };
         for (sigs) |s| {
@@ -59,6 +145,15 @@ pub const Exec = struct {
         const sh: *Shell = @ptrCast(@alignCast(ctx));
         var e = Exec.init(sh);
         return @intCast(e.runSource(text));
+    }
+
+    fn printHistoryCallback(ctx: *anyopaque) void {
+        const sh: *Shell = @ptrCast(@alignCast(ctx));
+        for (sh.history.items, 1..) |line, i| {
+            var b: [4096]u8 = undefined;
+            const m = std.fmt.bufPrint(&b, "{d: >6} {s}\n", .{ i, line }) catch "";
+            out(m);
+        }
     }
 
     fn runDirectCallback(ctx: *anyopaque, words: []const []const u8) i32 {
@@ -129,6 +224,7 @@ pub const Exec = struct {
     }
 
     fn execNode(self: *Exec, node: *Node, in_condition: bool) u8 {
+        if (self.sh.count_lines) self.sh.line_number = node.line -| self.sh.line_base;
         // Compound-command redirections are applied around the whole command.
         var guard: RedirGuard = .{};
         const is_simple = std.meta.activeTag(node.body) == .simple;
@@ -263,13 +359,29 @@ pub const Exec = struct {
         for (cs.arms) |arm| {
             for (arm.patterns) |patw| {
                 self.no_glob_depth += 1;
-            const pf = self.expandWord(patw, false) catch {
+                const pf = self.expandWord(patw, false) catch {
+                    self.no_glob_depth -= 1;
+                    continue;
+                };
+                const pat_chars = self.wordToChars(patw) catch {
+                    self.no_glob_depth -= 1;
+                    continue;
+                };
                 self.no_glob_depth -= 1;
-                continue;
-            };
-            self.no_glob_depth -= 1;
                 const pattern = if (pf.len != 0) pf[0] else "";
-                if (ex.patternMatch(pattern, value)) {
+                var quoted_pat = false;
+                for (pat_chars) |ch| {
+                    if (!ch.glob) quoted_pat = true;
+                }
+                const effective = if (quoted_pat) blk: {
+                    var esc: std.ArrayList(u8) = .empty;
+                    for (pattern) |c| {
+                        if (c == '*' or c == '?' or c == '[') esc.append(self.sh.a, '\\') catch {};
+                        esc.append(self.sh.a, c) catch {};
+                    }
+                    break :blk esc.items;
+                } else pattern;
+                if (ex.patternMatch(effective, value)) {
                     return self.execNode(arm.body, in_condition);
                 }
             }
@@ -283,6 +395,14 @@ pub const Exec = struct {
         // Assignment prefixes are applied to a temporary snapshot; for a
         // command without a word they become permanent shell assignments.
         if (s.words.len == 0) {
+            if (node.redirects.len != 0) {
+                var aguard = self.applyRedirects(node.redirects);
+                const astatus: u8 = if (aguard.failed) 1 else 0;
+                for (s.assigns) |asg| self.applyAssign(asg, false);
+                aguard.restore();
+                self.sh.last_status = astatus;
+                return astatus;
+            }
             for (s.assigns) |asg| self.applyAssign(asg, false);
             return 0;
         }
@@ -321,11 +441,12 @@ pub const Exec = struct {
                 status = self.runSource(joined.items);
             } else {
         if (self.sh.opts.xtrace) {
+            g_trace_hush = self.sh.hush;
             var line: std.ArrayList(u8) = .empty;
             line.append(self.sh.a, '+') catch {};
             for (words.items) |w| {
                 line.append(self.sh.a, ' ') catch {};
-                line.appendSlice(self.sh.a, w) catch {};
+                appendTraceWord(self.sh.a, &line, w) catch {};
             }
             line.append(self.sh.a, '\n') catch {};
             errOut(line.items);
@@ -334,7 +455,7 @@ pub const Exec = struct {
                 if (node.redirects.len != 0) {
                     rguard = self.applyRedirects(node.redirects);
                     if (rguard.failed) status = 1 else status = self.runCommand(words.items, s.assigns, in_condition);
-                    rguard.restore();
+                    if (words.items[0].len == 0 or !std.mem.eql(u8, words.items[0], "exec")) rguard.restore();
                 } else {
                     status = self.runCommand(words.items, s.assigns, in_condition);
                 }
@@ -374,6 +495,8 @@ pub const Exec = struct {
     }
 
     fn applyAssign(self: *Exec, asg: prs.Assignment, temporary: bool) void {
+        self.no_glob_depth += 1;
+        defer self.no_glob_depth -= 1;
         const fields = self.expandWord(asg.value, false) catch return;
         var val: []const u8 = if (fields.len != 0) fields[0] else "";
         _ = temporary;
@@ -381,7 +504,16 @@ pub const Exec = struct {
             const old = self.sh.get(asg.name) orelse "";
             val = std.fmt.allocPrint(self.sh.a, "{s}{s}", .{ old, val }) catch val;
         }
+        self.sh.last_set_error = null;
         self.sh.set(asg.name, val) catch {};
+        if (self.sh.last_set_error) |_| {
+            var b: [256]u8 = undefined;
+            const m = std.fmt.bufPrint(&b, "{s}: line {d}: {s}: is read only\n", .{ self.sh.name, self.sh.line_number, asg.name }) catch "";
+            errOut(m);
+            self.sh.last_set_error = null;
+            self.sh.exiting = true;
+            self.sh.exit_code = 2;
+        }
     }
 
     fn runCommand(self: *Exec, words: []const []const u8, assigns: []const prs.Assignment, in_condition: bool) u8 {
@@ -434,6 +566,16 @@ pub const Exec = struct {
             errOut(m);
             return 127;
         };
+        var hashed = false;
+        for (self.sh.hashes.items) |h| {
+            if (std.mem.eql(u8, h.name, words[0])) hashed = true;
+        }
+        if (!hashed) {
+            self.sh.hashes.append(self.sh.a, .{
+                .name = self.sh.a.dupe(u8, words[0]) catch words[0],
+                .path = self.sh.a.dupe(u8, path) catch path,
+            }) catch {};
+        }
         const pid = linux.fork();
         if (linux.errno(pid) != .SUCCESS) return 1;
         if (pid == 0) {
@@ -454,7 +596,12 @@ pub const Exec = struct {
                 k += 1;
             }
             for (assigns) |asg| {
-                const fields = self.expandWord(asg.value, false) catch continue;
+                self.no_glob_depth += 1;
+                const fields = self.expandWord(asg.value, false) catch {
+                    self.no_glob_depth -= 1;
+                    continue;
+                };
+                self.no_glob_depth -= 1;
                 envp[k] = (std.fmt.allocPrintSentinel(self.sh.a, "{s}={s}", .{ asg.name, if (fields.len != 0) fields[0] else "" }, 0) catch std.process.exit(1)).ptr;
                 k += 1;
             }
@@ -543,13 +690,16 @@ pub const Exec = struct {
     fn applyRedirects(self: *Exec, redirs: []const prs.Redir) RedirGuard {
         var g: RedirGuard = .{};
         for (redirs) |r| {
+            self.no_glob_depth += 1;
             const target_fields = self.expandWord(r.target, false) catch {
+                self.no_glob_depth -= 1;
                 g.failed = true;
                 return g;
             };
+            self.no_glob_depth -= 1;
             const target = if (target_fields.len != 0) target_fields[0] else "";
             if (g.n < g.saved.len) {
-                const sv = linux.dup(r.io);
+                const sv = linux.fcntl(r.io, linux.F.DUPFD_CLOEXEC, 10);
                 const saved_fd: i32 = if (linux.errno(sv) == .SUCCESS) @intCast(sv) else -1;
                 g.saved[g.n] = .{ .target = r.io, .saved = saved_fd };
                 g.n += 1;
@@ -562,7 +712,7 @@ pub const Exec = struct {
                     };
                     const fd = linux.open(z.ptr, .{ .ACCMODE = .RDONLY }, 0);
                     if (linux.errno(fd) != .SUCCESS) {
-                        self.reportRedirError(target);
+                        self.reportRedirError(r.op, target, linux.errno(fd));
                         g.failed = true;
                         return g;
                     }
@@ -578,7 +728,7 @@ pub const Exec = struct {
                     };
                     const fd = linux.open(z.ptr, flags, 0o666);
                     if (linux.errno(fd) != .SUCCESS) {
-                        self.reportRedirError(target);
+                        self.reportRedirError(r.op, target, linux.errno(fd));
                         g.failed = true;
                         return g;
                     }
@@ -592,7 +742,7 @@ pub const Exec = struct {
                     };
                     const fd = linux.open(z.ptr, .{ .ACCMODE = .WRONLY, .CREAT = true, .APPEND = true }, 0o666);
                     if (linux.errno(fd) != .SUCCESS) {
-                        self.reportRedirError(target);
+                        self.reportRedirError(r.op, target, linux.errno(fd));
                         g.failed = true;
                         return g;
                     }
@@ -606,7 +756,7 @@ pub const Exec = struct {
                     };
                     const fd = linux.open(z.ptr, .{ .ACCMODE = .RDWR, .CREAT = true }, 0o666);
                     if (linux.errno(fd) != .SUCCESS) {
-                        self.reportRedirError(target);
+                        self.reportRedirError(r.op, target, linux.errno(fd));
                         g.failed = true;
                         return g;
                     }
@@ -627,25 +777,35 @@ pub const Exec = struct {
                     if (r.op == .tlt) {
                         body = std.fmt.allocPrint(self.sh.a, "{s}\n", .{body}) catch body;
                     }
-                    var fds: [2]i32 = undefined;
-                    if (linux.errno(linux.pipe2(&fds, .{})) != .SUCCESS) {
+                    const mname = std.mem.concatWithSentinel(self.sh.a, u8, &.{"heredoc"}, 0) catch {
+                        g.failed = true;
+                        return g;
+                    };
+                    const mfd = linux.memfd_create(mname.ptr, 0);
+                    if (linux.errno(mfd) != .SUCCESS) {
                         g.failed = true;
                         return g;
                     }
-                    _ = linux.write(@intCast(fds[1]), body.ptr, body.len);
-                    _ = linux.close(@intCast(fds[1]));
-                    _ = linux.dup2(fds[0], r.io);
-                    _ = linux.close(fds[0]);
+                    const fd: i32 = @intCast(mfd);
+                    var written: usize = 0;
+                    while (written < body.len) {
+                        const nw = linux.write(fd, body[written..].ptr, body.len - written);
+                        if (linux.errno(nw) != .SUCCESS or nw == 0) break;
+                        written += nw;
+                    }
+                    _ = linux.lseek(fd, 0, 0);
+                    _ = linux.dup2(fd, r.io);
+                    _ = linux.close(fd);
                 },
                 .amp_gt, .amp_dgt => {
                     if (g.n < g.saved.len) {
-                        const sv1 = linux.dup(1);
+                        const sv1 = linux.fcntl(1, linux.F.DUPFD_CLOEXEC, 10);
                         const sf1: i32 = if (linux.errno(sv1) == .SUCCESS) @intCast(sv1) else -1;
                         g.saved[g.n] = .{ .target = 1, .saved = sf1 };
                         g.n += 1;
                     }
                     if (g.n < g.saved.len) {
-                        const sv2 = linux.dup(2);
+                        const sv2 = linux.fcntl(2, linux.F.DUPFD_CLOEXEC, 10);
                         const sf2: i32 = if (linux.errno(sv2) == .SUCCESS) @intCast(sv2) else -1;
                         g.saved[g.n] = .{ .target = 2, .saved = sf2 };
                         g.n += 1;
@@ -661,7 +821,7 @@ pub const Exec = struct {
                     }
                     const fd = linux.open(z.ptr, flags, 0o666);
                     if (linux.errno(fd) != .SUCCESS) {
-                        self.reportRedirError(target);
+                        self.reportRedirError(r.op, target, linux.errno(fd));
                         g.failed = true;
                         return g;
                     }
@@ -674,9 +834,17 @@ pub const Exec = struct {
         return g;
     }
 
-    fn reportRedirError(self: *Exec, target: []const u8) void {
+    fn reportRedirError(self: *Exec, op: lx.RedirOp, target: []const u8, e: linux.E) void {
         var b: [512]u8 = undefined;
-        const m = std.fmt.bufPrint(&b, "{s}: {s}: cannot create\n", .{ self.sh.name, target }) catch "";
+        const detail: []const u8 = switch (e) {
+            .NOENT => "no such file",
+            .ACCES => "Permission denied",
+            .ISDIR => "Is a directory",
+            else => "Input/output error",
+        };
+        const verb: []const u8 = if (e == .NOENT and (op == .gt or op == .dgt or op == .gtbar or op == .amp_gt or op == .amp_dgt or op == .ltgt)) "nonexistent directory" else detail;
+        const action: []const u8 = if (op == .lt) "can't open" else "can't create";
+        const m = std.fmt.bufPrint(&b, "{s}: line {d}: {s} {s}: {s}\n", .{ self.sh.name, self.sh.line_number, action, target, verb }) catch "";
         errOut(m);
     }
 
@@ -685,24 +853,11 @@ pub const Exec = struct {
     const EChar = struct { c: u8, splittable: bool, glob: bool };
 
     fn expandWord(self: *Exec, w: lx.Word, allow_split: bool) ExpandError![][]const u8 {
-        var chars: std.ArrayList(EChar) = .empty;
-        // tilde expansion at the start of an unquoted word
-        var first = true;
-        for (w.segs) |seg| {
-            if (seg.kind == .literal and seg.quote == .none and first and seg.text.len != 0 and seg.text[0] == '~') {
-                const home = self.sh.get("HOME") orelse "";
-                for (home) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = false });
-                for (seg.text[1..]) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = false });
-                first = false;
-                continue;
-            }
-            if (seg.text.len != 0 or seg.kind != .literal) first = false;
-            try self.appendSegment(&chars, seg);
-        }
+        const chars = try self.wordToChars(w);
         // $@ inserts field separators before quote removal.
         var raw_fields: std.ArrayList([]EChar) = .empty;
         var cur_chars: std.ArrayList(EChar) = .empty;
-        for (chars.items) |ch| {
+        for (chars) |ch| {
             if (ch.c == 0x1f and !ch.glob) {
                 try raw_fields.append(self.sh.a, try cur_chars.toOwnedSlice(self.sh.a));
                 cur_chars = .empty;
@@ -789,14 +944,27 @@ pub const Exec = struct {
         return result.toOwnedSlice(self.sh.a);
     }
 
+    fn charsFromString(text: []const u8, split: bool, glob: bool) ExpandError![]EChar {
+        var chars: std.ArrayList(EChar) = .empty;
+        for (text) |c| try chars.append(std.heap.page_allocator, .{ .c = c, .splittable = split, .glob = glob });
+        return chars.toOwnedSlice(std.heap.page_allocator);
+    }
+
     fn appendSegment(self: *Exec, chars: *std.ArrayList(EChar), seg: lx.Segment) ExpandError!void {
         switch (seg.kind) {
             .literal => {
                 for (seg.text) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = seg.quote == .none });
             },
             .variable => {
-                const text = try self.expandParameter(seg.text);
-                for (text) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = seg.quote == .none, .glob = seg.quote == .none });
+                const sub = try self.expandParameter(seg.text);
+                const quoted = seg.quote != .none;
+                for (sub) |ch| {
+                    try chars.append(self.sh.a, .{
+                        .c = ch.c,
+                        .splittable = ch.splittable and !quoted,
+                        .glob = ch.glob and !quoted,
+                    });
+                }
             },
             .command_sub => {
                 const text = self.captureOutput(seg.text);
@@ -812,8 +980,27 @@ pub const Exec = struct {
         }
     }
 
-    fn expandParameter(self: *Exec, spec: []const u8) ExpandError![]const u8 {
-        if (spec.len == 0) return "";
+    /// Expand a word into flagged characters, preserving each nested word's
+    /// quote context so field splitting can honour quotes inside ${...}.
+    fn wordToChars(self: *Exec, w: lx.Word) ExpandError![]EChar {
+        var chars: std.ArrayList(EChar) = .empty;
+        var first = true;
+        for (w.segs) |seg| {
+            if (seg.kind == .literal and seg.quote == .none and first and seg.text.len != 0 and seg.text[0] == '~') {
+                const home = self.sh.get("HOME") orelse "";
+                for (home) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = false });
+                for (seg.text[1..]) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = false });
+                first = false;
+                continue;
+            }
+            if (seg.text.len != 0 or seg.kind != .literal) first = false;
+            try self.appendSegment(&chars, seg);
+        }
+        return chars.toOwnedSlice(self.sh.a);
+    }
+
+    fn expandParameter(self: *Exec, spec: []const u8) ExpandError![]EChar {
+        if (spec.len == 0) return &.{};
         return self.expandBraced(spec);
     }
 
@@ -867,17 +1054,15 @@ pub const Exec = struct {
         return "";
     }
 
-    fn expandBraced(self: *Exec, spec: []const u8) ExpandError![]const u8 {
-        const a = self.sh.a;
-        if (spec.len == 0) return "";
-        // ${#var}: length
+    fn expandBraced(self: *Exec, spec: []const u8) ExpandError![]EChar {
+        if (spec.len == 0) return &.{};
         if (spec[0] == '#' and spec.len > 1) {
             const val = self.paramValue(spec[1..]);
-            return std.fmt.allocPrint(a, "{d}", .{val.len}) catch "";
+            const text = std.fmt.allocPrint(self.sh.a, "{d}", .{val.len}) catch "0";
+            return charsFromString(text, true, true);
         }
-        // split name from the rest
         var nend: usize = 0;
-        if (spec[0] >= '0' and spec[0] <= '9' or spec[0] == '?' or spec[0] == '$' or
+        if ((spec[0] >= '0' and spec[0] <= '9') or spec[0] == '?' or spec[0] == '$' or
             spec[0] == '#' or spec[0] == '!' or spec[0] == '@' or spec[0] == '*' or spec[0] == '-')
         {
             nend = 1;
@@ -886,6 +1071,8 @@ pub const Exec = struct {
         }
         const name = spec[0..nend];
         const rest = spec[nend..];
+        const is_special = name.len == 1 and (std.ascii.isDigit(name[0]) or std.mem.indexOfScalar(u8, "$#?!@*-", name[0]) != null);
+        const name_set = is_special or self.sh.isSet(name);
         const has_default = rest.len != 0 and (rest[0] == '-' or rest[0] == '+' or rest[0] == '=' or rest[0] == '?' or (rest[0] == ':' and rest.len > 1));
         if (has_default) self.suppress_nounset += 1;
         const value = self.paramValue(name);
@@ -895,47 +1082,58 @@ pub const Exec = struct {
         if (rest.len >= 2) {
             for (ops2) |op| {
                 if (std.mem.startsWith(u8, rest, op)) {
-                    return self.braceOp(name, value, self.sh.isSet(name), op, rest[2..]);
+                    return self.braceOp(name, value, name_set, op, rest[2..]);
                 }
             }
         }
         if (rest.len >= 1) {
             switch (rest[0]) {
-                '=', '-', '?', '+', '#', '%', '/' => return self.braceOp(name, value, self.sh.isSet(name), rest[0..1], rest[1..]),
-                ':' => return self.substring(value, rest[1..]),
+                '=', '-', '?', '+', '#', '%', '/' => return self.braceOp(name, value, name_set, rest[0..1], rest[1..]),
+                ':' => {
+                    const text = self.substring(value, rest[1..]) catch "";
+                    return charsFromString(text, true, true);
+                },
                 else => {},
             }
         }
-        return value;
+        return charsFromString(value, true, true);
     }
 
-    fn braceOp(self: *Exec, name: []const u8, value: []const u8, is_set: bool, op: []const u8, word: []const u8) ExpandError![]const u8 {
+    fn flattenChars(self: *Exec, chars: []const EChar) ExpandError![]u8 {
+        var result: std.ArrayList(u8) = .empty;
+        for (chars) |ch| try result.append(self.sh.a, ch.c);
+        return result.toOwnedSlice(self.sh.a);
+    }
+
+    fn braceOp(self: *Exec, name: []const u8, value: []const u8, is_set: bool, op: []const u8, word: []const u8) ExpandError![]EChar {
         const a = self.sh.a;
         const set = is_set;
         const colon = op.len == 2;
+        const value_chars = try charsFromString(value, true, true);
         if (std.mem.eql(u8, op, ":-") or std.mem.eql(u8, op, "-")) {
-            if ((!colon and set) or (colon and value.len != 0)) return value;
-            return self.expandWordText(word);
+            if ((!colon and set) or (colon and value.len != 0)) return value_chars;
+            return self.expandWordToChars(word);
         }
         if (std.mem.eql(u8, op, ":=") or std.mem.eql(u8, op, "=")) {
-            if ((!colon and set) or (colon and value.len != 0)) return value;
-            const v = try self.expandWordText(word);
-            self.sh.set(name, v) catch {};
-            return v;
+            if ((!colon and set) or (colon and value.len != 0)) return value_chars;
+            const chars = try self.expandWordToChars(word);
+            self.sh.set(name, try self.flattenChars(chars)) catch {};
+            return chars;
         }
         if (std.mem.eql(u8, op, ":?") or std.mem.eql(u8, op, "?")) {
-            if ((!colon and set) or (colon and value.len != 0)) return value;
-            const m = try self.expandWordText(word);
+            if ((!colon and set) or (colon and value.len != 0)) return value_chars;
+            const chars = try self.expandWordToChars(word);
+            const m = try self.flattenChars(chars);
             var b: [512]u8 = undefined;
             const msg = std.fmt.bufPrint(&b, "{s}: line {d}: {s}: {s}\n", .{ self.sh.name, self.sh.line_number, name, if (m.len != 0) m else "parameter null or not set" }) catch "";
             errOut(msg);
             self.sh.exiting = true;
             self.sh.exit_code = 2;
-            return "";
+            return &.{};
         }
         if (std.mem.eql(u8, op, ":+") or std.mem.eql(u8, op, "+")) {
-            if ((!colon and set) or (colon and value.len != 0)) return self.expandWordText(word);
-            return "";
+            if ((!colon and set) or (colon and value.len != 0)) return self.expandWordToChars(word);
+            return &.{};
         }
         if (std.mem.eql(u8, op, "#") or std.mem.eql(u8, op, "##")) {
             const pattern = try self.expandWordText(word);
@@ -951,7 +1149,7 @@ pub const Exec = struct {
                     }
                 }
             }
-            return a.dupe(u8, value[best..]) catch "";
+            return charsFromString(value[best..], true, true);
         }
         if (std.mem.eql(u8, op, "%") or std.mem.eql(u8, op, "%%")) {
             const pattern = try self.expandWordText(word);
@@ -967,15 +1165,16 @@ pub const Exec = struct {
                     }
                 }
             }
-            return a.dupe(u8, value[0..best]) catch "";
+            return charsFromString(value[0..best], true, true);
         }
         if (std.mem.eql(u8, op, "/") or std.mem.eql(u8, op, "//")) {
-            var sep_split = std.mem.splitScalar(u8, word, '/');
-            const patt = sep_split.next() orelse "";
-            const repl = sep_split.rest();
+            const parts = splitReplacement(self.sh.a, word);
+            const patt = parts.pattern;
+            const repl = parts.replacement;
             const pattern = try self.expandWordText(patt);
-            const replacement = try self.expandWordText(repl);
-            if (pattern.len == 0) return value;
+            const replacement_chars = try self.expandWordToChars(repl);
+            const replacement = try self.flattenChars(replacement_chars);
+            if (pattern.len == 0) return value_chars;
             var result: std.ArrayList(u8) = .empty;
             var i: usize = 0;
             var replaced_once = false;
@@ -998,10 +1197,10 @@ pub const Exec = struct {
                     i += 1;
                 }
             }
-            if (!replaced_once) return value;
-            return result.toOwnedSlice(a) catch "";
+            if (!replaced_once) return value_chars;
+            return charsFromString(result.items, true, true);
         }
-        return value;
+        return value_chars;
     }
 
     fn substring(self: *Exec, value: []const u8, spec: []const u8) ExpandError![]const u8 {
@@ -1026,20 +1225,32 @@ pub const Exec = struct {
         return self.sh.a.dupe(u8, value[start..end]) catch "";
     }
 
-    fn expandWordText(self: *Exec, text: []const u8) ExpandError![]u8 {
-        if (text.len == 0) return "";
+    /// Expand the raw text of a parameter's replacement word into flagged
+    /// characters (no pathname expansion) so nested quotes survive.
+    fn expandWordToChars(self: *Exec, text: []const u8) ExpandError![]EChar {
+        if (text.len == 0) return &.{};
         self.no_glob_depth += 1;
         defer self.no_glob_depth -= 1;
         var lxr = lx.Lexer.init(self.sh.a, text);
-        const toks = lxr.lex() catch return self.sh.a.dupe(u8, text) catch "";
-        var result: std.ArrayList(u8) = .empty;
+        const toks = lxr.lex() catch return charsFromString(text, true, false);
+        var chars: std.ArrayList(EChar) = .empty;
         for (toks) |t| {
-            if (t.kind == .word and t.word != null) {
-                const s = try self.expandToString(t.word.?);
-                try result.appendSlice(self.sh.a, s);
+            if (t.kind == .newline or t.kind == .semi) {
+                try chars.append(self.sh.a, .{ .c = ' ', .splittable = true, .glob = false });
+                continue;
             }
+            if (t.kind != .word or t.word == null) continue;
+            const part = try self.wordToChars(t.word.?);
+            if (chars.items.len != 0) try chars.append(self.sh.a, .{ .c = ' ', .splittable = true, .glob = false });
+            try chars.appendSlice(self.sh.a, part);
         }
-        return result.toOwnedSlice(self.sh.a);
+        return chars.toOwnedSlice(self.sh.a);
+    }
+
+    fn expandWordText(self: *Exec, text: []const u8) ExpandError![]u8 {
+        if (text.len == 0) return "";
+        const chars = try self.expandWordToChars(text);
+        return self.flattenChars(chars);
     }
 
     fn expandHereDoc(self: *Exec, body: []const u8) []const u8 {
@@ -1060,6 +1271,17 @@ pub const Exec = struct {
                 }
                 result.append(self.sh.a, '\\') catch {};
                 i += 1;
+                continue;
+            }
+            if (c == '`') {
+                const end = std.mem.indexOfScalarPos(u8, body, i + 1, '`') orelse {
+                    result.append(self.sh.a, c) catch {};
+                    i += 1;
+                    continue;
+                };
+                const text = self.captureOutput(body[i + 1 .. end]);
+                result.appendSlice(self.sh.a, text) catch {};
+                i = end + 1;
                 continue;
             }
             if (c == '$') {
@@ -1086,16 +1308,10 @@ pub const Exec = struct {
         return result.toOwnedSlice(self.sh.a) catch "";
     }
 
-    fn globField(self: *Exec, field: []const u8, active: []const bool) ![][]const u8 {
-        const slash = std.mem.lastIndexOfScalar(u8, field, '/');
-        const slash_span: usize = if (slash) |p| p + 1 else 0;
-        const dirpart = if (slash) |p| if (p == 0) "/" else field[0..p] else ".";
-        const base = if (slash) |p| field[p + 1 ..] else field;
-        const pattern = buildPattern(self.sh.a, base, active[slash_span..]) catch return &.{};
-        var results: std.ArrayList([]const u8) = .empty;
-        const zdir = std.mem.concatWithSentinel(self.sh.a, u8, &.{dirpart}, 0) catch return &.{};
+    fn listDirMatching(self: *Exec, dirpath: []const u8, pattern: []const u8, allow_dot: bool, prefix: []const u8, want_dirs: bool, out_list: *std.ArrayList([]const u8)) void {
+        const zdir = std.mem.concatWithSentinel(self.sh.a, u8, &.{dirpath}, 0) catch return;
         const d = linux.open(zdir.ptr, .{ .ACCMODE = .RDONLY, .DIRECTORY = true }, 0);
-        if (linux.errno(d) != .SUCCESS) return &.{};
+        if (linux.errno(d) != .SUCCESS) return;
         const dirfd: i32 = @intCast(d);
         defer _ = linux.close(dirfd);
         var buf: [8192]u8 align(8) = undefined;
@@ -1110,22 +1326,95 @@ pub const Exec = struct {
                 var name_len: usize = 0;
                 while (name_len < reclen - 19 and bytes[pos + 19 + name_len] != 0) name_len += 1;
                 const name = bytes[pos + 19 .. pos + 19 + name_len];
-                if (name.len != 0 and name[0] != '.' and ex.pathMatch(pattern, name)) {
-                    const path = if (slash) |p| blk: {
-                        const prefix = if (p == 0) "" else field[0 .. p + 1];
-                        break :blk std.fmt.allocPrint(self.sh.a, "{s}{s}", .{ prefix, name }) catch "";
-                    } else self.sh.a.dupe(u8, name) catch "";
-                    results.append(self.sh.a, path) catch {};
+                if (name.len == 0) {
+                    pos += reclen;
+                    continue;
                 }
+                if (name[0] == '.' and !allow_dot) {
+                    pos += reclen;
+                    continue;
+                }
+                if (!ex.pathMatch(pattern, name)) {
+                    pos += reclen;
+                    continue;
+                }
+                const candidate = if (prefix.len == 0)
+                    self.sh.a.dupe(u8, name) catch name
+                else if (std.mem.eql(u8, prefix, "/"))
+                    std.fmt.allocPrint(self.sh.a, "/{s}", .{name}) catch name
+                else
+                    std.fmt.allocPrint(self.sh.a, "{s}/{s}", .{ prefix, name }) catch name;
+                if (want_dirs) {
+                    const zp = std.mem.concatWithSentinel(self.sh.a, u8, &.{candidate}, 0) catch {
+                        pos += reclen;
+                        continue;
+                    };
+                    var stx: linux.Statx = undefined;
+                    if (linux.errno(linux.statx(@intCast(linux.AT.FDCWD), zp.ptr, 0, .BASIC_STATS, &stx)) != .SUCCESS or
+                        (stx.mode & linux.S.IFMT) != linux.S.IFDIR)
+                    {
+                        pos += reclen;
+                        continue;
+                    }
+                }
+                out_list.append(self.sh.a, candidate) catch {};
                 pos += reclen;
             }
         }
-        std.mem.sort([]const u8, results.items, {}, struct {
+    }
+
+    fn globField(self: *Exec, field: []const u8, active: []const bool) ![][]const u8 {
+        // Split into path components so that every component containing an
+        // active metacharacter is expanded independently.
+        var components: std.ArrayList([]const u8) = .empty;
+        var offsets: std.ArrayList(usize) = .empty;
+        var start: usize = 0;
+        var i: usize = 0;
+        while (i <= field.len) : (i += 1) {
+            if (i == field.len or field[i] == '/') {
+                components.append(self.sh.a, field[start..i]) catch return &.{};
+                offsets.append(self.sh.a, start) catch return &.{};
+                start = i + 1;
+            }
+        }
+        var current: std.ArrayList([]const u8) = .empty;
+        current.append(self.sh.a, if (field.len != 0 and field[0] == '/') "/" else "") catch return &.{};
+        for (components.items, 0..) |comp, ci| {
+            const off = @min(offsets.items[ci], active.len);
+            const act = active[off .. @min(off + comp.len, active.len)];
+            var is_glob = false;
+            for (act) |a| {
+                if (a) is_glob = true;
+            }
+            const last = ci + 1 == components.items.len;
+            var next: std.ArrayList([]const u8) = .empty;
+            if (!is_glob) {
+                for (current.items) |prefix| {
+                    const joined = if (prefix.len == 0)
+                        self.sh.a.dupe(u8, comp) catch comp
+                    else if (std.mem.eql(u8, prefix, "/"))
+                        std.fmt.allocPrint(self.sh.a, "/{s}", .{comp}) catch comp
+                    else
+                        std.fmt.allocPrint(self.sh.a, "{s}/{s}", .{ prefix, comp }) catch comp;
+                    next.append(self.sh.a, joined) catch {};
+                }
+            } else {
+                const pattern = buildPattern(self.sh.a, comp, act) catch return &.{};
+                const allow_dot = comp.len != 0 and act.len != 0 and act[0] and comp[0] == '.';
+                for (current.items) |prefix| {
+                    const dirpath = if (prefix.len == 0) "." else prefix;
+                    self.listDirMatching(dirpath, pattern, allow_dot, prefix, !last, &next);
+                }
+            }
+            current = next;
+            if (current.items.len == 0) return &.{};
+        }
+        std.mem.sort([]const u8, current.items, {}, struct {
             fn less(_: void, a: []const u8, b: []const u8) bool {
                 return std.mem.order(u8, a, b) == .lt;
             }
         }.less);
-        return results.toOwnedSlice(self.sh.a);
+        return current.toOwnedSlice(self.sh.a);
     }
 
     // ------------------------------------------------------- command capture

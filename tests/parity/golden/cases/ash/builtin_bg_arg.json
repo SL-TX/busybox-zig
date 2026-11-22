@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "builtin_bg_arg",
+  "stdout": "",
+  "stderr": "ash: bg: line 0: %1: no such job\n",
+  "exit": 2,
+  "tree": {}
+}

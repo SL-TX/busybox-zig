@@ -460,6 +460,166 @@
           "$ "
         ]
       ]
+    },
+    {
+      "name": "hush_glob_multicomponent",
+      "argv": [
+        "-c",
+        "mkdir -p d1/sub d2/sub; touch d1/sub/f d2/sub/f; echo */*/f"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_opt_set_o_list",
+      "argv": [
+        "-c",
+        "set -o"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_xtrace_quote",
+      "argv": [
+        "-c",
+        "set -x; echo \"a b\" \"\" \"q'uote\" 2>&1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_umask_query",
+      "argv": [
+        "-c",
+        "umask; umask"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_test_mtime",
+      "argv": [
+        "-c",
+        "touch -d 2020-01-01 old; touch -d 2021-01-01 new; [ old -ot new ] && echo ot; [ new -nt old ] && echo nt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_ansi_c_quote",
+      "argv": [
+        "-c",
+        "echo $'a\\tb'"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_glob_dotfiles",
+      "argv": [
+        "-c",
+        "touch .a .b visible; echo .*"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_printf_flags",
+      "argv": [
+        "-c",
+        "printf \"%.2s|%08d|%.3d|%#x|%+d|%-5s|% 5d|%05d|%#o|%x\\n\" abcdef 42 42 42 42 z 7 7 8 255"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_read_raw",
+      "argv": [
+        "-c",
+        "printf \"a\\\\nb\\\\nc\\n\" | { read -r x; echo \"[$x]\"; }"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hush_nested_quote_ctx",
+      "argv": [
+        "-c",
+        "unset V; echo ${V:-'b c' d}"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "script_line_number",
+  "stdout": "one\n",
+  "stderr": "ash: line 1: badcmd_xyz: not found\n",
+  "exit": 127,
+  "tree": {}
+}

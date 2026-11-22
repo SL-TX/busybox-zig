@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_ansi_c_quote",
+  "stdout": "a\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

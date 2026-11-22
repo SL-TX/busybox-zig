@@ -64,12 +64,11 @@ pub fn run(sh: *Shell, name: []const u8, args: []const []const u8) !?u8 {
     if (std.mem.eql(u8, name, "wait")) return doWait(sh, args);
     if (std.mem.eql(u8, name, "jobs")) return doJobs(sh, args);
     if (std.mem.eql(u8, name, "kill")) return doKill(sh, args);
-    if (std.mem.eql(u8, name, "hash") or std.mem.eql(u8, name, "times") or
-        std.mem.eql(u8, name, "history") or std.mem.eql(u8, name, "bg") or
-        std.mem.eql(u8, name, "fg") or std.mem.eql(u8, name, "nolog"))
-    {
-        return 0;
-    }
+    if (std.mem.eql(u8, name, "hash")) return doHash(sh, args);
+    if (std.mem.eql(u8, name, "times")) return doTimes(sh, args);
+    if (std.mem.eql(u8, name, "history")) return doHistory(sh, args);
+    if (std.mem.eql(u8, name, "bg")) return doBgFg(sh, "bg", args);
+    if (std.mem.eql(u8, name, "fg")) return doBgFg(sh, "fg", args);
     if (std.mem.eql(u8, name, "help")) {
         out("Built-in commands:\n");
         return 0;
@@ -161,6 +160,7 @@ fn printEscaped(s: []const u8) void {
 fn printFmtChar(fmt: []const u8, i: *usize) void {
     if (fmt[i.*] != '\\' or i.* + 1 >= fmt.len) {
         out(fmt[i.* .. i.* + 1]);
+        i.* += 1;
         return;
     }
     i.* += 1;
@@ -176,6 +176,142 @@ fn printFmtChar(fmt: []const u8, i: *usize) void {
         '\\' => out("\\"),
         else => out(fmt[i.* .. i.* + 1]),
     }
+    i.* += 1;
+}
+
+const FmtSpec = struct {
+    left: bool = false,
+    plus: bool = false,
+    space: bool = false,
+    alt: bool = false,
+    zero: bool = false,
+    width: usize = 0,
+    precision: ?usize = null,
+};
+
+fn pad(out_count: *usize, n: usize, c: u8) void {
+    var b: [1]u8 = .{c};
+    var k: usize = 0;
+    while (k < n) : (k += 1) out(&b);
+    out_count.* += n;
+}
+
+fn emitPadded(text: []const u8, spec: FmtSpec) void {
+    const len = text.len;
+    if (!spec.left and spec.width > len) pad(&g_pad_count, spec.width - len, ' ');
+    out(text);
+    if (spec.left and spec.width > len) pad(&g_pad_count, spec.width - len, ' ');
+}
+
+var g_pad_count: usize = 0;
+
+fn digitsFor(value: u64, base: u8, upper: bool, buf: []u8) []const u8 {
+    const alphabet = if (upper) "0123456789ABCDEF" else "0123456789abcdef";
+    var v = value;
+    var i: usize = buf.len;
+    if (v == 0) {
+        i -= 1;
+        buf[i] = '0';
+    }
+    while (v != 0) {
+        i -= 1;
+        buf[i] = alphabet[@intCast(v % base)];
+        v /= base;
+    }
+    return buf[i..];
+}
+
+fn formatNumber(val: []const u8, spec: FmtSpec, conv: u8) void {
+    const signed = conv == 'd' or conv == 'i';
+    var negative = false;
+    var magnitude: u64 = 0;
+    if (signed) {
+        const n = std.fmt.parseInt(i64, val, 0) catch 0;
+        negative = n < 0;
+        magnitude = if (negative) @as(u64, @bitCast(-n)) else @as(u64, @bitCast(n));
+    } else {
+        magnitude = std.fmt.parseInt(u64, val, 0) catch 0;
+    }
+    const base: u8 = switch (conv) {
+        'o' => 8,
+        'x', 'X' => 16,
+        else => 10,
+    };
+    var dbuf: [80]u8 = undefined;
+    var digits = digitsFor(magnitude, base, conv == 'X', &dbuf);
+    if (spec.precision) |prec| {
+        if (prec == 0 and magnitude == 0) {
+            digits = digits[digits.len..];
+        } else if (prec > digits.len) {
+            // build zero-padded digits in a second buffer
+            var zbuf: [96]u8 = undefined;
+            const padn = prec - digits.len;
+            @memset(zbuf[0..padn], '0');
+            @memcpy(zbuf[padn .. padn + digits.len], digits);
+            // copy back
+            @memcpy(dbuf[0 .. padn + digits.len], zbuf[0 .. padn + digits.len]);
+            digits = dbuf[0 .. padn + digits.len];
+        }
+    }
+    var pbuf: [8]u8 = undefined;
+    var prefix: []const u8 = "";
+    if (signed) {
+        if (negative) {
+            pbuf[0] = '-';
+            prefix = pbuf[0..1];
+        } else if (spec.plus) {
+            pbuf[0] = '+';
+            prefix = pbuf[0..1];
+        } else if (spec.space) {
+            pbuf[0] = ' ';
+            prefix = pbuf[0..1];
+        }
+    } else if (spec.alt and magnitude != 0) {
+        if (conv == 'x' or conv == 'X') {
+            pbuf[0] = '0';
+            pbuf[1] = conv;
+            prefix = pbuf[0..2];
+        } else if (conv == 'o') {
+            pbuf[0] = '0';
+            prefix = pbuf[0..1];
+        }
+    } else if (spec.alt and conv == 'o' and digits.len == 0) {
+        pbuf[0] = '0';
+        prefix = pbuf[0..1];
+    }
+    const total = prefix.len + digits.len;
+    if (!spec.left and spec.zero and spec.precision == null and spec.width > total) {
+        out(prefix);
+        pad(&g_pad_count, spec.width - total, '0');
+        out(digits);
+        return;
+    }
+    if (!spec.left and spec.width > total) pad(&g_pad_count, spec.width - total, ' ');
+    out(prefix);
+    out(digits);
+    if (spec.left and spec.width > total) pad(&g_pad_count, spec.width - total, ' ');
+}
+
+fn printBackslashEscaped(text: []const u8) void {
+    var i: usize = 0;
+    while (i < text.len) : (i += 1) {
+        if (text[i] != '\\' or i + 1 >= text.len) {
+            out(text[i .. i + 1]);
+            continue;
+        }
+        i += 1;
+        switch (text[i]) {
+            'n' => out("\n"),
+            't' => out("\t"),
+            'r' => out("\r"),
+            'a' => out("\x07"),
+            'b' => out("\x08"),
+            'f' => out("\x0c"),
+            'v' => out("\x0b"),
+            '\\' => out("\\"),
+            else => out(text[i .. i + 1]),
+        }
+    }
 }
 
 fn doPrintf(sh: *Shell, args: []const []const u8) u8 {
@@ -188,7 +324,7 @@ fn doPrintf(sh: *Shell, args: []const []const u8) u8 {
     while (true) {
         var i: usize = 0;
         var used_arg = false;
-        while (i < fmt.len) : (i += 1) {
+        while (i < fmt.len) {
             if (fmt[i] != '%') {
                 printFmtChar(fmt, &i);
                 continue;
@@ -197,44 +333,72 @@ fn doPrintf(sh: *Shell, args: []const []const u8) u8 {
             if (i >= fmt.len) break;
             if (fmt[i] == '%') {
                 out("%");
+                i += 1;
                 continue;
             }
-            // flags / width / precision are accepted but only affect integers
-            var width: usize = 0;
-            while (i < fmt.len and (fmt[i] == '-' or fmt[i] == '+' or fmt[i] == ' ' or fmt[i] == '#' or fmt[i] == '0')) i += 1;
-            while (i < fmt.len and std.ascii.isDigit(fmt[i])) : (i += 1) width = width * 10 + (fmt[i] - '0');
+            var spec = FmtSpec{};
+            parse_flags: while (i < fmt.len) : (i += 1) {
+                switch (fmt[i]) {
+                    '-' => spec.left = true,
+                    '+' => spec.plus = true,
+                    ' ' => spec.space = true,
+                    '#' => spec.alt = true,
+                    '0' => spec.zero = true,
+                    else => break :parse_flags,
+                }
+            }
+            if (i < fmt.len and fmt[i] == '*') {
+                i += 1;
+                if (argi < args.len) {
+                    spec.width = std.fmt.parseInt(usize, args[argi], 10) catch 0;
+                    argi += 1;
+                    used_arg = true;
+                }
+            } else {
+                while (i < fmt.len and std.ascii.isDigit(fmt[i])) : (i += 1) spec.width = spec.width * 10 + (fmt[i] - '0');
+            }
             if (i < fmt.len and fmt[i] == '.') {
                 i += 1;
-                while (i < fmt.len and std.ascii.isDigit(fmt[i])) i += 1;
+                if (i < fmt.len and fmt[i] == '*') {
+                    i += 1;
+                    if (argi < args.len) {
+                        spec.precision = std.fmt.parseInt(usize, args[argi], 10) catch 0;
+                        argi += 1;
+                        used_arg = true;
+                    }
+                } else {
+                    var p: usize = 0;
+                    while (i < fmt.len and std.ascii.isDigit(fmt[i])) : (i += 1) p = p * 10 + (fmt[i] - '0');
+                    spec.precision = p;
+                }
             }
+            while (i < fmt.len and (fmt[i] == 'l' or fmt[i] == 'h' or fmt[i] == 'j' or fmt[i] == 'z' or fmt[i] == 't' or fmt[i] == 'L' or fmt[i] == 'q')) i += 1;
             if (i >= fmt.len) break;
-            const spec = fmt[i];
+            const conv = fmt[i];
+            i += 1;
             const val: []const u8 = if (argi < args.len) blk: {
                 used_arg = true;
                 const v = args[argi];
                 argi += 1;
                 break :blk v;
             } else "";
-            switch (spec) {
+            switch (conv) {
                 's' => {
-                    if (width > val.len) for (0..width - val.len) |_| out(" ");
-                    out(val);
+                    const text = val;
+                    emitPadded(if (spec.precision) |p| text[0..@min(p, text.len)] else text, spec);
                 },
-                'd', 'i', 'u', 'o', 'x', 'X' => {
-                    const n = std.fmt.parseInt(i64, val, 0) catch 0;
-                    var buf: [64]u8 = undefined;
-                    const text = switch (spec) {
-                        'o' => std.fmt.bufPrint(&buf, "{o}", .{@as(u64, @bitCast(n))}) catch "",
-                        'x' => std.fmt.bufPrint(&buf, "{x}", .{@as(u64, @bitCast(n))}) catch "",
-                        'X' => std.fmt.bufPrint(&buf, "{X}", .{@as(u64, @bitCast(n))}) catch "",
-                        'u' => std.fmt.bufPrint(&buf, "{d}", .{@as(u64, @bitCast(n))}) catch "",
-                        else => std.fmt.bufPrint(&buf, "{d}", .{n}) catch "",
-                    };
-                    if (width > text.len) for (0..width - text.len) |_| out(" ");
-                    out(text);
+                'b' => {
+                    if (spec.precision) |p| {
+                        emitPadded(val[0..@min(p, val.len)], spec);
+                    } else {
+                        if (!spec.left and spec.width > val.len) pad(&g_pad_count, spec.width - val.len, ' ');
+                        printBackslashEscaped(val);
+                        if (spec.left and spec.width > val.len) pad(&g_pad_count, spec.width - val.len, ' ');
+                    }
                 },
-                'c' => out(if (val.len != 0) val[0..1] else ""),
-                else => out(val),
+                'c' => emitPadded(if (val.len != 0) val[0..1] else "", spec),
+                'd', 'i', 'u', 'o', 'x', 'X' => formatNumber(val, spec, conv),
+                else => emitPadded(val, spec),
             }
         }
         if (!used_arg or argi >= args.len) break;
@@ -375,7 +539,7 @@ fn doUnset(sh: *Shell, args: []const []const u8) u8 {
 
 const OptSpec = struct { short: u8, field: *bool };
 
-fn setOption(sh: *Shell, name: []const u8, on: bool) bool {
+pub fn setOption(sh: *Shell, name: []const u8, on: bool) bool {
     const longs = [_]struct { n: []const u8, f: *bool }{
         .{ .n = "errexit", .f = &sh.opts.errexit },
         .{ .n = "e", .f = &sh.opts.errexit },
@@ -399,11 +563,10 @@ fn setOption(sh: *Shell, name: []const u8, on: bool) bool {
         .{ .n = "interactive", .f = &sh.opts.interactive },
         .{ .n = "i", .f = &sh.opts.interactive },
         .{ .n = "ignoreeof", .f = &sh.opts.ignoreeof },
-        .{ .n = "nolog", .f = &sh.opts.nolog },
-        .{ .n = "posix", .f = &sh.opts.posix },
-        .{ .n = "physical", .f = &sh.opts.physical },
-        .{ .n = "hashall", .f = &sh.opts.hashall },
-        .{ .n = "emacs", .f = &sh.opts.emacs },
+        .{ .n = "notify", .f = &sh.opts.notify },
+        .{ .n = "b", .f = &sh.opts.notify },
+        .{ .n = "errtrace", .f = &sh.opts.errtrace },
+        .{ .n = "E", .f = &sh.opts.errtrace },
         .{ .n = "vi", .f = &sh.opts.vi },
     };
     for (longs) |o| {
@@ -440,28 +603,47 @@ fn setFlagsText(sh: *Shell, on: bool, text: []const u8) u8 {
 }
 
 fn listOptions(sh: *Shell) u8 {
+    if (sh.hush) {
+        const hs = [_]struct { n: []const u8, v: bool }{
+            .{ .n = "pipefail", .v = sh.opts.pipefail },
+            .{ .n = "noexec", .v = sh.opts.noexec },
+            .{ .n = "errexit", .v = sh.opts.errexit },
+            .{ .n = "xtrace", .v = sh.opts.xtrace },
+        };
+        for (hs) |o| {
+            var b: [80]u8 = undefined;
+            out(std.fmt.bufPrint(&b, "set {s}o {s}\n", .{ if (o.v) "-" else "+", o.n }) catch "");
+        }
+        return 0;
+    }
     const all = [_]struct { n: []const u8, v: bool }{
-        .{ .n = "allexport", .v = sh.opts.allexport },
-        .{ .n = "e", .v = sh.opts.errexit },
         .{ .n = "errexit", .v = sh.opts.errexit },
         .{ .n = "noglob", .v = sh.opts.noglob },
-        .{ .n = "hashall", .v = sh.opts.hashall },
         .{ .n = "ignoreeof", .v = sh.opts.ignoreeof },
         .{ .n = "monitor", .v = sh.opts.monitor },
         .{ .n = "noexec", .v = sh.opts.noexec },
-        .{ .n = "noclobber", .v = sh.opts.noclobber },
-        .{ .n = "nounset", .v = sh.opts.nounset },
-        .{ .n = "pipefail", .v = sh.opts.pipefail },
-        .{ .n = "verbose", .v = sh.opts.verbose },
-        .{ .n = "vi", .v = sh.opts.vi },
         .{ .n = "xtrace", .v = sh.opts.xtrace },
+        .{ .n = "verbose", .v = sh.opts.verbose },
+        .{ .n = "noclobber", .v = sh.opts.noclobber },
+        .{ .n = "allexport", .v = sh.opts.allexport },
+        .{ .n = "notify", .v = sh.opts.notify },
+        .{ .n = "nounset", .v = sh.opts.nounset },
+        .{ .n = "errtrace", .v = sh.opts.errtrace },
+        .{ .n = "vi", .v = sh.opts.vi },
+        .{ .n = "pipefail", .v = sh.opts.pipefail },
     };
     for (all) |o| {
         var b: [80]u8 = undefined;
-        const m = std.fmt.bufPrint(&b, "set -o {s}\t{s}\n", .{ o.n, if (o.v) "on" else "off" }) catch "";
+        const m = std.fmt.bufPrint(&b, "{s:<15} {s}\n", .{ o.n, if (o.v) "on" else "off" }) catch "";
         out(m);
     }
     return 0;
+}
+
+fn noTtyWarning(sh: *Shell) void {
+    var t: [256]u8 align(8) = undefined;
+    if (linux.errno(linux.ioctl(0, 0x5401, @intFromPtr(&t))) == .SUCCESS) return;
+    err(sh, "set", "can't access tty; job control turned off");
 }
 
 fn doSet(sh: *Shell, args: []const []const u8) u8 {
@@ -476,7 +658,9 @@ fn doSet(sh: *Shell, args: []const []const u8) u8 {
             const on = args[i][0] == '-';
             if (i + 1 >= args.len) return listOptions(sh);
             i += 1;
-            if (!setOption(sh, args[i], on)) {
+            const changed = setOption(sh, args[i], on);
+            if (changed and on and (std.mem.eql(u8, args[i], "monitor") or std.mem.eql(u8, args[i], "m"))) noTtyWarning(sh);
+            if (!changed) {
                 var b: [128]u8 = undefined;
                 const m = std.fmt.bufPrint(&b, "illegal option -o {s}", .{args[i]}) catch "illegal option";
                 err(sh, "set", m);
@@ -485,6 +669,7 @@ fn doSet(sh: *Shell, args: []const []const u8) u8 {
             continue;
         }
         const code = setFlagsText(sh, args[i][0] == '-', args[i][1..]);
+        if (code == 0 and args[i][0] == '-' and std.mem.indexOfScalar(u8, args[i][1..], 'm') != null) noTtyWarning(sh);
         if (code != 0) return code;
     }
     if (i == 0 and args.len == 0) return listVars(sh, false, "");
@@ -535,6 +720,7 @@ fn doBreak(sh: *Shell, args: []const []const u8, is_continue: bool) u8 {
     if (sh.loop_depth == 0) return 0;
     var n: usize = 1;
     if (args.len != 0) n = std.fmt.parseInt(usize, args[0], 10) catch 1;
+    if (n > sh.loop_depth) n = sh.loop_depth;
     if (is_continue) sh.continue_count = n else sh.break_count = n;
     return 0;
 }
@@ -827,6 +1013,16 @@ fn doRead(sh: *Shell, args: []const []const u8) u8 {
             break;
         }
         if (buf[0] == '\n') break;
+        if (buf[0] == '\\' and !raw) {
+            const n2 = linux.read(0, &buf, 1);
+            if (linux.errno(n2) != .SUCCESS or n2 == 0) {
+                line.append(sh.a, '\\') catch {};
+                break;
+            }
+            if (buf[0] == '\n') continue; // backslash-newline: continue on next line
+            line.append(sh.a, buf[0]) catch {}; // backslash removes itself
+            continue;
+        }
         line.append(sh.a, buf[0]) catch {};
     }
     var text = line.items;
@@ -930,6 +1126,7 @@ fn doTrap(sh: *Shell, args: []const []const u8) u8 {
 fn doUmask(sh: *Shell, args: []const []const u8) u8 {
     if (args.len == 0) {
         const old = linux.syscall1(.umask, 0);
+        _ = linux.syscall1(.umask, old); // querying must not change the mask
         var b: [16]u8 = undefined;
         out(std.fmt.bufPrint(&b, "{o:0>4}\n", .{old & 0o7777}) catch "0000\n");
         return 0;
@@ -940,6 +1137,85 @@ fn doUmask(sh: *Shell, args: []const []const u8) u8 {
     };
     _ = linux.syscall1(.umask, mask & 0o7777);
     return 0;
+}
+
+fn doHash(sh: *Shell, args: []const []const u8) u8 {
+    var reset = false;
+    for (args) |a| {
+        if (a.len > 1 and a[0] == '-') {
+            for (a[1..]) |c| {
+                if (c == 'r') {
+                    reset = true;
+                } else {
+                    var b: [96]u8 = undefined;
+                    err(sh, "hash", std.fmt.bufPrint(&b, "illegal option -{c}", .{c}) catch "");
+                    return 2;
+                }
+            }
+        }
+    }
+    if (reset) {
+        sh.hashes.clearRetainingCapacity();
+        return 0;
+    }
+    var code: u8 = 0;
+    for (args) |a| {
+        if (a.len > 0 and a[0] == '-') continue;
+        if (findProgram(sh, a) == null) {
+            var b: [256]u8 = undefined;
+            err(sh, "hash", std.fmt.bufPrint(&b, "{s}: not found", .{a}) catch "");
+            code = 1;
+        }
+    }
+    if (args.len == 0) {
+        for (sh.hashes.items) |h| {
+            out(h.path);
+            out("\n");
+        }
+    }
+    return code;
+}
+
+const Tms = extern struct { utime: i64, stime: i64, cutime: i64, cstime: i64 };
+
+fn printTime(ticks: i64) void {
+    const t: u64 = @intCast(@max(ticks, 0));
+    const sec = t / 100;
+    const ms = (t % 100) * 10;
+    var b: [64]u8 = undefined;
+    out(std.fmt.bufPrint(&b, "{d}m{d}.{d:0>3}s", .{ sec, ms / 1000, ms % 1000 }) catch "");
+}
+
+fn doTimes(sh: *Shell, args: []const []const u8) u8 {
+    _ = sh;
+    _ = args;
+    var t: Tms = undefined;
+    _ = linux.syscall1(.times, @intFromPtr(&t));
+    printTime(t.utime + t.cutime);
+    out(" ");
+    printTime(t.stime + t.cstime);
+    out("\n");
+    printTime(t.cutime);
+    out(" ");
+    printTime(t.cstime);
+    out("\n");
+    return 0;
+}
+
+fn doHistory(sh: *Shell, args: []const []const u8) u8 {
+    _ = args;
+    if (sh.callbacks) |cb| cb.printHistory(cb.ctx);
+    return 0;
+}
+
+fn doBgFg(sh: *Shell, cmd: []const u8, args: []const []const u8) u8 {
+    if (args.len == 0) {
+        err(sh, cmd, "No current job");
+        return 2;
+    }
+    var b: [256]u8 = undefined;
+    err(sh, cmd, std.fmt.bufPrint(&b, "{s}: no such job", .{args[0]}) catch "");
+    return 2;
 }
 
 fn doUlimit(sh: *Shell, args: []const []const u8) u8 {
@@ -1057,6 +1333,11 @@ const TestCtx = struct {
                 return linux.errno(linux.access(z.ptr, @intCast(m.m))) == .SUCCESS;
             }
         }
+        if (std.mem.eql(u8, op, "-t")) {
+            const fd = std.fmt.parseInt(i32, s, 10) catch return false;
+            var t: [256]u8 align(8) = undefined;
+            return linux.errno(linux.ioctl(fd, 0x5401, @intFromPtr(&t))) == .SUCCESS;
+        }
         const z = zstr(sh.a, s) catch return false;
         defer sh.a.free(z);
         var stx: linux.Statx = undefined;
@@ -1066,6 +1347,10 @@ const TestCtx = struct {
         if (std.mem.eql(u8, op, "-d")) return (stx.mode & linux.S.IFMT) == linux.S.IFDIR;
         if (std.mem.eql(u8, op, "-s")) return stx.size > 0;
         if (std.mem.eql(u8, op, "-L") or std.mem.eql(u8, op, "-h")) return (stx.mode & linux.S.IFMT) == linux.S.IFLNK;
+        if (std.mem.eql(u8, op, "-b")) return (stx.mode & linux.S.IFMT) == linux.S.IFBLK;
+        if (std.mem.eql(u8, op, "-c")) return (stx.mode & linux.S.IFMT) == linux.S.IFCHR;
+        if (std.mem.eql(u8, op, "-p")) return (stx.mode & linux.S.IFMT) == linux.S.IFIFO;
+        if (std.mem.eql(u8, op, "-S")) return (stx.mode & linux.S.IFMT) == linux.S.IFSOCK;
         return false;
     }
 };
@@ -1148,6 +1433,21 @@ fn isBinaryOp(s: []const u8) bool {
     return false;
 }
 
+const FileInfo = struct { dev: u64, ino: u64, sec: i64, nsec: u64 };
+
+fn statInfo(sh: *Shell, path: []const u8) ?FileInfo {
+    const z = zstr(sh.a, path) catch return null;
+    defer sh.a.free(z);
+    var stx: linux.Statx = undefined;
+    if (linux.errno(linux.statx(@intCast(linux.AT.FDCWD), z.ptr, 0, .BASIC_STATS, &stx)) != .SUCCESS) return null;
+    return .{
+        .dev = (@as(u64, stx.dev_major) << 32) | stx.dev_minor,
+        .ino = stx.ino,
+        .sec = stx.mtime.sec,
+        .nsec = stx.mtime.nsec,
+    };
+}
+
 fn compareOp(a: []const u8, op: []const u8, b: []const u8, sh: *Shell) bool {
     if (std.mem.eql(u8, op, "=") or std.mem.eql(u8, op, "==")) return std.mem.eql(u8, a, b);
     if (std.mem.eql(u8, op, "!=")) return !std.mem.eql(u8, a, b);
@@ -1155,6 +1455,15 @@ fn compareOp(a: []const u8, op: []const u8, b: []const u8, sh: *Shell) bool {
     if (std.mem.eql(u8, op, ">")) return std.mem.order(u8, a, b) == .gt;
     if (std.mem.eql(u8, op, "-a")) return a.len != 0 and b.len != 0;
     if (std.mem.eql(u8, op, "-o")) return a.len != 0 or b.len != 0;
+    if (std.mem.eql(u8, op, "-ef") or std.mem.eql(u8, op, "-nt") or std.mem.eql(u8, op, "-ot")) {
+        const fa = statInfo(sh, a) orelse return false;
+        const fb = statInfo(sh, b) orelse return false;
+        if (std.mem.eql(u8, op, "-ef")) {
+            return fa.dev == fb.dev and fa.ino == fb.ino;
+        }
+        const newera = fa.sec > fb.sec or (fa.sec == fb.sec and fa.nsec > fb.nsec);
+        return if (std.mem.eql(u8, op, "-nt")) newera else !newera;
+    }
     const an = std.fmt.parseInt(i64, a, 10) catch return false;
     const bn = std.fmt.parseInt(i64, b, 10) catch return false;
     if (std.mem.eql(u8, op, "-eq")) return an == bn;
@@ -1163,7 +1472,6 @@ fn compareOp(a: []const u8, op: []const u8, b: []const u8, sh: *Shell) bool {
     if (std.mem.eql(u8, op, "-le")) return an <= bn;
     if (std.mem.eql(u8, op, "-gt")) return an > bn;
     if (std.mem.eql(u8, op, "-ge")) return an >= bn;
-    _ = sh;
     return false;
 }
 

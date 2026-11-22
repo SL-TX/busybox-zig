@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "read_escapes",
+  "stdout": "[a]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

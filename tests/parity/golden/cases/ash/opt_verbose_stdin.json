@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "opt_verbose_stdin",
+  "stdout": "v1\nv2\n",
+  "stderr": "echo v1\necho v2\n",
+  "exit": 0,
+  "tree": {}
+}

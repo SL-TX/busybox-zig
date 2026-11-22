@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "xtrace_quote_simple",
+  "stdout": "abc a=b\n",
+  "stderr": "+ echo abc 'a=b'\n",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "opt_monitor_nowarn",
+  "stdout": "ok\n",
+  "stderr": "ash: set: line 0: can't access tty; job control turned off\n",
+  "exit": 0,
+  "tree": {}
+}

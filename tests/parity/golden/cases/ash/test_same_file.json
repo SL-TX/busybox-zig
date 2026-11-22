@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "test_same_file",
+  "stdout": "ef\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

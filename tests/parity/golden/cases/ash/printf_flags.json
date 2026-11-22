@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "printf_flags",
+  "stdout": "ab|00000042|042|0x2a|+42|z    |    7|00007|010|ff\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

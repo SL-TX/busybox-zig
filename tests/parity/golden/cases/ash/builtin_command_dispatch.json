@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "builtin_command_dispatch",
+  "stdout": "cmdok\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

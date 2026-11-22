@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "builtin_hash_bad",
+  "stdout": "",
+  "stderr": "ash: hash: line 0: illegal option -z\n",
+  "exit": 2,
+  "tree": {}
+}

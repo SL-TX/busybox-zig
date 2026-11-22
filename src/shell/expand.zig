@@ -235,11 +235,17 @@ const Arith = struct {
     fn postfix(self: *Arith) ArithError!i64 {
         const v = try self.primary();
         if (self.take("++")) {
-            const name = self.last_ident orelse return error.Syntax;
-            self.env.set(self.env.ctx, name, v +% 1);
+            if (self.last_ident) |name| {
+                self.env.set(self.env.ctx, name, v +% 1);
+            } else {
+                return v +% try self.unary();
+            }
         } else if (self.take("--")) {
-            const name = self.last_ident orelse return error.Syntax;
-            self.env.set(self.env.ctx, name, v -% 1);
+            if (self.last_ident) |name| {
+                self.env.set(self.env.ctx, name, v -% 1);
+            } else {
+                return v +% try self.unary();
+            }
         }
         return v;
     }
@@ -250,6 +256,7 @@ const Arith = struct {
         if (self.eat('(')) {
             const v = try self.comma();
             if (!self.eat(')')) return error.Syntax;
+            self.last_ident = null;
             return v;
         }
         if (self.peek()) |c| {
@@ -289,7 +296,14 @@ const Arith = struct {
             base = 8;
             digits = tok[1..];
         }
-        return std.fmt.parseInt(i64, digits, base) catch return error.Syntax;
+        var value: i64 = 0;
+        if (digits.len == 0) return error.Syntax;
+        for (digits) |c| {
+            const d: u8 = if (c >= '0' and c <= '9') c - '0' else if (c >= 'a' and c <= 'f') c - 'a' + 10 else if (c >= 'A' and c <= 'F') c - 'A' + 10 else return error.Syntax;
+            if (d >= base) return error.Syntax;
+            value = value *% @as(i64, base) +% d;
+        }
+        return value;
     }
 
     fn identRaw(self: *Arith) ?[]const u8 {

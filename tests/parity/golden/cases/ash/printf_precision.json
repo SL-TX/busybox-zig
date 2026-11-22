@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "printf_precision",
+  "stdout": "abcdef  |      42|| 42\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

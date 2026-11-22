@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "umask_query",
+  "stdout": "0002\n0002\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

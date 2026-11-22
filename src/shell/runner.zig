@@ -5,6 +5,7 @@ const std = @import("std");
 const linux = std.os.linux;
 const st = @import("state.zig");
 const ex = @import("exec.zig");
+const bi = @import("builtins.zig");
 
 pub const Flavor = enum { ash, hush };
 
@@ -47,13 +48,22 @@ fn isOptionArg(s: []const u8) bool {
     return s.len > 1 and (s[0] == '-' or s[0] == '+');
 }
 
+pub fn verboseEcho(src: []const u8) void {
+    var it = std.mem.splitScalar(u8, src, '\n');
+    while (it.next()) |line| {
+        if (line.len == 0 and it.peek() == null) break;
+        errOut(line);
+        errOut("\n");
+    }
+}
+
 pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Flavor) c_int {
-    _ = flavor; // hush and ash share the interpreter; option parsing differs only in accepted letters
     const args = argsFrom(a, argv, argc);
     const name = if (args.len != 0) std.fs.path.basename(args[0]) else "ash";
 
     var sh = st.Shell.init(a);
     sh.name = name;
+    sh.hush = flavor == .hush;
     sh.importEnv() catch {};
     sh.set("IFS", " \t\n") catch {};
     var cwdbuf: [4096]u8 = undefined;
@@ -95,12 +105,25 @@ pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Fl
             rest_start = i + 1;
             break;
         }
+        if (std.mem.eql(u8, arg, "-o") or std.mem.eql(u8, arg, "+o")) {
+            if (i + 1 >= args.len) {
+                errOut("ash: illegal option -o\n");
+                return 2;
+            }
+            i += 1;
+            if (!bi.setOption(&sh, args[i], arg[0] == '-')) {
+                var b: [160]u8 = undefined;
+                errOut(std.fmt.bufPrint(&b, "ash: illegal option -o {s}\n", .{args[i]}) catch "");
+                return 0;
+            }
+            continue;
+        }
         if (isOptionArg(arg)) {
             const text = arg[1..];
             for (text) |c| {
                 switch (c) {
                     'i' => interactive = true,
-                    'l' => {},
+                    'l' => {}, // login shell: no observable effect in this configuration
                     'e' => sh.opts.errexit = arg[0] == '-',
                     'u' => sh.opts.nounset = arg[0] == '-',
                     'n' => sh.opts.noexec = arg[0] == '-',
@@ -110,7 +133,7 @@ pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Fl
                     'C' => sh.opts.noclobber = arg[0] == '-',
                     'a' => sh.opts.allexport = arg[0] == '-',
                     'm' => sh.opts.monitor = arg[0] == '-',
-                    'b' => {},
+                    'b' => sh.opts.notify = arg[0] == '-',
                     'o' => {},
                     else => {},
                 }
@@ -121,6 +144,8 @@ pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Fl
         rest_start = i + 1;
         break;
     }
+
+    if (sh.opts.monitor and !isTty(0)) errOut("ash: line 0: can't access tty; job control turned off\n");
 
     if (command == null and script_path == null and !stdin_script) {
         stdin_script = true;
@@ -144,6 +169,7 @@ pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Fl
 
     var e = ex.Exec.init(&sh);
     e.install();
+    if (command == null) sh.line_base = 0;
 
     var code: u8 = 0;
     if (sh.opts.interactive) {
@@ -156,9 +182,11 @@ pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Fl
             errOut(std.fmt.bufPrint(&b, "{s}: {s}: cannot open\n", .{ name, p }) catch "");
             return 1;
         };
+        if (sh.opts.verbose) verboseEcho(src);
         code = e.runSource(src);
     } else {
         const src = readAll(a, 0);
+        if (sh.opts.verbose) verboseEcho(src);
         code = e.runSource(src);
     }
     return @intCast(e.finish(code));
@@ -262,8 +290,7 @@ fn interactiveLoop(e: *ex.Exec, sh: *st.Shell) u8 {
         if (have_tio) _ = linux.ioctl(0, 0x5402, @intFromPtr(&tio));
     }
 
-    var history: std.ArrayList([]u8) = .empty;
-    defer history.deinit(sh.a);
+    const history = &sh.history;
     var hist_pos: usize = 0;
 
     while (!sh.exiting) {
@@ -289,7 +316,12 @@ fn interactiveLoop(e: *ex.Exec, sh: *st.Shell) u8 {
                 }
                 if (c == 4) { // Ctrl-D
                     errOut("\n");
-                    eof = true;
+                    if (sh.opts.ignoreeof) {
+                        errOut("Use \"exit\" to leave shell.\n");
+                        interrupted = true;
+                    } else {
+                        eof = true;
+                    }
                     break;
                 }
                 if (c == 3) { // Ctrl-C when ISIG is disabled

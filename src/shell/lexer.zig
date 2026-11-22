@@ -59,6 +59,7 @@ pub const TokKind = enum {
 pub const Token = struct {
     kind: TokKind,
     pos: usize = 0,
+    line: usize = 1,
     word: ?Word = null,
     redir_op: RedirOp = .lt,
     io_number: ?u8 = null,
@@ -81,6 +82,7 @@ pub const Lexer = struct {
     a: std.mem.Allocator,
     src: []const u8,
     i: usize = 0,
+    line: usize = 1,
     toks: std.ArrayList(Token) = .empty,
     pending: std.ArrayList(PendingDoc) = .empty,
 
@@ -201,7 +203,9 @@ pub const Lexer = struct {
     }
 
     fn push(self: *Lexer, t: Token) LexError!void {
-        try self.toks.append(self.a, t);
+        var tok = t;
+        tok.line = self.line;
+        try self.toks.append(self.a, tok);
     }
 
     fn comment(self: *Lexer) void {
@@ -212,6 +216,7 @@ pub const Lexer = struct {
         const start = self.i;
         self.i += 1;
         try self.push(.{ .kind = .newline, .pos = start });
+        self.line += 1;
         // Capture any here-document bodies introduced on the line just ended.
         if (self.pending.items.len != 0) {
             const docs = try self.a.dupe(PendingDoc, self.pending.items);
@@ -355,7 +360,12 @@ pub const Lexer = struct {
             if (c == ' ' or c == '\t' or c == '\r' or c == '\n' or c == 0) break;
             if (isOperatorStart(c)) break;
             if (c == '\\') {
-                if (self.i + 1 >= self.src.len) break;
+                if (self.i + 1 >= self.src.len) {
+                    try flush(self, &segs, &lit, lit_quote, &have_lit);
+                    try segs.append(self.a, .{ .kind = .literal, .quote = .single, .text = try self.a.dupe(u8, "\\") });
+                    self.i += 1;
+                    break;
+                }
                 const n = self.src[self.i + 1];
                 if (n == '\n') {
                     // line continuation: drop both bytes
@@ -388,6 +398,11 @@ pub const Lexer = struct {
             if (c == '"') {
                 try flush(self, &segs, &lit, lit_quote, &have_lit);
                 try self.doubleQuoted(&segs);
+                continue;
+            }
+            if (c == '$' and self.i + 1 < self.src.len and self.src[self.i + 1] == '\'') {
+                try flush(self, &segs, &lit, lit_quote, &have_lit);
+                try self.ansiCQuote(&segs);
                 continue;
             }
             if (c == '$' and self.i + 1 < self.src.len) {
@@ -471,6 +486,67 @@ pub const Lexer = struct {
             }
             try lit.append(self.a, c);
             self.i += 1;
+        }
+        return error.UnterminatedQuote;
+    }
+
+    fn ansiCQuote(self: *Lexer, segs: *std.ArrayList(Segment)) LexError!void {
+        self.i += 2; // $'
+        var body: std.ArrayList(u8) = .empty;
+        while (self.i < self.src.len) {
+            const c = self.src[self.i];
+            if (c == '\'') {
+                self.i += 1;
+                try segs.append(self.a, .{
+                    .kind = .literal,
+                    .quote = .single, // already expanded: no glob/split
+                    .text = try body.toOwnedSlice(self.a),
+                });
+                return;
+            }
+            if (c != '\\' or self.i + 1 >= self.src.len) {
+                try body.append(self.a, c);
+                self.i += 1;
+                continue;
+            }
+            self.i += 1;
+            const e = self.src[self.i];
+            self.i += 1;
+            switch (e) {
+                'a' => try body.append(self.a, 0x07),
+                'b' => try body.append(self.a, 0x08),
+                'e', 'E' => try body.append(self.a, 0x1b),
+                'f' => try body.append(self.a, 0x0c),
+                'n' => try body.append(self.a, '\n'),
+                'r' => try body.append(self.a, '\r'),
+                't' => try body.append(self.a, '\t'),
+                'v' => try body.append(self.a, 0x0b),
+                '\\', '\'', '"' => try body.append(self.a, e),
+                '0'...'7' => {
+                    var value: u32 = e - '0';
+                    var count: usize = 1;
+                    while (count < 3 and self.i < self.src.len and self.src[self.i] >= '0' and self.src[self.i] <= '7') {
+                        value = value * 8 + (self.src[self.i] - '0');
+                        self.i += 1;
+                        count += 1;
+                    }
+                    try body.append(self.a, @truncate(value));
+                },
+                'x' => {
+                    var value: u32 = 0;
+                    var count: usize = 0;
+                    while (count < 2 and self.i < self.src.len and std.ascii.isHex(self.src[self.i])) : (count += 1) {
+                        const d = std.ascii.toLower(self.src[self.i]);
+                        value = value * 16 + (if (d >= 'a') d - 'a' + 10 else d - '0');
+                        self.i += 1;
+                    }
+                    try body.append(self.a, @truncate(value));
+                },
+                else => {
+                    try body.append(self.a, '\\');
+                    try body.append(self.a, e);
+                },
+            }
         }
         return error.UnterminatedQuote;
     }

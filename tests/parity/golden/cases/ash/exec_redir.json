@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "exec_redir",
+  "stdout": "hi\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "execout": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "aGkK"
+      }
+    }
+  }
+}

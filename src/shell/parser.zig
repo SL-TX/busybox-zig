@@ -71,6 +71,7 @@ pub const Body = union(enum) {
 pub const Node = struct {
     redirects: []Redir = &.{},
     body: Body,
+    line: usize = 1,
 };
 
 pub const ParseError = error{ OutOfMemory, Syntax };
@@ -81,6 +82,7 @@ pub const Parser = struct {
     toks: []lx.Token,
     i: usize = 0,
     error_detail: ?[]const u8 = null,
+    cmd_line: usize = 1,
 
     pub fn init(a: std.mem.Allocator, src: []const u8, toks: []lx.Token) Parser {
         return .{ .a = a, .src = src, .toks = toks };
@@ -129,7 +131,7 @@ pub const Parser = struct {
 
     fn node(self: *Parser, b: Body) ParseError!*Node {
         const n = try self.a.create(Node);
-        n.* = .{ .body = b };
+        n.* = .{ .body = b, .line = self.cmd_line };
         return n;
     }
 
@@ -209,6 +211,7 @@ pub const Parser = struct {
     }
 
     fn parseCommand(self: *Parser) ParseError!*Node {
+        self.cmd_line = self.cur().line;
         while (self.check(.newline)) self.i += 1;
 
         // Redirections may precede a compound command.
@@ -478,7 +481,7 @@ pub const Parser = struct {
 fn listNode(a: std.mem.Allocator, items: []*Node) ParseError!*Node {
     if (items.len == 1) return items[0];
     const n = try a.create(Node);
-    n.* = .{ .body = .{ .sequence = items } };
+    n.* = .{ .body = .{ .sequence = items }, .line = if (items.len != 0) items[0].line else 1 };
     return n;
 }
 
