@@ -163,15 +163,16 @@ test "findPidByNameIn matches comm, basename(argv0), argv1 and exe" {
     try std.testing.expectEqual(@as(usize, 0), none.len);
 }
 
-test "findPidByNameIn matches an exact 15-char comm with no argv entries" {
+test "findPidByNameIn rejects a 15-char comm without argv[1] (upstream)" {
     try makeFakeProc();
     defer removeFakeProc();
     const a = std.testing.allocator;
-    // pid 105 has no cmdline: a 15-char comm that equals the requested name
-    // is a direct match, not a truncated name needing argv[1] disambiguation.
+    // find_pid_by_name.c:40-70: a 15-char comm is treated as truncated;
+    // without basename(argv[1]) == procName it must not match, even when
+    // the comm text equals the requested name exactly.
     const list = try procps.findPidByNameIn(ROOT, "exact15charname", a);
     defer procps.freePidList(list, a);
-    try std.testing.expectEqualSlices(i32, &[_]i32{105}, list);
+    try std.testing.expectEqual(@as(usize, 0), list.len);
 }
 
 test "parseProcStatus reads the real /proc and pidlistReverse reverses" {

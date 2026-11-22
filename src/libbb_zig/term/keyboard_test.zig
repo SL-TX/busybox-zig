@@ -46,16 +46,18 @@ test "safeReadKey reads a key from a raw PTY" {
     try std.testing.expectEqual(@as(i64, 'q'), kb.safeReadKey(pair.slave, &buf, 1000));
 }
 
-test "readKey preserves unrecognized multi-byte escape leftovers" {
+test "readKey drops unrecognized multi-byte escape leftovers (upstream)" {
     var pair = try rawPair();
     defer pair.deinit();
     var buf = kb.Buffer{};
-    // \x1b[Z is not in the escape table; its bytes must survive for the
-    // following reads instead of being silently dropped.
+    // read_key.c:277-293 drops unmatched leftovers for n > 1 and restarts,
+    // so \x1b[Z yields neither ESC nor its bytes: the call waits for a new key.
     try pair.writeMaster("\x1b[Z");
-    try std.testing.expectEqual(@as(i64, 27), kb.readKey(pair.slave, &buf, 1000));
-    try std.testing.expectEqual(@as(i64, '['), kb.readKey(pair.slave, &buf, -2));
-    try std.testing.expectEqual(@as(i64, 'Z'), kb.readKey(pair.slave, &buf, -2));
+    try std.testing.expectEqual(@as(i64, -1), kb.readKey(pair.slave, &buf, 20));
+    try std.testing.expectEqual(@as(c_int, @backingInt(std.os.linux.E.AGAIN)), bb.process.errno);
+    // The dropped bytes are not replayed on the next read either.
+    try pair.writeMaster("X");
+    try std.testing.expectEqual(@as(i64, 'X'), kb.readKey(pair.slave, &buf, 1000));
 }
 
 test "readKey decodes alt-x and keeps x buffered for the next call" {
