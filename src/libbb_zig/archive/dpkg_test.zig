@@ -3,6 +3,8 @@
 const std = @import("std");
 const dpkg = @import("libbb_zig").archive.dpkg;
 const tar = @import("libbb_zig").archive.tar;
+const xz = @import("libbb_zig").compression.xz;
+const bzip2 = @import("libbb_zig").compression.bzip2;
 
 fn controlTar(allocator: std.mem.Allocator, control: []const u8) ![]u8 {
     var entries = [_]tar.Entry{.{ .name = "./control", .data = control, .mode = 0o100644 }};
@@ -47,6 +49,43 @@ test "parse a .deb control file and data members" {
     const files = try dpkg.dataEntries(std.testing.allocator, parsed);
     defer tar.freeEntries(std.testing.allocator, files);
     try std.testing.expectEqualStrings("hi", files[0].data);
+}
+
+test "parseDeb decodes xz and bzip2 compressed tar members" {
+    const control = "Package: compressed\nVersion: 1.0\nArchitecture: all\n";
+    const ctrl = try controlTar(std.testing.allocator, control);
+    defer std.testing.allocator.free(ctrl);
+    var data_entries = [_]tar.Entry{.{ .name = "./usr/bin/tool", .data = "binary", .mode = 0o100755 }};
+    const data = try tar.build(std.testing.allocator, &data_entries);
+    defer std.testing.allocator.free(data);
+
+    const ctrl_xz = try xz.compress(std.testing.allocator, ctrl);
+    defer std.testing.allocator.free(ctrl_xz);
+    const deb_xz = try dpkg.buildAr(std.testing.allocator, &.{
+        .{ .name = "debian-binary", .data = "2.0\n" },
+        .{ .name = "control.tar.xz", .data = ctrl_xz },
+        .{ .name = "data.tar", .data = data },
+    });
+    defer std.testing.allocator.free(deb_xz);
+    const parsed_xz = try dpkg.parseDeb(std.testing.allocator, deb_xz);
+    defer dpkg.freeDeb(std.testing.allocator, parsed_xz);
+    try std.testing.expectEqualStrings("compressed", parsed_xz.control.package);
+    try std.testing.expectEqualStrings("1.0", parsed_xz.control.version);
+    const files_xz = try dpkg.dataEntries(std.testing.allocator, parsed_xz);
+    defer tar.freeEntries(std.testing.allocator, files_xz);
+    try std.testing.expectEqualStrings("binary", files_xz[0].data);
+
+    const ctrl_bz2 = try bzip2.compress(std.testing.allocator, ctrl, 9);
+    defer std.testing.allocator.free(ctrl_bz2);
+    const deb_bz2 = try dpkg.buildAr(std.testing.allocator, &.{
+        .{ .name = "debian-binary", .data = "2.0\n" },
+        .{ .name = "control.tar.bz2", .data = ctrl_bz2 },
+        .{ .name = "data.tar", .data = data },
+    });
+    defer std.testing.allocator.free(deb_bz2);
+    const parsed_bz2 = try dpkg.parseDeb(std.testing.allocator, deb_bz2);
+    defer dpkg.freeDeb(std.testing.allocator, parsed_bz2);
+    try std.testing.expectEqualStrings("compressed", parsed_bz2.control.package);
 }
 
 test "ar rejects bad magic, trailer and truncation" {

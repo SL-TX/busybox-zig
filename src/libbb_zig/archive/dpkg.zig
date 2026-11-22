@@ -3,6 +3,8 @@
 
 const std = @import("std");
 const gzip = @import("../compression/gzip.zig");
+const xz = @import("../compression/xz.zig");
+const bzip2 = @import("../compression/bzip2.zig");
 const tar = @import("tar.zig");
 const Allocator = std.mem.Allocator;
 
@@ -183,7 +185,8 @@ pub fn parseControl(allocator: Allocator, control: []const u8) Error!Control {
 
 fn maybeDecompress(allocator: Allocator, name: []const u8, bytes: []const u8) Error![]u8 {
     if (std.mem.endsWith(u8, name, ".gz")) return gzip.decompress(allocator, bytes);
-    if (std.mem.endsWith(u8, name, ".xz") or std.mem.endsWith(u8, name, ".bz2")) return error.Unsupported;
+    if (std.mem.endsWith(u8, name, ".xz")) return xz.decompress(allocator, bytes);
+    if (std.mem.endsWith(u8, name, ".bz2")) return bzip2.decompress(allocator, bytes);
     return allocator.dupe(u8, bytes);
 }
 

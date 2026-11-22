@@ -126,19 +126,35 @@ fn parseHeader(block: *const [512]u8) Error!Header {
         .typeflag = block[156],
         .linkname = fixed100(block[157..257]),
         .prefix = if (gnu) @as([155]u8, @splat(0)) else fixed155(block[345..500]),
-        .gnu = std.mem.eql(u8, magic, "ustar\x20\x20"),
-        .sparse = undefined,
+        .gnu = gnu,
+        .sparse = @splat(.{ .offset = 0, .length = 0 }),
         .is_extended = false,
         .realsize = 0,
     };
-    for (0..4) |i| {
-        const off = try parseOctal(block[345 + i * 24 ..][0..12]);
-        const len = try parseOctal(block[345 + i * 24 + 12 ..][0..12]);
-        h.sparse[i] = .{ .offset = off, .length = len };
+    // Only GNU-sparse headers (magic "ustar ") use bytes 345..400 for the
+    // sparse map; in USTAR headers that area is the ASCII prefix string.
+    if (gnu) {
+        for (0..4) |i| {
+            const off = try parseOctal(block[345 + i * 24 ..][0..12]);
+            const len = try parseOctal(block[345 + i * 24 + 12 ..][0..12]);
+            h.sparse[i] = .{ .offset = off, .length = len };
+        }
+        h.is_extended = block[387] != 0;
+        h.realsize = try parseOctal(block[388..400]);
     }
-    h.is_extended = block[387] != 0;
-    h.realsize = try parseOctal(block[388..400]);
     return h;
+}
+
+/// Largest slash that lets both the prefix (<=155) and basename (<=100)
+/// fit in a USTAR header.  Used by both build() and makeHeader() so the
+/// GNU-longname decision can never disagree with the actual split.
+fn prefixSplit(name: []const u8) ?usize {
+    if (name.len <= 100) return null;
+    var i: usize = @min(name.len - 1, 155);
+    while (i > 0) : (i -= 1) {
+        if (name[i] == '/' and name.len - i - 1 <= 100) return i;
+    }
+    return null;
 }
 
 fn makeHeader(name: []const u8, linkname: []const u8, entry: Entry) Error![512]u8 {
@@ -161,20 +177,12 @@ fn makeHeader(name: []const u8, linkname: []const u8, entry: Entry) Error![512]u
         @memcpy(block[257..265], "ustar\x00" ++ "00");
     }
     // USTAR prefix split when it fits; otherwise the caller emits GNU 'L'.
-    if (entry.typeflag != 'S' and name.len > 100) {
-        var split: ?usize = null;
-        var i: usize = @min(name.len, 100);
-        while (i > 0) : (i -= 1) {
-            if (name[i] == '/') {
-                split = i;
-                break;
-            }
-        }
-        if (split) |s| {
-            if (s <= 155 and name.len - s - 1 <= 100) {
-                @memcpy(block[0..100][0 .. name.len - s - 1], name[s + 1 ..]);
-                @memcpy(block[345..500][0..s], name[0..s]);
-            }
+    if (entry.typeflag != 'S') {
+        if (prefixSplit(name)) |s| {
+            @memset(block[0..100], 0); // discard the raw first 100 bytes
+            @memset(block[345..500], 0);
+            @memcpy(block[0..100][0 .. name.len - s - 1], name[s + 1 ..]);
+            @memcpy(block[345..500][0..s], name[0..s]);
         }
     }
     if (entry.typeflag == 'S') {
@@ -217,11 +225,7 @@ pub fn build(allocator: Allocator, entries: []const Entry) Error![]u8 {
         var long_name_buf: ?[]u8 = null;
         defer if (long_name_buf) |b| allocator.free(b);
         if (name.len > 100) {
-            var fits_prefix = false;
-            for (name, 0..) |c, i| {
-                if (c == '/' and i <= 155 and name.len - i - 1 <= 100) fits_prefix = true;
-            }
-            if (!fits_prefix or entry.typeflag == 'S') {
+            if (prefixSplit(name) == null or entry.typeflag == 'S') {
                 long_name_buf = try std.mem.concat(allocator, u8, &.{ name, "\x00" });
                 name = long_name_buf.?;
                 const hdr = try makeHeader("././@LongLink", "", .{ .typeflag = 'L', .size = name.len });
@@ -371,12 +375,14 @@ fn paxValue(body: []const u8, wanted: []const u8) Error!?[]const u8 {
     while (pos < body.len) {
         const space = std.mem.indexOfScalarPos(u8, body, pos, ' ') orelse return error.CorruptHeader;
         const len = std.fmt.parseInt(usize, body[pos..space], 10) catch return error.CorruptHeader;
-        if (len == 0 or pos + len > body.len) return error.CorruptHeader;
-        const record = body[space + 1 .. pos + len];
+        if (len == 0 or len > body.len - pos) return error.CorruptHeader;
+        const end = pos + len;
+        if (space + 1 > end) return error.CorruptHeader;
+        const record = body[space + 1 .. end];
         if (std.mem.startsWith(u8, record, wanted) and record.len > wanted.len and record[wanted.len] == '=') {
             return std.mem.trimEnd(u8, record[wanted.len + 1 ..], "\n");
         }
-        pos += len;
+        pos = end;
     }
     return null;
 }

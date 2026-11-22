@@ -37,21 +37,84 @@ test "tar round trip with regular files, symlink and permissions" {
     try std.testing.expectEqual(@as(u32, 0o040755), parsed[2].mode);
 }
 
-test "tar handles long names via USTAR prefix and GNU longname records" {
-    const prefix_name = "aaaaaaaaaa/bbbbbbbbbb/cccccccccc/dddddddddd/eeeeeeeeee.txt";
-    const long_name = "very/long/" ++ "abcdefghij" ++ "/another/" ++ "0123456789" ++ "/final-file-name.txt";
-    var entries = std.ArrayList(tar.Entry).empty;
-    defer entries.deinit(std.testing.allocator);
-    try entries.append(std.testing.allocator, .{ .name = prefix_name, .data = "p", .typeflag = '0' });
-    try entries.append(std.testing.allocator, .{ .name = long_name, .data = "l", .typeflag = '0' });
-    const archive = try tar.build(std.testing.allocator, entries.items);
+test "tar splits the USTAR prefix for a 122-byte name" {
+    // The only slash sits at offset 120, beyond the 100-byte name field:
+    // prefix = 120 bytes, basename = 1 byte.
+    var name_buf: [122]u8 = undefined;
+    @memset(name_buf[0..120], 'a');
+    name_buf[120] = '/';
+    name_buf[121] = 'b';
+    const name = &name_buf;
+
+    var entries = [_]tar.Entry{.{ .name = name, .data = "prefixed", .typeflag = '0' }};
+    const archive = try tar.build(std.testing.allocator, &entries);
     defer std.testing.allocator.free(archive);
+    try std.testing.expectEqual(@as(u8, '0'), archive[156]); // no GNU 'L' record
+    try std.testing.expectEqualSlices(u8, name[0..120], archive[345 .. 345 + 120]);
+    try std.testing.expectEqualStrings("b", archive[0..1]);
+
     const parsed = try tar.parse(std.testing.allocator, archive);
     defer tar.freeEntries(std.testing.allocator, parsed);
-    try std.testing.expectEqual(@as(usize, 2), parsed.len);
-    try std.testing.expectEqualStrings(prefix_name, parsed[0].name);
-    try std.testing.expectEqualStrings(long_name, parsed[1].name);
-    try std.testing.expectEqualStrings("l", parsed[1].data);
+    try std.testing.expectEqual(@as(usize, 1), parsed.len);
+    try std.testing.expectEqualSlices(u8, name, parsed[0].name);
+    try std.testing.expectEqualStrings("prefixed", parsed[0].data);
+}
+
+test "tar emits a GNU longname record when no USTAR split fits" {
+    var name_buf: [130]u8 = undefined;
+    @memset(&name_buf, 'x'); // single component, no slash
+    const name = &name_buf;
+    var entries = [_]tar.Entry{.{ .name = name, .data = "long", .typeflag = '0' }};
+    const archive = try tar.build(std.testing.allocator, &entries);
+    defer std.testing.allocator.free(archive);
+    try std.testing.expectEqual(@as(u8, 'L'), archive[156]); // GNU longname header
+
+    const parsed = try tar.parse(std.testing.allocator, archive);
+    defer tar.freeEntries(std.testing.allocator, parsed);
+    try std.testing.expectEqual(@as(usize, 1), parsed.len);
+    try std.testing.expectEqualSlices(u8, name, parsed[0].name);
+    try std.testing.expectEqualStrings("long", parsed[0].data);
+}
+
+test "tar honours a PAX path record" {
+    const pax_path = "pax/directory/very-long-name.txt";
+    var rec_buf: [256]u8 = undefined;
+    var len: usize = pax_path.len + 7;
+    var rec: []const u8 = undefined;
+    while (true) {
+        rec = try std.fmt.bufPrint(&rec_buf, "{d} path={s}\n", .{ len, pax_path });
+        if (rec.len == len) break;
+        len = rec.len;
+    }
+    const pax = try tar.build(std.testing.allocator, &.{
+        .{ .name = "PaxHeaders", .data = rec, .typeflag = 'x' },
+    });
+    defer std.testing.allocator.free(pax);
+    const plain = try tar.build(std.testing.allocator, &.{
+        .{ .name = "short.txt", .data = "pax payload", .typeflag = '0' },
+    });
+    defer std.testing.allocator.free(plain);
+
+    const joined = try std.testing.allocator.alloc(u8, 1024 + plain.len);
+    defer std.testing.allocator.free(joined);
+    @memcpy(joined[0..1024], pax[0..1024]);
+    @memcpy(joined[1024..], plain);
+
+    const parsed = try tar.parse(std.testing.allocator, joined);
+    defer tar.freeEntries(std.testing.allocator, parsed);
+    try std.testing.expectEqual(@as(usize, 1), parsed.len);
+    try std.testing.expectEqualStrings(pax_path, parsed[0].name);
+    try std.testing.expectEqualStrings("pax payload", parsed[0].data);
+}
+
+test "tar rejects malformed PAX records without panicking" {
+    // "1 " declares a one-byte record but has no content after the space;
+    // slicing used to start past the end and abort the process.
+    const archive = try tar.build(std.testing.allocator, &.{
+        .{ .name = "pax", .data = "1 ", .typeflag = 'x' },
+    });
+    defer std.testing.allocator.free(archive);
+    try std.testing.expectError(error.CorruptHeader, tar.parse(std.testing.allocator, archive));
 }
 
 test "tar preserves GNU sparse extent metadata" {

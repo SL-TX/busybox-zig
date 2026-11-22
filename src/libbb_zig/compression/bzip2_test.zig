@@ -9,6 +9,10 @@ const hello = "Hello, BusyBox parity! Hello, BusyBox parity! Hello, BusyBox pari
 const hello_bz2 = "\x42\x5a\x68\x39\x31\x41\x59\x26\x53\x59\xc5\xeb\xa7\xd6\x00\x00\x13\x95\x80\x60\x04\x10\x40\x22\x24\xde\x60\x20\x00\x50\xa1\xa6\x98\x00\x11\x54\xd3\x11\x9a\x13\xd4\xa2\x51\x3e\x49\x48\x4e\x92\xc2\x69\x3d\x4d\xa4\x26\xc4\x84\xba\x69\x25\x38\x95\x48\x49\x49\x4f\xc5\xdc\x91\x4e\x14\x24\x31\x7a\xe9\xf5\x80";
 const empty_bz2 = "\x42\x5a\x68\x39\x17\x72\x45\x38\x50\x90\x00\x00\x00\x00";
 
+// python3 bz2.compress(b"aaaaaaaaaaBBBBHello, BusyBox parity! aaaaaaaaaaaa tail", 9)
+const run_start = "aaaaaaaaaaBBBBHello, BusyBox parity! aaaaaaaaaaaa tail";
+const run_start_bz2 = "\x42\x5a\x68\x39\x31\x41\x59\x26\x53\x59\x19\xdf\x2b\x0b\x00\x00\x0b\x55\x80\x41\x40\x60\x04\x10\x40\x22\x24\xde\x60\x20\x00\x31\x4c\x26\x9a\x03\x4c\x42\x11\xa3\x23\x43\x46\x21\xe0\x11\x21\x25\x90\x72\x4a\xaa\x02\xc5\x1e\x6b\xbb\xbe\x03\x79\x39\xa9\xd9\xb5\x3f\x17\x72\x45\x38\x50\x90\x19\xdf\x2b\x0b";
+
 test "decode bzip2 fixtures produced by an external compressor" {
     const a = try std.testing.allocator.dupe(u8, hello_bz2);
     defer std.testing.allocator.free(a);
@@ -21,6 +25,30 @@ test "decode bzip2 fixtures produced by an external compressor" {
     const empty = try bzip2.decompress(std.testing.allocator, e);
     defer std.testing.allocator.free(empty);
     try std.testing.expectEqual(@as(usize, 0), empty.len);
+}
+
+test "decode bzip2 stream starting with a four-plus byte run" {
+    const compressed_fixture = try std.testing.allocator.dupe(u8, run_start_bz2);
+    defer std.testing.allocator.free(compressed_fixture);
+    const out = try bzip2.decompress(std.testing.allocator, compressed_fixture);
+    defer std.testing.allocator.free(out);
+    try std.testing.expectEqualStrings(run_start, out);
+
+    // The same property must hold for our own encoder (RLE1 round trip).
+    const ours = try bzip2.compress(std.testing.allocator, run_start, 9);
+    defer std.testing.allocator.free(ours);
+    const decoded = try bzip2.decompress(std.testing.allocator, ours);
+    defer std.testing.allocator.free(decoded);
+    try std.testing.expectEqualStrings(run_start, decoded);
+
+    // A run longer than 259 bytes produces two consecutive RLE1 count bytes.
+    var long_run: [620]u8 = @splat('z');
+    long_run[610] = '!';
+    const packed_long = try bzip2.compress(std.testing.allocator, &long_run, 9);
+    defer std.testing.allocator.free(packed_long);
+    const decoded_long = try bzip2.decompress(std.testing.allocator, packed_long);
+    defer std.testing.allocator.free(decoded_long);
+    try std.testing.expectEqualSlices(u8, &long_run, decoded_long);
 }
 
 test "bzip2 round trip for several sizes and levels" {

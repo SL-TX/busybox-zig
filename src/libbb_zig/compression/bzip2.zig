@@ -323,7 +323,7 @@ fn decodeBlock(allocator: Allocator, br: *BitReader, out: *std.ArrayList(u8), co
     const block_start = out.items.len;
     var pos: u32 = if (n != 0) tt[orig_ptr] >> 8 else 0;
     var current: u8 = if (n != 0) @intCast(tt[orig_ptr] & 0xff) else 0;
-    var countdown: i32 = 5;
+    var countdown: i32 = 4; // first byte was emitted unchecked above
     var steps: usize = 0;
     if (n != 0) try out.append(allocator, current);
     while (steps + 1 < n) {
