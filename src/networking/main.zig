@@ -464,6 +464,9 @@ pub const udhcpc6_main = @import("udhcp.zig").udhcpc6Main;
 pub const udhcpd_main = @import("udhcp.zig").udhcpdMain;
 pub const telnetd_main = @import("telnetd.zig").telnetdMain;
 pub const tc_main = @import("tc.zig").tcMain;
+// Re-exported so the focused unit tests can reach the pure formatter/parser
+// through the `networking` module (a file cannot belong to two modules).
+pub const tc = @import("tc.zig");
 
 fn legacy_nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);

@@ -3,6 +3,12 @@ const net = @import("networking");
 const sock = @import("libbb_zig").socket;
 const linux = std.os.linux;
 
+// Task 13c fix round 1: focused tc netlink-formatting tests (tc is SKIP-gated
+// in differential mode because the comparison reference is built CONFIG_TC=n).
+test {
+    _ = @import("tc_test.zig");
+}
+
 test "parseUrl handles scheme, host, port and path" {
     const u = net.parseUrl("http://127.0.0.1:8080/index.html").?;
     try std.testing.expectEqualStrings("127.0.0.1", u.host);
