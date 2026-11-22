@@ -104,6 +104,23 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "stdin_table",
+      "argv": [
+        "root"
+      ],
+      "stdin": "file f 644 0 0  - - - - -\n",
+      "files": {},
+      "dirs": [
+        "root"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

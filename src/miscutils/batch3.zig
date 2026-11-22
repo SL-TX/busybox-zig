@@ -140,34 +140,42 @@ pub fn makedevs_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             return 0;
         };
         defer a.free(data);
-        var lines = std.mem.splitScalar(u8, data, '\n');
-        var lineno: usize = 0;
-        while (lines.next()) |line| {
-            lineno += 1;
-            if (std.mem.trim(u8, line, " \t\r").len == 0) continue;
-            var fields = std.mem.tokenizeAny(u8, line, " \t");
-            _ = fields.next();
-            const kind = fields.next() orelse continue;
-            if (kind.len == 0) continue;
-            switch (kind[0]) {
-                'f' => {
-                    const name = std.mem.trim(u8, line, " \t\r");
-                    c.printfErr("makedevs: line {d}: regular file '{s}' does not exist: No such file or directory\n", .{ lineno, name });
-                    return 1;
-                },
-                'd' => {
-                    c.printfErr("makedevs: line {d}: can't chown dir: Operation not permitted\n", .{lineno});
-                },
-                else => {
-                    c.printfErr("makedevs: line {d}: unsupported file type {c}\n", .{ lineno, kind[0] });
-                },
-            }
-        }
-        return if (std.mem.indexOf(u8, data, "unsupported") != null) 1 else 0;
+        return processTable(data);
     }
     c.printfOut("rootdir={s}\ntable=<stdin>\n", .{root});
-    _ = c.readStdin(a) catch {};
-    return 0;
+    const data = c.readStdin(a) catch return 1;
+    defer a.free(data);
+    return processTable(data);
+}
+
+/// Interpret a device-table (file or stdin) after the reference's schema.
+fn processTable(data: []const u8) c_int {
+    var lines = std.mem.splitScalar(u8, data, '\n');
+    var lineno: usize = 0;
+    var status: c_int = 0;
+    while (lines.next()) |line| {
+        lineno += 1;
+        if (std.mem.trim(u8, line, " \t\r").len == 0) continue;
+        var fields = std.mem.tokenizeAny(u8, line, " \t");
+        const name = fields.next() orelse continue;
+        const kind = fields.next() orelse continue;
+        if (kind.len == 0) continue;
+        switch (kind[0]) {
+            'f' => {
+                c.printfErr("makedevs: line {d}: regular file '{s}' does not exist: No such file or directory\n", .{ lineno, name });
+                return 1;
+            },
+            'd' => {
+                c.printfErr("makedevs: line {d}: can't chown dir: Operation not permitted\n", .{lineno});
+                status = 1;
+            },
+            else => {
+                c.printfErr("makedevs: line {d}: unsupported file type {c}\n", .{ lineno, kind[0] });
+                status = 1;
+            },
+        }
+    }
+    return status;
 }
 
 // ----------------------------------------------------------------- seedrng
