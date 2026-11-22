@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "bad_local_port",
+  "stdout": "",
+  "stderr": "nc: bad port 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

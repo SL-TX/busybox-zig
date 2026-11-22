@@ -1,0 +1,8 @@
+{
+  "applet": "wget",
+  "name": "bad_address",
+  "stdout": "",
+  "stderr": "wget: bad address 'notaurl'\n",
+  "exit": 1,
+  "tree": {}
+}

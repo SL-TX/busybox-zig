@@ -1,0 +1,8 @@
+{
+  "applet": "ftpput",
+  "name": "connect_refused",
+  "stdout": "",
+  "stderr": "ftpput: can't connect to remote host (127.0.0.1): Connection refused\n",
+  "exit": 1,
+  "tree": {}
+}

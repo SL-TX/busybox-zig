@@ -1,0 +1,8 @@
+{
+  "applet": "ftpget",
+  "name": "connect_refused",
+  "stdout": "",
+  "stderr": "ftpget: can't connect to remote host (127.0.0.1): Connection refused\n",
+  "exit": 1,
+  "tree": {}
+}

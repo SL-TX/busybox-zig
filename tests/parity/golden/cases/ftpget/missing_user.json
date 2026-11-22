@@ -1,0 +1,8 @@
+{
+  "applet": "ftpget",
+  "name": "missing_user",
+  "stdout": "",
+  "stderr": "ftpget: option requires an argument -- 'u'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ftpget [OPTIONS] HOST [LOCAL_FILE] REMOTE_FILE\n\nDownload a file via FTP\n\n\t-c\tContinue previous transfer\n\t-v\tVerbose\n\t-u USER\tUsername\n\t-p PASS\tPassword\n\t-P PORT\n",
+  "exit": 1,
+  "tree": {}
+}

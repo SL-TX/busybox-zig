@@ -1,0 +1,8 @@
+{
+  "applet": "ftpput",
+  "name": "only_host",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ftpput [OPTIONS] HOST [REMOTE_FILE] LOCAL_FILE\n\nUpload a file to a FTP server\n\n\t-v\tVerbose\n\t-u USER\tUsername\n\t-p PASS\tPassword\n\t-P PORT\n",
+  "exit": 1,
+  "tree": {}
+}

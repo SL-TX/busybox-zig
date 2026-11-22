@@ -1,0 +1,8 @@
+{
+  "applet": "whois",
+  "name": "explicit_port",
+  "stdout": "[Querying 127.0.0.1:1 'foo']\n",
+  "stderr": "whois: can't connect to remote host (127.0.0.1): Connection refused\n",
+  "exit": 1,
+  "tree": {}
+}
