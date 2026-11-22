@@ -1,0 +1,8 @@
+{
+  "applet": "iplink",
+  "name": "show_bad_dev",
+  "stdout": "",
+  "stderr": "iplink: can't find device 'nosuch'\n",
+  "exit": 2,
+  "tree": {}
+}

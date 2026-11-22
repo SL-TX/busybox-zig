@@ -1,0 +1,8 @@
+{
+  "applet": "iplink",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: iplink set IFACE [up|down] [arp on|off] [multicast on|off]\n\t[promisc on|off] [mtu NUM] [name NAME] [qlen NUM] [address MAC]\n\t[master IFACE | nomaster] [netns PID] [type TYPE ARGS]\niplink add [link IFACE] IFACE [address MAC] type TYPE [ARGS]\niplink delete IFACE type TYPE [ARGS]\n\tTYPE ARGS := vlan VLANARGS | vrf table NUM | can CANARGS\n\tVLANARGS := id VLANID [protocol 802.1q|802.1ad] [reorder_hdr on|off]\n\t\t[gvrp on|off] [mvrp on|off] [loose_binding on|off]\n\tCANARGS := [bitrate BITRATE [sample-point SAMPLE-POINT]] |\n\t\t[tq TQ prop-seg PROP_SEG phase-seg1 PHASE-SEG1\n\t\tphase-seg2 PHASE-SEG2 [sjw SJW]]\n\t\t[dbitrate BITRATE [dsample-point SAMPLE-POINT]] |\n\t\t[dtq TQ dprop-seg PROP_SEG dphase-seg1 PHASE-SEG1\n\t\tdphase-seg2 PHASE-SEG2 [dsjw SJW]]\n\t\t[loopback on|off] [listen-only on|off] [triple-sampling on|off]\n\t\t[one-shot on|off] [berr-reporting on|off]\n\t\t[fd on|off] [fd-non-iso on|off] [presume-ack on|off]\n\t\t[restart-ms TIME-MS] [restart]\n\t\t[termination 0..65535]\niplink show [IFACE]\n",
+  "exit": 1,
+  "tree": {}
+}

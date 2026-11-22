@@ -1,0 +1,8 @@
+{
+  "applet": "iplink",
+  "name": "unknown_subcommand",
+  "stdout": "",
+  "stderr": "iplink: invalid argument 'bogus' to 'iplink'\n",
+  "exit": 2,
+  "tree": {}
+}

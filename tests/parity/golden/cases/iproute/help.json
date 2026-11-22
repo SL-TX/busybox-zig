@@ -1,0 +1,8 @@
+{
+  "applet": "iproute",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: iproute list|flush|add|del|change|append|replace|test ROUTE\n\niproute list|flush SELECTOR\n\tSELECTOR := [root PREFIX] [match PREFIX] [proto RTPROTO]\n\tPREFIX := default|ADDR[/MASK]\niproute get ADDR [from ADDR iif IFACE]\n\t[oif IFACE] [tos TOS]\niproute add|del|change|append|replace|test ROUTE\n\tROUTE := NODE_SPEC [INFO_SPEC]\n\tNODE_SPEC := PREFIX [table TABLE_ID] [proto RTPROTO] [scope SCOPE] [metric METRIC]\n\tINFO_SPEC := NH OPTIONS\n\tNH := [via [inet|inet6] ADDR] [dev IFACE] [src ADDR] [onlink]\n\tOPTIONS := [mtu [lock] NUM] [advmss [lock] NUM]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

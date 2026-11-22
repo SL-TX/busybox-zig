@@ -1,0 +1,8 @@
+{
+  "applet": "iptunnel",
+  "name": "unknown_subcommand",
+  "stdout": "",
+  "stderr": "iptunnel: invalid argument 'bogus' to 'iptunnel'\n",
+  "exit": 1,
+  "tree": {}
+}

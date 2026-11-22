@@ -1,0 +1,8 @@
+{
+  "applet": "iprule",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: iprule [list] | add|del SELECTOR ACTION\n\n\tSELECTOR := [from PREFIX] [to PREFIX] [tos TOS] [fwmark FWMARK[/MASK]]\n\t\t\t[dev IFACE] [pref NUMBER]\n\tACTION := [table TABLE_ID] [nat ADDR]\n\t\t\t[prohibit|reject|unreachable]\n\t\t\t[realms [SRCREALM/]DSTREALM]\n\tTABLE_ID := [local|main|default|NUMBER]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

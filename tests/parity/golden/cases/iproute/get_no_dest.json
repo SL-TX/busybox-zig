@@ -1,0 +1,8 @@
+{
+  "applet": "iproute",
+  "name": "get_no_dest",
+  "stdout": "",
+  "stderr": "iproute: need at least destination address\n",
+  "exit": 1,
+  "tree": {}
+}

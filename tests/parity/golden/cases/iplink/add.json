@@ -1,0 +1,8 @@
+{
+  "applet": "iplink",
+  "name": "add",
+  "stdout": "",
+  "stderr": "iplink: RTNETLINK answers: Operation not permitted\n",
+  "exit": 2,
+  "tree": {}
+}

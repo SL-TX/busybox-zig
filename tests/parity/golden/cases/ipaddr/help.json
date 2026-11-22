@@ -1,0 +1,8 @@
+{
+  "applet": "ipaddr",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ipaddr add|del IFADDR dev IFACE | show|flush [dev IFACE] [to PREFIX]\n\nipaddr add|change|replace|delete dev IFACE [CONFFLAG-LIST] IFADDR\n\tIFADDR := PREFIX | ADDR peer PREFIX [broadcast ADDR|+|-]\n\t\t[anycast ADDR] [label STRING] [scope SCOPE]\n\tPREFIX := ADDR[/MASK]\n\tSCOPE := [host|link|global|NUMBER]\n\tCONFFLAG-LIST := [CONFFLAG-LIST] CONFFLAG\n\tCONFFLAG := [noprefixroute]\nipaddr show|flush [dev IFACE] [scope SCOPE] [to PREFIX] [label PATTERN]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

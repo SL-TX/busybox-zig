@@ -1,0 +1,8 @@
+{
+  "applet": "iptunnel",
+  "name": "add_no_mode",
+  "stdout": "",
+  "stderr": "iptunnel: can't determine tunnel mode (ipip, gre or sit)\n",
+  "exit": 1,
+  "tree": {}
+}

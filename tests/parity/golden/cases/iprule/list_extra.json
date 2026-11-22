@@ -1,0 +1,8 @@
+{
+  "applet": "iprule",
+  "name": "list_extra",
+  "stdout": "",
+  "stderr": "iprule: ignoring all arguments\n",
+  "exit": 255,
+  "tree": {}
+}

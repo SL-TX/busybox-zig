@@ -1,0 +1,8 @@
+{
+  "applet": "ip",
+  "name": "link_bad_dev",
+  "stdout": "",
+  "stderr": "ip: can't find device 'nosuch'\n",
+  "exit": 2,
+  "tree": {}
+}

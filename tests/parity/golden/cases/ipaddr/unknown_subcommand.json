@@ -1,0 +1,8 @@
+{
+  "applet": "ipaddr",
+  "name": "unknown_subcommand",
+  "stdout": "",
+  "stderr": "ipaddr: invalid argument 'bogus' to 'ipaddr'\n",
+  "exit": 1,
+  "tree": {}
+}
