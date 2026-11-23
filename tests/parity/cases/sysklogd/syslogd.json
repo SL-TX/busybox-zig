@@ -1,12 +1,162 @@
 {
   "applet": "syslogd",
   "cases": [
-    {"name":"help","argv":["--help"],"expect":{"exit":0}},
-    {"name":"level_zero","argv":["-l","0"],"expect":{"exit":1,"stderr":"syslogd: number 0 is not in 1..8 range\n"}},
-    {"name":"level_nine","argv":["-l","9"],"expect":{"exit":1,"stderr":"syslogd: number 9 is not in 1..8 range\n"}},
-    {"name":"size_invalid","argv":["-s","x"],"expect":{"exit":1,"stderr":"syslogd: invalid number 'x'\n"}},
-    {"name":"keep_too_big","argv":["-b","100"],"expect":{"exit":1,"stderr":"syslogd: number 100 is not in 0..99 range\n"}},
-    {"name":"missing_config","argv":["-f","/nonexistent"],"expect":{"exit":1,"stderr":"syslogd: can't open '/nonexistent': No such file or directory\n"}},
-    {"name":"invalid_option","argv":["-z"],"expect":{"exit":1}}
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "level_zero",
+      "argv": [
+        "-l",
+        "0"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: number 0 is not in 1..8 range\n"
+      }
+    },
+    {
+      "name": "level_nine",
+      "argv": [
+        "-l",
+        "9"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: number 9 is not in 1..8 range\n"
+      }
+    },
+    {
+      "name": "size_invalid",
+      "argv": [
+        "-s",
+        "x"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: invalid number 'x'\n"
+      }
+    },
+    {
+      "name": "keep_too_big",
+      "argv": [
+        "-b",
+        "100"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: number 100 is not in 0..99 range\n"
+      }
+    },
+    {
+      "name": "missing_config",
+      "argv": [
+        "-f",
+        "/nonexistent"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: can't open '/nonexistent': No such file or directory\n"
+      }
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "foreground_noop",
+      "argv": [
+        "-n",
+        "-f",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: bind: Address already in use\n"
+      }
+    },
+    {
+      "name": "local_noop",
+      "argv": [
+        "-L",
+        "-f",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: bind: Address already in use\n"
+      }
+    },
+    {
+      "name": "remote_noop",
+      "argv": [
+        "-R",
+        "bogus host",
+        "-f",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: bind: Address already in use\n"
+      }
+    },
+    {
+      "name": "small_noop",
+      "argv": [
+        "-S",
+        "-D",
+        "-t",
+        "-K",
+        "-f",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stderr": "syslogd: bind: Address already in use\n"
+      }
+    }
   ]
 }

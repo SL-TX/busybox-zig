@@ -1,0 +1,16 @@
+{
+  "applet": "diff",
+  "name": "force_empty",
+  "stdout": "--- a\n+++ nope\n@@ -1 +0,0 @@\n-x\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eAo="
+      }
+    }
+  }
+}

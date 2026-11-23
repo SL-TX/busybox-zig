@@ -107,8 +107,7 @@ const Parser = struct {
         return text;
     }
 
-    fn parseDelimited(self: *Parser, delim: u8) ?[]const u8 {
-        _ = delim;
+    fn parseDelimited(self: *Parser) ?[]const u8 {
         if (self.pos >= self.script.len) return null;
         const dc = self.script[self.pos];
         if (dc == '\\') return null;
@@ -160,7 +159,7 @@ const Parser = struct {
                     cmd.kind = .substitute;
                     if (self.pos >= self.script.len) break;
                     const delim = self.script[self.pos];
-                    const pat = self.parseDelimited(delim) orelse break;
+                    const pat = self.parseDelimited() orelse break;
                     const rep = self.parseUntil(delim) orelse break;
                     cmd.pattern = pat;
                     cmd.replacement = rep;
@@ -186,7 +185,7 @@ const Parser = struct {
                     cmd.kind = .translate;
                     if (self.pos >= self.script.len) break;
                     const delim = self.script[self.pos];
-                    cmd.from = self.parseDelimited(delim) orelse "";
+                    cmd.from = self.parseDelimited() orelse "";
                     cmd.to = self.parseUntil(delim) orelse "";
                 },
                 '{' => {

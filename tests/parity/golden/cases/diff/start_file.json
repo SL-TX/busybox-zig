@@ -1,0 +1,31 @@
+{
+  "applet": "diff",
+  "name": "start_file",
+  "stdout": "--- d1/x\n+++ d2/x\n@@ -1 +1 @@\n-one\n+two\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "d2": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d2/x": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "dHdvCg=="
+      }
+    },
+    "d1": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d1/x": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b25lCg=="
+      }
+    }
+  }
+}

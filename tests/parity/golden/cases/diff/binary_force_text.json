@@ -1,0 +1,23 @@
+{
+  "applet": "diff",
+  "name": "binary_force_text",
+  "stdout": "--- a\n+++ b\n@@ -1 +1 @@\n-a\u0000b\n+a\u0000c\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQBjCg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQBiCg=="
+      }
+    }
+  }
+}

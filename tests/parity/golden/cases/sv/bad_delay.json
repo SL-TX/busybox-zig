@@ -1,0 +1,8 @@
+{
+  "applet": "sv",
+  "name": "bad_delay",
+  "stdout": "",
+  "stderr": "sv: invalid number 'x'\n",
+  "exit": 100,
+  "tree": {}
+}

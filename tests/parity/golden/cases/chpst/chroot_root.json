@@ -1,0 +1,8 @@
+{
+  "applet": "chpst",
+  "name": "chroot_root",
+  "stdout": "",
+  "stderr": "chpst: can't change root directory to '/': Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

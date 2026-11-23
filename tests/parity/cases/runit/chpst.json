@@ -178,6 +178,71 @@
       "env": {},
       "cwd": ".",
       "timeout_ms": 5000
+    },
+    {
+      "name": "chroot_root",
+      "argv": [
+        "-/",
+        "/",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stderr": "chpst: can't change root directory to '/': Operation not permitted\n"
+      }
+    },
+    {
+      "name": "chroot_missing",
+      "argv": [
+        "-/",
+        "nosuch",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stderr": "chpst: can't change root directory to 'nosuch': No such file or directory\n"
+      }
+    },
+    {
+      "name": "verbose_noop",
+      "argv": [
+        "-v",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "hi\n"
+      }
     }
   ]
 }

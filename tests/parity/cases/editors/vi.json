@@ -69,6 +69,54 @@
       "expect": {
         "exit": 1
       }
+    },
+    {
+      "name": "cmd_sub_write",
+      "argv": [
+        "-c",
+        "s/one/two/",
+        "-c",
+        "wq",
+        "<TMP>/f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "one\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "use_pty": true,
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "cmd_write",
+      "argv": [
+        "-c",
+        "w",
+        "-c",
+        "q",
+        "<TMP>/f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "one\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "use_pty": true,
+      "expect": {
+        "exit": 0
+      }
     }
   ]
 }

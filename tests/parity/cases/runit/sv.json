@@ -107,6 +107,27 @@
       "env": {},
       "cwd": ".",
       "timeout_ms": 5000
+    },
+    {
+      "name": "bad_delay",
+      "argv": [
+        "-w",
+        "x",
+        "status",
+        "nosuch"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 100,
+        "stderr": "sv: invalid number 'x'\n"
+      }
     }
   ]
 }

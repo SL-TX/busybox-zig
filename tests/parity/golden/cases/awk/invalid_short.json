@@ -1,0 +1,8 @@
+{
+  "applet": "awk",
+  "name": "invalid_short",
+  "stdout": "",
+  "stderr": "awk: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: awk [OPTIONS] [AWK_PROGRAM] [FILE]...\n\n\t-v VAR=VAL\tSet variable\n\t-F SEP\t\tUse SEP as field separator\n\t-f/-E FILE\tRead program from FILE\n\t-e AWK_PROGRAM\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -170,6 +170,7 @@ pub fn ed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     const name = prog(args);
     var silent = false;
+    var prompt: []const u8 = ""; // reference: no prompt unless -p is given
     var file: ?[]const u8 = null;
     var i: usize = 1;
     while (i < args.len) : (i += 1) {
@@ -178,6 +179,7 @@ pub fn ed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             silent = true;
         } else if (std.mem.eql(u8, arg, "-p")) {
             i += 1;
+            if (i < args.len) prompt = args[i];
         } else if (arg.len >= 2 and arg[0] == '-' and arg[1] == '-') {
             badLong(name, arg[2..]);
         } else if (arg.len > 1 and arg[0] == '-') {
@@ -186,7 +188,6 @@ pub fn ed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             file = arg;
         }
     }
-    const prompt: []const u8 = if (silent) "" else "*";
     var lines: std.ArrayList([]const u8) = .empty;
     if (file) |path| {
         if (readFile(path)) |data| lines = splitLines(data);
@@ -195,12 +196,12 @@ pub fn ed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     var dirty = false;
 
     while (true) {
-        if (prompt.len > 0) emit(prompt);
+        if (prompt.len > 0) writeFd(2, prompt);
         const raw = readCommandLine() orelse break;
         const cmdline = std.mem.trim(u8, raw, " \t");
         if (cmdline.len == 0) continue;
         const r = parseRange(cmdline, current, lines.items.len);
-        const idx = std.mem.indexOfAny(u8, cmdline, "pqdswain") orelse continue;
+        const idx = std.mem.indexOfAny(u8, cmdline, "pqdswain=") orelse continue;
         const cmd = cmdline[idx];
         switch (cmd) {
             'p' => {
@@ -211,8 +212,9 @@ pub fn ed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
                 }
             },
             'd' => {
-                if (r.from >= 1 and r.from <= lines.items.len) {
-                    _ = lines.orderedRemove(r.from - 1);
+                var ln = r.to;
+                while (ln >= r.from and ln >= 1 and ln <= lines.items.len) : (ln -= 1) {
+                    _ = lines.orderedRemove(ln - 1);
                     dirty = true;
                 }
             },
@@ -254,7 +256,7 @@ pub fn ed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             },
             '=' => {
                 var buf: [32]u8 = undefined;
-                const text = std.fmt.bufPrint(&buf, "{d}\n", .{current}) catch "";
+                const text = std.fmt.bufPrint(&buf, "{d}\n", .{if (r.from >= 1) r.from else current}) catch "";
                 emit(text);
             },
             'q' => {
@@ -285,7 +287,7 @@ const features = "These features are available:\n" ++
     "\tJob suspend and resume with ^Z\n" ++
     "\tAdapt to window re-sizes\n";
 
-fn renderVi(name: []const u8, file: ?[]const u8, lines: []const []const u8, readonly: bool) void {
+fn renderVi(name: []const u8, file: ?[]const u8, lines: []const []const u8, cursor_line: usize, readonly: bool, modified: bool, status_msg: ?[]const u8) void {
     var out: std.ArrayList(u8) = .empty;
     out.appendSlice(a, "\x1b[?1049h\x1b[999;999H\x1b[6n\x1b[H\x1b[J") catch {};
     var row: usize = if (lines.len == 0) 2 else 1;
@@ -294,21 +296,76 @@ fn renderVi(name: []const u8, file: ?[]const u8, lines: []const []const u8, read
         out.appendSlice(a, text) catch {};
         if (row <= lines.len) out.appendSlice(a, lines[row - 1]) catch {} else out.append(a, '~') catch {};
     }
-    out.appendSlice(a, "\x1b[1;1H\x1b[24;1H\x1b[K- ") catch {};
-    if (file) |f| out.appendSlice(a, f) catch {} else out.appendSlice(a, "No file") catch {};
-    if (readonly) out.appendSlice(a, " [Readonly]") catch {};
-    const total: usize = if (lines.len == 0) 1 else lines.len;
-    const pct = 100 / total;
-    const status = std.fmt.allocPrint(a, " 1/{d} {d}%\x1b[1;1H\x1b[24;1H\x1b[K", .{ total, pct }) catch "";
-    out.appendSlice(a, status) catch {};
+    const cur: usize = if (cursor_line == 0) 1 else cursor_line;
+    const home = std.fmt.allocPrint(a, "\x1b[{d};1H", .{cur}) catch "\x1b[1;1H";
+    out.appendSlice(a, home) catch {};
+    out.appendSlice(a, "\x1b[24;1H\x1b[K") catch {};
+    if (status_msg) |msg| {
+        out.appendSlice(a, msg) catch {};
+    } else {
+        out.appendSlice(a, "- ") catch {};
+        if (file) |f| out.appendSlice(a, f) catch {} else out.appendSlice(a, "No file") catch {};
+        if (readonly) out.appendSlice(a, " [Readonly]") catch {};
+        if (modified) out.appendSlice(a, " [Modified]") catch {};
+        const total: usize = if (lines.len == 0) 1 else lines.len;
+        const pct = if (cur > total) 100 else (cur * 100) / total;
+        const status = std.fmt.allocPrint(a, " {d}/{d} {d}%", .{ cur, total, pct }) catch "";
+        out.appendSlice(a, status) catch {};
+    }
+    out.appendSlice(a, "\x1b[1;1H\x1b[24;1H\x1b[K") catch {};
     emit(out.items);
     _ = name;
+}
+
+fn writeMessage(file: ?[]const u8, lines: []const []const u8) []const u8 {
+    var chars: usize = 0;
+    for (lines) |line| chars += line.len + 1;
+    const path = file orelse "No file";
+    return std.fmt.allocPrint(a, "'{s}' {d}L, {d}C", .{ path, lines.len, chars }) catch "";
+}
+
+fn viSubstitute(lines: *std.ArrayList([]const u8), command: []const u8) void {
+    if (command.len < 3 or command[0] != 's') return;
+    const delim = command[1];
+    var pos: usize = 2;
+    const p0 = pos;
+    while (pos < command.len and command[pos] != delim) pos += 1;
+    const pattern = command[p0..pos];
+    if (pos >= command.len) return;
+    pos += 1;
+    const r0 = pos;
+    while (pos < command.len and command[pos] != delim) pos += 1;
+    const replacement = command[r0..pos];
+    const global = std.mem.indexOfScalar(u8, command[pos..], 'g') != null;
+    for (lines.items) |*line| {
+        line.* = substituteLine(line.*, pattern, replacement, global);
+    }
+}
+
+fn readKey() ?u8 {
+    var byte: [1]u8 = undefined;
+    const n = linux.read(0, &byte, 1);
+    if (linux.errno(n) != .SUCCESS or n == 0) return null;
+    return byte[0];
+}
+
+fn readUntil(stop: u8) ?[]const u8 {
+    var buf: std.ArrayList(u8) = .empty;
+    while (true) {
+        const ch = readKey() orelse {
+            if (buf.items.len == 0) return null;
+            break;
+        };
+        if (ch == stop) break;
+        buf.append(a, ch) catch {};
+    }
+    return buf.toOwnedSlice(a) catch null;
 }
 
 pub fn vi_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     const name = prog(args);
-    var initial: ?[]const u8 = null;
+    var commands: std.ArrayList([]const u8) = .empty;
     var readonly = false;
     var file: ?[]const u8 = null;
     var i: usize = 1;
@@ -316,9 +373,9 @@ pub fn vi_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         const arg = args[i];
         if (std.mem.eql(u8, arg, "-c")) {
             i += 1;
-            if (i < args.len) initial = args[i];
+            if (i < args.len) commands.append(a, args[i]) catch {};
         } else if (std.mem.startsWith(u8, arg, "-c") and arg.len > 2) {
-            initial = arg[2..];
+            commands.append(a, arg[2..]) catch {};
         } else if (std.mem.eql(u8, arg, "-R")) {
             readonly = true;
         } else if (std.mem.eql(u8, arg, "-H")) {
@@ -337,22 +394,104 @@ pub fn vi_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     if (file) |path| {
         if (readFile(path)) |data| lines = splitLines(data);
     }
-    renderVi(name, file, lines.items, readonly);
-    if (initial) |cmd| {
-        if (cmd.len == 0 or cmd[0] == 'q') {
-            emit("\x1b[?1049l");
-            return 0;
+    var cursor: usize = 1;
+    var modified = false;
+    var quit = false;
+    var status_override: ?[]const u8 = null;
+
+    // -c commands are real ex commands, executed in order at startup.
+    for (commands.items) |raw| {
+        var cmd = std.mem.trim(u8, raw, " \t");
+        if (cmd.len > 0 and cmd[0] == ':') cmd = std.mem.trimStart(u8, cmd[1..], " \t");
+        if (cmd.len == 0) continue;
+        if (std.mem.startsWith(u8, cmd, "s/")) viSubstitute(&lines, cmd);
+        if (cmd[0] == 'w') {
+            modified = false;
+            if (file) |path| writeFile(path, linesToData(lines.items));
+            status_override = writeMessage(file, lines.items);
         }
+        if (cmd[0] == 'q' or std.mem.eql(u8, cmd, "wq")) {
+            quit = true;
+            break;
+        }
+    }
+    renderVi(name, file, lines.items, cursor, readonly, modified, status_override);
+    if (quit) {
         emit("\x1b[?1049l");
         return 0;
     }
-    var byte: [1]u8 = undefined;
-    const n = linux.read(0, &byte, 1);
-    if (linux.errno(n) != .SUCCESS or n == 0) {
-        bb.messages.program_name = name;
-        bb.messages.plainMsg("can't read user input", .{});
-        return 1;
+
+    // Normal-mode editor loop. Each command is applied to the in-memory
+    // buffer and the screen is redrawn so interactive cases observe edits.
+    while (!quit) {
+        const key = readKey() orelse {
+            bb.messages.program_name = name;
+            bb.messages.plainMsg("can't read user input", .{});
+            return 1;
+        };
+        switch (key) {
+            'h' => { if (cursor > 1) cursor -= 1; },
+            'l' => { if (lines.items.len > 0 and cursor < lines.items.len) cursor += 1; },
+            'j' => { if (lines.items.len > 0 and cursor < lines.items.len) cursor += 1; },
+            'k' => { if (cursor > 1) cursor -= 1; },
+            'x' => {
+                if (cursor <= lines.items.len and lines.items[cursor - 1].len > 0) {
+                    const old = lines.items[cursor - 1];
+                    lines.items[cursor - 1] = a.dupe(u8, old[1..]) catch old;
+                    modified = true;
+                }
+            },
+            'd' => {
+                const next = readKey();
+                if (next == 'd' and cursor <= lines.items.len) {
+                    _ = lines.orderedRemove(cursor - 1);
+                    if (cursor > lines.items.len and lines.items.len > 0) cursor = lines.items.len;
+                    modified = true;
+                }
+            },
+            'i', 'a' => {
+                const insert_at = if (key == 'i') cursor - 1 else cursor;
+                var text: std.ArrayList(u8) = .empty;
+                while (true) {
+                    const ch = readKey() orelse break;
+                    if (ch == 0x1b) break;
+                    text.append(a, ch) catch {};
+                }
+                if (cursor <= lines.items.len) {
+                    const old = lines.items[cursor - 1];
+                    const at = @min(insert_at, old.len);
+                    const joined = std.mem.concat(a, u8, &.{ old[0..at], text.items, old[at..] }) catch old;
+                    lines.items[cursor - 1] = joined;
+                } else {
+                    lines.append(a, text.toOwnedSlice(a) catch "") catch {};
+                }
+                modified = true;
+            },
+            '/' => {
+                const needle = readUntil('\n') orelse "";
+                for (lines.items, 1..) |line, ln| {
+                    if (std.mem.indexOf(u8, line, needle) != null) {
+                        cursor = ln;
+                        break;
+                    }
+                }
+            },
+            ':' => {
+                const cmd_raw = readUntil('\n') orelse "";
+                const cmd = std.mem.trim(u8, cmd_raw, " \t\r");
+                if (std.mem.startsWith(u8, cmd, "s/")) viSubstitute(&lines, cmd);
+                if (std.mem.startsWith(u8, cmd, "w") or std.mem.eql(u8, cmd, "wq")) {
+                    if (file) |path| writeFile(path, linesToData(lines.items));
+                    modified = false;
+                    status_override = writeMessage(file, lines.items);
+                }
+                if (std.mem.eql(u8, cmd, "q") or std.mem.eql(u8, cmd, "wq") or std.mem.eql(u8, cmd, "q!")) quit = true;
+            },
+            else => {},
+        }
+        renderVi(name, file, lines.items, cursor, readonly, modified, status_override);
     }
     emit("\x1b[?1049l");
     return 0;
 }
+

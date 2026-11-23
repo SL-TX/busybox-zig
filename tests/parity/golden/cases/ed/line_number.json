@@ -1,0 +1,16 @@
+{
+  "applet": "ed",
+  "name": "line_number",
+  "stdout": "1\n3\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b25lCnR3bwp0aHJlZQo="
+      }
+    }
+  }
+}

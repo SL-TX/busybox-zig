@@ -68,6 +68,15 @@ fn number(name: []const u8, text: []const u8) u64 {
     return n;
 }
 
+fn writeErr(bytes: []const u8) void {
+    var done: usize = 0;
+    while (done < bytes.len) {
+        const n = linux.write(2, bytes.ptr + done, bytes.len - done);
+        if (linux.errno(n) != .SUCCESS or n == 0) return;
+        done += n;
+    }
+}
+
 fn writeOut(bytes: []const u8) void {
     var done: usize = 0;
     while (done < bytes.len) {
@@ -134,7 +143,8 @@ fn execProgram(name: []const u8, command: []const []const u8, overrides: []const
         const text = std.mem.span(entry.?);
         var keep = true;
         for (overrides) |ov| {
-            const prefix = std.fmt.allocPrint(a, "{s}=", .{ov.key}) catch break;
+            var pbuf: [128]u8 = undefined;
+            const prefix = std.fmt.bufPrint(&pbuf, "{s}=", .{ov.key}) catch break;
             if (std.mem.startsWith(u8, text, prefix)) {
                 keep = false;
                 if (!ov.unset) {
@@ -151,7 +161,8 @@ fn execProgram(name: []const u8, command: []const []const u8, overrides: []const
         var present = false;
         for (base) |entry| {
             if (entry == null) break;
-            const prefix = std.fmt.allocPrint(a, "{s}=", .{ov.key}) catch break;
+            var pbuf: [128]u8 = undefined;
+            const prefix = std.fmt.bufPrint(&pbuf, "{s}=", .{ov.key}) catch break;
             if (std.mem.startsWith(u8, std.mem.span(entry.?), prefix)) {
                 present = true;
                 break;
@@ -271,6 +282,7 @@ fn chpstCommon(argc: c_int, argv: [*][*:0]const u8, flavor: enum { chpst, envdir
     var do_setuid = false;
     var do_envuid = false;
     var env_dir: ?[]const u8 = null;
+    var chroot_dir: ?[]const u8 = null;
     var nice_val: ?i64 = null;
     var new_session = false;
     var close_fd: [3]bool = .{ false, false, false };
@@ -321,7 +333,7 @@ fn chpstCommon(argc: c_int, argv: [*][*:0]const u8, flavor: enum { chpst, envdir
                         bb.messages.plainMsg("invalid number '{s}'", .{value});
                         std.process.exit(1);
                     },
-                    '/' => {}, // chroot is impossible for an unprivileged caller
+                    '/' => chroot_dir = value,
                     'a' => limits.append(a, .{ .res = .AS, .val = number(name, value) }) catch {},
                     'd' => limits.append(a, .{ .res = .DATA, .val = number(name, value) }) catch {},
                     's' => limits.append(a, .{ .res = .STACK, .val = number(name, value) }) catch {},
@@ -367,6 +379,15 @@ fn chpstCommon(argc: c_int, argv: [*][*:0]const u8, flavor: enum { chpst, envdir
     if (new_session) _ = linux.setsid();
     if (env_dir) |dir| envDirectory(name, dir, &overrides);
     const ugid = if (user) |u| lookupUser(name, u) else null;
+    if (chroot_dir) |dir| {
+        const cz = zpath(dir) orelse return 1;
+        const rc = linux.chroot(cz.ptr);
+        if (linux.errno(rc) != .SUCCESS) {
+            bb.messages.program_name = name;
+            bb.messages.errorMsg(@intFromEnum(linux.errno(rc)), "can't change root directory to '{s}'", .{dir});
+            return 1;
+        }
+    }
     if (do_envuid and ugid != null) {
         overrides.append(a, .{ .key = "UID", .value = std.fmt.allocPrint(a, "{d}", .{ugid.?.uid}) catch "" }) catch {};
         overrides.append(a, .{ .key = "GID", .value = std.fmt.allocPrint(a, "{d}", .{ugid.?.gid}) catch "" }) catch {};
@@ -493,7 +514,11 @@ fn svCommon(argc: c_int, argv: [*][*:0]const u8, is_sv: bool) c_int {
                 'v' => {},
                 'w' => {
                     if (index + 1 < args.len) index += 1 else missingArg(name, 'w');
-                    _ = number(name, args[index]);
+                    _ = bb.util.xatou(args[index]) catch {
+                        bb.messages.program_name = name;
+                        bb.messages.plainMsg("invalid number '{s}'", .{args[index]});
+                        std.process.exit(100);
+                    };
                 },
                 else => badOption(name, ch),
             };
@@ -540,6 +565,7 @@ pub fn svlogd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const name = prog(args);
     var repl: ?u8 = null;
     var replace: []const u8 = "";
+    var verbose = false;
     var i: usize = 1;
     while (i < args.len) : (i += 1) {
         const tok = args[i];
@@ -553,7 +579,8 @@ pub fn svlogd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         while (j < tok.len) : (j += 1) {
             const ch = tok[j];
             switch (ch) {
-                't', 'v' => {},
+                't' => {},
+                'v' => verbose = true,
                 'r', 'R', 'l', 'b' => {
                     var value: []const u8 = undefined;
                     if (j + 1 < tok.len) value = tok[j + 1 ..] else if (i + 1 < args.len) {
@@ -624,6 +651,11 @@ pub fn svlogd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             _ = linux.fchmod(@intCast(lfd), 0o600);
             _ = linux.close(@intCast(lfd));
         }
+        if (verbose) {
+            var vbuf: [512]u8 = undefined;
+            const vmsg = std.fmt.bufPrint(&vbuf, "svlogd: info: new: {s}/current\n", .{dir}) catch "";
+            writeErr(vmsg);
+        }
         if (input.items.len == 0) continue;
         const cur = std.fmt.allocPrint(a, "{s}/current", .{dir}) catch continue;
         const cz = zpath(cur) orelse continue;
@@ -637,6 +669,13 @@ pub fn svlogd_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         }
         _ = linux.fchmod(@intCast(cfd), 0o744);
         _ = linux.close(@intCast(cfd));
+    }
+    if (verbose) {
+        for (dirs) |dir| {
+            var vbuf: [512]u8 = undefined;
+            const vmsg = std.fmt.bufPrint(&vbuf, "svlogd: info: close: {s}\n", .{dir}) catch "";
+            writeErr(vmsg);
+        }
     }
     return 0;
 }

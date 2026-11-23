@@ -181,6 +181,185 @@
       "expect": {
         "exit": 1
       }
+    },
+    {
+      "name": "binary",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a\u0000b\n",
+        "b": "a\u0000c\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stdout": "Files a and b differ\n"
+      }
+    },
+    {
+      "name": "binary_force_text",
+      "argv": [
+        "-a",
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a\u0000b\n",
+        "b": "a\u0000c\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stdout": "--- a\n+++ b\n@@ -1 +1 @@\n-a\u0000b\n+a\u0000c\n"
+      }
+    },
+    {
+      "name": "recursive",
+      "argv": [
+        "-r",
+        "d1",
+        "d2"
+      ],
+      "stdin": null,
+      "files": {
+        "d1/x": "one\n",
+        "d2/x": "two\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stdout": "--- d1/x\n+++ d2/x\n@@ -1 +1 @@\n-one\n+two\n"
+      }
+    },
+    {
+      "name": "start_file",
+      "argv": [
+        "-S",
+        "x",
+        "d1",
+        "d2"
+      ],
+      "stdin": null,
+      "files": {
+        "d1/x": "one\n",
+        "d2/x": "two\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "tab_prefix",
+      "argv": [
+        "-T",
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "\tx\n",
+        "b": "\ty\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "expand_tabs",
+      "argv": [
+        "-t",
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "\tx\n",
+        "b": "\ty\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1,
+        "stdout": "--- a\n+++ b\n@@ -1 +1 @@\n-        x\n+        y\n"
+      }
+    },
+    {
+      "name": "force_empty",
+      "argv": [
+        "-N",
+        "a",
+        "nope"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "heuristic",
+      "argv": [
+        "-d",
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a\nb\nc\n",
+        "b": "a\nx\nc\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
     }
   ]
 }

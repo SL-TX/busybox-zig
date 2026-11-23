@@ -115,6 +115,49 @@
       "env": {},
       "cwd": ".",
       "timeout_ms": 5000
+    },
+    {
+      "name": "verbose",
+      "argv": [
+        "-v",
+        "logs"
+      ],
+      "stdin": "hi\n",
+      "files": {},
+      "dirs": [
+        "logs"
+      ],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stderr": "svlogd: info: new: logs/current\nsvlogd: info: close: logs\n"
+      }
+    },
+    {
+      "name": "buffer_noop",
+      "argv": [
+        "-b",
+        "bogus",
+        "logs"
+      ],
+      "stdin": "hi\n",
+      "files": {},
+      "dirs": [
+        "logs"
+      ],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stderr": ""
+      }
     }
   ]
 }

@@ -32,6 +32,16 @@ fn argsFrom(argv: [*][*:0]const u8, argc: c_int) []const []const u8 {
     return out;
 }
 
+fn rejectOption(name: []const u8, arg: []const u8, long_as_dash: bool) noreturn {
+    bb.messages.program_name = name;
+    if (arg.len >= 2 and arg[0] == '-' and arg[1] == '-' and !long_as_dash) {
+        bb.messages.plainMsg("unrecognized option '--{s}'", .{arg[2..]});
+    } else {
+        bb.messages.plainMsg("invalid option -- '{c}'", .{if (arg.len > 1) arg[1] else '-'});
+    }
+    bb.usage.die(name);
+}
+
 pub fn renderEcho(a: std.mem.Allocator, args: []const []const u8, no_nl: bool, escapes: bool) ![]u8 {
     var out: std.ArrayList(u8) = .empty;
     errdefer out.deinit(a);
@@ -506,7 +516,7 @@ pub fn awk_main(argc: c_int, argv: [*][*:0]const u8) c_int {
                 program = script;
             }
         } else if (arg.len > 1 and arg[0] == '-') {
-            // compatibility option
+            rejectOption("awk", arg, true);
         } else if (program.len == 0) {
             program = arg;
         } else {
@@ -553,7 +563,7 @@ pub fn sed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             inplace = true;
             suffix = arg[2..];
         } else if (arg.len > 1 and arg[0] == '-') {
-            // compatibility option (e.g. -s, --posix): no observable effect
+            rejectOption("sed", arg, false);
         } else if (scripts.items.len == 0) {
             scripts.append(a, arg) catch return 1;
         } else {

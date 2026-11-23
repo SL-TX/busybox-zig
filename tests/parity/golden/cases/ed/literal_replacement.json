@@ -1,0 +1,16 @@
+{
+  "applet": "ed",
+  "name": "literal_replacement",
+  "stdout": "&X\\1bc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "JlhcMWJjCg=="
+      }
+    }
+  }
+}

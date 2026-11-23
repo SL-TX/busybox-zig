@@ -75,6 +75,69 @@
         "exit": 0,
         "stdout": "one\nthree\n"
       }
+    },
+    {
+      "name": "line_number",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "stdin": "1=\n3=\nq\n",
+      "files": {
+        "f": "one\ntwo\nthree\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "1\n3\n"
+      }
+    },
+    {
+      "name": "range_delete",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "stdin": "2,3d\n1,$p\nw\nq\n",
+      "files": {
+        "f": "one\ntwo\nthree\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "one\n"
+      }
+    },
+    {
+      "name": "literal_replacement",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "stdin": "1s/a/&X\\1/\n1p\nw\nq\n",
+      "files": {
+        "f": "abc\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "&X\\1bc\n"
+      }
     }
   ]
 }

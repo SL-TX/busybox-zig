@@ -1,0 +1,16 @@
+{
+  "applet": "patch",
+  "name": "erase_empty",
+  "stdout": "removing f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "p": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "LS0tIGEKKysrIGIKQEAgLTEgKzAsMCBAQAoteAo="
+      }
+    }
+  }
+}

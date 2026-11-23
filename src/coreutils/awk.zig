@@ -105,9 +105,9 @@ const Expr = struct {
                 self.pos += op.len;
                 const right = self.additive();
                 const result = if (op[0] == '=' or (op.len == 2 and op[1] == '='))
-                    equal(left, right)
+                    equal(self.st.a, left, right)
                 else if (op[0] == '!')
-                    !equal(left, right)
+                    !equal(self.st.a, left, right)
                 else if (op[0] == '>')
                     if (op.len == 2) left.number() >= right.number() else left.number() > right.number()
                 else
@@ -159,8 +159,6 @@ const Expr = struct {
         if (c == '$') {
             self.pos += 1;
             if (self.eat('0')) return .{ .str = self.st.line };
-            const idx_e = Expr{ .text = self.text, .pos = self.pos, .st = self.st };
-            _ = idx_e;
             var end = self.pos;
             while (end < self.text.len and std.ascii.isDigit(self.text[end])) end += 1;
             const idx = std.fmt.parseInt(usize, self.text[self.pos..end], 10) catch 0;
@@ -220,11 +218,13 @@ fn unescape(a: std.mem.Allocator, s: []const u8) []const u8 {
     return out.toOwnedSlice(a) catch s;
 }
 
-fn equal(x: Value, y: Value) bool {
-    const nx = std.fmt.parseFloat(f64, x.text(std.heap.page_allocator)) catch null;
-    const ny = std.fmt.parseFloat(f64, y.text(std.heap.page_allocator)) catch null;
+fn equal(a: std.mem.Allocator, x: Value, y: Value) bool {
+    const xt = x.text(a);
+    const yt = y.text(a);
+    const nx = std.fmt.parseFloat(f64, xt) catch null;
+    const ny = std.fmt.parseFloat(f64, yt) catch null;
     if (nx != null and ny != null) return nx.? == ny.?;
-    return std.mem.eql(u8, x.text(std.heap.page_allocator), y.text(std.heap.page_allocator));
+    return std.mem.eql(u8, xt, yt);
 }
 
 fn splitTop(a: std.mem.Allocator, text: []const u8, sep: u8) [][]const u8 {

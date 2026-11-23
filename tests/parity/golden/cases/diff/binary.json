@@ -1,0 +1,23 @@
+{
+  "applet": "diff",
+  "name": "binary",
+  "stdout": "Files a and b differ\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQBjCg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQBiCg=="
+      }
+    }
+  }
+}

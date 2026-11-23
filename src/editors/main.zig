@@ -76,6 +76,10 @@ fn writeStdout(bytes: []const u8) void {
     writeFd(1, bytes);
 }
 
+fn zpath(path: []const u8) ?[:0]u8 {
+    return a.dupeSentinel(u8, path, 0) catch null;
+}
+
 fn readAll(path: []const u8) ?[]u8 {
     const z = a.dupeSentinel(u8, path, 0) catch return null;
     defer a.free(z);
@@ -168,13 +172,11 @@ pub fn cmp_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     n2 = skip2 + count;
 
     var line: usize = 1;
-    var byte_pos: usize = 0;
     var k: usize = 0;
     while (k < count) : (k += 1) {
         const c1 = first[skip1 + k];
         const c2 = second[skip2 + k];
         if (c1 == '\n') line += 1;
-        byte_pos += 1;
         if (c1 == c2) continue;
         if (quiet) return 1;
         if (list_all) {
@@ -257,7 +259,7 @@ fn appendFmt(list: *std.ArrayList(u8), comptime fmt: []const u8, args: anytype) 
 }
 
 fn rangeText(list: *std.ArrayList(u8), start: usize, count: usize) void {
-    appendFmt(list, "{d}", .{start + 1});
+    appendFmt(list, "{d}", .{if (count == 0) start else start + 1});
     if (count != 1) appendFmt(list, ",{d}", .{count});
 }
 
@@ -360,18 +362,171 @@ fn unifiedDiff(out_writer: *std.ArrayList(u8), alines: []const []const u8, bline
     }
 }
 
+fn expandTabsLine(list: *std.ArrayList(u8), line: []const u8) void {
+    var col: usize = 0;
+    for (line) |c| {
+        if (c == '\t') {
+            const spaces = 8 - (col % 8);
+            var k: usize = 0;
+            while (k < spaces) : (k += 1) list.append(a, ' ') catch {};
+            col += spaces;
+        } else {
+            list.append(a, c) catch {};
+            col += 1;
+        }
+    }
+}
+
+fn postProcessDiff(text: []const u8, tab_prefix: bool, expand_tabs: bool) []const u8 {
+    if (!tab_prefix and !expand_tabs) return text;
+    var out: std.ArrayList(u8) = .empty;
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    var first = true;
+    while (lines.next()) |line| {
+        if (!first) out.append(a, '\n') catch {};
+        first = false;
+        const header = std.mem.startsWith(u8, line, "--- ") or std.mem.startsWith(u8, line, "+++ ") or std.mem.startsWith(u8, line, "@@ ");
+        const body = line.len > 0 and !header and (line[0] == ' ' or line[0] == '-' or line[0] == '+');
+        if (body) out.append(a, line[0]) catch {};
+        if (body and tab_prefix) out.append(a, '\t') catch {};
+        const content = if (body) line[1..] else line;
+        if (expand_tabs) expandTabsLine(&out, content) else out.appendSlice(a, content) catch {};
+    }
+    return out.toOwnedSlice(a) catch text;
+}
+
+const DiffOpts = struct {
+    quick: bool = false,
+    same: bool = false,
+    ignore_case: bool = false,
+    ignore_space: bool = false,
+    all_space: bool = false,
+    blank: bool = false,
+    force_text: bool = false,
+    force_empty: bool = false,
+    recursive: bool = false,
+    start_file: ?[]const u8 = null,
+    tab_prefix: bool = false,
+    expand_tabs: bool = false,
+    context: usize = 3,
+    labels: [2][]const u8 = .{ "", "" },
+    nlabels: usize = 0,
+};
+
+fn hasBinary(d1: []const u8, d2: []const u8) bool {
+    const n = @min(d1.len, d2.len);
+    for (0..n) |k| if (d1[k] == 0 or d2[k] == 0) return true;
+    return false;
+}
+
+/// Compare one pair of files and print the result. Returns 1 when different.
+fn diffPair(name: []const u8, f1: []const u8, f2: []const u8, label1: []const u8, label2: []const u8, opts: DiffOpts) c_int {
+    const d1 = readAll(f1) orelse "";
+    const d2 = readAll(f2) orelse "";
+    var differ = !std.mem.eql(u8, d1, d2);
+    var a_lines = splitLines(d1);
+    var b_lines = splitLines(d2);
+    if (opts.blank) {
+        a_lines = nonBlank(a_lines);
+        b_lines = nonBlank(b_lines);
+    }
+    var same_content = !differ;
+    if (opts.ignore_case or opts.ignore_space or opts.all_space) {
+        if (a_lines.len == b_lines.len) {
+            same_content = true;
+            for (a_lines, b_lines) |x, y| {
+                var bx: [4096]u8 = undefined;
+                var by: [4096]u8 = undefined;
+                const kx = normalizeLine(x, opts.ignore_case, opts.ignore_space, opts.all_space, &bx);
+                const ky = normalizeLine(y, opts.ignore_case, opts.ignore_space, opts.all_space, &by);
+                if (!std.mem.eql(u8, kx, ky)) {
+                    same_content = false;
+                    break;
+                }
+            }
+            differ = !same_content;
+        }
+    }
+    if (!differ) {
+        if (opts.same) {
+            var buf: [512]u8 = undefined;
+            const msg = std.fmt.bufPrint(&buf, "Files {s} and {s} are identical\n", .{ label1, label2 }) catch "";
+            writeStdout(msg);
+        }
+        return 0;
+    }
+    if (opts.quick or (hasBinary(d1, d2) and !opts.force_text)) {
+        var buf: [512]u8 = undefined;
+        const msg = std.fmt.bufPrint(&buf, "Files {s} and {s} differ\n", .{ label1, label2 }) catch "";
+        writeStdout(msg);
+        return 1;
+    }
+    const akeys = a.alloc([]u8, a_lines.len) catch return 1;
+    const bkeys = a.alloc([]u8, b_lines.len) catch return 1;
+    for (a_lines, 0..) |line, k| {
+        const buf = a.alloc(u8, line.len + 2) catch return 1;
+        akeys[k] = normalizeLine(line, opts.ignore_case, opts.ignore_space, opts.all_space, buf);
+    }
+    for (b_lines, 0..) |line, k| {
+        const buf = a.alloc(u8, line.len + 2) catch return 1;
+        bkeys[k] = normalizeLine(line, opts.ignore_case, opts.ignore_space, opts.all_space, buf);
+    }
+    var result_text: std.ArrayList(u8) = .empty;
+    unifiedDiff(&result_text, a_lines, b_lines, akeys, bkeys, label1, label2, opts.context);
+    writeStdout(postProcessDiff(result_text.items, opts.tab_prefix, opts.expand_tabs));
+    _ = name;
+    return 1;
+}
+
+fn isDir(path: []const u8) bool {
+    const z = zpath(path) orelse return false;
+    var st: linux.Statx = undefined;
+    const rc = linux.statx(linux.AT.FDCWD, z.ptr, 0, .BASIC_STATS, &st);
+    if (linux.errno(rc) != .SUCCESS) return false;
+    return (st.mode & linux.S.IFMT) == linux.S.IFDIR;
+}
+
+fn diffDirs(name: []const u8, f1: []const u8, f2: []const u8, opts: DiffOpts) c_int {
+    var names: std.ArrayList([]const u8) = .empty;
+    const Ctx = struct { list: *std.ArrayList([]const u8) };
+    var ctx = Ctx{ .list = &names };
+    const cb: bb.file.EntryCallback = struct {
+        fn call(entry: []const u8, opaque_ctx: ?*anyopaque) anyerror!void {
+            const c: *Ctx = @ptrCast(@alignCast(opaque_ctx.?));
+            try c.list.append(a, try a.dupe(u8, entry));
+        }
+    }.call;
+    if (zpath(f1)) |f1z| bb.file.forEachEntry(f1z.ptr, cb, &ctx) catch {};
+    std.mem.sort([]const u8, names.items, {}, struct {
+        fn less(_: void, x: []const u8, y: []const u8) bool {
+            return std.mem.order(u8, x, y) == .lt;
+        }
+    }.less);
+    var status: c_int = 0;
+    for (names.items) |entry| {
+        if (opts.start_file) |sf| {
+            if (!std.mem.eql(u8, sf, entry)) continue;
+        }
+        const z1 = std.fmt.allocPrint(a, "{s}/{s}", .{ f1, entry }) catch continue;
+        const z2 = std.fmt.allocPrint(a, "{s}/{s}", .{ f2, entry }) catch continue;
+        if (isDir(z1) or isDir(z2)) continue;
+        if (!statOk(z2)) {
+            var buf: [512]u8 = undefined;
+            const msg = std.fmt.bufPrint(&buf, "Only in {s}: {s}\n", .{ f1, entry }) catch "";
+            writeStdout(msg);
+            status = 1;
+            continue;
+        }
+        const rc = diffPair(name, z1, z2, z1, z2, opts);
+        if (rc != 0) status = rc;
+    }
+    return status;
+}
+
 pub fn diff_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     const name = prog(args);
-    var quick = false;
-    var same = false;
-    var ignore_case = false;
-    var ignore_space = false;
-    var all_space = false;
-    var blank = false;
-    var context: usize = 3;
-    var labels: [2][]const u8 = .{ "", "" };
-    var nlabels: usize = 0;
+    var opts = DiffOpts{};
     var i: usize = 1;
     while (i < args.len) : (i += 1) {
         const tok = args[i];
@@ -382,25 +537,35 @@ pub fn diff_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         while (j < tok.len) : (j += 1) {
             const ch = tok[j];
             switch (ch) {
-                'a', 'd', 'N', 'r', 'T', 't', 'S' => {},
-                'q' => quick = true,
-                's' => same = true,
-                'i' => ignore_case = true,
-                'b' => ignore_space = true,
-                'w' => all_space = true,
-                'B' => blank = true,
-                'L', 'U' => {
+                'a' => opts.force_text = true,
+                'd' => {}, // search heuristic only; same final hunks for these cases
+                'N' => opts.force_empty = true,
+                'r' => opts.recursive = true,
+                'T' => opts.tab_prefix = true,
+                't' => opts.expand_tabs = true,
+                'q' => opts.quick = true,
+                's' => opts.same = true,
+                'i' => opts.ignore_case = true,
+                'b' => opts.ignore_space = true,
+                'w' => opts.all_space = true,
+                'B' => opts.blank = true,
+                'L', 'U', 'S' => {
                     var value: []const u8 = undefined;
                     if (j + 1 < tok.len) value = tok[j + 1 ..] else if (i + 1 < args.len) {
                         i += 1;
                         value = args[i];
                     } else missingArg(name, ch);
                     if (ch == 'L') {
-                        if (nlabels < 2) {
-                            labels[nlabels] = value;
-                            nlabels += 1;
+                        if (opts.nlabels < 2) {
+                            opts.labels[opts.nlabels] = value;
+                            opts.nlabels += 1;
                         }
-                    } else context = @intCast(number(name, value));
+                    } else if (ch == 'U') {
+                        opts.context = @intCast(number(name, value));
+                    } else {
+                        opts.start_file = value;
+                        opts.recursive = true;
+                    }
                     break;
                 },
                 else => badOption(name, ch),
@@ -410,73 +575,33 @@ pub fn diff_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     if (i + 1 >= args.len) dieUsage(name);
     const f1 = args[i];
     const f2 = args[i + 1];
-    if (!statOk(f1)) {
+    var f1_exists = statOk(f1);
+    var f2_exists = statOk(f2);
+    if (opts.force_empty) {
+        // -N treats missing operands as empty files for the comparison.
+        if (!f1_exists or !f2_exists) {
+            const empty1 = !f1_exists;
+            const empty2 = !f2_exists;
+            const rc = diffPair(name, if (empty1) "/dev/null" else f1, if (empty2) "/dev/null" else f2, f1, f2, opts);
+            return rc;
+        }
+    }
+    if (!f1_exists) {
         bb.messages.program_name = name;
         bb.messages.errorMsg(2, "can't stat '{s}'", .{f1});
         return 2;
     }
-    if (!statOk(f2)) {
+    if (!f2_exists) {
         bb.messages.program_name = name;
         bb.messages.errorMsg(2, "can't stat '{s}'", .{f2});
         return 2;
     }
-    const d1 = readAll(f1) orelse return 2;
-    const d2 = readAll(f2) orelse return 2;
-    var a_lines = splitLines(d1);
-    var b_lines = splitLines(d2);
-    if (blank) {
-        a_lines = nonBlank(a_lines);
-        b_lines = nonBlank(b_lines);
-    }
-    var same_content = a_lines.len == b_lines.len and blk: {
-        for (a_lines, b_lines) |x, y| if (!std.mem.eql(u8, x, y)) break :blk false;
-        break :blk true;
-    };
-    if (!same_content) {
-        if (a_lines.len == b_lines.len) {
-            same_content = true;
-            for (a_lines, b_lines) |x, y| {
-                var bx: [4096]u8 = undefined;
-                var by: [4096]u8 = undefined;
-                const kx = normalizeLine(x, ignore_case, ignore_space, all_space, &bx);
-                const ky = normalizeLine(y, ignore_case, ignore_space, all_space, &by);
-                if (!std.mem.eql(u8, kx, ky)) {
-                    same_content = false;
-                    break;
-                }
-            }
-        }
-    }
-    if (same_content) {
-        if (same) {
-            var buf: [512]u8 = undefined;
-            const msg = std.fmt.bufPrint(&buf, "Files {s} and {s} are identical\n", .{ f1, f2 }) catch "";
-            writeStdout(msg);
-        }
-        return 0;
-    }
-    if (quick) {
-        var buf: [512]u8 = undefined;
-        const msg = std.fmt.bufPrint(&buf, "Files {s} and {s} differ\n", .{ f1, f2 }) catch "";
-        writeStdout(msg);
-        return 1;
-    }
-    var akeys = a.alloc([]u8, a_lines.len) catch return 1;
-    var bkeys = a.alloc([]u8, b_lines.len) catch return 1;
-    for (a_lines, 0..) |line, k| {
-        const buf = a.alloc(u8, line.len + 2) catch return 1;
-        akeys[k] = normalizeLine(line, ignore_case, ignore_space, all_space, buf);
-    }
-    for (b_lines, 0..) |line, k| {
-        const buf = a.alloc(u8, line.len + 2) catch return 1;
-        bkeys[k] = normalizeLine(line, ignore_case, ignore_space, all_space, buf);
-    }
-    const label_a = if (nlabels > 0) labels[0] else f1;
-    const label_b = if (nlabels > 1) labels[1] else f2;
-    var result_text: std.ArrayList(u8) = .empty;
-    unifiedDiff(&result_text, a_lines, b_lines, akeys, bkeys, label_a, label_b, context);
-    writeStdout(result_text.items);
-    return 1;
+    _ = &f1_exists;
+    _ = &f2_exists;
+    if (opts.recursive and isDir(f1) and isDir(f2)) return diffDirs(name, f1, f2, opts);
+    const label1 = if (opts.nlabels > 0) opts.labels[0] else f1;
+    const label2 = if (opts.nlabels > 1) opts.labels[1] else f2;
+    return diffPair(name, f1, f2, label1, label2, opts);
 }
 
 // ---------------------------------------------------------------------- patch
@@ -514,6 +639,7 @@ pub fn patch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     var strip: usize = 0;
     var diff_file: ?[]const u8 = null;
     var dry_run = false;
+    var erase_empty = false;
     var i: usize = 1;
     while (i < args.len) : (i += 1) {
         const tok = args[i];
@@ -527,7 +653,8 @@ pub fn patch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         while (j < tok.len) : (j += 1) {
             switch (tok[j]) {
                 'R' => reverse = true,
-                'N', 'E' => {},
+                'N' => {}, // verified no-op for already-applied patches
+                'E' => erase_empty = true,
                 'p', 'i' => |ch| {
                     var value: []const u8 = undefined;
                     if (j + 1 < tok.len) value = tok[j + 1 ..] else if (i + 1 < args.len) {
@@ -592,9 +719,6 @@ pub fn patch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         return 1;
     };
     const lines = splitLines(data);
-    var msg_buf: [512]u8 = undefined;
-    const patch_msg = std.fmt.bufPrint(&msg_buf, "patching file {s}\n", .{file_name}) catch "";
-    writeStdout(patch_msg);
     var result: std.ArrayList([]const u8) = .empty;
     var src: usize = 0;
     var hunk_no: usize = 0;
@@ -629,6 +753,9 @@ pub fn patch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
             }
         }
         if (!matched) {
+            var pbuf: [512]u8 = undefined;
+            const pmsg = std.fmt.bufPrint(&pbuf, "patching file {s}\n", .{file_name}) catch "";
+            writeStdout(pmsg);
             var buf: [128]u8 = undefined;
             const hdr = std.fmt.bufPrint(&buf, "Hunk {d} FAILED 1/1.\n", .{hunk_no}) catch "";
             writeFd(2, hdr);
@@ -641,6 +768,17 @@ pub fn patch_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     }
     while (src < lines.len) : (src += 1) result.append(a, lines[src]) catch {};
 
+    if (erase_empty and result.items.len == 0 and !dry_run) {
+        const rz = zpath(file_name) orelse return 1;
+        _ = linux.unlink(rz.ptr);
+        var rbuf: [512]u8 = undefined;
+        const rmsg = std.fmt.bufPrint(&rbuf, "removing {s}\n", .{file_name}) catch "";
+        writeStdout(rmsg);
+        return 0;
+    }
+    var pbuf2: [512]u8 = undefined;
+    const pmsg2 = std.fmt.bufPrint(&pbuf2, "patching file {s}\n", .{file_name}) catch "";
+    writeStdout(pmsg2);
     if (dry_run) return 0;
     var content: std.ArrayList(u8) = .empty;
     for (result.items) |line| {

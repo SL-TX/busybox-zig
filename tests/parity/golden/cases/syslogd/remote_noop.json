@@ -1,0 +1,8 @@
+{
+  "applet": "syslogd",
+  "name": "remote_noop",
+  "stdout": "",
+  "stderr": "syslogd: bind: Address already in use\n",
+  "exit": 1,
+  "tree": {}
+}
