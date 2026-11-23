@@ -163,19 +163,21 @@ pub fn parseSelector(text: []const u8) SelectorError!Selector {
 
     var priority_mask: u8 = 0;
     if (std.mem.eql(u8, priority_text, "*")) {
+        // Reference's '*' branch assigns all eight bits and never applies the
+        // complement, so "*.!*" still matches every priority.
         priority_mask = 0xff;
     } else {
         const priority = priorityByName(priority_text) orelse return error.InvalidPriority;
         const value: u3 = @intCast(@intFromEnum(priority));
         priority_mask = @as(u8, 1) << value;
-        // "info" means emerg..info; "=" restricts to the named priority.
-        if (!exact and !negate) {
+        // Reference expands emerg..named first ("info" means emerg..info);
+        // "=" keeps only the named bit. The complement comes afterwards.
+        if (!exact) {
             var bit = priority_mask;
             while (bit != 0) : (bit >>= 1) priority_mask |= bit;
         }
+        if (negate) priority_mask = ~priority_mask;
     }
-    // A negated selector excludes the named priority but keeps the others.
-    if (negate) priority_mask = ~priority_mask;
 
     return .{
         .facility_mask = facility_mask,

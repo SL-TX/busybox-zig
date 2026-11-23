@@ -5,13 +5,15 @@ const bb = @import("libbb_zig");
 const klog = bb.daemon.klog;
 const syslog = bb.daemon.syslog;
 
-test "parseConsoleLevel accepts names and numeric levels" {
-    try std.testing.expectEqual(@as(u8, 0), try klog.parseConsoleLevel("emerg"));
-    try std.testing.expectEqual(@as(u8, 3), try klog.parseConsoleLevel("err"));
+// Reference klogd uses xatou_range(opt_c, 1, 8): numeric levels only. 0 means
+// "no console output" and a name such as "emerg" maps to 0, so both are unsafe.
+test "parseConsoleLevel accepts only numeric levels 1..8" {
+    try std.testing.expectEqual(@as(u8, 1), try klog.parseConsoleLevel("1"));
+    try std.testing.expectEqual(@as(u8, 3), try klog.parseConsoleLevel("3"));
     try std.testing.expectEqual(@as(u8, 8), try klog.parseConsoleLevel("8"));
-    try std.testing.expectError(error.InvalidLevel, klog.parseConsoleLevel("bogus"));
-    try std.testing.expectError(error.InvalidLevel, klog.parseConsoleLevel("9"));
-    try std.testing.expectError(error.InvalidLevel, klog.parseConsoleLevel(""));
+    for ([_][]const u8{ "0", "9", "emerg", "err", "none", "", "-1", "abc", "1x" }) |bad| {
+        try std.testing.expectError(error.InvalidLevel, klog.parseConsoleLevel(bad));
+    }
 }
 
 test "parseFacilityMask maps comma separated names into a bitmask" {

@@ -168,10 +168,13 @@ test "SignalState records the last caught signal" {
     try std.testing.expectEqual(@as(u8, 0), state.got);
 }
 
-test "planRotation respects size threshold and keep count" {
+// Reference syslogd rotates only when size > max_size (strict comparison).
+test "planRotation uses a strict size threshold and keep count" {
     const off = life.planRotation(.{ .max_size = 100, .keep = 0 }, 99);
     try std.testing.expect(!off.rotate);
-    const purge = life.planRotation(.{ .max_size = 100, .keep = 0 }, 100);
+    const at_limit = life.planRotation(.{ .max_size = 100, .keep = 0 }, 100);
+    try std.testing.expect(!at_limit.rotate);
+    const purge = life.planRotation(.{ .max_size = 100, .keep = 0 }, 101);
     try std.testing.expect(purge.rotate);
     try std.testing.expect(purge.delete_oldest);
     const keep3 = life.planRotation(.{ .max_size = 100, .keep = 3 }, 101);
@@ -181,25 +184,29 @@ test "planRotation respects size threshold and keep count" {
     try std.testing.expect(!disabled.rotate);
 }
 
-test "rotateFiles shifts suffixes inside /tmp/opencode only" {
+// Reference syslogd uses suffixes .0 .. keep-1: f.0 -> f.1, then f -> f.0.
+test "rotateFiles shifts .0..keep-1 suffixes inside /tmp/opencode only" {
     const a = std.testing.allocator;
     const base = "/tmp/opencode/bb-daemon-rotate.log";
     defer {
         io.unlink(base) catch {};
+        io.unlink("/tmp/opencode/bb-daemon-rotate.log.0") catch {};
         io.unlink("/tmp/opencode/bb-daemon-rotate.log.1") catch {};
         io.unlink("/tmp/opencode/bb-daemon-rotate.log.2") catch {};
     }
+    const zero = try life.rotationName(a, base, 0);
+    defer a.free(zero);
     const one = try life.rotationName(a, base, 1);
     defer a.free(one);
     const two = try life.rotationName(a, base, 2);
     defer a.free(two);
 
     _ = try life.writePidfile(base, 11);
-    _ = try life.writePidfile(one, 22);
+    _ = try life.writePidfile(zero, 22);
     try life.rotateFiles(a, base, 2);
-    // base is renamed to .1; .1 to .2; the oldest suffix is discarded.
+    try std.testing.expect(io.isRegular(zero));
     try std.testing.expect(io.isRegular(one));
-    try std.testing.expect(io.isRegular(two));
+    try std.testing.expect(!io.isRegular(two));
     try std.testing.expect(!io.isRegular(base));
 }
 

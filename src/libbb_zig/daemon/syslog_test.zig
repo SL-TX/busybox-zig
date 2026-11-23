@@ -14,7 +14,7 @@ test "facility and priority names round-trip" {
     try std.testing.expect(syslog.facilityByName("bogus") == null);
 }
 
-test "parseSelector handles wildcard, exact and negated priorities" {
+test "parseSelector handles wildcard and exact priorities" {
     const all = try syslog.parseSelector("*.info");
     try std.testing.expect(all.facility_mask != 0);
     try std.testing.expect(all.matches(.mail, .info));
@@ -24,11 +24,27 @@ test "parseSelector handles wildcard, exact and negated priorities" {
     try std.testing.expect(exact.exact);
     try std.testing.expect(exact.matches(.kern, .err));
     try std.testing.expect(!exact.matches(.kern, .crit));
+}
 
-    const neg = try syslog.parseSelector("mail.!debug");
-    try std.testing.expect(neg.negate);
-    try std.testing.expect(neg.matches(.mail, .err));
-    try std.testing.expect(!neg.matches(.mail, .debug));
+// Reference parse_syslogdcfg() expands emerg..named FIRST, then complements.
+test "negated selectors expand then complement like busybox" {
+    const all_but_debug = try syslog.parseSelector("*.!debug");
+    try std.testing.expect(all_but_debug.negate);
+    for ([_]syslog.Priority{ .emerg, .alert, .crit, .err, .warning, .notice, .info, .debug }) |prio| {
+        try std.testing.expect(!all_but_debug.matches(.mail, prio));
+    }
+
+    // The '*' branch sets all eight bits without a complement in the reference.
+    const all_but_star = try syslog.parseSelector("*.!*");
+    for ([_]syslog.Priority{ .emerg, .err, .notice, .debug }) |prio| {
+        try std.testing.expect(all_but_star.matches(.mail, prio));
+    }
+
+    const not_err = try syslog.parseSelector("*.!err");
+    try std.testing.expect(!not_err.matches(.mail, .emerg));
+    try std.testing.expect(!not_err.matches(.mail, .err));
+    try std.testing.expect(not_err.matches(.mail, .warning));
+    try std.testing.expect(not_err.matches(.mail, .debug));
 }
 
 test "none priority vetoes all messages for its facility" {
@@ -99,6 +115,7 @@ test "parseSyslogConf rejects a malformed selector" {
 }
 
 test "syslog rotation policy reuses the lifecycle helper" {
+    try std.testing.expect(!syslog.planRotation(.{ .max_size = 10, .keep = 2 }, 10).rotate);
     const plan = syslog.planRotation(.{ .max_size = 10, .keep = 2 }, 11);
     try std.testing.expect(plan.rotate);
     try std.testing.expectEqual(@as(usize, 1), plan.shifts);

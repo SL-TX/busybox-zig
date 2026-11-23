@@ -10,15 +10,13 @@ pub const openKernelLog_requires = lifecycle.Requirement{
     .reason = "reading /proc/kmsg requires root or CAP_SYSLOG",
 };
 
+/// Reference klogd uses xatou_range(opt_c, 1, 8): a decimal number in 1..8
+/// only. Level 0 disables console output and named priorities map to 0 (e.g.
+/// "emerg"), so names and 0 are rejected rather than silently disabling it.
 pub fn parseConsoleLevel(text: []const u8) error{InvalidLevel}!u8 {
-    if (text.len == 0) return error.InvalidLevel;
-    if (std.fmt.parseInt(u8, text, 10)) |level| {
-        if (level > 8) return error.InvalidLevel;
-        return level;
-    } else |_| {}
-    if (std.mem.eql(u8, text, "none")) return 0;
-    const priority = syslog.priorityByName(text) orelse return error.InvalidLevel;
-    return @intFromEnum(priority);
+    const level = std.fmt.parseInt(u8, text, 10) catch return error.InvalidLevel;
+    if (level < 1 or level > 8) return error.InvalidLevel;
+    return level;
 }
 
 pub fn parseFacilityMask(text: []const u8) error{InvalidFacility}!u32 {

@@ -194,9 +194,11 @@ pub const RotationPlan = struct {
     delete_oldest: bool,
 };
 
-/// Decide whether a log file has crossed its rotation threshold.
+/// Decide whether a log file has crossed its rotation threshold. Reference
+/// syslogd rotates only when `size > max_size` (a file exactly at the limit
+/// stays put), and `max_size == 0` disables rotation entirely.
 pub fn planRotation(cfg: RotationConfig, current_size: u64) RotationPlan {
-    if (cfg.max_size == 0 or current_size < cfg.max_size) {
+    if (cfg.max_size == 0 or current_size <= cfg.max_size) {
         return .{ .rotate = false, .shifts = 0, .delete_oldest = false };
     }
     return .{
@@ -210,38 +212,34 @@ pub fn rotationName(allocator: std.mem.Allocator, base: []const u8, index: usize
     return std.fmt.allocPrint(allocator, "{s}.{d}", .{ base, index });
 }
 
-/// Rotate `base` into `base.1` .. `base.keep`, discarding the oldest. The base
-/// file is left absent so callers can reopen it, matching syslogd behaviour.
+/// Rotate `base` through `base.0` .. `base.(keep-1)`, the suffix scheme used
+/// by busybox syslogd: f.(N-2) -> f.(N-1), ... f.0 -> f.1, then f -> f.0.
+/// The base file is unlinked so callers can reopen it, as syslogd does.
 pub fn rotateFiles(allocator: std.mem.Allocator, base: []const u8, keep: u8) !void {
     if (keep == 0) {
         io.unlink(base) catch |e| switch (e) {
             error.SyscallFailed => {},
             else => return e,
         };
-        const one = try rotationName(allocator, base, 1);
-        defer allocator.free(one);
-        io.unlink(one) catch {};
         return;
     }
 
-    const oldest = try rotationName(allocator, base, keep);
-    defer allocator.free(oldest);
-    io.unlink(oldest) catch {};
-
-    var i: usize = keep;
-    while (i > 1) {
-        i -= 1;
-        const from = try rotationName(allocator, base, i);
-        defer allocator.free(from);
-        const to = try rotationName(allocator, base, i + 1);
+    var i: usize = keep - 1;
+    while (true) {
+        const to = try rotationName(allocator, base, i);
         defer allocator.free(to);
-        if (io.isRegular(from)) try io.rename(from, to);
+        if (i == 0) break;
+        const from = try rotationName(allocator, base, i - 1);
+        defer allocator.free(from);
+        // A missing suffix is normal: ignore rename errors like syslogd does.
+        io.rename(from, to) catch {};
+        i -= 1;
     }
-    if (io.isRegular(base)) {
-        const first = try rotationName(allocator, base, 1);
-        defer allocator.free(first);
-        try io.rename(base, first);
-    }
+
+    const first = try rotationName(allocator, base, 0);
+    defer allocator.free(first);
+    io.rename(base, first) catch {};
+    io.unlink(base) catch {};
 }
 
 // --- Privileged operations ---------------------------------------------------
