@@ -501,6 +501,33 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "popmaildir")) return @import("mailutils").popmaildir_main;
     if (std.mem.eql(u8, name, "reformime")) return @import("mailutils").reformime_main;
     if (std.mem.eql(u8, name, "sendmail")) return @import("mailutils").sendmail_main;
+    // Task 26 — init, sysklogd, runit, editors (final wave).
+    if (std.mem.eql(u8, name, "bootchartd")) return @import("initcmd").bootchartd_main;
+    if (std.mem.eql(u8, name, "halt")) return @import("initcmd").halt_main;
+    if (std.mem.eql(u8, name, "poweroff")) return @import("initcmd").poweroff_main;
+    if (std.mem.eql(u8, name, "reboot")) return @import("initcmd").reboot_main;
+    if (std.mem.eql(u8, name, "init")) return @import("initcmd").init_main;
+    if (std.mem.eql(u8, name, "linuxrc")) return @import("initcmd").linuxrc_main;
+    if (std.mem.eql(u8, name, "klogd")) return @import("sysklogd").klogd_main;
+    if (std.mem.eql(u8, name, "logger")) return @import("sysklogd").logger_main;
+    if (std.mem.eql(u8, name, "logread")) return @import("sysklogd").logread_main;
+    if (std.mem.eql(u8, name, "syslogd")) return @import("sysklogd").syslogd_main;
+    if (std.mem.eql(u8, name, "chpst")) return @import("runit").chpst_main;
+    if (std.mem.eql(u8, name, "envdir")) return @import("runit").envdir_main;
+    if (std.mem.eql(u8, name, "envuidgid")) return @import("runit").envuidgid_main;
+    if (std.mem.eql(u8, name, "setuidgid")) return @import("runit").setuidgid_main;
+    if (std.mem.eql(u8, name, "softlimit")) return @import("runit").softlimit_main;
+    if (std.mem.eql(u8, name, "sv")) return @import("runit").sv_main;
+    if (std.mem.eql(u8, name, "svc")) return @import("runit").svc_main;
+    if (std.mem.eql(u8, name, "svlogd")) return @import("runit").svlogd_main;
+    if (std.mem.eql(u8, name, "svok")) return @import("runit").svok_main;
+    if (std.mem.eql(u8, name, "runsv")) return @import("runit").runsv_main;
+    if (std.mem.eql(u8, name, "runsvdir")) return @import("runit").runsvdir_main;
+    if (std.mem.eql(u8, name, "cmp")) return @import("editors").cmp_main;
+    if (std.mem.eql(u8, name, "diff")) return @import("editors").diff_main;
+    if (std.mem.eql(u8, name, "patch")) return @import("editors").patch_main;
+    if (std.mem.eql(u8, name, "ed")) return @import("editors").ed_main;
+    if (std.mem.eql(u8, name, "vi")) return @import("editors").vi_main;
     // remaining (ascii/dc were moved to the Task 16a miscutils implementations)
     return stubMain;
 }

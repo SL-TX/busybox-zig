@@ -1,0 +1,8 @@
+{
+  "applet": "reboot",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: reboot [-d DELAY] [-nf]\n\nReboot the system\n\n\t-d SEC\tDelay interval\n\t-n\tDo not sync\n\t-f\tForce (don't go through init)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

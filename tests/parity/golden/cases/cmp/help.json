@@ -1,0 +1,8 @@
+{
+  "applet": "cmp",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: cmp [-l|s] [-n NUM] FILE1 [FILE2 [SKIP1 [SKIP2]]]\n\nCompare FILE1 with FILE2 (or stdin)\n\n\t-l\tShow decimal offset and octal byte value for differing bytes,\n\t\tdon't stop on first mismatch\n\t-s\tQuiet\n\t-n NUM\tCompare at most NUM bytes\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

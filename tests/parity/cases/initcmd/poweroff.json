@@ -1,0 +1,10 @@
+{
+  "applet": "poweroff",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"no_args","argv":[],"expect":{"exit":1,"stderr":"poweroff: : Operation not permitted\n"}},
+    {"name":"force_no_sync","argv":["-n","-f"],"expect":{"exit":1,"stderr":"poweroff: : Operation not permitted\n"}},
+    {"name":"delay_invalid","argv":["-d","x"],"expect":{"exit":1,"stderr":"poweroff: invalid number 'x'\n"}},
+    {"name":"invalid_option","argv":["-z"],"expect":{"exit":1}}
+  ]
+}

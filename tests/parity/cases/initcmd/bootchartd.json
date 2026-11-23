@@ -1,0 +1,9 @@
+{
+  "applet": "bootchartd",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"no_args","argv":[],"expect":{"exit":1,"stdout":""}},
+    {"name":"bad_command","argv":["status"],"expect":{"exit":1}},
+    {"name":"bad_option","argv":["-z"],"expect":{"exit":1}}
+  ]
+}

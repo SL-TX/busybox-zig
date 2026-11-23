@@ -1,0 +1,8 @@
+{
+  "applet": "patch",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "patch: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: patch [-RNE] [-p N] [-i DIFF] [ORIGFILE [PATCHFILE]]\n\n\t-p N\tStrip N leading components from file names\n\t-i DIFF\tRead DIFF instead of stdin\n\t-R\tReverse patch\n\t-N\tIgnore already applied patches\n\t-E\tRemove output files if they become empty\n\t--dry-run\tDon't actually change files\n",
+  "exit": 1,
+  "tree": {}
+}

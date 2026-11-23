@@ -1,0 +1,8 @@
+{
+  "applet": "softlimit",
+  "name": "bad_number",
+  "stdout": "",
+  "stderr": "softlimit: invalid number 'bogus'\n",
+  "exit": 1,
+  "tree": {}
+}

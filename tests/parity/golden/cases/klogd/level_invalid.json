@@ -1,0 +1,8 @@
+{
+  "applet": "klogd",
+  "name": "level_invalid",
+  "stdout": "",
+  "stderr": "klogd: invalid number 'x'\n",
+  "exit": 1,
+  "tree": {}
+}

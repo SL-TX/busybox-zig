@@ -1,0 +1,15 @@
+{
+  "applet": "logger",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"stderr_tag","argv":["-s","-t","tag","hello"],"expect":{"exit":0,"stdout":"","stderr":"tag: hello\n"}},
+    {"name":"stderr_multiarg","argv":["-s","-t","tag","one","two"],"expect":{"exit":0,"stderr":"tag: one two\n"}},
+    {"name":"stderr_stdin","argv":["-s","-t","tag"],"stdin":"first\nsecond\n","expect":{"exit":0,"stderr":"tag: first\ntag: second\n"}},
+    {"name":"priority_name","argv":["-s","-t","tag","-p","user.info","msg"],"expect":{"exit":0,"stderr":"tag: msg\n"}},
+    {"name":"priority_number","argv":["-s","-t","tag","-p","5","msg"],"expect":{"exit":0,"stderr":"tag: msg\n"}},
+    {"name":"unknown_priority","argv":["-s","-p","bogus","x"],"expect":{"exit":1,"stderr":"logger: unknown priority name: bogus\n"}},
+    {"name":"unknown_facility","argv":["-s","-p","bogus.info","x"],"expect":{"exit":1,"stderr":"logger: unknown facility name: bogus\n"}},
+    {"name":"no_message","argv":[],"expect":{"exit":0,"stdout":"","stderr":""}},
+    {"name":"invalid_option","argv":["-z"],"expect":{"exit":1}}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "busybox",
+  "name": "show_mim",
+  "stdout": "#!/bin/sh\nMIMFILE=\"Mimfile\"\nif [ $# -ge 2 ] && [ \"$1\" = \"-f\" ]\nthen\n\tMIMFILE=\"$2\"\n\tshift 2\nfi\nexec <\"$MIMFILE\" || exit 1\n{\n\tINCASE=false\n\twhile read -r REPLY\n\tdo\n\t\tcase $REPLY in\n\t\t*:)\n\t\t\tif ! $INCASE\n\t\t\tthen\n\t\t\t\tprintf '[ $# -eq 0 ] && set -- \"%s\"\nTARGET=\"$1\"\nshift\ncase \"$TARGET\" in\n' \"${REPLY%:}\"\n\t\t\telse\n\t\t\t\tprintf ';;\\n'\n\t\t\tfi\n\t\t\tprintf '%s)\\n' \"${REPLY%:}\"\n\t\t\tINCASE=true\n\t\t\t;;\n\t\t\"\") ;;\n\t\t*) printf '%s\\n' \"${REPLY##[ \t]}\";;\n\t\tesac\n\tdone\n\t$INCASE && printf ';;\\n'\n\tprintf '*)\necho \"Unknown command $TARGET\"\nexit 1\n;;\nesac\n'\n} | sh -s \"$@\"\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

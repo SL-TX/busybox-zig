@@ -1,0 +1,8 @@
+{
+  "applet": "awk",
+  "name": "sum",
+  "stdout": "9\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

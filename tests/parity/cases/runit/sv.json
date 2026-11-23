@@ -1,0 +1,112 @@
+{
+  "applet": "sv",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 100
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "bad_command",
+      "argv": [
+        "bogus"
+      ],
+      "expect": {
+        "exit": 100
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_service",
+      "argv": [
+        "status"
+      ],
+      "expect": {
+        "exit": 100
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "missing_dir",
+      "argv": [
+        "status",
+        "nosuch"
+      ],
+      "expect": {
+        "exit": 1,
+        "stdout": "fail: nosuch: can't change to service directory: No such file or directory\n",
+        "stderr": ""
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_supervise",
+      "argv": [
+        "status",
+        "./svcdir"
+      ],
+      "dirs": [
+        "svcdir"
+      ],
+      "expect": {
+        "exit": 1,
+        "stdout": "warning: ./svcdir: can't open supervise/ok: No such file or directory\n"
+      },
+      "files": {},
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}

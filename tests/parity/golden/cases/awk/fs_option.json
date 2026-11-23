@@ -1,0 +1,8 @@
+{
+  "applet": "awk",
+  "name": "fs_option",
+  "stdout": "\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

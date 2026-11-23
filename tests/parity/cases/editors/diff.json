@@ -1,0 +1,186 @@
+{
+  "applet": "diff",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "expect": {
+        "exit": 2,
+        "stderr": "diff: can't stat 'a': No such file or directory\n"
+      }
+    },
+    {
+      "name": "identical",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "a\nb\nc\n",
+        "b": "a\nb\nc\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": ""
+      }
+    },
+    {
+      "name": "change",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "a\nb\nc\n",
+        "b": "a\nx\nc\n"
+      },
+      "expect": {
+        "exit": 1,
+        "stdout": "--- a\n+++ b\n@@ -1,3 +1,3 @@\n a\n-b\n+x\n c\n"
+      }
+    },
+    {
+      "name": "labels",
+      "argv": [
+        "-L",
+        "OLD",
+        "-L",
+        "NEW",
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "a\nb\nc\n",
+        "b": "a\nx\nc\n"
+      },
+      "expect": {
+        "exit": 1,
+        "stdout": "--- OLD\n+++ NEW\n@@ -1,3 +1,3 @@\n a\n-b\n+x\n c\n"
+      }
+    },
+    {
+      "name": "quick",
+      "argv": [
+        "-q",
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "abc\n",
+        "b": "abd\n"
+      },
+      "expect": {
+        "exit": 1,
+        "stdout": "Files a and b differ\n"
+      }
+    },
+    {
+      "name": "same_flag",
+      "argv": [
+        "-s",
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "abc\n",
+        "b": "abc\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": "Files a and b are identical\n"
+      }
+    },
+    {
+      "name": "ignore_case",
+      "argv": [
+        "-i",
+        "-q",
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "ABC\n",
+        "b": "abc\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": ""
+      }
+    },
+    {
+      "name": "ignore_space",
+      "argv": [
+        "-b",
+        "-q",
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "a b\n",
+        "b": "a  b\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": ""
+      }
+    },
+    {
+      "name": "add_line",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "a\nb\n",
+        "b": "a\nb\nc\n"
+      },
+      "expect": {
+        "exit": 1,
+        "stdout": "--- a\n+++ b\n@@ -1,2 +1,3 @@\n a\n b\n+c\n"
+      }
+    },
+    {
+      "name": "delete_line",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "files": {
+        "a": "a\nb\nc\n",
+        "b": "a\nc\n"
+      },
+      "expect": {
+        "exit": 1,
+        "stdout": "--- a\n+++ b\n@@ -1,3 +1,2 @@\n a\n-b\n c\n"
+      }
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "expect": {
+        "exit": 1
+      }
+    }
+  ]
+}

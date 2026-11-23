@@ -1,0 +1,23 @@
+{
+  "applet": "patch",
+  "name": "failed_hunk",
+  "stdout": "patching file f\n",
+  "stderr": "Hunk 1 FAILED 1/1.\n a\n-b\n+B\n c\n",
+  "exit": 1,
+  "tree": {
+    "p.diff": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "LS0tIGEKKysrIGIKQEAgLTEsMyArMSwzIEBACiBhCi1iCitCCiBjCg=="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpCCmMK"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "halt",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "halt: : Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

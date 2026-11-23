@@ -1,0 +1,23 @@
+{
+  "applet": "cmp",
+  "name": "skip",
+  "stdout": "a b differ: byte 2, line 1\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJkCg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjCg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "applet": "unit",
+  "cases": [
+    {
+      "name": "not_available",
+      "argv": [],
+      "expect": {
+        "exit": 127,
+        "stderr": "unit: applet not found\n"
+      }
+    }
+  ]
+}

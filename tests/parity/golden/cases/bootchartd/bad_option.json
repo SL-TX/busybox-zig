@@ -1,0 +1,8 @@
+{
+  "applet": "bootchartd",
+  "name": "bad_option",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: bootchartd start [PROG ARGS]|stop|init\n\nCreate /var/log/bootchart.tgz with boot chart data\n\nstart: start background logging; with PROG, run PROG, then kill logging with USR1\nstop: send USR1 to all bootchartd processes\ninit: start background logging; stop when getty/xdm is seen (for init scripts)\nUnder PID 1: as init, then exec $bootchart_init, /init, /sbin/init\n",
+  "exit": 1,
+  "tree": {}
+}

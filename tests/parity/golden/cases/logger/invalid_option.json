@@ -1,0 +1,8 @@
+{
+  "applet": "logger",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "logger: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: logger [-s] [-t TAG] [-p PRIO] [MESSAGE]\n\nWrite MESSAGE (or stdin) to syslog\n\n\t-s\tLog to stderr as well as the system log\n\t-t TAG\tLog using the specified tag (defaults to user name)\n\t-p PRIO\tPriority (number or FACILITY.LEVEL pair)\n",
+  "exit": 1,
+  "tree": {}
+}

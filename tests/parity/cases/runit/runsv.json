@@ -1,0 +1,73 @@
+{
+  "applet": "runsv",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "missing_dir",
+      "argv": [
+        "nosuch"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "runsv: can't change directory to 'nosuch': No such file or directory\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "option_as_dir",
+      "argv": [
+        "-z"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "runsv: can't change directory to '-z': No such file or directory\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "logger",
+  "name": "unknown_priority",
+  "stdout": "",
+  "stderr": "logger: unknown priority name: bogus\n",
+  "exit": 1,
+  "tree": {}
+}

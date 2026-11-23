@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "sub",
+  "stdout": "Xbc\nbcd\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

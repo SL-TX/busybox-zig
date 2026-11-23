@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "two_expr",
+  "stdout": "XY\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

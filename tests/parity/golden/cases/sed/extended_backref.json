@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "extended_backref",
+  "stdout": "ba\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

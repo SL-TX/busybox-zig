@@ -1,0 +1,8 @@
+{
+  "applet": "diff",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "diff: can't stat 'a': No such file or directory\n",
+  "exit": 2,
+  "tree": {}
+}

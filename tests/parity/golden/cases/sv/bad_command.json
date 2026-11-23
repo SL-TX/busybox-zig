@@ -1,0 +1,8 @@
+{
+  "applet": "sv",
+  "name": "bad_command",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: sv [-v] [-w SEC] CMD SERVICE_DIR...\n\nControl services monitored by runsv supervisor.\nCommands (only first character is enough):\n\nstatus: query service status\nup: if service isn't running, start it. If service stops, restart it\nonce: like 'up', but if service stops, don't restart it\ndown: send TERM and CONT signals. If ./run exits, start ./finish\n\tif it exists. After it stops, don't restart service\nexit: send TERM and CONT signals to service and log service. If they exit,\n\trunsv exits too\npause, cont, hup, alarm, interrupt, quit, 1, 2, term, kill: send\nSTOP, CONT, HUP, ALRM, INT, QUIT, USR1, USR2, TERM, KILL signal to service\n",
+  "exit": 100,
+  "tree": {}
+}

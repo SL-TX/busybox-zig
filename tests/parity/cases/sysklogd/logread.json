@@ -1,0 +1,10 @@
+{
+  "applet": "logread",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"no_args","argv":[],"expect":{"exit":1,"stderr":"logread: can't find syslogd buffer: No such file or directory\n"}},
+    {"name":"follow","argv":["-f"],"expect":{"exit":1,"stderr":"logread: can't find syslogd buffer: No such file or directory\n"}},
+    {"name":"dump_follow","argv":["-F"],"expect":{"exit":1,"stderr":"logread: can't find syslogd buffer: No such file or directory\n"}},
+    {"name":"invalid_option","argv":["-z"],"expect":{"exit":1}}
+  ]
+}

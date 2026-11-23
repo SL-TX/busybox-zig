@@ -1,0 +1,8 @@
+{
+  "applet": "runsvdir",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "runsvdir: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: runsvdir [-P] [-s SCRIPT] DIR\n\nStart a runsv process for each subdirectory. If it exits, restart it.\n\n\t-P\t\tPut each runsv in a new session\n\t-s SCRIPT\tRun SCRIPT <signo> after signal is processed\n",
+  "exit": 1,
+  "tree": {}
+}

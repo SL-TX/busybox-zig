@@ -1,0 +1,16 @@
+{
+  "applet": "sed",
+  "name": "in_place",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "WApiCg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "logger",
+  "name": "unknown_facility",
+  "stdout": "",
+  "stderr": "logger: unknown facility name: bogus\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -84,6 +84,10 @@ test {
     _ = @import("coreutils/recursive_test.zig");
     _ = @import("coreutils/sed_test.zig");
     _ = @import("coreutils/awk_test.zig");
+    // Task 26 — final applet wave unit tests.
+    _ = @import("sysklogd/sysklogd_test.zig");
+    _ = @import("runit/runit_test.zig");
+    _ = @import("editors/editors_test.zig");
     _ = @import("networking/network_test.zig");
     _ = @import("miscutils/misc_test.zig");
     _ = @import("procps/procps_test.zig");

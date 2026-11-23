@@ -1,0 +1,8 @@
+{
+  "applet": "syslogd",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "syslogd: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: syslogd [OPTIONS]\n\nSystem logging utility\n\n\t-n\t\tRun in foreground\n\t-R HOST[:PORT]\tLog to HOST:PORT (default PORT:514)\n\t-L\t\tLog locally and via network (default is network only if -R)\n\t-C[size_kb]\tLog to shared mem buffer (use logread to read it)\n\t-K\t\tLog to kernel printk buffer (use dmesg to read it)\n\t-O FILE\t\tLog to FILE (default: /var/log/messages, stdout if -)\n\t-s SIZE\t\tMax size (KB) before rotation (default 200KB, 0=off)\n\t-b N\t\tN rotated logs to keep (default 1, max 99, 0=purge)\n\t-l N\t\tLog only messages more urgent than prio N (1-8)\n\t-S\t\tSmaller output\n\t-t\t\tStrip client-generated timestamps\n\t-D\t\tDrop duplicates\n\t-f FILE\t\tUse FILE as config (default:/etc/syslog.conf)\n",
+  "exit": 1,
+  "tree": {}
+}

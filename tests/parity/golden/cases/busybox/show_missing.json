@@ -1,0 +1,8 @@
+{
+  "applet": "busybox",
+  "name": "show_missing",
+  "stdout": "",
+  "stderr": "busybox: script 'nosuchscript' not found\n",
+  "exit": 1,
+  "tree": {}
+}

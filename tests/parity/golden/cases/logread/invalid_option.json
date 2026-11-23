@@ -1,0 +1,8 @@
+{
+  "applet": "logread",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "logread: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: logread [-fF]\n\nShow messages in syslogd's circular buffer\n\n\t-f\tOutput data as log grows\n\t-F\tSame as -f, but dump buffer first\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -349,7 +349,22 @@ pub fn cutFields(a: std.mem.Allocator, data: []const u8, delim: u8, field: usize
     return out.toOwnedSlice(a);
 }
 
-// --- more applets -----------------------------------------------------------
+// --- more appleets ----------------------------------------------------------
+
+fn writeFileAll(a: std.mem.Allocator, path: []const u8, data: []const u8) void {
+    const z = a.dupeSentinel(u8, path, 0) catch return;
+    defer a.free(z);
+    const fd = linux.open(z.ptr, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o644);
+    if (linux.errno(fd) != .SUCCESS) return;
+    const f: linux.fd_t = @intCast(fd);
+    var off: usize = 0;
+    while (off < data.len) {
+        const n = linux.write(f, data.ptr + off, data.len - off);
+        if (linux.errno(n) != .SUCCESS or n == 0) break;
+        off += n;
+    }
+    _ = linux.close(f);
+}
 
 fn readInput(a: std.mem.Allocator, path: []const u8) ![]u8 {
     if (std.mem.eql(u8, path, "-") or path.len == 0) {
@@ -461,18 +476,37 @@ pub fn removeRecursive(a: std.mem.Allocator, path: []const u8) !void {
 }
 
 pub fn awk_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const a = std.heap.page_allocator;
     const args = argsFrom(argv, argc);
     var program: []const u8 = "";
     var path: []const u8 = "-";
+    var fs: []const u8 = " ";
+    var vars: std.ArrayList(awk.Var) = .empty;
+    defer vars.deinit(a);
     var i: usize = 1;
     while (i < args.len) : (i += 1) {
         const arg = args[i];
-        if (std.mem.startsWith(u8, arg, "-f") and arg.len > 2) {
-            const script = readInput(std.heap.page_allocator, arg[2..]) catch return 1;
-            defer std.heap.page_allocator.free(script);
-            program = script;
-        } else if (arg.len > 0 and arg[0] == '-') {
-            // ignore other options
+        if (std.mem.eql(u8, arg, "-F")) {
+            i += 1;
+            if (i < args.len) fs = args[i];
+        } else if (std.mem.startsWith(u8, arg, "-F") and arg.len > 2) {
+            fs = arg[2..];
+        } else if (std.mem.eql(u8, arg, "-v")) {
+            i += 1;
+            if (i < args.len) {
+                const pair = args[i];
+                if (std.mem.indexOfScalar(u8, pair, '=')) |eqpos| {
+                    vars.append(a, .{ .name = pair[0..eqpos], .value = pair[eqpos + 1 ..] }) catch return 1;
+                }
+            }
+        } else if (std.mem.startsWith(u8, arg, "-f") or std.mem.startsWith(u8, arg, "-E")) {
+            if (arg.len > 2) {
+                const script = readInput(a, arg[2..]) catch return 1;
+                defer a.free(script);
+                program = script;
+            }
+        } else if (arg.len > 1 and arg[0] == '-') {
+            // compatibility option
         } else if (program.len == 0) {
             program = arg;
         } else {
@@ -480,41 +514,76 @@ pub fn awk_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         }
     }
     if (program.len == 0) return 1;
-    const data = readInput(std.heap.page_allocator, path) catch return 1;
-    defer std.heap.page_allocator.free(data);
-    const out = awk.renderAwk(std.heap.page_allocator, data, program) catch return 1;
-    defer std.heap.page_allocator.free(out);
+    const data = readInput(a, path) catch return 1;
+    defer a.free(data);
+    const out = awk.renderAwkOptions(a, data, program, .{ .fs = fs, .vars = vars.items }) catch return 1;
+    defer a.free(out);
     writeAll(stdout, out);
     return 0;
 }
 
 pub fn sed_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    const a = std.heap.page_allocator;
     const args = argsFrom(argv, argc);
     var quiet = false;
-    var script: []const u8 = "";
-    var path: []const u8 = "-";
+    var extended = false;
+    var inplace = false;
+    var suffix: []const u8 = "";
+    var scripts: std.ArrayList([]const u8) = .empty;
+    defer scripts.deinit(a);
+    var paths: std.ArrayList([]const u8) = .empty;
+    defer paths.deinit(a);
     var i: usize = 1;
     while (i < args.len) : (i += 1) {
         const arg = args[i];
         if (std.mem.eql(u8, arg, "-n")) {
             quiet = true;
+        } else if (std.mem.eql(u8, arg, "-r") or std.mem.eql(u8, arg, "-E")) {
+            extended = true;
         } else if (std.mem.eql(u8, arg, "-e")) {
             i += 1;
-            if (i < args.len) script = args[i];
-        } else if (arg.len > 0 and arg[0] == '-') {
-            // ignore other options for now
-        } else if (script.len == 0) {
-            script = arg;
+            if (i < args.len) scripts.append(a, args[i]) catch return 1;
+        } else if (std.mem.eql(u8, arg, "-f")) {
+            i += 1;
+            if (i < args.len) {
+                const contents = readInput(a, args[i]) catch return 1;
+                scripts.append(a, contents) catch return 1;
+            }
+        } else if (std.mem.startsWith(u8, arg, "-i")) {
+            inplace = true;
+            suffix = arg[2..];
+        } else if (arg.len > 1 and arg[0] == '-') {
+            // compatibility option (e.g. -s, --posix): no observable effect
+        } else if (scripts.items.len == 0) {
+            scripts.append(a, arg) catch return 1;
         } else {
-            path = arg;
+            paths.append(a, arg) catch return 1;
         }
     }
-    if (script.len == 0) return 1;
-    const data = readInput(std.heap.page_allocator, path) catch return 1;
-    defer std.heap.page_allocator.free(data);
-    const out = sed.renderSed(std.heap.page_allocator, data, script, quiet) catch return 1;
-    defer std.heap.page_allocator.free(out);
-    writeAll(stdout, out);
+    if (scripts.items.len == 0) return 1;
+    var script_buf: std.ArrayList(u8) = .empty;
+    defer script_buf.deinit(a);
+    for (scripts.items, 0..) |part, k| {
+        if (k > 0) script_buf.append(a, '\n') catch return 1;
+        script_buf.appendSlice(a, part) catch return 1;
+    }
+    const targets: []const []const u8 = if (paths.items.len == 0) &.{"-"} else paths.items;
+    for (targets) |path| {
+        const data = readInput(a, path) catch return 1;
+        defer a.free(data);
+        const out = sed.renderSedOptions(a, data, script_buf.items, .{ .quiet = quiet, .extended = extended }) catch return 1;
+        defer a.free(out);
+        if (inplace and !std.mem.eql(u8, path, "-")) {
+            if (suffix.len > 0) {
+                const backup = std.fmt.allocPrint(a, "{s}{s}", .{ path, suffix }) catch return 1;
+                defer a.free(backup);
+                writeFileAll(a, backup, data);
+            }
+            writeFileAll(a, path, out);
+        } else {
+            writeAll(stdout, out);
+        }
+    }
     return 0;
 }
 

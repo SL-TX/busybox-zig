@@ -15,53 +15,12 @@ const meta = @import("generated/meta.zig");
 /// build-specific and may be normalized by differential tests.
 pub const banner = meta.version;
 
-const mim_script =
-    \\#!/bin/sh
-    \\MIMFILE="Mimfile"
-    \\if [ $# -ge 2 ] && [ "$1" = "-f" ]
-    \\then
-    \\    MIMFILE="$2"
-    \\    shift 2
-    \\fi
-    \\exec <"$MIMFILE" || exit 1
-    \\{
-    \\    INCASE=false
-    \\    while read -r REPLY
-    \\    do
-    \\        case $REPLY in
-    \\        *:)
-    \\            if ! $INCASE
-    \\            then
-    \\                printf '[ $# -eq 0 ] && set -- "%s"
-    \\TARGET="$1"
-    \\shift
-    \\case "$TARGET" in
-    \\' "${REPLY%:}"
-    \\            else
-    \\                printf ';;\n'
-    \\            fi
-    \\            printf '%s)\n' "${REPLY%:}"
-    \\            INCASE=true
-    \\            ;;
-    \\        "") ;;
-    \\        *) printf '%s\n' "${REPLY##[     ]}";;
-    \\        esac
-    \\    done
-    \\    $INCASE && printf ';;\n'
-    \\    printf '*)
-    \\echo "Unknown command $TARGET"
-    \\exit 1
-    \\;;
-    \\esac
-    \\'
-    \\} | sh -s "$@"
-;
+const mim_script = "#!/bin/sh\nMIMFILE=\"Mimfile\"\nif [ $# -ge 2 ] && [ \"$1\" = \"-f\" ]\nthen\n\tMIMFILE=\"$2\"\n\tshift 2\nfi\nexec <\"$MIMFILE\" || exit 1\n{\n\tINCASE=false\n\twhile read -r REPLY\n\tdo\n\t\tcase $REPLY in\n\t\t*:)\n\t\t\tif ! $INCASE\n\t\t\tthen\n\t\t\t\tprintf '[ $# -eq 0 ] && set -- \"%s\"\nTARGET=\"$1\"\nshift\ncase \"$TARGET\" in\n' \"${REPLY%:}\"\n\t\t\telse\n\t\t\t\tprintf ';;\\n'\n\t\t\tfi\n\t\t\tprintf '%s)\\n' \"${REPLY%:}\"\n\t\t\tINCASE=true\n\t\t\t;;\n\t\t\"\") ;;\n\t\t*) printf '%s\\n' \"${REPLY##[ \t]}\";;\n\t\tesac\n\tdone\n\t$INCASE && printf ';;\\n'\n\tprintf '*)\necho \"Unknown command $TARGET\"\nexit 1\n;;\nesac\n'\n} | sh -s \"$@\"\n";
 
 const nologin_script =
-    \\cat /etc/nologin.txt 2>/dev/null || echo This account is not available
-    \\sleep 5
-    \\exit 1
-;
+    "cat /etc/nologin.txt 2>/dev/null || echo This account is not available\n" ++
+    "sleep 5\n" ++
+    "exit 1\n";
 
 pub const Args = struct {
     vector: []const [*:0]const u8,
@@ -140,13 +99,13 @@ fn showScript(argv: []const []const u8, out: anytype, err: anytype) u8 {
     }
     const name = argv[2];
     const applet = applets.findAppletByName(name) orelse {
-        err.writeAll("script '");
+        err.writeAll("busybox: script '");
         err.writeAll(name);
         err.writeAll("' not found\n");
         return 1;
     };
     if (!applet.scripted) {
-        err.writeAll("script '");
+        err.writeAll("busybox: script '");
         err.writeAll(name);
         err.writeAll("' not found\n");
         return 1;
@@ -156,7 +115,7 @@ fn showScript(argv: []const []const u8, out: anytype, err: anytype) u8 {
     } else if (eq(name, "nologin")) {
         out.writeAll(nologin_script);
     } else {
-        err.writeAll("script '");
+        err.writeAll("busybox: script '");
         err.writeAll(name);
         err.writeAll("' not found\n");
         return 1;
@@ -266,6 +225,13 @@ pub fn run(allocator: std.mem.Allocator, argv: []const []const u8, out: anytype,
     const argv0 = argv[0];
     const base = std.fs.path.basename(argv0);
     const multicall = eq(base, "busybox");
+
+    // The reference accepts `busybox busybox ...` as a recursive spelling of
+    // the meta-CLI (busybox_main is compiled in even when it is not listed as
+    // a standalone applet). Peel the redundant name before normal dispatch.
+    if (multicall and argv.len >= 2 and eq(argv[1], "busybox")) {
+        return run(allocator, argv[1..], out, err);
+    }
 
     var name_index: usize = 0;
     if (multicall) {

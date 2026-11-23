@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "translate",
+  "stdout": "xyz\nzyx\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

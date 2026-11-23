@@ -1,0 +1,8 @@
+{
+  "applet": "svlogd",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: svlogd [-tttv] [-r C] [-R CHARS] [-l MATCHLEN] [-b BUFLEN] DIR...\n\nRead log data from stdin and write to rotated log files in DIRs\n\n\t-r C\tReplace non-printable characters with C\n\t-R CHARS Also replace CHARS with C (default _)\n\t-t\tTimestamp with @tai64n\n\t-tt\tTimestamp with yyyy-mm-dd_hh:mm:ss.sssss\n\t-ttt\tTimestamp with yyyy-mm-ddThh:mm:ss.sssss\n\t-v\tVerbose\n\nDIR/config file modifies behavior:\nsSIZE - when to rotate logs (default 1000000, 0 disables)\nnNUM - number of files to retain\n!PROG - process rotated log with PROG\n+,-PATTERN - (de)select line for logging\nE,ePATTERN - (de)select line for stderr\n",
+  "exit": 1,
+  "tree": {}
+}

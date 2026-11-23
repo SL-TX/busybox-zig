@@ -1,0 +1,23 @@
+{
+  "applet": "cmp",
+  "name": "limit",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJkCg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjCg=="
+      }
+    }
+  }
+}

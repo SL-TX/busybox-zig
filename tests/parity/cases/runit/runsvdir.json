@@ -1,0 +1,71 @@
+{
+  "applet": "runsvdir",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_service_dir",
+      "argv": [
+        "-s"
+      ],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}

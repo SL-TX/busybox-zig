@@ -1,0 +1,8 @@
+{
+  "applet": "setuidgid",
+  "name": "unprivileged",
+  "stdout": "",
+  "stderr": "setuidgid: setgroups: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

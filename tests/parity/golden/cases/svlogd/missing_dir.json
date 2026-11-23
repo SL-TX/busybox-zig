@@ -1,0 +1,8 @@
+{
+  "applet": "svlogd",
+  "name": "missing_dir",
+  "stdout": "",
+  "stderr": "svlogd: warning: can't open log directory: nosuch: No such file or directory\nsvlogd: fatal: no functional log directories\n",
+  "exit": 1,
+  "tree": {}
+}

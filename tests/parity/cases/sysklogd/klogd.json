@@ -1,0 +1,12 @@
+{
+  "applet": "klogd",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"foreground","argv":["-n"],"expect":{"exit":1,"stdout":"","stderr":""}},
+    {"name":"level_zero","argv":["-c","0"],"expect":{"exit":1,"stderr":"klogd: number 0 is not in 1..8 range\n"}},
+    {"name":"level_nine","argv":["-c","9"],"expect":{"exit":1,"stderr":"klogd: number 9 is not in 1..8 range\n"}},
+    {"name":"level_invalid","argv":["-c","x"],"expect":{"exit":1,"stderr":"klogd: invalid number 'x'\n"}},
+    {"name":"missing_level","argv":["-c"],"expect":{"exit":1}},
+    {"name":"invalid_option","argv":["-z"],"expect":{"exit":1}}
+  ]
+}

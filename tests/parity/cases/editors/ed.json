@@ -1,0 +1,80 @@
+{
+  "applet": "ed",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "pty_print",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "use_pty": true,
+      "script": [
+        "1p\n",
+        [
+          "q\n",
+          "old line"
+        ]
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "print_all",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "stdin": "1,$p\nq\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "old line\nsecond\n"
+      }
+    },
+    {
+      "name": "substitute_write",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "stdin": "1s/old/new/\n1p\nw\nq\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "new line\n"
+      }
+    },
+    {
+      "name": "append",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "one\n"
+      },
+      "stdin": "$a\nthree\n.\n1,$p\nq\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "one\nthree\n"
+      }
+    }
+  ]
+}

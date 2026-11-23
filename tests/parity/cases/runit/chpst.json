@@ -1,0 +1,183 @@
+{
+  "applet": "chpst",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "run",
+      "argv": [
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "expect": {
+        "exit": 0,
+        "stdout": "hi\n",
+        "stderr": ""
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "env_dir",
+      "argv": [
+        "-e",
+        "envd",
+        "<BB>",
+        "printenv",
+        "FOO"
+      ],
+      "files": {
+        "envd/FOO": "bar\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": "bar\n"
+      },
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "uid_env",
+      "argv": [
+        "-U",
+        "nobody",
+        "<BB>",
+        "printenv",
+        "UID"
+      ],
+      "expect": {
+        "exit": 0,
+        "stdout": "65534\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "bad_user",
+      "argv": [
+        "-u",
+        "nosuchuser",
+        "<BB>",
+        "echo",
+        "x"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "chpst: unknown user/group nosuchuser\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "bad_nice",
+      "argv": [
+        "-n",
+        "x",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "chpst: invalid number 'x'\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "missing_prog",
+      "argv": [
+        "nosuchprog_zz"
+      ],
+      "expect": {
+        "exit": 127,
+        "stderr": "chpst: can't execute 'nosuchprog_zz': No such file or directory\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "svc",
+  "name": "missing_dir",
+  "stdout": "fail: nosuch: can't change to service directory: No such file or directory\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,74 @@
+{
+  "applet": "vi",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "features",
+      "argv": [
+        "-H"
+      ],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "screen_quit",
+      "argv": [
+        "-c",
+        "q",
+        "f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "screen_readonly",
+      "argv": [
+        "-R",
+        "-c",
+        "q",
+        "f"
+      ],
+      "files": {
+        "f": "old line\n"
+      },
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "pty_quit",
+      "argv": [
+        "-c",
+        "q",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "use_pty": true,
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "no_input",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      }
+    }
+  ]
+}

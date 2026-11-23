@@ -1,0 +1,8 @@
+{
+  "applet": "logger",
+  "name": "stderr_stdin",
+  "stdout": "",
+  "stderr": "tag: first\ntag: second\n",
+  "exit": 0,
+  "tree": {}
+}

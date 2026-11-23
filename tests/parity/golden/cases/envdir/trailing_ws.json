@@ -1,0 +1,20 @@
+{
+  "applet": "envdir",
+  "name": "trailing_ws",
+  "stdout": "  bar\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "envd": {
+      "type": "dir",
+      "mode": 493
+    },
+    "envd/FOO": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ICBiYXIgIAo="
+      }
+    }
+  }
+}

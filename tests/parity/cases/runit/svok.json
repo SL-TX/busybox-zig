@@ -1,0 +1,95 @@
+{
+  "applet": "svok",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "down",
+      "argv": [
+        "./svcdir"
+      ],
+      "dirs": [
+        "svcdir"
+      ],
+      "expect": {
+        "exit": 100,
+        "stdout": "",
+        "stderr": ""
+      },
+      "files": {},
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "up",
+      "argv": [
+        "./svcdir"
+      ],
+      "files": {
+        "svcdir/supervise/ok": ""
+      },
+      "expect": {
+        "exit": 0
+      },
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "missing_abs",
+      "argv": [
+        "<TMP>/nosuch"
+      ],
+      "expect": {
+        "exit": 111,
+        "stderr": "svok: can't change directory to '<TMP>/nosuch': No such file or directory\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}

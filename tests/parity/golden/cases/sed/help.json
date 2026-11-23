@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: sed [-i[SFX]] [-nrE] [-f FILE]... [-e CMD]... [FILE]...\nor: sed [-i[SFX]] [-nrE] CMD [FILE]...\n\n\t-e CMD\tAdd CMD to sed commands to be executed\n\t-f FILE\tAdd FILE contents to sed commands to be executed\n\t-i[SFX]\tEdit files in-place (otherwise write to stdout)\n\t\tOptionally back files up, appending SFX\n\t-n\tSuppress automatic printing of pattern space\n\t-r,-E\tUse extended regex syntax\n\nIf no -e or -f, the first non-option argument is the sed command string.\nRemaining arguments are input files (stdin if none).\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

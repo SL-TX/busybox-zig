@@ -184,6 +184,37 @@ pub fn build(b: *std.Build) void {
     mailutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("mailutils", mailutils);
 
+    // Task 26 — final applet wave: init, sysklogd, runit, editors.
+    const initcmd = b.addModule("initcmd", .{
+        .root_source_file = b.path("src/initcmd/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    initcmd.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("initcmd", initcmd);
+    const sysklogd = b.addModule("sysklogd", .{
+        .root_source_file = b.path("src/sysklogd/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    sysklogd.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("sysklogd", sysklogd);
+    const runit = b.addModule("runit", .{
+        .root_source_file = b.path("src/runit/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    runit.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("runit", runit);
+    const editors = b.addModule("editors", .{
+        .root_source_file = b.path("src/editors/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    editors.addImport("libbb_zig", libbb_zig);
+    editors.addImport("coreutils", coreutils);
+    exe.root_module.addImport("editors", editors);
+
     // Small applets from the remaining categories that are in the registry.
     const remaining = b.addModule("remaining", .{
         .root_source_file = b.path("src/remaining/main.zig"),
@@ -229,6 +260,10 @@ pub fn build(b: *std.Build) void {
     test_module.addImport("modutils", modutils);
     test_module.addImport("mailutils", mailutils);
     test_module.addImport("remaining", remaining);
+    test_module.addImport("initcmd", initcmd);
+    test_module.addImport("sysklogd", sysklogd);
+    test_module.addImport("runit", runit);
+    test_module.addImport("editors", editors);
     const tests = b.addTest(.{ .root_module = test_module });
     const run_tests = b.addRunArtifact(tests);
     const test_step = b.step("test", "Run unit tests");

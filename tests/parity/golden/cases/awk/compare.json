@@ -1,0 +1,8 @@
+{
+  "applet": "awk",
+  "name": "compare",
+  "stdout": "b\nc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

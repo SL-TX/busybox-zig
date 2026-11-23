@@ -1,0 +1,62 @@
+{
+  "applet": "busybox",
+  "cases": [
+    {
+      "name": "version",
+      "argv": [
+        "--version"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "show_mim",
+      "argv": [
+        "--show",
+        "mim"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "show_missing",
+      "argv": [
+        "--show",
+        "nosuchscript"
+      ],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "bad_option",
+      "argv": [
+        "--bogus"
+      ],
+      "expect": {
+        "exit": 127
+      }
+    },
+    {
+      "name": "applet_help",
+      "argv": [
+        "--help",
+        "echo"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    }
+  ]
+}

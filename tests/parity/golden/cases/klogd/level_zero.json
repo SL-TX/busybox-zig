@@ -1,0 +1,8 @@
+{
+  "applet": "klogd",
+  "name": "level_zero",
+  "stdout": "",
+  "stderr": "klogd: number 0 is not in 1..8 range\n",
+  "exit": 1,
+  "tree": {}
+}

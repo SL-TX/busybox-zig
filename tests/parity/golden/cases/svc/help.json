@@ -1,0 +1,8 @@
+{
+  "applet": "svc",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: svc [-udopchaitkx] SERVICE_DIR...\n\nControl services monitored by runsv supervisor\n\n\t-u\tIf service is not running, start it; restart if it stops\n\t-d\tIf service is running, send TERM+CONT signals; do not restart it\n\t-o\tOnce: if service is not running, start it; do not restart it\n\t-pchaitk Send STOP, CONT, HUP, ALRM, INT, TERM, KILL signal to service\n\t-x\tExit: runsv will exit as soon as the service is down\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

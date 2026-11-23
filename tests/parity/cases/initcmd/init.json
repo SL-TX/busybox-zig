@@ -1,0 +1,8 @@
+{
+  "applet": "init",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"not_pid1","argv":[],"expect":{"exit":1,"stderr":"init: must be run as PID 1\n"}},
+    {"name":"not_pid1_with_args","argv":["foo"],"expect":{"exit":1,"stderr":"init: must be run as PID 1\n"}}
+  ]
+}

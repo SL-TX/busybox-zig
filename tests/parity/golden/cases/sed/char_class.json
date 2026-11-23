@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "char_class",
+  "stdout": "aX bX\ncX\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

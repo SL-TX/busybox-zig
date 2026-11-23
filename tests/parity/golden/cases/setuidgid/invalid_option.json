@@ -1,0 +1,8 @@
+{
+  "applet": "setuidgid",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "setuidgid: unknown user/group -z\n",
+  "exit": 1,
+  "tree": {}
+}

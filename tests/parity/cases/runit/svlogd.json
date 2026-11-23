@@ -1,0 +1,120 @@
+{
+  "applet": "svlogd",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "missing_dir",
+      "argv": [
+        "nosuch"
+      ],
+      "stdin": "hi\n",
+      "expect": {
+        "exit": 1,
+        "stderr": "svlogd: warning: can't open log directory: nosuch: No such file or directory\nsvlogd: fatal: no functional log directories\n"
+      },
+      "files": {},
+      "dirs": [],
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "logs"
+      ],
+      "dirs": [
+        "logs"
+      ],
+      "stdin": "hello\nworld\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "files": {},
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "replace",
+      "argv": [
+        "-r",
+        "X",
+        "logs"
+      ],
+      "dirs": [
+        "logs"
+      ],
+      "stdin": "a\tb\n",
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "replace_chars",
+      "argv": [
+        "-R",
+        "ab",
+        "-r",
+        "X",
+        "logs"
+      ],
+      "dirs": [
+        "logs"
+      ],
+      "stdin": "aXYb\n",
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}
