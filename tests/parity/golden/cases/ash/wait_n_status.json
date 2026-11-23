@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "wait_n_status",
+  "stdout": "status=7\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

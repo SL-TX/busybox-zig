@@ -118,7 +118,7 @@ pub const Parser = struct {
         if (total != s.len) return false;
         var pos: usize = 0;
         for (segs) |sg| {
-            if (sg.kind != .literal) return false;
+            if (sg.kind != .literal or sg.quote != .none) return false;
             if (!std.mem.eql(u8, sg.text, s[pos .. pos + sg.text.len])) return false;
             pos += sg.text.len;
         }
@@ -363,6 +363,7 @@ pub const Parser = struct {
         const name = self.plainWord();
         if (name.len == 0) return error.Syntax;
         self.i += 1;
+        while (self.check(.newline)) self.i += 1;
         var words: std.ArrayList(lx.Word) = .empty;
         if (self.isReserved("in")) {
             self.i += 1;
@@ -391,7 +392,8 @@ pub const Parser = struct {
         try self.expectReserved("in");
         while (self.check(.newline)) self.i += 1;
         var arms: std.ArrayList(CaseArm) = .empty;
-        while (!self.isReserved("esac") and self.check(.word)) {
+        while (!self.isReserved("esac") and (self.check(.word) or self.check(.lparen))) {
+            if (self.accept(.lparen)) {}
             var pats: std.ArrayList(lx.Word) = .empty;
             while (true) {
                 try pats.append(self.a, self.cur().word.?);

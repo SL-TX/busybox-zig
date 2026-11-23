@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "command_V",
+  "stdout": "echo is a shell builtin\nno_such_cmd_xyz: not found\nrc=127\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

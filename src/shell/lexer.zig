@@ -330,12 +330,21 @@ pub const Lexer = struct {
         var text: std.ArrayList(u8) = .empty;
         var quoted = false;
         for (w.segs) |s| {
-            if (s.kind != .literal) {
-                quoted = true;
-                continue;
+            switch (s.kind) {
+                .literal => {
+                    text.appendSlice(self.a, s.text) catch {};
+                    if (s.quote != .none) quoted = true;
+                },
+                .command_sub => {
+                    if (s.backtick) {
+                        text.append(self.a, '`') catch {};
+                        text.appendSlice(self.a, s.text) catch {};
+                        text.append(self.a, '`') catch {};
+                    }
+                    quoted = true;
+                },
+                else => quoted = true,
             }
-            text.appendSlice(self.a, s.text) catch {};
-            if (s.quote != .none) quoted = true;
         }
         p.delim = text.toOwnedSlice(self.a) catch "";
         p.quoted = quoted;
@@ -447,7 +456,6 @@ pub const Lexer = struct {
         var lit: std.ArrayList(u8) = .empty;
         const flush = struct {
             fn f(l: *Lexer, s: *std.ArrayList(Segment), b: *std.ArrayList(u8)) LexError!void {
-                if (b.items.len == 0) return;
                 const text = try b.toOwnedSlice(l.a);
                 try s.append(l.a, .{ .kind = .literal, .quote = .double, .text = text });
             }

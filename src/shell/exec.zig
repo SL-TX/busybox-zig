@@ -117,6 +117,48 @@ fn unquoteWord(a: std.mem.Allocator, raw: []const u8) []const u8 {
 
 var g_trace_hush: bool = false;
 
+fn fileExistsSomewhere(sh: *Shell, name: []const u8) bool {
+    if (std.mem.indexOfScalar(u8, name, '/') != null) {
+        const z = std.mem.concatWithSentinel(sh.a, u8, &.{name}, 0) catch return false;
+        return linux.errno(linux.access(z.ptr, linux.F_OK)) == .SUCCESS;
+    }
+    const path = sh.get("PATH") orelse "/bin:/usr/bin";
+    var it = std.mem.splitScalar(u8, path, ':');
+    while (it.next()) |dir| {
+        const cand = std.fmt.allocPrint(sh.a, "{s}/{s}", .{ if (dir.len == 0) "." else dir, name }) catch return false;
+        const z = std.mem.concatWithSentinel(sh.a, u8, &.{cand}, 0) catch return false;
+        if (linux.errno(linux.access(z.ptr, linux.F_OK)) == .SUCCESS) return true;
+    }
+    return false;
+}
+
+fn userHome(sh: *Shell, user: []const u8) []const u8 {
+    if (user.len == 0) return sh.get("HOME") orelse "";
+    const z = std.mem.concatWithSentinel(sh.a, u8, &.{"/etc/passwd"}, 0) catch return "";
+    const fd = linux.open(z.ptr, .{ .ACCMODE = .RDONLY }, 0);
+    if (linux.errno(fd) != .SUCCESS) return "";
+    defer _ = linux.close(@intCast(fd));
+    var data: std.ArrayList(u8) = .empty;
+    var buf: [4096]u8 = undefined;
+    while (true) {
+        const n = linux.read(@intCast(fd), &buf, buf.len);
+        if (linux.errno(n) != .SUCCESS or n == 0) break;
+        data.appendSlice(sh.a, buf[0..n]) catch break;
+    }
+    var lines = std.mem.splitScalar(u8, data.items, '\n');
+    while (lines.next()) |line| {
+        var fields = std.mem.splitScalar(u8, line, ':');
+        const name = fields.next() orelse continue;
+        _ = fields.next(); // password
+        _ = fields.next(); // uid
+        _ = fields.next(); // gid
+        _ = fields.next(); // gecos
+        const home = fields.next() orelse continue;
+        if (std.mem.eql(u8, name, user)) return sh.a.dupe(u8, home) catch "";
+    }
+    return "";
+}
+
 pub const ExpandError = std.mem.Allocator.Error;
 
 pub const Exec = struct {
@@ -124,6 +166,7 @@ pub const Exec = struct {
     no_glob_depth: usize = 0,
     suppress_nounset: usize = 0,
     expansion_quote: lx.Quote = .none,
+    tilde_colon: bool = false,
 
     pub fn init(sh: *Shell) Exec {
         return .{ .sh = sh };
@@ -244,6 +287,10 @@ pub const Exec = struct {
         }
         const status = self.execBody(node, in_condition);
         guard.restore();
+        if (!is_simple and status != 0 and self.sh.opts.errexit and !in_condition and self.sh.suppress_errexit == 0) {
+            self.sh.exiting = true;
+            self.sh.exit_code = status;
+        }
         self.sh.last_status = status;
         return status;
     }
@@ -501,9 +548,22 @@ pub const Exec = struct {
 
     fn applyAssign(self: *Exec, asg: prs.Assignment, temporary: bool) void {
         self.no_glob_depth += 1;
-        defer self.no_glob_depth -= 1;
+        self.tilde_colon = !self.sh.hush;
+        defer {
+            self.no_glob_depth -= 1;
+            self.tilde_colon = false;
+        }
         const fields = self.expandWord(asg.value, false) catch return;
         var val: []const u8 = if (fields.len != 0) fields[0] else "";
+        if (fields.len > 1) {
+            const sep: []const u8 = if (self.sh.get("IFS")) |ifs| (if (ifs.len != 0) ifs[0..1] else "") else " ";
+            var joined: std.ArrayList(u8) = .empty;
+            for (fields, 0..) |f, k| {
+                if (k != 0) joined.appendSlice(self.sh.a, sep) catch {};
+                joined.appendSlice(self.sh.a, f) catch {};
+            }
+            val = joined.toOwnedSlice(self.sh.a) catch val;
+        }
         _ = temporary;
         if (asg.append) {
             const old = self.sh.get(asg.name) orelse "";
@@ -567,9 +627,13 @@ pub const Exec = struct {
     fn runExternal(self: *Exec, words: []const []const u8, assigns: []const prs.Assignment) u8 {
         const path = bi.findProgram(self.sh, words[0]) orelse {
             var b: [512]u8 = undefined;
-            const m = std.fmt.bufPrint(&b, "{s}: line {d}: {s}: not found\n", .{ self.sh.name, self.sh.line_number, words[0] }) catch "";
+            const exists = fileExistsSomewhere(self.sh, words[0]);
+            const m = if (exists)
+                std.fmt.bufPrint(&b, "{s}: line {d}: {s}: Permission denied\n", .{ self.sh.name, self.sh.line_number, words[0] }) catch ""
+            else
+                std.fmt.bufPrint(&b, "{s}: line {d}: {s}: not found\n", .{ self.sh.name, self.sh.line_number, words[0] }) catch "";
             errOut(m);
-            return 127;
+            return if (exists) 126 else 127;
         };
         var hashed = false;
         for (self.sh.hashes.items) |h| {
@@ -611,8 +675,18 @@ pub const Exec = struct {
                 k += 1;
             }
             const p = std.mem.concatWithSentinel(self.sh.a, u8, &.{path}, 0) catch std.process.exit(1);
-            _ = linux.execve(p.ptr, argv.ptr, envp.ptr);
-            std.process.exit(127);
+            const erc = linux.execve(p.ptr, argv.ptr, envp.ptr);
+            const e = linux.errno(erc);
+            var eb: [512]u8 = undefined;
+            const detail: []const u8 = switch (e) {
+                .ACCES => "Permission denied",
+                .NOENT => "No such file or directory",
+                .NOEXEC => "Exec format error",
+                else => "Input/output error",
+            };
+            const em = std.fmt.bufPrint(&eb, "{s}: line {d}: {s}: {s}\n", .{ self.sh.name, self.sh.line_number, words[0], detail }) catch "";
+            errOut(em);
+            std.process.exit(if (e == .NOENT) 127 else 126);
         }
         return job.wait(@intCast(pid));
     }
@@ -859,11 +933,20 @@ pub const Exec = struct {
 
     fn expandWord(self: *Exec, w: lx.Word, allow_split: bool) ExpandError![][]const u8 {
         const chars = try self.wordToChars(w);
+        // An unquoted expansion that yields nothing contributes no field at
+        // all; only a literal (even empty, e.g. "") creates an empty field.
+        if (chars.len == 0) {
+            var has_literal = false;
+            for (w.segs) |sg| {
+                if (sg.kind == .literal) has_literal = true;
+            }
+            if (w.segs.len != 0 and !has_literal) return &.{};
+        }
         // $@ inserts field separators before quote removal.
         var raw_fields: std.ArrayList([]EChar) = .empty;
         var cur_chars: std.ArrayList(EChar) = .empty;
         for (chars) |ch| {
-            if (ch.c == 0x1f and !ch.glob) {
+            if (ch.c == 0x1f) {
                 try raw_fields.append(self.sh.a, try cur_chars.toOwnedSlice(self.sh.a));
                 cur_chars = .empty;
                 continue;
@@ -992,16 +1075,26 @@ pub const Exec = struct {
     /// quote context so field splitting can honour quotes inside ${...}.
     fn wordToChars(self: *Exec, w: lx.Word) ExpandError![]EChar {
         var chars: std.ArrayList(EChar) = .empty;
-        var first = true;
         for (w.segs) |seg| {
-            if (seg.kind == .literal and seg.quote == .none and first and seg.text.len != 0 and seg.text[0] == '~') {
-                const home = self.sh.get("HOME") orelse "";
-                for (home) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = false });
-                for (seg.text[1..]) |c| try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = false });
-                first = false;
+            if (seg.kind == .literal and seg.quote == .none and seg.text.len != 0) {
+                var j: usize = 0;
+                while (j < seg.text.len) {
+                    const c = seg.text[j];
+                    const tilde_ok = c == '~' and !self.sh.hush and self.expansion_quote != .double and (j == 0 or (self.tilde_colon and j > 0 and seg.text[j - 1] == ':'));
+                    if (!tilde_ok) {
+                        try chars.append(self.sh.a, .{ .c = c, .splittable = false, .glob = seg.quote == .none });
+                        j += 1;
+                        continue;
+                    }
+                    var name_end = j + 1;
+                    while (name_end < seg.text.len and seg.text[name_end] != ':' and seg.text[name_end] != '/') name_end += 1;
+                    const user = seg.text[j + 1 .. name_end];
+                    const home = userHome(self.sh, user);
+                    for (home) |hc| try chars.append(self.sh.a, .{ .c = hc, .splittable = false, .glob = false });
+                    j = name_end;
+                }
                 continue;
             }
-            if (seg.text.len != 0 or seg.kind != .literal) first = false;
             try self.appendSegment(&chars, seg);
         }
         return chars.toOwnedSlice(self.sh.a);
@@ -1065,8 +1158,20 @@ pub const Exec = struct {
     fn expandBraced(self: *Exec, spec: []const u8) ExpandError![]EChar {
         if (spec.len == 0) return &.{};
         if (spec[0] == '#' and spec.len > 1) {
+            if (spec.len == 2 and (spec[1] == '#' or spec[1] == '%')) {
+                const count = std.fmt.allocPrint(self.sh.a, "{d}", .{self.sh.positionals.items.len}) catch "0";
+                const n = std.unicode.utf8CountCodepoints(count) catch count.len;
+                const text = std.fmt.allocPrint(self.sh.a, "{d}", .{n}) catch "0";
+                return charsFromString(text, true, true);
+            }
+            if (spec[1] == '#' or spec[1] == '%') {
+                // ${#} followed by a pattern-removal operator, e.g. ${##1}.
+                const count = std.fmt.allocPrint(self.sh.a, "{d}", .{self.sh.positionals.items.len}) catch "0";
+                return self.braceOp("#", count, true, spec[1..2], spec[2..]);
+            }
             const val = self.paramValue(spec[1..]);
-            const text = std.fmt.allocPrint(self.sh.a, "{d}", .{val.len}) catch "0";
+            const nchars = std.unicode.utf8CountCodepoints(val) catch val.len;
+            const text = std.fmt.allocPrint(self.sh.a, "{d}", .{nchars}) catch "0";
             return charsFromString(text, true, true);
         }
         var nend: usize = 0;
@@ -1116,11 +1221,26 @@ pub const Exec = struct {
         return result.toOwnedSlice(self.sh.a);
     }
 
+    /// Pattern text for ${VAR#pat} etc.: quote-escaped metacharacters stay
+    /// literal, so a quoted '*' does not behave as a wildcard.
+    fn expandPatternText(self: *Exec, text: []const u8) ExpandError![]u8 {
+        const chars = try self.expandWordToChars(text);
+        var outl: std.ArrayList(u8) = .empty;
+        for (chars) |ch| {
+            if (!ch.glob and (ch.c == '*' or ch.c == '?' or ch.c == '[')) try outl.append(self.sh.a, '\\');
+            try outl.append(self.sh.a, ch.c);
+        }
+        return outl.toOwnedSlice(self.sh.a);
+    }
+
     fn braceOp(self: *Exec, name: []const u8, value: []const u8, is_set: bool, op: []const u8, word: []const u8) ExpandError![]EChar {
         const a = self.sh.a;
         const set = is_set;
         const colon = op.len == 2;
         const value_chars = try charsFromString(value, true, true);
+        // Pattern-removal and substitution words always treat quotes in the
+        // pattern syntactically, even when ${...} appears inside " ".
+        if (op.len <= 2 and (op[0] == '#' or op[0] == '%' or op[0] == '/')) self.expansion_quote = .none;
         if (std.mem.eql(u8, op, ":-") or std.mem.eql(u8, op, "-")) {
             if ((!colon and set) or (colon and value.len != 0)) return value_chars;
             return self.expandWordToChars(word);
@@ -1147,12 +1267,14 @@ pub const Exec = struct {
             return &.{};
         }
         if (std.mem.eql(u8, op, "#") or std.mem.eql(u8, op, "##")) {
-            const pattern = try self.expandWordText(word);
+            const pattern = try self.expandPatternText(word);
             const longest = op.len == 2;
             var best: usize = if (longest) 0 else value.len;
+            var found = false;
             var p: usize = 0;
             while (p <= value.len) : (p += 1) {
                 if (ex.patternMatch(pattern, value[0..p])) {
+                    found = true;
                     if (longest) {
                         if (p >= best) best = p;
                     } else {
@@ -1160,15 +1282,18 @@ pub const Exec = struct {
                     }
                 }
             }
+            if (!found) return charsFromString(value, true, true);
             return charsFromString(value[best..], true, true);
         }
         if (std.mem.eql(u8, op, "%") or std.mem.eql(u8, op, "%%")) {
-            const pattern = try self.expandWordText(word);
+            const pattern = try self.expandPatternText(word);
             const longest = op.len == 2;
             var best: usize = if (longest) value.len else 0;
+            var found = false;
             var p: usize = 0;
             while (p <= value.len) : (p += 1) {
                 if (ex.patternMatch(pattern, value[p..])) {
+                    found = true;
                     if (longest) {
                         if (p <= best) best = p;
                     } else {
@@ -1176,13 +1301,14 @@ pub const Exec = struct {
                     }
                 }
             }
+            if (!found) return charsFromString(value, true, true);
             return charsFromString(value[0..best], true, true);
         }
         if (std.mem.eql(u8, op, "/") or std.mem.eql(u8, op, "//")) {
             const parts = splitReplacement(self.sh.a, word);
             const patt = parts.pattern;
             const repl = parts.replacement;
-            const pattern = try self.expandWordText(patt);
+            const pattern = try self.expandPatternText(patt);
             const replacement_chars = try self.expandWordToChars(repl);
             const replacement = try self.flattenChars(replacement_chars);
             if (pattern.len == 0) return value_chars;

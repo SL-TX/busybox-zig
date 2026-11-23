@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "hush_case_paren_pattern",
+  "stdout": "MATCH\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

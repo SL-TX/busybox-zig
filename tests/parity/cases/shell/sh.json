@@ -637,6 +637,118 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "sh_utf8_param_length",
+      "argv": [
+        "-c",
+        "X='abcd\u00c9fg'; echo ${#X}"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_tilde_colon_assignment",
+      "argv": [
+        "-c",
+        "a=~root:~root; echo \"[$a]\"; echo \"<${a#~root}>\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_pattern_quote_removal",
+      "argv": [
+        "-c",
+        "x='*'; echo \"<${x#'*'}>\"; y=abc; echo \"<${y#'*'}>\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_unquoted_empty_expansion",
+      "argv": [
+        "-c",
+        "e=; echo a $e b $e c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_errexit_subshell",
+      "argv": [
+        "-c",
+        "set -e; (true); echo OK; (false); echo FAIL"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_case_paren_pattern",
+      "argv": [
+        "-c",
+        "case m in (m) echo MATCH;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_printf_hex_escape",
+      "argv": [
+        "-c",
+        "printf \"\\x41\\101\\n\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

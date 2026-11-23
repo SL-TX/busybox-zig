@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_case_paren_pattern",
+  "stdout": "MATCH\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

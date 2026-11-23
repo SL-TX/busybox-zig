@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "exec_not_executable",
+  "stdout": "rc=126\n",
+  "stderr": "ash: line 0: ./: Permission denied\n",
+  "exit": 0,
+  "tree": {}
+}

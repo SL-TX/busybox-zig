@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "pattern_quote_removal",
+  "stdout": "<>\n<abc>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

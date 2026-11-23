@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "hush_printf_hex_escape",
+  "stdout": "AA\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

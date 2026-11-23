@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "hush_errexit_subshell",
+  "stdout": "OK\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

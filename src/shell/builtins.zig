@@ -174,6 +174,25 @@ fn printFmtChar(fmt: []const u8, i: *usize) void {
         'f' => out("\x0c"),
         'v' => out("\x0b"),
         '\\' => out("\\"),
+        'x' => {
+            var value: u32 = 0;
+            var k: usize = 0;
+            while (k < 2 and i.* + 1 < fmt.len and std.ascii.isHex(fmt[i.* + 1])) : (k += 1) {
+                i.* += 1;
+                const d = std.ascii.toLower(fmt[i.*]);
+                value = value * 16 + (if (d >= 'a') d - 'a' + 10 else d - '0');
+            }
+            out(&[_]u8{@truncate(value)});
+        },
+        '0'...'7' => {
+            var value: u32 = c - '0';
+            var k: usize = 1;
+            while (k < 3 and i.* + 1 < fmt.len and fmt[i.* + 1] >= '0' and fmt[i.* + 1] <= '7') : (k += 1) {
+                i.* += 1;
+                value = value * 8 + (fmt[i.*] - '0');
+            }
+            out(&[_]u8{@truncate(value)});
+        },
         else => {
             out("\\");
             out(fmt[i.* .. i.* + 1]);
@@ -812,12 +831,29 @@ pub fn findProgram(sh: *Shell, name: []const u8) ?[]const u8 {
     return null;
 }
 
+fn findReadable(sh: *Shell, name: []const u8) ?[]const u8 {
+    if (std.mem.indexOfScalar(u8, name, '/') != null) return name;
+    const path = sh.get("PATH") orelse "/bin:/usr/bin";
+    var it = std.mem.splitScalar(u8, path, ':');
+    while (it.next()) |dir| {
+        const cand = std.fmt.allocPrint(sh.a, "{s}/{s}", .{ if (dir.len == 0) "." else dir, name }) catch return null;
+        const z = zstr(sh.a, cand) catch return null;
+        const ok = linux.errno(linux.access(z.ptr, linux.R_OK)) == .SUCCESS;
+        if (ok) return cand;
+    }
+    return null;
+}
+
 fn doSource(sh: *Shell, args: []const []const u8) u8 {
     if (args.len == 0) {
         err(sh, ".", "filename argument required");
         return 2;
     }
-    const z = zstr(sh.a, args[0]) catch return 1;
+    var pathbuf: []const u8 = args[0];
+    if (std.mem.indexOfScalar(u8, args[0], '/') == null) {
+        if (findReadable(sh, args[0])) |p| pathbuf = p;
+    }
+    const z = zstr(sh.a, pathbuf) catch return 1;
     defer sh.a.free(z);
     const fd = linux.open(z.ptr, .{ .ACCMODE = .RDONLY }, 0);
     if (linux.errno(fd) != .SUCCESS) {
@@ -855,13 +891,26 @@ fn isBuiltinName(name: []const u8) bool {
 fn doCommand(sh: *Shell, args: []const []const u8) u8 {
     var i: usize = 0;
     var lookup_only = false;
+    var verbose = false;
     while (i < args.len and args[i].len > 1 and args[i][0] == '-') : (i += 1) {
         for (args[i][1..]) |c| {
             if (c == 'v') lookup_only = true;
+            if (c == 'V') verbose = true;
         }
     }
     if (i >= args.len) return 0;
     const name = args[i];
+    if (verbose) {
+        if (findProgram(sh, name) != null or isBuiltinName(name)) {
+            var b: [256]u8 = undefined;
+            out(std.fmt.bufPrint(&b, "{s} is a shell builtin\n", .{name}) catch "");
+        } else {
+            var b: [256]u8 = undefined;
+            out(std.fmt.bufPrint(&b, "{s}: not found\n", .{name}) catch "");
+            return 127;
+        }
+        return 0;
+    }
     if (lookup_only) {
         if (sh.findFunc(name) != null) {
             out(name);
@@ -982,8 +1031,12 @@ pub fn arithSet(ctx: *anyopaque, name: []const u8, value: i64) void {
 }
 
 pub fn evalArith(sh: *Shell, text: []const u8) !i64 {
+    var expr = text;
+    if (std.mem.startsWith(u8, expr, "${") and std.mem.endsWith(u8, expr, "}")) {
+        expr = expr[2 .. expr.len - 1];
+    }
     const env = ex.ArithEnv{ .ctx = sh, .get = arithGet, .set = arithSet };
-    return ex.eval(text, env);
+    return ex.eval(expr, env);
 }
 
 fn doLocal(sh: *Shell, args: []const []const u8) u8 {
@@ -1292,20 +1345,63 @@ fn doUlimit(sh: *Shell, args: []const []const u8) u8 {
 }
 
 fn doWait(sh: *Shell, args: []const []const u8) u8 {
+    var next_only = false;
+    var pids: std.ArrayList(i32) = .empty;
+    for (args) |a| {
+        if (std.mem.eql(u8, a, "-n")) {
+            next_only = true;
+            continue;
+        }
+        const pid = std.fmt.parseInt(i32, a, 10) catch return 1;
+        pids.append(sh.a, pid) catch {};
+    }
+    if (next_only) {
+        if (pids.items.len == 0) {
+            if (sh.background_jobs.items.len == 0) return 127;
+            pids.appendSlice(sh.a, sh.background_jobs.items) catch {};
+        }
+        for (pids.items) |pid| {
+            const rc = biWaitPid(sh, pid);
+            removeBackground(sh, pid);
+            return rc;
+        }
+        return 127;
+    }
+    if (pids.items.len != 0) {
+        var last: u8 = 0;
+        for (pids.items) |pid| {
+            last = biWaitPid(sh, pid);
+            removeBackground(sh, pid);
+        }
+        return last;
+    }
+    var last: u8 = 0;
+    const copy = sh.a.dupe(i32, sh.background_jobs.items) catch return 0;
+    for (copy) |pid| {
+        last = biWaitPid(sh, pid);
+        removeBackground(sh, pid);
+    }
+    return last;
+}
+
+fn biWaitPid(sh: *Shell, pid: i32) u8 {
+    _ = sh;
     var status: i32 = 0;
-    if (args.len != 0) {
-        const pid = std.fmt.parseInt(i32, args[0], 10) catch {
-            err(sh, "wait", "not a pid");
-            return 1;
-        };
-        _ = linux.waitpid(pid, &status, 0);
-    } else {
-        while (sh.background_jobs.items.len != 0) {
-            const pid = sh.background_jobs.pop().?;
-            _ = linux.waitpid(pid, &status, 0);
+    const got = linux.waitpid(pid, &status, 0);
+    if (linux.errno(got) != .SUCCESS) return 127;
+    if ((status & 0x7f) != 0 and (status & 0x7f) != 0x7f) return @intCast(128 + (status & 0x7f));
+    return @intCast((status >> 8) & 0xff);
+}
+
+fn removeBackground(sh: *Shell, pid: i32) void {
+    var i: usize = sh.background_jobs.items.len;
+    while (i > 0) {
+        i -= 1;
+        if (sh.background_jobs.items[i] == pid) {
+            _ = sh.background_jobs.orderedRemove(i);
+            return;
         }
     }
-    return @intCast((status >> 8) & 0xff);
 }
 
 fn doJobs(sh: *Shell, args: []const []const u8) u8 {

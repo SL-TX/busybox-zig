@@ -2972,6 +2972,198 @@
       "timeout_ms": 5000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "param_hash_forms",
+      "argv": [
+        "-c",
+        "set -- a; echo \"${##1}:${#}\"; echo \"${#$}\"; false; echo \"${#?}\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "utf8_param_length",
+      "argv": [
+        "-c",
+        "X='abcd\u00c9fg'; echo ${#X}"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "tilde_colon_assignment",
+      "argv": [
+        "-c",
+        "a=~root:~root; echo \"[$a]\"; echo \"<${a#~root}>\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pattern_quote_removal",
+      "argv": [
+        "-c",
+        "x='*'; echo \"<${x#'*'}>\"; y=abc; echo \"<${y#'*'}>\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unquoted_empty_expansion",
+      "argv": [
+        "-c",
+        "e=; echo a $e b $e c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "var_offset_variable",
+      "argv": [
+        "-c",
+        "parameter=abcdef; offset=2; noffset=-2; echo \"${parameter:${offset}}:${parameter:${noffset}}:${parameter: -2}\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "errexit_subshell",
+      "argv": [
+        "-c",
+        "set -e; (true); echo OK; (false); echo FAIL"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "case_paren_pattern",
+      "argv": [
+        "-c",
+        "case m in (m) echo MATCH;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "printf_hex_escape",
+      "argv": [
+        "-c",
+        "printf \"\\x41\\101\\n\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "exec_not_executable",
+      "argv": [
+        "-c",
+        "./; echo rc=$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "wait_n_status",
+      "argv": [
+        "-c",
+        "(sleep 0.05; exit 7) & wait -n; echo status=$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "command_V",
+      "argv": [
+        "-c",
+        "command -V echo; command -V no_such_cmd_xyz; echo rc=$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }
