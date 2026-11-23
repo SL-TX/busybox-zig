@@ -142,10 +142,12 @@ fn ascii64(c: u8) ?u6 {
     return null;
 }
 
-/// DES crypt for a two-character traditional salt.  Returns a newly
-/// allocated 13-byte string (salt + 11 encoded bytes).
+/// DES crypt for a traditional salt.  As in crypt(3), only the first two
+/// characters of `salt` are significant: a full 13-byte DES hash can be passed
+/// back as the salt (this is what lets pw_encrypt.matches() verify DES hashes).
+/// Returns a newly allocated 13-byte string (salt + 11 encoded bytes).
 pub fn crypt(a: std.mem.Allocator, key: []const u8, salt: []const u8) ![]u8 {
-    if (salt.len != 2) return error.InvalidSalt;
+    if (salt.len < 2) return error.InvalidSalt;
     const s0 = ascii64(salt[0]) orelse return error.InvalidSalt;
     const s1 = ascii64(salt[1]) orelse return error.InvalidSalt;
     const salt_bits: u12 = @as(u12, s0) | (@as(u12, s1) << 6);

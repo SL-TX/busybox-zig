@@ -53,6 +53,24 @@ test "pw_encrypt matches uses constant-time comparison" {
     try std.testing.expect(!(try crypt.matches(a, "password", "not a hash")));
 }
 
+test "pw_encrypt matches verifies traditional DES hashes" {
+    const a = std.testing.allocator;
+    // crypt(3) uses only the first two characters of a traditional salt, so
+    // a full 13-byte DES hash is a valid salt for verification/encryption.
+    const cases = [_]struct { hashed: []const u8 }{
+        .{ .hashed = "abJnggxhB/yWI" },
+        .{ .hashed = "sa3tHJ3/KuYvI" },
+    };
+    for (cases) |c| {
+        try std.testing.expect(try crypt.matches(a, "password", c.hashed));
+        try std.testing.expect(!(try crypt.matches(a, "wrong", c.hashed)));
+
+        const recomputed = try crypt.encrypt(a, "password", c.hashed);
+        defer a.free(recomputed);
+        try std.testing.expectEqualStrings(c.hashed, recomputed);
+    }
+}
+
 test "pw_encrypt rejects unsupported and malformed salts" {
     const a = std.testing.allocator;
     try std.testing.expectError(error.UnsupportedAlgorithm, crypt.encrypt(a, "password", "$y$j9T$abcdefghijklmnopqrstuv"));
