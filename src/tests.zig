@@ -64,6 +64,17 @@ test {
     _ = @import("libbb_zig/term/keyboard_test.zig");
     _ = @import("libbb_zig/term/console_test.zig");
     _ = @import("libbb_zig/term/fb_test.zig");
+    // Task 25 — libbb daemon/terminal helpers (Wave 8 prerequisites).
+    _ = @import("libbb_zig/daemon/lifecycle_test.zig");
+    _ = @import("libbb_zig/daemon/config_test.zig");
+    _ = @import("libbb_zig/daemon/syslog_test.zig");
+    _ = @import("libbb_zig/daemon/klog_test.zig");
+    _ = @import("libbb_zig/daemon/crond_test.zig");
+    _ = @import("libbb_zig/daemon/inetd_test.zig");
+    _ = @import("libbb_zig/daemon/httpd_test.zig");
+    _ = @import("libbb_zig/daemon/udhcpd_test.zig");
+    _ = @import("libbb_zig/daemon/runsv_test.zig");
+    _ = @import("libbb_zig/daemon/init_test.zig");
     _ = @import("applets_test.zig");
     _ = @import("meta_test.zig");
     _ = @import("usage_test.zig");

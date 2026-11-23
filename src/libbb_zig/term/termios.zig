@@ -205,3 +205,28 @@ pub fn setWindowSize(fd: linux.fd_t, ws: *const WindowSize) Error!void {
     const rc = linux.ioctl(fd, TIOCSWINSZ, @intFromPtr(ws));
     if (linux.errno(rc) != .SUCCESS) return Error.SetFailed;
 }
+
+/// Task 25 — save/restore guard for editors and daemons that switch a
+/// terminal into raw mode. Restoring is idempotent and never panics.
+pub const Saved = struct {
+    fd: linux.fd_t,
+    original: Termios,
+    active: bool = false,
+
+    pub fn init(fd: linux.fd_t) Error!Saved {
+        return .{ .fd = fd, .original = try Termios.get(fd) };
+    }
+
+    pub fn enterRaw(self: *Saved) Error!void {
+        var raw = self.original;
+        raw.makeRaw();
+        try raw.apply(self.fd);
+        self.active = true;
+    }
+
+    pub fn restore(self: *Saved) void {
+        if (!self.active) return;
+        self.original.apply(self.fd) catch {};
+        self.active = false;
+    }
+};

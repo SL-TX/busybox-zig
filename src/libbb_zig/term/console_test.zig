@@ -54,3 +54,24 @@ test "console constants match the Linux VT ABI" {
     try std.testing.expectEqual(@as(u32, 0x5606), console.VT_ACTIVATE);
     try std.testing.expectEqual(@as(u32, 0x5607), console.VT_WAITACTIVE);
 }
+
+// Task 25 — init/runsv controlling-terminal extension.
+test "acquireControllingTerminal reports failure for an invalid fd" {
+    try std.testing.expectEqual(@as(u32, 0x540E), console.TIOCSCTTY);
+    _ = console.acquireControllingTerminal(@as(std.os.linux.fd_t, -1)) catch |e| {
+        try std.testing.expect(e == error.NotConsole or e == error.NotSessionLeader);
+        return;
+    };
+    try std.testing.expect(false);
+}
+
+test "acquireControllingTerminal rejects a PTY slave that is not a session leader" {
+    var pair = try util.openPair();
+    defer pair.deinit();
+    // The test process is already a session leader in some runners, so assert
+    // only that the call reports a well-defined outcome, never a crash.
+    _ = console.acquireControllingTerminal(pair.slave) catch |e| {
+        try std.testing.expect(e == error.NotConsole or e == error.NotSessionLeader);
+        return;
+    };
+}

@@ -10,12 +10,14 @@ const proc = @import("../process.zig");
 pub const KDGKBTYPE: u32 = 0x4B33; // get keyboard type (linux/kd.h)
 pub const VT_ACTIVATE: u32 = 0x5606;
 pub const VT_WAITACTIVE: u32 = 0x5607;
+// Task 25 — TIOCSCTTY is used by init/getty when adopting a controlling tty.
+pub const TIOCSCTTY: u32 = 0x540E;
 
 pub const DEV_CONSOLE = "/dev/console";
 pub const CURRENT_VC = "/dev/tty0";
 pub const CURRENT_TTY = "/dev/tty";
 
-pub const Error = error{ NoConsole, NotConsole };
+pub const Error = error{ NoConsole, NotConsole, NotSessionLeader };
 
 pub const Console = struct {
     fd: linux.fd_t,
@@ -66,6 +68,15 @@ pub const Console = struct {
         self.fd = -1;
     }
 };
+
+/// Adopt `fd` as the controlling terminal (TIOCSCTTY). A caller that is not a
+/// session leader gets an explicit error instead of a silent failure.
+pub fn acquireControllingTerminal(fd: linux.fd_t) Error!void {
+    const rc = linux.ioctl(fd, TIOCSCTTY, 0);
+    const e = linux.errno(rc);
+    if (e == .PERM) return error.NotSessionLeader;
+    if (e != .SUCCESS) return error.NotConsole;
+}
 
 fn openOne(path: []const u8) !linux.fd_t {
     const modes = [_]io.O{

@@ -70,6 +70,20 @@ pub const term = struct {
     pub const fb = @import("term/fb.zig");
 };
 
+// Task 25 — libbb daemon/terminal extensions (Wave 8 prerequisites).
+pub const daemon = struct {
+    pub const lifecycle = @import("daemon/lifecycle.zig");
+    pub const config = @import("daemon/config.zig");
+    pub const syslog = @import("daemon/syslog.zig");
+    pub const klog = @import("daemon/klog.zig");
+    pub const crond = @import("daemon/crond.zig");
+    pub const inetd = @import("daemon/inetd.zig");
+    pub const httpd = @import("daemon/httpd.zig");
+    pub const udhcpd = @import("daemon/udhcpd.zig");
+    pub const runsv = @import("daemon/runsv.zig");
+    pub const init = @import("daemon/init.zig");
+};
+
 // Task 19 — compression / archive helpers (Wave 5 prerequisites).
 pub const compression = struct {
     pub const gzip = @import("compression/gzip.zig");

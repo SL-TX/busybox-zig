@@ -71,3 +71,27 @@ test "Termios.get fails for a non-terminal descriptor" {
     };
     try std.testing.expect(false);
 }
+
+// Task 25 — editor/daemon terminal extension.
+test "Saved restores the original terminal mode after enterRaw" {
+    var pair = try util.openPair();
+    defer pair.deinit();
+    var saved = try termios.Saved.init(pair.slave);
+    try saved.enterRaw();
+    try std.testing.expect(saved.active);
+    const raw_now = try termios.Termios.get(pair.slave);
+    try std.testing.expect(!raw_now.lflag.ECHO);
+    saved.restore();
+    const restored = try termios.Termios.get(pair.slave);
+    try std.testing.expect(restored.lflag.ECHO);
+    saved.restore(); // idempotent
+}
+
+test "Saved.restore is a no-op before enterRaw" {
+    var pair = try util.openPair();
+    defer pair.deinit();
+    var saved = try termios.Saved.init(pair.slave);
+    saved.restore();
+    const now = try termios.Termios.get(pair.slave);
+    try std.testing.expect(now.lflag.ECHO);
+}
