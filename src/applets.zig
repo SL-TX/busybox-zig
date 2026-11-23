@@ -436,11 +436,36 @@ fn mainFor(comptime name: []const u8) MainFn {
     if (std.mem.eql(u8, name, "bash")) return @import("shell").ash_main;
     if (std.mem.eql(u8, name, "hush")) return @import("shell").hush_main;
     if (std.mem.eql(u8, name, "cttyhack")) return @import("shell").cttyhack_main;
-    // loginutils
+    // loginutils — Task 24 wave (all 15 default-enabled applets)
     if (std.mem.eql(u8, name, "login")) return @import("loginutils").login_main;
     if (std.mem.eql(u8, name, "passwd")) return @import("loginutils").passwd_main;
     if (std.mem.eql(u8, name, "su")) return @import("loginutils").su_main;
     if (std.mem.eql(u8, name, "cryptpw")) return @import("loginutils").cryptpw_main;
+    if (std.mem.eql(u8, name, "mkpasswd")) return @import("loginutils").mkpasswd_main;
+    if (std.mem.eql(u8, name, "add-shell")) return @import("loginutils").add_shell_main;
+    if (std.mem.eql(u8, name, "remove-shell")) return @import("loginutils").remove_shell_main;
+    if (std.mem.eql(u8, name, "addgroup")) return @import("loginutils").addgroup_main;
+    if (std.mem.eql(u8, name, "adduser")) return @import("loginutils").adduser_main;
+    if (std.mem.eql(u8, name, "delgroup")) return @import("loginutils").delgroup_main;
+    if (std.mem.eql(u8, name, "deluser")) return @import("loginutils").deluser_main;
+    if (std.mem.eql(u8, name, "chpasswd")) return @import("loginutils").chpasswd_main;
+    if (std.mem.eql(u8, name, "getty")) return @import("loginutils").getty_main;
+    if (std.mem.eql(u8, name, "sulogin")) return @import("loginutils").sulogin_main;
+    if (std.mem.eql(u8, name, "vlock")) return @import("loginutils").vlock_main;
+    // selinux — real implementations, compiled out by the defconfig
+    // (CONFIG_SELINUX=n); wired for SELinux-enabled builds.
+    if (std.mem.eql(u8, name, "chcon")) return @import("selinux").chcon_main;
+    if (std.mem.eql(u8, name, "getenforce")) return @import("selinux").getenforce_main;
+    if (std.mem.eql(u8, name, "getsebool")) return @import("selinux").getsebool_main;
+    if (std.mem.eql(u8, name, "load_policy")) return @import("selinux").load_policy_main;
+    if (std.mem.eql(u8, name, "matchpathcon")) return @import("selinux").matchpathcon_main;
+    if (std.mem.eql(u8, name, "restorecon")) return @import("selinux").restorecon_main;
+    if (std.mem.eql(u8, name, "runcon")) return @import("selinux").runcon_main;
+    if (std.mem.eql(u8, name, "selinuxenabled")) return @import("selinux").selinuxenabled_main;
+    if (std.mem.eql(u8, name, "sestatus")) return @import("selinux").sestatus_main;
+    if (std.mem.eql(u8, name, "setenforce")) return @import("selinux").setenforce_main;
+    if (std.mem.eql(u8, name, "setfiles")) return @import("selinux").setfiles_main;
+    if (std.mem.eql(u8, name, "setsebool")) return @import("selinux").setsebool_main;
     // Task 8 — findutils
     if (std.mem.eql(u8, name, "find")) return @import("findutils").find_main;
     if (std.mem.eql(u8, name, "grep")) return @import("findutils").grep_main;

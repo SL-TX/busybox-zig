@@ -1,0 +1,8 @@
+{
+  "applet": "getty",
+  "name": "invalid_number",
+  "stdout": "",
+  "stderr": "getty: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

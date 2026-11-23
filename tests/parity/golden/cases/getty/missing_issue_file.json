@@ -1,0 +1,8 @@
+{
+  "applet": "getty",
+  "name": "missing_issue_file",
+  "stdout": "",
+  "stderr": "getty: bad speed: /dev/null\n",
+  "exit": 1,
+  "tree": {}
+}

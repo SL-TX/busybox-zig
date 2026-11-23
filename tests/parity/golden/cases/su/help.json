@@ -1,0 +1,8 @@
+{
+  "applet": "su",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: su [-lmp] [-s SH] [-] [USER [FILE ARGS | -c 'CMD' [ARG0 ARGS]]]\n\nRun shell under USER (by default, root)\n\n\t-,-l\tClear environment, go to home dir, run shell as login shell\n\t-p,-m\tDo not set new $HOME, $SHELL, $USER, $LOGNAME\n\t-c CMD\tCommand to pass to 'sh -c'\n\t-s SH\tShell to use instead of user's default\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

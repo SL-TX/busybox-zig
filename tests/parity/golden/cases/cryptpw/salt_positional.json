@@ -1,0 +1,8 @@
+{
+  "applet": "cryptpw",
+  "name": "salt_positional",
+  "stdout": "$1$abcdefgh$cHJi5PXp/ki/ktXzqlk6I1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

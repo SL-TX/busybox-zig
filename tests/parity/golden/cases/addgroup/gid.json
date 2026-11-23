@@ -1,0 +1,8 @@
+{
+  "applet": "addgroup",
+  "name": "gid",
+  "stdout": "",
+  "stderr": "addgroup: permission denied (are you root?)\n",
+  "exit": 1,
+  "tree": {}
+}

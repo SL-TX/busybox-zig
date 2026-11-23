@@ -1,0 +1,8 @@
+{
+  "applet": "getty",
+  "name": "missing_arg",
+  "stdout": "",
+  "stderr": "getty: option requires an argument -- 't'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: getty [OPTIONS] BAUD_RATE[,BAUD_RATE]... TTY [TERMTYPE]\n\nOpen TTY, prompt for login name, then invoke /bin/login\n\n\t-h\t\tEnable hardware RTS/CTS flow control\n\t-L\t\tSet CLOCAL (ignore Carrier Detect state)\n\t-m\t\tGet baud rate from modem's CONNECT status message\n\t-n\t\tDon't prompt for login name\n\t-w\t\tWait for CR or LF before sending /etc/issue\n\t-i\t\tDon't display /etc/issue\n\t-f ISSUE_FILE\tDisplay ISSUE_FILE instead of /etc/issue\n\t-l LOGIN\tInvoke LOGIN instead of /bin/login\n\t-t SEC\t\tTerminate after SEC if no login name is read\n\t-I INITSTR\tSend INITSTR before anything else\n\t-H HOST\t\tLog HOST into the utmp file as the hostname\n\nBAUD_RATE of 0 leaves it unchanged\n",
+  "exit": 1,
+  "tree": {}
+}

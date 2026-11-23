@@ -1,0 +1,8 @@
+{
+  "applet": "passwd",
+  "name": "unlock",
+  "stdout": "",
+  "stderr": "passwd: must be suid to work properly\n",
+  "exit": 1,
+  "tree": {}
+}

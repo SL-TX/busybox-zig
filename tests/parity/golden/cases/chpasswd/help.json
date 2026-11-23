@@ -1,0 +1,8 @@
+{
+  "applet": "chpasswd",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: chpasswd [-me] [-c ALG] [-R DIR]\n\nRead user:password from stdin and update /etc/passwd\n\n\t-e\tSupplied passwords are in encrypted form\n\t-m\tEncrypt using md5, not des\n\t-c ALG\tdes,md5,sha256/512,yescrypt (default des)\n\t-R DIR\tDirectory to chroot into\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "getty",
+  "name": "bad_speed_alternate",
+  "stdout": "",
+  "stderr": "getty: bad speed: abc\n",
+  "exit": 1,
+  "tree": {}
+}

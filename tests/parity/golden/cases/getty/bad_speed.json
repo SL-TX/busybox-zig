@@ -1,0 +1,8 @@
+{
+  "applet": "getty",
+  "name": "bad_speed",
+  "stdout": "",
+  "stderr": "getty: bad speed: /dev/null\n",
+  "exit": 1,
+  "tree": {}
+}

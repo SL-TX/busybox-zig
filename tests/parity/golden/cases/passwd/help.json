@@ -1,0 +1,8 @@
+{
+  "applet": "passwd",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: passwd [-a ALG] [-dlu] [USER]\n\nChange USER's password (default: current user)\n\n\t-a ALG\tdes,md5,sha256/512,yescrypt (default des)\n\t-d\tSet password to ''\n\t-l\tLock (disable) account\n\t-u\tUnlock (enable) account\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

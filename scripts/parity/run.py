@@ -366,6 +366,11 @@ _REQUIRE_REASONS = {
     "disk": "no real block devices in sandbox",
     "service": "no system services in sandbox",
     "tc": "reference binary built with CONFIG_TC=n",
+    # Task 24: SELinux applets are compiled out of both the reference build and
+    # the project defconfig (CONFIG_SELINUX=n).  A case that needs them must
+    # declare requires:["selinux"]; it runs only when the reference actually
+    # exports an SELinux applet (and the host exposes the SELinux fs).
+    "selinux": "reference build has no SELinux applets (CONFIG_SELINUX=n)",
 }
 
 
@@ -396,6 +401,8 @@ def _capability(token: str, ref: str | None = None) -> bool:
         return _can_unshare(token)
     if token == "tc":
         return _ref_has_applet(ref, "tc")
+    if token == "selinux":
+        return _ref_has_applet(ref, "getenforce") and os.path.isfile("/sys/fs/selinux/enforce")
     if token in ("network", "disk", "service"):
         return False
     raise ValueError("unknown requires token: " + token)
@@ -403,7 +410,7 @@ def _capability(token: str, ref: str | None = None) -> bool:
 
 def _capabilities(ref: str | None = None) -> dict[str, bool]:
     tokens = ("tty", "pty", "root", "privileged", "netns", "userns", "mountns",
-              "network", "disk", "service", "tc")
+              "network", "disk", "service", "tc", "selinux")
     return {token: _capability(token, ref) for token in tokens}
 
 

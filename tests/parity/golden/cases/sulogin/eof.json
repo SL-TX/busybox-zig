@@ -1,0 +1,8 @@
+{
+  "applet": "sulogin",
+  "name": "eof",
+  "stdout": "Give root password for maintenance\r\n(or type Ctrl-D to continue): \r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

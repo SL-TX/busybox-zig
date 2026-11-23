@@ -1,0 +1,8 @@
+{
+  "applet": "deluser",
+  "name": "invalid_option_with_user",
+  "stdout": "",
+  "stderr": "deluser: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: deluser [--remove-home] USER\n\nDelete USER from the system\n",
+  "exit": 1,
+  "tree": {}
+}

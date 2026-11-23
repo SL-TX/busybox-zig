@@ -1,0 +1,8 @@
+{
+  "applet": "login",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "login: must be suid to work properly\n",
+  "exit": 1,
+  "tree": {}
+}

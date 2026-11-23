@@ -1,0 +1,8 @@
+{
+  "applet": "chpasswd",
+  "name": "md5",
+  "stdout": "",
+  "stderr": "chpasswd: permission denied (are you root?)\n",
+  "exit": 1,
+  "tree": {}
+}

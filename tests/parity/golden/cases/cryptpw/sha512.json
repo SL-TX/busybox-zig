@@ -1,0 +1,8 @@
+{
+  "applet": "cryptpw",
+  "name": "sha512",
+  "stdout": "$6$abcdefgh$ltjgWl6579NluT/Vi1nwEvcil.G5Nbc4NiXZaNGStk8PSwGfQv72N2CKPPrVACtLtip/cZ/1GM/O6IND4WQhG.\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

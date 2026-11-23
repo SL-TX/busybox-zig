@@ -1,0 +1,8 @@
+{
+  "applet": "cryptpw",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: cryptpw [-P FD] [-m TYPE] [-S SALT] [PASSWORD] [SALT]\n\nPrint crypt(3) hashed PASSWORD\n\n\t-P N\tRead password from fd N\n\t-m TYPE\tdes,md5,sha256/512,yescrypt (default des)\n\t-S SALT\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -79,6 +79,9 @@ test {
     _ = @import("console_tools/console_tools_test.zig");
     _ = @import("shell/shell_test.zig");
     _ = @import("loginutils/login_test.zig");
+    // Task 24 — loginutils/SELinux applet logic.
+    _ = @import("loginutils/main_test.zig");
+    _ = @import("selinux/main_test.zig");
     _ = @import("remaining/remaining_test.zig");
     _ = @import("util-linux/util_linux_test.zig");
     _ = @import("e2fsprogs/e2fsprogs_test.zig");

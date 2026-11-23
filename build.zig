@@ -115,6 +115,16 @@ pub fn build(b: *std.Build) void {
     loginutils.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("loginutils", loginutils);
 
+    // Task 24 — SELinux applets (compiled out of the defconfig but wired so
+    // an SELinux-enabled build dispatches real implementations).
+    const selinux = b.addModule("selinux", .{
+        .root_source_file = b.path("src/selinux/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    selinux.addImport("libbb_zig", libbb_zig);
+    exe.root_module.addImport("selinux", selinux);
+
     // Task 8 — findutils / debianutils / printutils / klibc applets.
     const findutils = b.addModule("findutils", .{
         .root_source_file = b.path("src/findutils/main.zig"),
@@ -209,6 +219,7 @@ pub fn build(b: *std.Build) void {
     test_module.addImport("shell", shell);
     loginutils.addImport("libbb_zig", libbb_zig);
     test_module.addImport("loginutils", loginutils);
+    test_module.addImport("selinux", selinux);
     test_module.addImport("libbb_zig", libbb_zig);
     test_module.addImport("findutils", findutils);
     test_module.addImport("debianutils", debianutils);
