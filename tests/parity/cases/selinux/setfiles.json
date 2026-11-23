@@ -106,6 +106,28 @@
       "requires": [
         "selinux"
       ]
+    },
+    {
+      "name": "root_and_exclude",
+      "argv": [
+        "-r",
+        "/tmp/root",
+        "-e",
+        "/proc",
+        "spec",
+        "file"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
     }
   ]
 }

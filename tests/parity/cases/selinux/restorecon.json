@@ -103,6 +103,26 @@
       "requires": [
         "selinux"
       ]
+    },
+    {
+      "name": "force_and_exclude",
+      "argv": [
+        "-F",
+        "-e",
+        "/proc",
+        "file"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
     }
   ]
 }

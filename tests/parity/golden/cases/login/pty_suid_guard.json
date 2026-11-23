@@ -1,0 +1,8 @@
+{
+  "applet": "login",
+  "name": "pty_suid_guard",
+  "stdout": "login: must be suid to work properly\r\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

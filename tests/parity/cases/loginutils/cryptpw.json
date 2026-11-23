@@ -290,6 +290,59 @@
       "timeout_ms": 3000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "stdin_flag_with_operand",
+      "argv": [
+        "-s",
+        "-S",
+        "ab",
+        "secret"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "stdin_flag_reads_stdin",
+      "argv": [
+        "-s",
+        "-S",
+        "ab"
+      ],
+      "stdin": "fromstdin\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "stdin_long_option",
+      "argv": [
+        "--stdin",
+        "-S",
+        "ab",
+        "secret"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }

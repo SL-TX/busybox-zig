@@ -161,6 +161,27 @@
       "requires": [
         "selinux"
       ]
+    },
+    {
+      "name": "no_dereference_quiet",
+      "argv": [
+        "-h",
+        "-f",
+        "-t",
+        "user_home_t",
+        "file"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
     }
   ]
 }

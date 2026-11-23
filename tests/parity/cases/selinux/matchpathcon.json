@@ -102,6 +102,42 @@
       "requires": [
         "selinux"
       ]
+    },
+    {
+      "name": "verify",
+      "argv": [
+        "-V",
+        "/tmp/x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    },
+    {
+      "name": "no_trans",
+      "argv": [
+        "-N",
+        "/tmp/x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
     }
   ]
 }

@@ -73,6 +73,25 @@
       "timeout_ms": 3000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "pty_suid_guard",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": [
+        "\u0004"
+      ]
     }
   ]
 }

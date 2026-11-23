@@ -1,0 +1,8 @@
+{
+  "applet": "vlock",
+  "name": "pty_suid_guard",
+  "stdout": "vlock: must be suid to work properly\r\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

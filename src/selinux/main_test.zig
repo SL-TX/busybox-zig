@@ -152,3 +152,41 @@ test "sestatus reads SELINUXTYPE from the config file" {
     ).?);
     try std.testing.expect(selinux.configPolicyType("SELINUX=permissive\n") == null);
 }
+
+test "runcon -t keeps the command positional (would exec /bin/true)" {
+    const plan = selinux.parseRunconArgs(&.{ "runcon", "-t", "user_t", "/bin/true" }, "runcon");
+    try std.testing.expectEqualStrings("user_t", plan.typ.?);
+    try std.testing.expect(plan.context == null);
+    try std.testing.expectEqual(@as(usize, 3), plan.command_index);
+    const explicit = selinux.parseRunconArgs(&.{ "runcon", "u:r:t:s0", "/bin/true" }, "runcon");
+    try std.testing.expectEqualStrings("u:r:t:s0", explicit.context.?);
+    try std.testing.expectEqual(@as(usize, 2), explicit.command_index);
+    const computed = selinux.parseRunconArgs(&.{ "runcon", "-c", "-u", "staff_u", "/bin/true" }, "runcon");
+    try std.testing.expect(computed.compute);
+    try std.testing.expectEqualStrings("staff_u", computed.user.?);
+    try std.testing.expectEqual(@as(usize, 4), computed.command_index);
+}
+
+test "matchpathcon -V verifies or reports the on-disk context" {
+    try std.testing.expectEqualStrings(
+        "/tmp/x verified\n",
+        selinux.verifyLine("/tmp/x", "u:r:t:s0", "u:r:t:s0\x00"),
+    );
+    try std.testing.expectEqualStrings(
+        "/tmp/x has context u:r:old:s0, should be u:r:t:s0\n",
+        selinux.verifyLine("/tmp/x", "u:r:t:s0", "u:r:old:s0\x00"),
+    );
+    try std.testing.expectEqualStrings(
+        "actual context unknown: No such file or directory, should be u:r:t:s0\n",
+        selinux.verifyLine("/tmp/x", "u:r:t:s0", null),
+    );
+}
+
+test "setfiles -r/-e path transformations" {
+    try std.testing.expectEqualStrings("/tmp/root/etc/passwd", selinux.effectivePath("/tmp/root", "/etc/passwd"));
+    try std.testing.expectEqualStrings("/etc/passwd", selinux.effectivePath("", "/etc/passwd"));
+    const excludes = [_][]const u8{"/proc", "/sys"};
+    try std.testing.expect(selinux.isExcluded(&excludes, "/proc/1"));
+    try std.testing.expect(selinux.isExcluded(&excludes, "/sys"));
+    try std.testing.expect(!selinux.isExcluded(&excludes, "/procfs"));
+}

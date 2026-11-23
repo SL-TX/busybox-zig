@@ -194,3 +194,96 @@ test "shells applet transformation round-trip with duplicate argument" {
     defer a.free(back);
     try std.testing.expectEqualStrings(data, back);
 }
+
+test "chpasswd malformed input is a hard error with the reference message" {
+    const bad = login.chpasswdEntry(a, "no-colon", null, false);
+    try std.testing.expectError(error.MissingNewPassword, bad);
+    const good = try login.chpasswdEntry(a, "alice:s3cret", "md5", false);
+    defer a.free(good.hash);
+    try std.testing.expectEqualStrings("alice", good.user);
+    try std.testing.expect(std.mem.startsWith(u8, good.hash, "$1$"));
+}
+
+test "envPolicy mirrors setup_environment for su -p/-m and login -p" {
+    const inherited = [_][]const u8{ "FOO=1", "TERM=xterm", "HOME=/old", "PATH=/old" };
+    const overrides = [_]login.EnvOverride{
+        .{ .key = "HOME", .value = "/home/alice" },
+        .{ .key = "SHELL", .value = "/bin/sh" },
+    };
+    const preserved = try login.envPolicy(a, &inherited, &overrides, false, true, false);
+    defer {
+        for (preserved) |e| a.free(e);
+        a.free(preserved);
+    }
+    try std.testing.expectEqual(@as(usize, 5), preserved.len);
+    try std.testing.expect(std.mem.indexOf(u8, preserved[0], "FOO=1") != null);
+    try std.testing.expect(std.mem.indexOf(u8, preserved[1], "TERM=xterm") != null);
+
+    const cleared = try login.envPolicy(a, &inherited, &overrides, true, true, true);
+    defer {
+        for (cleared) |e| a.free(e);
+        a.free(cleared);
+    }
+    try std.testing.expectEqual(@as(usize, 4), cleared.len); // TERM + 2 overrides + root PATH
+    try std.testing.expectEqualStrings("TERM=xterm", cleared[0]);
+    try std.testing.expectEqualStrings("PATH=/sbin:/usr/sbin:/bin:/usr/bin", cleared[3]);
+}
+
+test "vlock -a selects the plural console banner" {
+    try std.testing.expectEqualStrings(
+        "Virtual console locked by alice.\n",
+        login.vlockBanner(false, "alice"),
+    );
+    try std.testing.expectEqualStrings(
+        "Virtual consoles locked by alice.\n",
+        login.vlockBanner(true, "alice"),
+    );
+}
+
+test "getty modem status parses the first valid baud" {
+    try std.testing.expectEqual(@as(?u32, 9600), login.parseModemSpeed("CONNECT 9600/ARQ\r\n"));
+    // The reference stops at the first digit run; an invalid first run wins.
+    try std.testing.expect(login.parseModemSpeed("ATDT123\r\nCONNECT 9600/ARQ\r\n") == null);
+    try std.testing.expect(login.parseModemSpeed("NO CARRIER") == null);
+    try std.testing.expect(login.parseModemSpeed("CONNECT 999999") == null);
+}
+
+test "applyShellsFile writes atomically to an explicit SHELLS_FILE path (temp file)" {
+    const path = tmpPath("shells");
+    defer unlink(path);
+    try seedFile(path, "/bin/sh\n/bin/bash\n");
+    const shells = [_][]const u8{"/bin/zsh"};
+    try std.testing.expect(login.applyShellsFile(a, path, &shells, false));
+    const data = try readTestFile(a, path);
+    defer a.free(data);
+    try std.testing.expectEqualStrings("/bin/sh\n/bin/bash\n/bin/zsh\n", data);
+    try std.testing.expect(login.applyShellsFile(a, path, &shells, true));
+    const removed = try readTestFile(a, path);
+    defer a.free(removed);
+    try std.testing.expectEqualStrings("/bin/sh\n/bin/bash\n", removed);
+}
+
+test "login -h HOST is recorded in the utmp record (temp file)" {
+    const path = tmpPath("utmp");
+    defer unlink(path);
+    const entry = bb.utmp.makeEntry(.{
+        .pid = 4242,
+        .new_type = .user_process,
+        .tty = "/dev/pts/3",
+        .user = "alice",
+        .host = "example.com",
+        .tv_sec = 1234567,
+    });
+    try bb.utmp.writeEntries(path, &.{entry});
+    const entries = try bb.utmp.readEntries(a, path);
+    defer a.free(entries);
+    try std.testing.expectEqual(@as(usize, 1), entries.len);
+    var host_end: usize = 0;
+    while (host_end < entries[0].ut_host.len and entries[0].ut_host[host_end] != 0) host_end += 1;
+    const host = entries[0].ut_host[0..host_end];
+    try std.testing.expectEqualStrings("example.com", host);
+    var user_end: usize = 0;
+    while (user_end < entries[0].ut_user.len and entries[0].ut_user[user_end] != 0) user_end += 1;
+    const user = entries[0].ut_user[0..user_end];
+    try std.testing.expectEqualStrings("alice", user);
+}

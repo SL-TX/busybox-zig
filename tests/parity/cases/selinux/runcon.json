@@ -127,6 +127,45 @@
       "requires": [
         "selinux"
       ]
+    },
+    {
+      "name": "type_component_command",
+      "argv": [
+        "-t",
+        "user_t",
+        "/bin/true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    },
+    {
+      "name": "compute_transition",
+      "argv": [
+        "-c",
+        "-u",
+        "staff_u",
+        "/bin/true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
     }
   ]
 }

@@ -71,6 +71,15 @@ fn plain(msg: []const u8) noreturn {
     std.process.exit(1);
 }
 
+/// `<prog>: <msg>` diagnostic without a strerror suffix.
+fn diePlain(name: []const u8, msg: []const u8) noreturn {
+    const old = bb.messages.program_name;
+    bb.messages.program_name = name;
+    bb.messages.plainMsg("{s}", .{msg});
+    bb.messages.program_name = old;
+    std.process.exit(1);
+}
+
 fn envPath(key: []const u8, default: []const u8) []const u8 {
     return bb.env.get(key) orelse default;
 }
@@ -494,11 +503,61 @@ pub fn dropPrivileges(uid: u32, gid: u32) bool {
     return true;
 }
 
-fn execProgram(a: Allocator, prog_path: []const u8, argv: []const []const u8, user: ?PasswdEntry) c_int {
+pub const EnvOverride = struct { key: []const u8, value: []const u8 };
+
+/// Mirror libbb `setup_environment()`: with `clear`, only TERM and the
+/// overrides survive and PATH is reset; otherwise inherited entries are
+/// copied with overridden keys replaced.  Pure and unit-tested.
+pub fn envPolicy(
+    a: Allocator,
+    entries: []const []const u8,
+    overrides: []const EnvOverride,
+    clear: bool,
+    keep_term: bool,
+    root_path: bool,
+) ![][]const u8 {
+    var out: std.ArrayList([]const u8) = .empty;
+    errdefer out.deinit(a);
+    for (entries) |entry| {
+        const epos = std.mem.indexOfScalar(u8, entry, '=') orelse continue;
+        const key = entry[0..epos];
+        var overridden = false;
+        for (overrides) |o| if (eq(o.key, key)) {
+            overridden = true;
+            break;
+        };
+        if (overridden) continue;
+        if (clear and !(keep_term and eq(key, "TERM"))) continue;
+        try out.append(a, try a.dupe(u8, entry));
+    }
+    for (overrides) |o| try out.append(a, try std.fmt.allocPrint(a, "{s}={s}", .{ o.key, o.value }));
+    if (clear) {
+        var has_path = false;
+        for (overrides) |o| if (eq(o.key, "PATH")) {
+            has_path = true;
+            break;
+        };
+        if (!has_path) try out.append(a, try a.dupe(u8, if (root_path) "PATH=/sbin:/usr/sbin:/bin:/usr/bin" else "PATH=/bin:/usr/bin"));
+    }
+    return out.toOwnedSlice(a);
+}
+
+pub const ExecEnv = struct {
+    overrides: []const EnvOverride = &.{},
+    clear: bool = false,
+    root_path: bool = false,
+    chdir: ?[]const u8 = null,
+};
+
+fn execProgram(a: Allocator, prog_path: []const u8, argv: []const []const u8, user: ?PasswdEntry, env_spec: ExecEnv) c_int {
     const child = linux.fork();
     if (linux.errno(child) != .SUCCESS) return 1;
     if (child == 0) {
         if (user) |u| if (!dropPrivileges(u.uid, u.gid)) std.process.exit(1);
+        if (env_spec.chdir) |dir| {
+            const cz = zstr(a, dir) catch std.process.exit(1);
+            _ = linux.chdir(cz);
+        }
         const argc = argv.len + 1;
         const argv_z = a.allocSentinel(?[*:0]const u8, argc, null) catch std.process.exit(127);
         const prog_z = zstr(a, prog_path) catch std.process.exit(127);
@@ -506,8 +565,13 @@ fn execProgram(a: Allocator, prog_path: []const u8, argv: []const []const u8, us
         for (argv, 1..) |arg, idx| {
             argv_z[idx] = (zstr(a, arg) catch std.process.exit(127)).ptr;
         }
-        const envp_z = a.allocSentinel(?[*:0]const u8, 1, null) catch std.process.exit(127);
-        envp_z[0] = (zstr(a, "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin") catch std.process.exit(127)).ptr;
+        const raw_env = bb.env.buildEnvp(a) catch &.{};
+        var inherited: std.ArrayList([]const u8) = .empty;
+        for (raw_env) |item| if (item) |p| inherited.append(a, std.mem.span(p)) catch {};
+        const policy = envPolicy(a, inherited.items, env_spec.overrides, env_spec.clear, true, env_spec.root_path) catch &.{};
+        const envp_z = a.allocSentinel(?[*:0]const u8, policy.len + 1, null) catch std.process.exit(127);
+        for (policy, 0..) |item, idx| envp_z[idx] = (zstr(a, item) catch std.process.exit(127)).ptr;
+        envp_z[policy.len] = null;
         _ = linux.execve(prog_z.ptr, argv_z.ptr, envp_z.ptr);
         std.process.exit(127);
     }
@@ -516,8 +580,8 @@ fn execProgram(a: Allocator, prog_path: []const u8, argv: []const []const u8, us
     return @intCast((status >> 8) & 0xff);
 }
 
-fn execAsUser(a: Allocator, user: PasswdEntry) c_int {
-    return execProgram(a, user.shell, &.{ "-", user.name }, user);
+fn execAsUser(a: Allocator, user: PasswdEntry, env_spec: ExecEnv) c_int {
+    return execProgram(a, user.shell, &.{ "-", user.name }, user, env_spec);
 }
 
 // -------------------------------------------------------------- salt helpers
@@ -559,6 +623,9 @@ const mkpasswd_longs = [_]LongOptDef{
 
 fn cryptMain(argv: []const []const u8) c_int {
     const a = page;
+    // -s/--stdin is accepted for mkpasswd compatibility.  Like the reference
+    // cryptpw.c ("have no idea how to handle -s..."), it has no separate
+    // effect: stdin is read only when no PASSWORD operand was supplied.
     const name = prog(argv);
     var opts = parseOpts(a, argv, "sP:S:m:a:", &mkpasswd_longs, true, name);
     defer opts.deinit(a);
@@ -699,14 +766,34 @@ fn suMain(argv: []const []const u8) c_int {
             return 1;
         }
     }
+    const preserve = opts.has['p'] or opts.has['m'];
+    // With -p/-m and no -s, the reference takes the shell from the inherited
+    // environment (setup_environment() then leaves the environment alone).
+    const shell = opts.val['s'] orelse (if (preserve) bb.env.get("SHELL") orelse user.shell else user.shell);
+    var overrides: [4]EnvOverride = undefined;
+    var n: usize = 0;
+    if (!preserve) {
+        overrides[n] = .{ .key = "HOME", .value = user.home };
+        n += 1;
+        overrides[n] = .{ .key = "SHELL", .value = shell };
+        n += 1;
+        overrides[n] = .{ .key = "USER", .value = user.name };
+        n += 1;
+        overrides[n] = .{ .key = "LOGNAME", .value = user.name };
+        n += 1;
+    }
+    const spec = ExecEnv{
+        .overrides = overrides[0..n],
+        .clear = login_shell,
+        .root_path = user.uid == 0,
+        .chdir = if (login_shell) user.home else null,
+    };
     if (opts.has['c']) {
         const cmd = opts.val['c'] orelse "";
-        const shell = opts.val['s'] orelse "/bin/sh";
-        return execProgram(a, shell, &.{ "-c", cmd }, user);
+        return execProgram(a, shell, &.{ "-c", cmd }, user, spec);
     }
-    const shell = opts.val['s'] orelse user.shell;
-    if (login_shell) return execProgram(a, shell, &.{"-"}, user);
-    return execProgram(a, shell, &.{shell}, user);
+    if (login_shell) return execProgram(a, shell, &.{"-"}, user, spec);
+    return execProgram(a, shell, &.{shell}, user, spec);
 }
 
 pub fn su_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -714,6 +801,16 @@ pub fn su_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 // --------------------------------------------------------------------- login
+
+/// Resolve the controlling tty name for utmp, with /dev/ stripped.
+pub fn currentTty(a: Allocator) []const u8 {
+    const z = zstr(a, "/proc/self/fd/0") catch return "none";
+    defer a.free(z);
+    var buf: [256]u8 = undefined;
+    const n = linux.readlink(z, &buf, buf.len);
+    if (linux.errno(n) != .SUCCESS or n == 0) return "none";
+    return a.dupe(u8, bb.utmp.skipDevPfx(buf[0..n])) catch "none";
+}
 
 fn loginMain(argv: []const []const u8) c_int {
     const a = page;
@@ -742,6 +839,13 @@ fn loginMain(argv: []const []const u8) c_int {
         outAll("Login incorrect\n");
         return 1;
     };
+    if (opts.has['h']) {
+        // -h HOST is recorded in the utmp entry (reference update_utmp()).
+        // UTMP_FILE lets unit tests keep this away from real system state.
+        const tty = currentTty(a);
+        bb.utmp.updateUtmp(a, envPath("UTMP_FILE", "/var/run/utmp"), @intCast(linux.getpid()),
+            .user_process, tty, username, opts.val['h'] orelse "") catch {};
+    }
     if (!opts.has['f']) {
         const hash = lookupShadowHash(a, username) orelse {
             outAll("Login incorrect\n");
@@ -754,7 +858,18 @@ fn loginMain(argv: []const []const u8) c_int {
             return 1;
         }
     }
-    return execAsUser(a, user);
+    var overrides = [_]EnvOverride{
+        .{ .key = "HOME", .value = user.home },
+        .{ .key = "SHELL", .value = user.shell },
+        .{ .key = "USER", .value = user.name },
+        .{ .key = "LOGNAME", .value = user.name },
+    };
+    return execAsUser(a, user, .{
+        .overrides = &overrides,
+        .clear = !opts.has['p'],
+        .root_path = user.uid == 0,
+        .chdir = user.home,
+    });
 }
 
 pub fn login_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -762,6 +877,12 @@ pub fn login_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 // --------------------------------------------------------------------- vlock
+
+/// Reference vlock prints "Virtual console%s locked by %s.\n", where the
+/// plural s is present only with -a.
+pub fn vlockBanner(all: bool, user: []const u8) []const u8 {
+    return std.fmt.allocPrint(page, "Virtual console{s} locked by {s}.\n", .{ if (all) "s" else "", user }) catch "Virtual console locked.\n";
+}
 
 fn vlockMain(argv: []const []const u8) c_int {
     const a = page;
@@ -778,11 +899,22 @@ fn vlockMain(argv: []const []const u8) c_int {
     const user = lookupUser(a, currentUser(a)) orelse return 1;
     const hash = lookupShadowHash(a, user.name) orelse return 1;
     defer a.free(hash);
+    // Raw terminal: ignore breaks/signals and suppress echo (reference vlock).
+    if (std.posix.tcgetattr(fd)) |t0| {
+        var t = t0;
+        t.iflag.IGNBRK = true;
+        t.iflag.BRKINT = false;
+        t.lflag.ISIG = false;
+        t.lflag.ECHO = false;
+        t.lflag.ECHOCTL = false;
+        _ = std.posix.tcsetattr(fd, .NOW, t) catch {};
+    } else |_| {}
+    outAll(vlockBanner(opts.has['a'], user.name));
     while (true) {
         const answer = askPassword(a, "Password: ") orelse return 0;
         defer a.free(answer);
         if (verifyPassword(a, hash, answer) catch false) break;
-        bb.messages.plainMsg("Login incorrect", .{});
+        outAll("Incorrect password\n");
     }
     return 0;
 }
@@ -805,6 +937,26 @@ pub fn validBaud(s: []const u8) bool {
     return false;
 }
 
+/// First digit run in a modem status line ("CONNECT 9600/ARQ") gives the
+/// baud rate, matching getty.c:auto_baud().
+pub fn parseModemSpeed(text: []const u8) ?u32 {
+    var i: usize = 0;
+    while (i < text.len) : (i += 1) {
+        if (!std.ascii.isDigit(text[i])) continue;
+        var end = i;
+        while (end < text.len and std.ascii.isDigit(text[end])) : (end += 1) {}
+        const value = std.fmt.parseInt(u32, text[i..end], 10) catch return null;
+        if (validBaud(text[i..end])) return value;
+        return null;
+    }
+    return null;
+}
+
+fn gettyTimeoutHandler(_: linux.SIG) callconv(.c) void {
+    // getty.c:alarm_handler() restores tty attrs and exits successfully.
+    linux.exit(0);
+}
+
 fn gettyMain(argv: []const []const u8) c_int {
     const a = page;
     const name = prog(argv);
@@ -822,8 +974,10 @@ fn gettyMain(argv: []const []const u8) c_int {
     var opts = parseOpts(a, argv, "I:LH:f:hil:mt:+wn", &getty_longs, true, name);
     defer opts.deinit(a);
     if (opts.pos.items.len < 2) usageDie(name);
+    var timeout_secs: u32 = 0;
     if (opts.has['t']) {
-        _ = parseI32Strict(opts.val['t'] orelse "0");
+        const t = parseI32Strict(opts.val['t'] orelse "0");
+        if (t > 0) timeout_secs = @intCast(t);
     }
     var speedstr = opts.pos.items[1];
     var tty = opts.pos.items[0];
@@ -858,6 +1012,22 @@ fn gettyMain(argv: []const []const u8) c_int {
             _ = std.posix.tcsetattr(fd, .NOW, t) catch {};
         } else |_| {}
     }
+    if (opts.has['m']) {
+        // -m: read the modem CONNECT status message and adopt its speed.
+        var buf: [256]u8 = undefined;
+        const n = linux.read(fd, &buf, buf.len);
+        if (linux.errno(n) != .SUCCESS) return 0;
+        if (n > 0) {
+            if (parseModemSpeed(buf[0..n])) |baud| {
+                if (std.posix.tcgetattr(fd)) |t0| {
+                    var t = t0;
+                    t.ispeed = @enumFromInt(baud);
+                    t.ospeed = @enumFromInt(baud);
+                    _ = std.posix.tcsetattr(fd, .NOW, t) catch {};
+                } else |_| {}
+            }
+        }
+    }
     if (opts.has['I']) {
         const initstr = opts.val['I'] orelse "";
         if (!writeAllFd(fd, initstr)) return 1;
@@ -877,12 +1047,17 @@ fn gettyMain(argv: []const []const u8) c_int {
             outAll(issue);
         }
     }
+    if (timeout_secs > 0) {
+        bb.process.signal(.ALRM, gettyTimeoutHandler) catch {};
+        _ = linux.syscall1(.alarm, @as(usize, timeout_secs));
+    }
     if (!opts.has['n']) {
         outAll("login: ");
         const login_name = readLineFd(a, fd) orelse return 0;
+        if (timeout_secs > 0) _ = linux.syscall1(.alarm, @as(usize, 0));
         defer a.free(login_name);
         const login_prog = opts.val['l'] orelse "/bin/login";
-        return execProgram(a, login_prog, &.{login_prog, login_name}, null);
+        return execProgram(a, login_prog, &.{login_prog, login_name}, null, .{});
     }
     return 0;
 }
@@ -925,7 +1100,7 @@ fn suloginMain(argv: []const []const u8) c_int {
         bb.messages.plainMsg("Login incorrect", .{});
     }
     const shell = bb.env.get("SUSHELL") orelse bb.env.get("sushell") orelse user.shell;
-    return execProgram(a, shell, &.{shell}, null);
+    return execProgram(a, shell, &.{shell}, null, .{});
 }
 
 pub fn sulogin_main(argc: c_int, argv: [*][*:0]const u8) c_int {
@@ -972,19 +1147,38 @@ pub fn shellsContents(a: Allocator, data: []const u8, shells: []const []const u8
     return out.toOwnedSlice(a);
 }
 
+/// Write the transformed shell list atomically to `path` (temp + rename).
+/// Public so unit tests can exercise it against a temp SHELLS_FILE path.
+pub fn applyShellsFile(a: Allocator, path: []const u8, shells: []const []const u8, remove: bool) bool {
+    const data = readFile(a, path) orelse return false;
+    defer a.free(data);
+    const updated = shellsContents(a, data, shells, remove) catch return false;
+    defer a.free(updated);
+    const tmp = allocPrint("{s}.tmp", .{path});
+    return writeFile(tmp, updated, 0o644) and blk: {
+        const oz = zstr(a, path) catch break :blk false;
+        defer a.free(oz);
+        const tz = zstr(a, tmp) catch break :blk false;
+        defer a.free(tz);
+        break :blk linux.errno(linux.rename(tz, oz)) == .SUCCESS;
+    };
+}
+
 fn shellsMain(argv: []const []const u8) c_int {
     const a = page;
     const name = prog(argv);
     const remove = name.len > 0 and name[0] == 'r';
     const shells = argv[1..];
+    // SHELLS_FILE is a project test seam: it must never point at real /etc
+    // state from a case.  The reference hardcodes /etc/shells.
     const orig = envPath("SHELLS_FILE", "/etc/shells");
+    if (!pathExists(orig)) return 1;
     const data = readFile(a, orig) orelse return 1;
     defer a.free(data);
-    const mode: u32 = 0o644;
     const updated = shellsContents(a, data, shells, remove) catch return 1;
     defer a.free(updated);
     const tmp = allocPrint("{s}.tmp", .{orig});
-    if (!writeFile(tmp, updated, mode)) failOpen(tmp, last_errno);
+    if (!writeFile(tmp, updated, 0o644)) failOpen(tmp, last_errno);
     const oz = zstr(a, orig) catch return 1;
     defer a.free(oz);
     const tz = zstr(a, tmp) catch return 1;
@@ -1330,6 +1524,23 @@ pub fn parseChpasswdLine(line: []const u8) ?struct { user: []const u8, password:
     return .{ .user = line[0..colon], .password = line[colon + 1 ..] };
 }
 
+pub const ChpasswdEntry = struct { user: []const u8, hash: []u8 };
+
+/// Pure transformation for one chpasswd input line.  A line without ':'
+/// is a hard error in the reference ("missing new password"), never skipped.
+pub fn chpasswdEntry(a: Allocator, line: []const u8, method: ?[]const u8, encrypted: bool) !ChpasswdEntry {
+    const parsed = parseChpasswdLine(line) orelse return error.MissingNewPassword;
+    var hash: []u8 = undefined;
+    if (encrypted) {
+        hash = try a.dupe(u8, parsed.password);
+    } else {
+        const salt = buildSalt(a, method, "");
+        defer a.free(salt);
+        hash = try bb.crypto.pw_encrypt.encrypt(a, parsed.password, salt);
+    }
+    return .{ .user = parsed.user, .hash = hash };
+}
+
 fn chpasswdMain(argv: []const []const u8) c_int {
     const a = page;
     const name = prog(argv);
@@ -1344,22 +1555,34 @@ fn chpasswdMain(argv: []const []const u8) c_int {
     defer opts.deinit(a);
     var method: ?[]const u8 = if (opts.has['m']) "md5" else null;
     if (opts.has['c']) method = opts.val['c'];
+    if (opts.has['R']) {
+        // xchroot(DIR): the reference operates on account files inside DIR.
+        const root_dir = opts.val['R'] orelse "";
+        const z = zstr(a, root_dir) catch return 1;
+        defer a.free(z);
+        const rc = linux.chroot(z);
+        if (linux.errno(rc) != .SUCCESS) {
+            bb.messages.errorMsgAndDie(@intFromEnum(linux.errno(rc)), "can't change root directory to '{s}'", .{root_dir});
+        }
+        _ = linux.chdir("/");
+    }
     while (readLine(a)) |line| {
         defer a.free(line);
-        const parsed = parseChpasswdLine(line) orelse continue;
-        const hash = if (opts.has['e'])
-            a.dupe(u8, parsed.password) catch return 1
-        else
-            bb.crypto.pw_encrypt.encrypt(a, parsed.password, buildSalt(a, method, "")) catch return 1;
-        defer a.free(hash);
-        if (!updateShadow(a, parsed.user, hash)) {
+        const entry = chpasswdEntry(a, line, method, opts.has['e']) catch |err| {
+            if (err == error.MissingNewPassword) diePlain(name, "missing new password");
+            return 1;
+        };
+        defer a.free(entry.hash);
+        if (!updateShadow(a, entry.user, entry.hash)) {
             const pdata = readFile(a, envPath("PASSWD_FILE", "/etc/passwd")) orelse continue;
             defer a.free(pdata);
-            const entry = findPasswdEntry(pdata, parsed.user) orelse continue;
+            const found = findPasswdEntry(pdata, entry.user) orelse {
+                diePlain(name, allocPrint("unknown user {s}", .{entry.user}));
+            };
             const pline = allocPrint("{s}:{s}:{d}:{d}:{s}:{s}:{s}", .{
-                entry.name, hash, entry.uid, entry.gid, entry.gecos, entry.home, entry.shell,
+                found.name, entry.hash, found.uid, found.gid, found.gecos, found.home, found.shell,
             });
-            _ = updateAccountFile(a, envPath("PASSWD_FILE", "/etc/passwd"), parsed.user, pline);
+            _ = updateAccountFile(a, envPath("PASSWD_FILE", "/etc/passwd"), entry.user, pline);
         }
     }
     return 0;

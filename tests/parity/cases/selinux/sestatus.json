@@ -66,6 +66,23 @@
       "requires": [
         "selinux"
       ]
+    },
+    {
+      "name": "booleans",
+      "argv": [
+        "-b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
     }
   ]
 }

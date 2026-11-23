@@ -371,6 +371,10 @@ _REQUIRE_REASONS = {
     # declare requires:["selinux"]; it runs only when the reference actually
     # exports an SELinux applet (and the host exposes the SELinux fs).
     "selinux": "reference build has no SELinux applets (CONFIG_SELINUX=n)",
+    # Task 24 fix round 1: add-shell/remove-shell hardcode /etc/shells in the
+    # reference.  The harness has no private /etc mount, so these cases may
+    # only run in an environment that provides one.  Always false here.
+    "etc_sandbox": "harness provides no private /etc namespace for shells applets",
 }
 
 
@@ -403,6 +407,10 @@ def _capability(token: str, ref: str | None = None) -> bool:
         return _ref_has_applet(ref, "tc")
     if token == "selinux":
         return _ref_has_applet(ref, "getenforce") and os.path.isfile("/sys/fs/selinux/enforce")
+    if token == "etc_sandbox":
+        # The reference writes /etc/shells.tmp + rename; without a private
+        # /etc mount there is no safe way to run this case, even as root.
+        return False
     if token in ("network", "disk", "service"):
         return False
     raise ValueError("unknown requires token: " + token)
@@ -410,7 +418,7 @@ def _capability(token: str, ref: str | None = None) -> bool:
 
 def _capabilities(ref: str | None = None) -> dict[str, bool]:
     tokens = ("tty", "pty", "root", "privileged", "netns", "userns", "mountns",
-              "network", "disk", "service", "tc", "selinux")
+              "network", "disk", "service", "tc", "selinux", "etc_sandbox")
     return {token: _capability(token, ref) for token in tokens}
 
 

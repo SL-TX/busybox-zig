@@ -10,7 +10,9 @@
       "files": {},
       "dirs": [],
       "symlinks": {},
-      "env": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
       "cwd": ".",
       "timeout_ms": 3000,
       "normalize": [],
@@ -23,11 +25,15 @@
       "files": {},
       "dirs": [],
       "symlinks": {},
-      "env": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
       "cwd": ".",
       "timeout_ms": 3000,
       "normalize": [],
-      "requires": []
+      "requires": [
+        "etc_sandbox"
+      ]
     },
     {
       "name": "one_shell",
@@ -38,11 +44,15 @@
       "files": {},
       "dirs": [],
       "symlinks": {},
-      "env": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
       "cwd": ".",
       "timeout_ms": 3000,
       "normalize": [],
-      "requires": []
+      "requires": [
+        "etc_sandbox"
+      ]
     },
     {
       "name": "multiple_shells",
@@ -54,11 +64,15 @@
       "files": {},
       "dirs": [],
       "symlinks": {},
-      "env": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
       "cwd": ".",
       "timeout_ms": 3000,
       "normalize": [],
-      "requires": []
+      "requires": [
+        "etc_sandbox"
+      ]
     },
     {
       "name": "duplicate_shell",
@@ -70,11 +84,15 @@
       "files": {},
       "dirs": [],
       "symlinks": {},
-      "env": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
       "cwd": ".",
       "timeout_ms": 3000,
       "normalize": [],
-      "requires": []
+      "requires": [
+        "etc_sandbox"
+      ]
     },
     {
       "name": "empty_shell",
@@ -85,11 +103,15 @@
       "files": {},
       "dirs": [],
       "symlinks": {},
-      "env": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
       "cwd": ".",
       "timeout_ms": 3000,
       "normalize": [],
-      "requires": []
+      "requires": [
+        "etc_sandbox"
+      ]
     },
     {
       "name": "dash_arg",
@@ -100,11 +122,15 @@
       "files": {},
       "dirs": [],
       "symlinks": {},
-      "env": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
       "cwd": ".",
       "timeout_ms": 3000,
       "normalize": [],
-      "requires": []
+      "requires": [
+        "etc_sandbox"
+      ]
     }
   ]
 }

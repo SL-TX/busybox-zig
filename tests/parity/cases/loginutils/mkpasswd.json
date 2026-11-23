@@ -148,6 +148,24 @@
       "timeout_ms": 3000,
       "normalize": [],
       "requires": []
+    },
+    {
+      "name": "stdin_flag",
+      "argv": [
+        "-s",
+        "-S",
+        "ab",
+        "secret"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
     }
   ]
 }
