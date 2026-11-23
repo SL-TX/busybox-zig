@@ -1330,6 +1330,22 @@
       "requires": []
     },
     {
+      "name": "set_errexit_negated",
+      "argv": [
+        "-c",
+        "set -e; ! true; echo after; ! false; echo neg_status=$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
       "name": "set_xtrace",
       "argv": [
         "-c",

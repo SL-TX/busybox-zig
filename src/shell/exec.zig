@@ -287,7 +287,14 @@ pub const Exec = struct {
         }
         const status = self.execBody(node, in_condition);
         guard.restore();
-        if (!is_simple and status != 0 and self.sh.opts.errexit and !in_condition and self.sh.suppress_errexit == 0) {
+        // A negated pipeline (`! cmd`) is exempt from errexit, like a
+        // condition: its status is inverted, so a nonzero result means
+        // success as far as errexit is concerned.
+        const negated = switch (node.body) {
+            .pipeline => |p| p.negate,
+            else => false,
+        };
+        if (!is_simple and status != 0 and self.sh.opts.errexit and !in_condition and !negated and self.sh.suppress_errexit == 0) {
             self.sh.exiting = true;
             self.sh.exit_code = status;
         }
@@ -1129,7 +1136,10 @@ pub const Exec = struct {
         if (std.mem.eql(u8, name, "$")) return std.fmt.allocPrint(a, "{d}", .{linux.getpid()}) catch "";
         if (std.mem.eql(u8, name, "!")) return std.fmt.allocPrint(a, "{d}", .{self.sh.last_bg_pid}) catch "";
         if (std.mem.eql(u8, name, "-")) {
+            // The reference busybox ash lists the 'c' option in $- by
+            // default; the other letters are the real option flags.
             var r: std.ArrayList(u8) = .empty;
+            r.append(a, 'c') catch {};
             if (self.sh.opts.errexit) r.append(a, 'e') catch {};
             if (self.sh.opts.nounset) r.append(a, 'u') catch {};
             if (self.sh.opts.xtrace) r.append(a, 'x') catch {};
@@ -1169,6 +1179,31 @@ pub const Exec = struct {
                 const count = std.fmt.allocPrint(self.sh.a, "{d}", .{self.sh.positionals.items.len}) catch "0";
                 return self.braceOp("#", count, true, spec[1..2], spec[2..]);
             }
+            // Operator forms apply to $# — they are checked before the
+            // substring forms because "${#:+}" is a `+` on $#, not the
+            // substring "${#:off}".  `?` and `-` after the `#` are names
+            // ($? and $-) in the reference.
+            const cop = spec[1];
+            if (cop == '+' or cop == '=' or cop == '/' or
+                (cop == ':' and spec.len >= 3 and (spec[2] == '+' or spec[2] == '-' or
+                    spec[2] == '=' or spec[2] == '?' or spec[2] == '/')))
+            {
+                var op: []const u8 = undefined;
+                var word: []const u8 = undefined;
+                if (cop == ':' and spec.len >= 3) {
+                    op = spec[1..3];
+                    word = spec[3..];
+                } else {
+                    op = spec[1..2];
+                    word = spec[2..];
+                }
+                return self.braceOp("#", self.paramValue("#"), true, op, word);
+            }
+            // ${#:off[:len]} — the reference busybox ash parses the ':'
+            // forms as substrings of the '#' parameter.
+            if (cop == ':') {
+                return charsFromString(try self.substring(self.paramValue("#"), spec[2..]), true, true);
+            }
             const val = self.paramValue(spec[1..]);
             const nchars = std.unicode.utf8CountCodepoints(val) catch val.len;
             const text = std.fmt.allocPrint(self.sh.a, "{d}", .{nchars}) catch "0";
@@ -1184,6 +1219,21 @@ pub const Exec = struct {
         }
         const name = spec[0..nend];
         const rest = spec[nend..];
+        // POSIX: an unquoted $* with IFS set to the empty string expands to
+        // the positional parameters as separate fields; quoted/assignment
+        // contexts use the joined text (the join is the empty string).
+        if (std.mem.eql(u8, name, "*") and rest.len == 0 and self.expansion_quote == .none) {
+            if (self.sh.get("IFS")) |ifs| {
+                if (ifs.len == 0) {
+                    var r: std.ArrayList(u8) = .empty;
+                    for (self.sh.positionals.items, 0..) |p, i| {
+                        if (i != 0) r.append(self.sh.a, 0x1f) catch {};
+                        r.appendSlice(self.sh.a, p) catch {};
+                    }
+                    return charsFromString(r.items, true, true);
+                }
+            }
+        }
         const is_special = name.len == 1 and std.mem.indexOfScalar(u8, "$#?!@*-", name[0]) != null;
         const name_set = if (name.len == 1 and std.ascii.isDigit(name[0]))
             (name[0] == '0' or @as(usize, name[0] - '1') < self.sh.positionals.items.len)
@@ -1342,11 +1392,11 @@ pub const Exec = struct {
 
     fn substring(self: *Exec, value: []const u8, spec: []const u8) ExpandError![]const u8 {
         var it = std.mem.splitScalar(u8, spec, ':');
-        const off_text = it.next() orelse "0";
-        const len_text: ?[]const u8 = it.next();
+        const off_text = try self.expandWordText(it.next() orelse "0");
+        const len_text: ?[]const u8 = if (it.next()) |t| try self.expandWordText(t) else null;
         var off = bi.evalArith(self.sh, off_text) catch 0;
         if (off < 0) off += @intCast(value.len);
-        if (off < 0) off = 0;
+        if (off < 0) return "";
         if (off >= value.len) return "";
         const start: usize = @intCast(off);
         var end = value.len;
@@ -1380,7 +1430,7 @@ pub const Exec = struct {
         var chars: std.ArrayList(EChar) = .empty;
         for (toks) |t| {
             if (t.kind == .newline or t.kind == .semi) {
-                try chars.append(self.sh.a, .{ .c = ' ', .splittable = true, .glob = false });
+                try chars.append(self.sh.a, .{ .c = '\n', .splittable = true, .glob = false });
                 continue;
             }
             if (t.kind != .word or t.word == null) continue;

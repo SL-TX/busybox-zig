@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "set_errexit_negated",
+  "stdout": "after\nneg_status=0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}
