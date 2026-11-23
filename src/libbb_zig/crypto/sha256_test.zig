@@ -1,0 +1,20 @@
+const std = @import("std");
+const sha256 = @import("libbb_zig").crypto.sha256;
+
+test "sha256 abc matches RFC 6234" {
+    var out: [32]u8 = undefined;
+    sha256.hash("abc", &out);
+    try std.testing.expectEqualStrings("\xba\x78\x16\xbf\x8f\x01\xcf\xea\x41\x41\x40\xde\x5d\xae\x22\x23\xb0\x03\x61\xa3\x96\x17\x7a\x9c\xb4\x10\xff\x61\xf2\x00\x15\xad", &out);
+}
+
+test "sha256 empty message" {
+    var out: [32]u8 = undefined;
+    sha256.hash("", &out);
+    try std.testing.expectEqualStrings("\xe3\xb0\xc4\x42\x98\xfc\x1c\x14\x9a\xfb\xf4\xc8\x99\x6f\xb9\x24\x27\xae\x41\xe4\x64\x9b\x93\x4c\xa4\x95\x99\x1b\x78\x52\xb8\x55", &out);
+}
+
+test "sha224 abc matches RFC 6234" {
+    var out: [28]u8 = undefined;
+    sha256.hash224("abc", &out);
+    try std.testing.expectEqualStrings("\x23\x09\x7d\x22\x34\x05\xd8\x22\x86\x42\xa4\x77\xbd\xa2\x55\xb3\x2a\xad\xbc\xe4\xbd\xa0\xb3\xf7\xe3\x6c\x9d\xa7", &out);
+}

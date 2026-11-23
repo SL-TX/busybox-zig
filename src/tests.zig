@@ -5,6 +5,24 @@ test {
     _ = @import("libbb_zig/process_test.zig");
     _ = @import("libbb_zig/io_test.zig");
     _ = @import("libbb_zig/hash_test.zig");
+    // Task 23 — libbb crypto/login/selinux helpers (Wave 7 prerequisites).
+    _ = @import("libbb_zig/crypto/md5_test.zig");
+    _ = @import("libbb_zig/crypto/sha1_test.zig");
+    _ = @import("libbb_zig/crypto/sha256_test.zig");
+    _ = @import("libbb_zig/crypto/sha512_test.zig");
+    _ = @import("libbb_zig/crypto/sha3_test.zig");
+    _ = @import("libbb_zig/crypto/hmac_test.zig");
+    _ = @import("libbb_zig/crypto/crc32_test.zig");
+    _ = @import("libbb_zig/crypto/base64_test.zig");
+    _ = @import("libbb_zig/crypto/uuencode_test.zig");
+    _ = @import("libbb_zig/crypto/des_test.zig");
+    _ = @import("libbb_zig/crypto/pw_encrypt_test.zig");
+    _ = @import("libbb_zig/login/passwd_test.zig");
+    _ = @import("libbb_zig/login/shadow_test.zig");
+    _ = @import("libbb_zig/login/group_test.zig");
+    _ = @import("libbb_zig/login/securetty_test.zig");
+    _ = @import("libbb_zig/login/update_passwd_test.zig");
+    _ = @import("libbb_zig/selinux_test.zig");
     _ = @import("libbb_zig/socket_test.zig");
     // Task 12 — libbb networking helpers (Wave 3 prerequisites).
     _ = @import("libbb_zig/net/inet_test.zig");

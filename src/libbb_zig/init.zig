@@ -32,6 +32,33 @@ pub const identity = @import("identity.zig");
 pub const utmp = @import("utmp.zig");
 pub const mtab = @import("mtab.zig");
 
+// Task 23 — libbb crypto helpers (Wave 7 prerequisites).
+pub const crypto = struct {
+    pub const md5 = @import("crypto/md5.zig");
+    pub const sha1 = @import("crypto/sha1.zig");
+    pub const sha256 = @import("crypto/sha256.zig");
+    pub const sha512 = @import("crypto/sha512.zig");
+    pub const sha3 = @import("crypto/sha3.zig");
+    pub const hmac = @import("crypto/hmac.zig");
+    pub const crc32 = @import("crypto/crc32.zig");
+    pub const base64 = @import("crypto/base64.zig");
+    pub const uuencode = @import("crypto/uuencode.zig");
+    pub const des = @import("crypto/des.zig");
+    pub const pw_encrypt = @import("crypto/pw_encrypt.zig");
+};
+
+// Task 23 — libbb login/passwd helpers (Wave 7 prerequisites).
+// Task 23 — libbb SELinux helpers (Wave 7 prerequisites).
+pub const selinux = @import("selinux.zig");
+
+pub const login = struct {
+    pub const passwd = @import("login/passwd.zig");
+    pub const shadow = @import("login/shadow.zig");
+    pub const group = @import("login/group.zig");
+    pub const securetty = @import("login/securetty.zig");
+    pub const update_passwd = @import("login/update_passwd.zig");
+};
+
 // Task 15 — process/terminal helpers (Wave 4 prerequisites).
 pub const procps = @import("procps.zig");
 pub const signals_more = @import("signals_more.zig");
