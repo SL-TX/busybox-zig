@@ -686,9 +686,11 @@ fn noTtyWarning(sh: *Shell) void {
 
 fn doSet(sh: *Shell, args: []const []const u8) u8 {
     var i: usize = 0;
+    var saw_dashdash = false;
     while (i < args.len and args[i].len > 0 and (args[i][0] == '-' or args[i][0] == '+')) : (i += 1) {
         if (std.mem.eql(u8, args[i], "-")) break;
         if (std.mem.eql(u8, args[i], "--")) {
+            saw_dashdash = true;
             i += 1;
             break;
         }
@@ -716,6 +718,9 @@ fn doSet(sh: *Shell, args: []const []const u8) u8 {
     if (i < args.len) {
         sh.positionals.clearRetainingCapacity();
         for (args[i..]) |a| sh.positionals.append(sh.a, a) catch {};
+    } else if (saw_dashdash) {
+        // `set --` with no operands clears the positional parameters.
+        sh.positionals.clearRetainingCapacity();
     }
     return 0;
 }
@@ -739,6 +744,9 @@ extern fn execSetExitOverride(code: u8) void;
 
 fn doExit(sh: *Shell, args: []const []const u8) u8 {
     if (args.len == 0) {
+        // `exit` with no status argument exits with the status of the last
+        // command (the reference busybox ash behaves this way).
+        sh.exit_code = sh.last_status;
         sh.exiting = true;
         return sh.exit_code;
     }
@@ -1049,7 +1057,14 @@ fn doLocal(sh: *Shell, args: []const []const u8) u8 {
         if (std.mem.indexOfScalar(u8, a, '=')) |p| {
             sh.setLocal(a[0..p], a[p + 1 ..]) catch { code = 1; };
         } else {
-            sh.setLocal(a, "") catch { code = 1; };
+            // `local x` without a value keeps the value the variable has
+            // (a fresh name is made local and unset), matching the
+            // reference busybox ash.
+            if (sh.getVar(a)) |v| {
+                sh.setLocal(a, v.value) catch { code = 1; };
+            } else {
+                sh.setLocal(a, "") catch { code = 1; };
+            }
         }
     }
     return code;

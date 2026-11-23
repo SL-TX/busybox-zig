@@ -89,6 +89,7 @@ pub const Shell = struct {
     line_base: usize = 1,
     hush: bool = false,
     last_set_error: ?[]const u8 = null,
+    invoked_c: bool = false,
 
     pub fn init(a: std.mem.Allocator) Shell {
         return .{ .a = a };

@@ -95,6 +95,7 @@ pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Fl
                 errOut("ash: -c requires an argument\n");
                 return 2;
             }
+            sh.invoked_c = true;
             i += 1;
             command = args[i];
             rest_start = i + 1;

@@ -520,7 +520,10 @@ pub const Exec = struct {
                 }
             }
         }
-        if (!self.sh.legacy_persist_assigns) self.restoreAssigns(saved);
+        // `exec` is a special builtin: its command-scoped assignments
+        // persist (matching the reference busybox ash).
+        const exec_persists = words.items.len != 0 and std.mem.eql(u8, words.items[0], "exec");
+        if (!self.sh.legacy_persist_assigns and !exec_persists) self.restoreAssigns(saved);
         if (self.sh.opts.errexit and !in_condition and self.sh.suppress_errexit == 0 and status != 0) {
             self.sh.exiting = true;
             self.sh.exit_code = status;
@@ -983,6 +986,7 @@ pub const Exec = struct {
             }.f;
             if (allow_split) {
                 var had_delim = false;
+                var last_delim = false;
                 for (rf) |ch| {
                     const is_delim = ch.splittable and std.mem.indexOfScalar(u8, ifs, ch.c) != null;
                     if (is_delim) {
@@ -990,12 +994,16 @@ pub const Exec = struct {
                         if (seg.items.len != 0 or !ws) try flushSeg(self, &seg, &fields, &active);
                         last_nonspace = !ws;
                         had_delim = true;
+                        last_delim = true;
                     } else {
                         try seg.append(self.sh.a, ch);
                         last_nonspace = false;
+                        last_delim = false;
                     }
                 }
-                if (seg.items.len != 0 or last_nonspace or !had_delim) try flushSeg(self, &seg, &fields, &active);
+                // A trailing empty field is dropped when the value ends
+                // right after an IFS delimiter (reference busybox ash).
+                if (seg.items.len != 0 or !had_delim or !last_delim) try flushSeg(self, &seg, &fields, &active);
             } else {
                 try seg.appendSlice(self.sh.a, rf);
                 try flushSeg(self, &seg, &fields, &active);
@@ -1136,10 +1144,11 @@ pub const Exec = struct {
         if (std.mem.eql(u8, name, "$")) return std.fmt.allocPrint(a, "{d}", .{linux.getpid()}) catch "";
         if (std.mem.eql(u8, name, "!")) return std.fmt.allocPrint(a, "{d}", .{self.sh.last_bg_pid}) catch "";
         if (std.mem.eql(u8, name, "-")) {
-            // The reference busybox ash lists the 'c' option in $- by
-            // default; the other letters are the real option flags.
+            // In the reference busybox ash, the 'c' flag is present in $-
+            // when the shell was invoked with -c and absent when running a
+            // script file or -s.
             var r: std.ArrayList(u8) = .empty;
-            r.append(a, 'c') catch {};
+            if (self.sh.invoked_c) r.append(a, 'c') catch {};
             if (self.sh.opts.errexit) r.append(a, 'e') catch {};
             if (self.sh.opts.nounset) r.append(a, 'u') catch {};
             if (self.sh.opts.xtrace) r.append(a, 'x') catch {};
@@ -1361,7 +1370,14 @@ pub const Exec = struct {
             const pattern = try self.expandPatternText(patt);
             const replacement_chars = try self.expandWordToChars(repl);
             const replacement = try self.flattenChars(replacement_chars);
-            if (pattern.len == 0) return value_chars;
+            if (pattern.len == 0) {
+                // With a set variable, an empty pattern matches the empty
+                // string: `${v/*/w}` is `w` for a set-but-empty `v`.
+                if (is_set and value.len == 0 and ex.patternMatch(pattern, "")) {
+                    return charsFromString(replacement, true, true);
+                }
+                return value_chars;
+            }
             var result: std.ArrayList(u8) = .empty;
             var i: usize = 0;
             var replaced_once = false;
@@ -1391,9 +1407,21 @@ pub const Exec = struct {
     }
 
     fn substring(self: *Exec, value: []const u8, spec: []const u8) ExpandError![]const u8 {
-        var it = std.mem.splitScalar(u8, spec, ':');
-        const off_text = try self.expandWordText(it.next() orelse "0");
-        const len_text: ?[]const u8 = if (it.next()) |t| try self.expandWordText(t) else null;
+        // The offset runs up to the first ':' at brace depth 0; the
+        // remainder of the spec (which may contain nested ${...} words) is
+        // the length.
+        var depth: usize = 0;
+        var off_end: usize = spec.len;
+        for (spec, 0..) |c, i| {
+            if (c == '{') depth += 1;
+            if (c == '}') depth = @max(depth, 1) - 1;
+            if (c == ':' and depth == 0) {
+                off_end = i;
+                break;
+            }
+        }
+        const off_text = try self.expandWordText(spec[0..off_end]);
+        const len_text: ?[]const u8 = if (off_end < spec.len) try self.expandWordText(spec[off_end + 1 ..]) else null;
         var off = bi.evalArith(self.sh, off_text) catch 0;
         if (off < 0) off += @intCast(value.len);
         if (off < 0) return "";
