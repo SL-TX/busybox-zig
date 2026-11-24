@@ -13,6 +13,36 @@ fn errOut(s: []const u8) void {
     if (s.len != 0) _ = linux.write(2, s.ptr, s.len);
 }
 
+/// Interactive BusyBox shells persist their history on exit: ash uses
+/// `$HISTFILE` or `$HOME/.ash_history`, hush uses `$HOME/.hush_history`, with
+/// mode 0600.  Failures to open/write are silently ignored, as in the
+/// reference (history saving is best-effort).
+fn saveHistory(sh: *st.Shell) void {
+    if (!sh.opts.interactive or sh.history.items.len == 0) return;
+    const a = sh.a;
+    var owned: ?[]u8 = null;
+    defer if (owned) |p| a.free(p);
+    const path: []const u8 = blk: {
+        if (sh.get("HISTFILE")) |hf| {
+            if (hf.len != 0) break :blk hf;
+        }
+        const home = sh.get("HOME") orelse return;
+        const p = std.mem.concat(a, u8, &.{ home, if (sh.hush) "/.hush_history" else "/.ash_history" }) catch return;
+        owned = p;
+        break :blk p;
+    };
+    const z = std.mem.concatWithSentinel(a, u8, &.{path}, 0) catch return;
+    defer a.free(z);
+    const rc = linux.open(z.ptr, .{ .ACCMODE = .WRONLY, .CREAT = true, .TRUNC = true }, 0o600);
+    if (linux.errno(rc) != .SUCCESS) return;
+    const fd: i32 = @intCast(rc);
+    defer _ = linux.close(fd);
+    for (sh.history.items) |line| {
+        _ = linux.write(fd, line.ptr, line.len);
+        _ = linux.write(fd, "\n", 1);
+    }
+}
+
 fn argsFrom(a: std.mem.Allocator, argv: [*][*:0]const u8, argc: c_int) [][]const u8 {
     const result = a.alloc([]const u8, @intCast(argc)) catch return &.{};
     for (0..@as(usize, @intCast(argc))) |i| result[i] = std.mem.span(argv[i]);
@@ -175,6 +205,7 @@ pub fn run(a: std.mem.Allocator, argc: c_int, argv: [*][*:0]const u8, flavor: Fl
     var code: u8 = 0;
     if (sh.opts.interactive) {
         code = interactiveLoop(&e, &sh);
+        saveHistory(&sh);
     } else if (command) |cmd| {
         code = e.runSource(cmd);
     } else if (script_path) |p| {

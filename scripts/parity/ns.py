@@ -23,8 +23,21 @@ class NsTimeout(Exception):
     """The namespaced child exceeded the supplied deadline."""
 
 
-def run_ns(kind: str, argv: list[str], timeout: float = 30.0) -> subprocess.CompletedProcess:
-    """Run ``argv`` inside a ``kind`` namespace and return its CompletedProcess."""
+def run_ns(
+    kind: str,
+    argv: list[str],
+    timeout: float = 30.0,
+    *,
+    cwd: str | None = None,
+    env: dict[str, str] | None = None,
+    stdin: bytes | None = None,
+) -> subprocess.CompletedProcess:
+    """Run ``argv`` inside a ``kind`` namespace and return its CompletedProcess.
+
+    ``cwd``/``env``/``stdin`` are forwarded so the child observes the case's
+    sandbox rather than the harness checkout.  Capability errors still raise
+    ``NsUnavailable``; this helper never skips silently.
+    """
     if kind not in _ALLOWED_KINDS:
         raise ValueError("unknown namespace kind: " + kind)
     unshare = shutil.which("unshare")
@@ -32,13 +45,21 @@ def run_ns(kind: str, argv: list[str], timeout: float = 30.0) -> subprocess.Comp
         raise NsUnavailable("unshare(1) is not installed")
     flag = "--mount" if kind in ("mnt", "mount") else "--" + kind
     cmd = [unshare, flag, "--fork", "--", *argv]
+    kwargs: dict[str, object] = {
+        "stdout": subprocess.PIPE,
+        "stderr": subprocess.PIPE,
+        "timeout": timeout,
+    }
+    if cwd is not None:
+        kwargs["cwd"] = cwd
+    if env is not None:
+        kwargs["env"] = env
+    if stdin is not None:
+        kwargs["input"] = stdin
+    else:
+        kwargs["stdin"] = subprocess.DEVNULL
     try:
-        proc = subprocess.run(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            timeout=timeout,
-        )
+        proc = subprocess.run(cmd, **kwargs)
     except subprocess.TimeoutExpired as exc:
         raise NsTimeout("namespaced child timed out after %g s" % timeout) from exc
     except (FileNotFoundError, PermissionError, OSError) as exc:

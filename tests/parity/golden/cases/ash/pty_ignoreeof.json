@@ -1,8 +1,16 @@
 {
   "applet": "ash",
   "name": "pty_ignoreeof",
-  "stdout": "~/.local/share/opencode/worktree/a0537f/parity $ set -o ignoreeof\r\n~/.local/share/opencode/worktree/a0537f/parity $ \r\nUse \"exit\" to leave shell.\r\n~/.local/share/opencode/worktree/a0537f/parity $ \r\nUse \"exit\" to leave shell.\r\n~/.local/share/opencode/worktree/a0537f/parity $ exit\r\n",
+  "stdout": "~ $ set -o ignoreeof\r\n~ $ \r\nUse \"exit\" to leave shell.\r\n~ $ \r\nUse \"exit\" to leave shell.\r\n~ $ exit\r\n",
   "stderr": "",
   "exit": 0,
-  "tree": {}
+  "tree": {
+    ".ash_history": {
+      "type": "file",
+      "mode": 384,
+      "content": {
+        "__base64__": "c2V0IC1vIGlnbm9yZWVvZgpleGl0Cg=="
+      }
+    }
+  }
 }

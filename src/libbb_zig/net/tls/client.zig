@@ -16,7 +16,37 @@ pub const ClientError = error{
     MalformedHello,
     IoError,
     OutOfMemory,
+    /// getrandom() failed or returned no progress. Never append predictable
+    /// bytes for the ClientHello random field.
+    RngFailed,
 };
+
+/// Injectable randomness source, mirroring networking.tls_core.RandomFn.
+/// `Retry` means EINTR; the returned count is bytes actually written.
+pub const RandomFn = *const fn (buf: []u8) error{ Retry, Failed }!usize;
+
+fn sysRandom(buf: []u8) error{ Retry, Failed }!usize {
+    const rc = std.os.linux.getrandom(buf.ptr, buf.len, 0);
+    return switch (std.os.linux.errno(rc)) {
+        .SUCCESS => @intCast(rc),
+        .INTR => error.Retry,
+        else => error.Failed,
+    };
+}
+
+/// Fill `buf` completely or fail. Short reads are looped, EINTR retried; a
+/// zero-length progress report or any other errno is a hard error.
+fn fillRandom(buf: []u8, source: RandomFn) ClientError!void {
+    var off: usize = 0;
+    while (off < buf.len) {
+        const n = source(buf[off..]) catch |e| switch (e) {
+            error.Retry => continue,
+            error.Failed => return error.RngFailed,
+        };
+        if (n == 0 or n > buf.len - off) return error.RngFailed;
+        off += n;
+    }
+}
 
 pub const ServerHello = struct {
     version: u16,
@@ -37,6 +67,8 @@ pub const Client = struct {
     fd: net.fd_t,
     host: []u8,
     options: Options,
+    /// Overridable in tests; production uses getrandom().
+    rng: RandomFn = sysRandom,
     server_hello: ?ServerHello = null,
 
     pub fn init(allocator: std.mem.Allocator, fd: net.fd_t, host: []const u8, options: Options) !Client {
@@ -63,12 +95,8 @@ pub const Client = struct {
             @truncate(self.options.version >> 8), @truncate(self.options.version),
         });
         var random: [32]u8 = undefined;
-        const rc = std.os.linux.getrandom(&random, random.len, 0);
-        if (std.os.linux.errno(rc) == .SUCCESS) {
-            try body.appendSlice(self.allocator, &random);
-        } else {
-            try body.appendNTimes(self.allocator, 0, 32);
-        }
+        try fillRandom(&random, self.rng);
+        try body.appendSlice(self.allocator, &random);
         try body.append(self.allocator, 0); // empty session id
         try body.appendSlice(self.allocator, &[_]u8{
             @truncate(suites_bytes >> 8), @truncate(suites_bytes),

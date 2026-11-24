@@ -1,7 +1,7 @@
 {
   "applet": "hush",
   "name": "pty_ctrl_d",
-  "stdout": "~/.local/share/opencode/worktree/a0537f/parity $ \r\n",
+  "stdout": "~ $ \r\n",
   "stderr": "",
   "exit": 0,
   "tree": {}

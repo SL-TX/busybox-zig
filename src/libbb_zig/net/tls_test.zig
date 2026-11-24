@@ -205,6 +205,56 @@ const Sh = struct {
     }
 };
 
+fn failingTlsRandom(_: []u8) error{ Retry, Failed }!usize {
+    return error.Failed;
+}
+
+fn zeroProgressTlsRandom(_: []u8) error{ Retry, Failed }!usize {
+    return 0;
+}
+
+fn fixedTlsRandom(buf: []u8) error{ Retry, Failed }!usize {
+    @memset(buf, 0x5a);
+    return buf.len;
+}
+
+test "TLS ClientHello hard-fails on unavailable randomness" {
+    // No socket is needed: buildClientHello only needs the injected source.
+    var client = try tls.Client.init(a, @as(net.fd_t, -1), "test.local", .{});
+    defer client.deinit();
+
+    client.rng = failingTlsRandom;
+    try std.testing.expectError(error.RngFailed, client.buildClientHello());
+
+    client.rng = zeroProgressTlsRandom;
+    try std.testing.expectError(error.RngFailed, client.buildClientHello());
+}
+
+test "TLS ClientHello uses supplied random bytes (no zero fallback)" {
+    var client = try tls.Client.init(a, @as(net.fd_t, -1), "test.local", .{});
+    defer client.deinit();
+    client.rng = fixedTlsRandom;
+
+    const hello = try client.buildClientHello();
+    defer a.free(hello);
+    var found = false;
+    var i: usize = 0;
+    while (i + 32 <= hello.len) : (i += 1) {
+        var all = true;
+        for (hello[i .. i + 32]) |b| {
+            if (b != 0x5a) {
+                all = false;
+                break;
+            }
+        }
+        if (all) {
+            found = true;
+            break;
+        }
+    }
+    try std.testing.expect(found);
+}
+
 test "TLS ClientHello/ServerHello framing against local test server" {
     const listener = try net.createAndListen(net.Address.initV4(.{ 127, 0, 0, 1 }, 0), 1);
     defer net.close(listener);

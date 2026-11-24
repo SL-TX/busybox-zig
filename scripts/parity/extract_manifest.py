@@ -31,7 +31,13 @@ DEFAULT_ZIG = os.path.join(REPO_ROOT, "src", "generated", "applet_manifest.zig")
 
 REF_COMMIT = "6412da255d465be1f1860ae109ccbf2564810af2"
 EXPECTED_APPLETS = 443
-EXPECTED_DEFAULT_ENABLED = 412
+# Binding ruling (Task 3 / ledger): the reference `busybox` applet is wrapped
+# in IF_FEATURE_SH_STANDALONE(IF_FEATURE_TAB_COMPLETION(...)) and defconfig has
+# FEATURE_SH_STANDALONE=n. Counting only outer APPLET_* flags gives 412; the
+# true default-enabled registry (and reference --list) is 411.  The manifest's
+# `default_enabled` field intentionally keeps the outer-flag count (412);
+# check_reference() applies the extra gate before comparing against 411.
+EXPECTED_DEFAULT_ENABLED = 411
 EXPECTED_CONFIG_SYMBOLS = 946
 
 APPLET_RE = re.compile(r"\b(APPLET(?:_ODDNAME|_NOEXEC|_NOFORK|_SCRIPTED)?)\s*\(")
@@ -40,7 +46,9 @@ CONFIG_Y_RE = re.compile(r"^CONFIG_([A-Z0-9_]+)=y\s*$")
 CONFIG_N_RE = re.compile(r"^# CONFIG_([A-Z0-9_]+) is not set\s*$")
 MATRIX_ROW_RE = re.compile(
     r"^\|\s*(\d+)\s*\|\s*([^|]+?)\s*\|\s*`([^`]+)`\s*\|\s*"
-    r"(CONFIG_[A-Z0-9_]+)\s*\|\s*(yes|no)\s*\|\s*([^|]+?)\s*\|\s*"
+    # The busybox row documents its extra gate as
+    # "CONFIG_BUSYBOX (+FEATURE_SH_STANDALONE)"; read_matrix strips it.
+    r"(CONFIG_[A-Z0-9_]+(?:\s*\([^)]*\))?)\s*\|\s*(yes|no)\s*\|\s*([^|]+?)\s*\|\s*"
     r"([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$"
 )
 
@@ -217,7 +225,9 @@ def read_matrix(path: str) -> list[dict[str, str]]:
                         "num": m.group(1),
                         "category": m.group(2),
                         "name": m.group(3),
-                        "config": m.group(4),
+                        # Strip the human-readable extra-gate annotation so
+                        # cross-checking compares the bare CONFIG symbol.
+                        "config": m.group(4).split("(", 1)[0].strip(),
                         "default": m.group(5),
                         "location": m.group(6),
                         "suid": m.group(7),
@@ -232,10 +242,18 @@ def categories_from_matrix(rows: list[dict[str, str]]) -> dict[str, str]:
     return {row["name"]: row["category"] for row in rows}
 
 
-def _cross_check(entries: list[dict[str, Any]], rows: list[dict[str, str]]) -> list[str]:
+def _cross_check(
+    entries: list[dict[str, Any]],
+    rows: list[dict[str, str]],
+    config: dict[str, bool] | None = None,
+) -> list[str]:
     """Compare reference-derived fields with the authoritative committed matrix."""
     problems: list[str] = []
     by_name = {row["name"]: row for row in rows}
+    config = config or {}
+    gate_open = bool(config.get("FEATURE_SH_STANDALONE")) and bool(
+        config.get("FEATURE_TAB_COMPLETION")
+    )
     if len(rows) != len(entries):
         problems.append("matrix has %d rows, reference has %d" % (len(rows), len(entries)))
     for e in entries:
@@ -250,10 +268,15 @@ def _cross_check(entries: list[dict[str, Any]], rows: list[dict[str, str]]) -> l
             row["location"],
             row["suid"],
         )
+        default = "yes" if e["default_enabled"] else "no"
+        if e["name"] == "busybox" and default == "yes" and not gate_open:
+            # The matrix records the registry-visible default (no), not the
+            # outer APPLET_BUSYBOX flag (yes).  See EXPECTED_DEFAULT_ENABLED.
+            default = "no"
         actual = (
             e["category"],
             e["config"],
-            "yes" if e["default_enabled"] else "no",
+            default,
             e["location"],
             e["suid"],
         )
@@ -445,14 +468,26 @@ def check_reference(ref: str) -> int:
         return 0
     entries, _, symbols = _ref_entries(ref)
     counts = _counts(entries)
+    config = read_config(config_path)
     rows = read_matrix(DEFAULT_MATRIX)
-    problems = _cross_check(entries, rows)
+    problems = _cross_check(entries, rows, config)
     if counts["applets"] != EXPECTED_APPLETS:
         problems.append("expected %d applets, got %d" % (EXPECTED_APPLETS, counts["applets"]))
-    if counts["default_enabled"] != EXPECTED_DEFAULT_ENABLED:
+    # `default_enabled` counts outer APPLET_* flags.  The registry additionally
+    # gates `busybox` behind FEATURE_SH_STANDALONE && FEATURE_TAB_COMPLETION.
+    registry_default = counts["default_enabled"]
+    busybox_enabled = any(
+        e["name"] == "busybox" and e["default_enabled"] for e in entries
+    )
+    gate_open = bool(config.get("FEATURE_SH_STANDALONE")) and bool(
+        config.get("FEATURE_TAB_COMPLETION")
+    )
+    if busybox_enabled and not gate_open:
+        registry_default -= 1
+    if registry_default != EXPECTED_DEFAULT_ENABLED:
         problems.append(
-            "expected %d default-enabled, got %d"
-            % (EXPECTED_DEFAULT_ENABLED, counts["default_enabled"])
+            "expected %d default-enabled in the registry, got %d (outer flags: %d)"
+            % (EXPECTED_DEFAULT_ENABLED, registry_default, counts["default_enabled"])
         )
     if symbols != EXPECTED_CONFIG_SYMBOLS:
         problems.append("expected %d config symbols, got %d" % (EXPECTED_CONFIG_SYMBOLS, symbols))
@@ -460,7 +495,8 @@ def check_reference(ref: str) -> int:
         for problem in problems:
             print(problem, file=sys.stderr)
         return 1
-    print("%d applets, %d default-enabled" % (counts["applets"], counts["default_enabled"]))
+    print("%d applets, %d default-enabled in registry (%d outer flags)" % (
+        counts["applets"], registry_default, counts["default_enabled"]))
     return 0
 
 
@@ -541,7 +577,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.out_src or args.out_json or args.out_matrix:
         entries, _, symbols = _ref_entries(args.ref)
         rows = read_matrix(DEFAULT_MATRIX)
-        problems = _cross_check(entries, rows)
+        config = read_config(os.path.join(args.ref, ".config"))
+        problems = _cross_check(entries, rows, config)
         if problems:
             for problem in problems:
                 print(problem, file=sys.stderr)

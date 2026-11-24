@@ -14,7 +14,7 @@ import tempfile
 import unittest
 
 from scripts.parity.normalize import apply as normalize_apply
-from scripts.parity.run import compare, compare_observations, run_case, skip_decision
+from scripts.parity.run import compare, compare_observations, observe, run_case, skip_decision
 from scripts.parity.sandbox import materialize, snapshot
 
 # The CI image pre-creates this scratch directory; creating it here keeps the
@@ -175,6 +175,82 @@ class HarnessSelfTest(unittest.TestCase):
         )
         self.assertEqual(code, 0, out)
         self.assertIn("pty-ok", out)
+
+    @unittest.skipUnless(os.path.exists("/dev/ptmx"), "no pseudo-terminal available")
+    def test_pty_helper_uses_sandbox_cwd_env_and_stdin(self):
+        from scripts.parity.pty_helper import run_pty
+
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as root:
+            with open(os.path.join(root, "marker.txt"), "w") as fh:
+                fh.write("SANDBOX_MARKER\n")
+            code = (
+                "import os,sys;"
+                "print('cwd=' + os.path.basename(os.getcwd()));"
+                "print('env=' + os.environ.get('MARKER','MISSING'));"
+                "print('file=' + open('marker.txt').read().strip());"
+                "print('stdin=' + sys.stdin.readline().strip())"
+            )
+            out, code_rc = run_pty(
+                [sys.executable, "-u", "-c", code], [], 5.0,
+                cwd=root, env={"MARKER": "ENV_MARKER"}, stdin=b"STDIN_MARKER\n",
+            )
+            self.assertEqual(code_rc, 0, out)
+            self.assertIn("cwd=" + os.path.basename(root), out)
+            self.assertIn("env=ENV_MARKER", out)
+            self.assertIn("file=SANDBOX_MARKER", out)
+            self.assertIn("stdin=STDIN_MARKER", out)
+
+    @unittest.skipUnless(os.path.exists("/dev/ptmx"), "no pseudo-terminal available")
+    def test_pty_observe_sees_case_files(self):
+        # Before the fix the PTY child ran in the harness checkout, so this
+        # case silently compared two identical "file not found" errors.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as tmp:
+            root = os.path.join(tmp, "sandbox")
+            case = make_case(tty=True, files={"marker.txt": "CASE_SANDBOX\n"})
+            obs = observe(
+                sys.executable,
+                ["-u", "-c", "print(open('marker.txt').read().strip())"],
+                case, root,
+            )
+            self.assertIn("CASE_SANDBOX", obs.stdout)
+
+    def test_ns_helper_forwards_sandbox_context(self):
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        from scripts.parity import ns as ns_mod
+
+        done = SimpleNamespace(stdout=b"ok\n", stderr=b"", returncode=0)
+        with patch.object(ns_mod.shutil, "which", return_value="/usr/bin/unshare"), \
+                patch.object(ns_mod.subprocess, "run", return_value=done) as mocked:
+            proc = ns_mod.run_ns(
+                "uts", ["/bin/true"], cwd="/sandbox",
+                env={"MARKER": "ENV_MARKER"}, stdin=b"STDIN_MARKER\n",
+            )
+        self.assertEqual(proc.returncode, 0)
+        kwargs = mocked.call_args.kwargs
+        self.assertEqual(kwargs["cwd"], "/sandbox")
+        self.assertEqual(kwargs["env"], {"MARKER": "ENV_MARKER"})
+        self.assertEqual(kwargs["input"], b"STDIN_MARKER\n")
+
+    def test_observe_ns_forwards_sandbox_context(self):
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        done = SimpleNamespace(stdout=b"ok\n", stderr=b"", returncode=0)
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as tmp:
+            root = os.path.join(tmp, "sandbox")
+            case = make_case(
+                ns="uts", files={"marker.txt": "CASE_SANDBOX\n"},
+                env={"MARKER": "ENV_MARKER"}, stdin="STDIN_MARKER\n",
+            )
+            with patch("scripts.parity.run._capability", return_value=True), \
+                    patch("scripts.parity.ns.run_ns", return_value=done) as mocked:
+                obs = observe(sys.executable, ["-c", "pass"], case, root)
+            kwargs = mocked.call_args.kwargs
+            self.assertEqual(kwargs["cwd"], os.path.realpath(root))
+            self.assertEqual(kwargs["env"]["MARKER"], "ENV_MARKER")
+            self.assertEqual(kwargs["stdin"], b"STDIN_MARKER\n")
+            self.assertEqual(obs.stdout, "ok\n")
 
     def test_ns_helper_contract(self):
         from scripts.parity.ns import NsUnavailable, run_ns

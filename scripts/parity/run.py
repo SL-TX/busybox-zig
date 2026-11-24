@@ -157,6 +157,22 @@ def _case_cwd(case: dict, root: str) -> str:
     return target
 
 
+def _case_stdin(case: dict, root: str, binary: str, port_text: str | None) -> bytes | None:
+    """Return the case's stdin bytes (with placeholders expanded), or None.
+
+    ``None`` means the case declares no stdin; every execution branch then
+    uses /dev/null so the child can never inherit the harness's stdin.
+    """
+    if case.get("stdin_b64") is not None:
+        return base64.b64decode(case["stdin_b64"])
+    if case.get("stdin") is None:
+        return None
+    raw = str(case["stdin"])
+    if port_text:
+        raw = raw.replace("<PORT>", port_text)
+    return raw.replace("<TMP>", root).replace("<BB>", binary).encode("utf-8")
+
+
 def _normalize_tree(tree: Tree, rules: list[str], root: str, normalize_paths: bool = False) -> Tree:
     out: Tree = {}
     for path, node in tree.items():
@@ -225,6 +241,13 @@ def observe(
         else:
             full_argv = [binary, *(sub(a) for a in argv)]
 
+        # All three execution branches (plain subprocess, PTY, namespace)
+        # must observe the same sandbox cwd/env/stdin.  Computing these once
+        # keeps the branches equivalent and prevents the PTY/ns paths from
+        # silently running in the harness checkout with inherited stdin.
+        case_cwd = _case_cwd(case, root)
+        stdin_bytes = _case_stdin(case, root, binary, port_text)
+
         if case.get("tty") or case.get("use_pty"):
             from scripts.parity.pty_helper import (  # lazy: optional helper
                 PtyTimeout,
@@ -235,7 +258,10 @@ def observe(
             if not _capability("tty"):
                 raise CapabilityUnavailable("tty", "no usable pseudo-terminal")
             try:
-                stdout, exit_code = run_pty(full_argv, case.get("script") or [], timeout)
+                stdout, exit_code = run_pty(
+                    full_argv, case.get("script") or [], timeout,
+                    cwd=case_cwd, env=env_map, stdin=stdin_bytes,
+                )
             except PtyTimeout as exc:
                 raise HarnessTimeout(str(exc)) from exc
             except PtyUnavailable as exc:
@@ -249,7 +275,10 @@ def observe(
             if not _capability(capability):
                 raise CapabilityUnavailable(capability, "namespace " + kind + " unavailable")
             try:
-                proc = run_ns(kind, full_argv, timeout=timeout)
+                proc = run_ns(
+                    kind, full_argv, timeout=timeout,
+                    cwd=case_cwd, env=env_map, stdin=stdin_bytes,
+                )
             except NsTimeout as exc:
                 raise HarnessTimeout(str(exc)) from exc
             except NsUnavailable as exc:
@@ -259,23 +288,17 @@ def observe(
             exit_code = proc.returncode
         else:
             kwargs: dict[str, Any] = {
-                "cwd": _case_cwd(case, root),
+                "cwd": case_cwd,
                 "env": env_map,
                 "stdout": subprocess.PIPE,
                 "stderr": subprocess.PIPE,
                 "timeout": timeout,
             }
-            if case.get("stdin_b64") is not None:
-                # Binary stdin for compression/archive round-trip cases.
-                kwargs["input"] = base64.b64decode(case["stdin_b64"])
-            elif case.get("stdin") is None:
+            if stdin_bytes is None:
                 kwargs["stdin"] = subprocess.DEVNULL
             else:
-                raw_stdin = str(case["stdin"])
-                if port_text:
-                    raw_stdin = raw_stdin.replace("<PORT>", port_text)
-                raw_stdin = raw_stdin.replace("<TMP>", root).replace("<BB>", binary)
-                kwargs["input"] = raw_stdin.encode("utf-8")
+                # Text or base64 binary stdin, already placeholder-expanded.
+                kwargs["input"] = stdin_bytes
             try:
                 proc = subprocess.run(full_argv, **kwargs)
             except subprocess.TimeoutExpired as exc:

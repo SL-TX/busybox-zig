@@ -63,11 +63,26 @@ def _terminate(pid: int) -> None:
         pass
 
 
-def run_pty(argv: list[str], script=None, timeout: float = 5.0) -> tuple[str, int]:
-    """Run ``argv`` on a PTY, feed ``script`` and return ``(stdout, exit_code)``."""
+def run_pty(
+    argv: list[str],
+    script=None,
+    timeout: float = 5.0,
+    *,
+    cwd: str | None = None,
+    env: dict[str, str] | None = None,
+    stdin: bytes | None = None,
+) -> tuple[str, int]:
+    """Run ``argv`` on a PTY, feed ``script`` and return ``(stdout, exit_code)``.
+
+    ``cwd`` and ``env`` are applied in the child before exec: a parity case
+    must observe its own sandbox, not the harness checkout.  ``stdin`` (when
+    present) is written to the PTY before the scripted steps.
+    """
     if not os.path.exists("/dev/ptmx"):
         raise PtyUnavailable("no /dev/ptmx on this host")
     steps = _normalize_script(script)
+    if stdin:
+        steps.insert(0, (bytes(stdin), None))
     try:
         pid, master = pty.fork()
     except OSError as exc:
@@ -75,7 +90,12 @@ def run_pty(argv: list[str], script=None, timeout: float = 5.0) -> tuple[str, in
 
     if pid == 0:  # child: slave fd is already stdin/stdout/stderr
         try:
-            os.execv(argv[0], list(argv))
+            if cwd is not None:
+                os.chdir(cwd)
+            if env is not None:
+                os.execve(argv[0], list(argv), dict(env))
+            else:
+                os.execv(argv[0], list(argv))
         except BaseException:
             os._exit(127)
 
