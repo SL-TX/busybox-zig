@@ -11,6 +11,13 @@ Regenerate with::
 
     python3 scripts/parity/gen_meta_golden.py \
         --ref /tmp/opencode/bb-ref2/busybox
+
+``--check`` has two modes.  When a reference binary is available it verifies
+both committed files against fresh reference output (reference-backed check).
+When no reference is installed (as in the CI image) it verifies that the
+committed generated Zig module is exactly what the committed golden text
+would generate (offline consistency check).  ``--offline`` forces the latter
+even when a reference happens to be present.
 """
 
 from __future__ import annotations
@@ -88,16 +95,88 @@ def write(path: str, text: str) -> None:
     print("wrote " + path)
 
 
+def ref_available(path: str | None) -> bool:
+    return bool(path) and os.path.isfile(path) and os.access(path, os.X_OK)
+
+
+def parse_golden(text: str) -> tuple[bytes, bytes]:
+    """Split a committed golden file into (version line, no-args body)."""
+    if not text.startswith(VERSION_MARK):
+        raise ValueError("missing ===VERSION=== marker")
+    rest = text[len(VERSION_MARK):]
+    if BODY_MARK not in rest:
+        raise ValueError("missing ===NOARGS_BODY=== marker")
+    version, body = rest.split(BODY_MARK, 1)
+    return version.encode("ascii"), body.encode("ascii")
+
+
+def check_files(pairs: tuple[tuple[str, str], ...]) -> bool:
+    ok = True
+    for path, text in pairs:
+        if not os.path.exists(path):
+            print("missing " + path, file=sys.stderr)
+            ok = False
+        elif open(path, encoding="utf-8", newline="").read() != text:
+            print(path + " is stale; regenerate with gen_meta_golden.py", file=sys.stderr)
+            ok = False
+    return ok
+
+
+def check_offline(args: argparse.Namespace) -> int:
+    """Consistency check with no reference: golden <-> generated Zig module."""
+    if not os.path.exists(args.golden):
+        print("missing " + args.golden, file=sys.stderr)
+        return 1
+    text = open(args.golden, encoding="utf-8", newline="").read()
+    try:
+        version, body = parse_golden(text)
+    except (ValueError, UnicodeEncodeError) as exc:
+        print("cannot parse " + args.golden + ": " + str(exc), file=sys.stderr)
+        return 1
+    ok = check_files((
+        (args.golden, golden_text(version, body)),
+        (args.zig, zig_text(version, body)),
+    ))
+    if ok:
+        print("meta golden in sync (offline consistency check; no reference binary)")
+    return 0 if ok else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--ref", default=DEFAULT_REF, help="reference busybox binary")
+    parser.add_argument("--ref", default=None, help="reference busybox binary (auto-detected for --check)")
     parser.add_argument("--golden", default=DEFAULT_GOLDEN, help="golden text output")
     parser.add_argument("--zig", default=DEFAULT_ZIG, help="generated Zig module output")
     parser.add_argument("--check", action="store_true", help="fail if the committed files are stale")
+    parser.add_argument("--offline", action="store_true",
+                        help="force golden <-> Zig consistency check without a reference")
     args = parser.parse_args(argv)
 
-    version = run(args.ref, "--version")
-    noargs = run(args.ref)
+    ref = args.ref
+    if not args.offline:
+        if ref is None:
+            if ref_available(DEFAULT_REF):
+                ref = DEFAULT_REF
+        elif not ref_available(ref):
+            print("reference binary not available at " + ref, file=sys.stderr)
+            if args.check:
+                print("falling back to offline consistency check", file=sys.stderr)
+                ref = None
+            else:
+                return 1
+    if ref is None:
+        if not args.check:
+            print("no reference binary available; cannot regenerate (use --check for offline mode)",
+                  file=sys.stderr)
+            return 1
+        return check_offline(args)
+
+    try:
+        version = run(ref, "--version")
+        noargs = run(ref)
+    except (OSError, subprocess.CalledProcessError) as exc:
+        print("cannot run reference binary " + ref + ": " + str(exc), file=sys.stderr)
+        return check_offline(args) if args.check else 1
     # The no-args first line is the version banner (without its trailing
     # newline) followed by " multi-call binary." and a newline.
     prefix = version.rstrip(b"\n") + b" multi-call binary.\n"
@@ -108,16 +187,9 @@ def main(argv: list[str] | None = None) -> int:
     golden = golden_text(version, noargs[len(prefix):])
     zig = zig_text(version, noargs[len(prefix):])
     if args.check:
-        ok = True
-        for path, text in ((args.golden, golden), (args.zig, zig)):
-            if not os.path.exists(path):
-                print("missing " + path, file=sys.stderr)
-                ok = False
-            elif open(path, encoding="utf-8", newline="").read() != text:
-                print(path + " is stale; regenerate with gen_meta_golden.py", file=sys.stderr)
-                ok = False
+        ok = check_files(((args.golden, golden), (args.zig, zig)))
         if ok:
-            print("meta golden in sync")
+            print("meta golden in sync (reference-backed)")
         return 0 if ok else 1
 
     write(args.golden, golden)

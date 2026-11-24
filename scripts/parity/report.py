@@ -49,6 +49,17 @@ def _fmt_counts(c):
             "{errors} errors / {known_failures} known-failures").format(**c)
 
 
+def _residual_lines(residuals):
+    lines = ["## Residuals (explicit, not normalized away)", ""]
+    if residuals:
+        for r in residuals:
+            lines.append("- " + r)
+    else:
+        lines.append("- none declared")
+    lines.append("")
+    return lines
+
+
 def generate(fuzz_path, differential, golden, residuals):
     lines = ["# Parity verification report", ""]
     lines.append("## Differential suite")
@@ -63,6 +74,13 @@ def generate(fuzz_path, differential, golden, residuals):
     lines.append("")
     if fuzz_path:
         data = json.load(open(fuzz_path))
+        if data.get("status") == "skip":
+            lines.append("**SKIP — no reference binary: " +
+                         data.get("reason", "reason not recorded") + "**")
+            lines.append("")
+            lines.append("_Fuzz-smoke was skipped cleanly; no crash/hang/OOM check was run._")
+            lines.append("")
+            return "\n".join(lines + _residual_lines(residuals))
         counts = data.get("counts", {})
         per_target = {}
         for r in data.get("results", []):
@@ -86,15 +104,7 @@ def generate(fuzz_path, differential, golden, residuals):
     else:
         lines.append("_no fuzz report supplied_")
     lines.append("")
-    lines.append("## Residuals (explicit, not normalized away)")
-    lines.append("")
-    if residuals:
-        for r in residuals:
-            lines.append("- " + r)
-    else:
-        lines.append("- none declared")
-    lines.append("")
-    return "\n".join(lines)
+    return "\n".join(lines + _residual_lines(residuals))
 
 
 def main(argv=None):
