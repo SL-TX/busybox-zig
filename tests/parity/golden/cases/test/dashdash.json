@@ -1,0 +1,8 @@
+{
+  "applet": "test",
+  "name": "dashdash",
+  "stdout": "",
+  "stderr": "test: -z: unknown operand\n",
+  "exit": 2,
+  "tree": {}
+}

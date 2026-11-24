@@ -1,0 +1,50 @@
+{
+  "applet": "find",
+  "name": "exec_plus",
+  "stdout": "[Xtree/emptyY][Xtree/b.txtY][Xtree/a.txtY][Xtree/sub/c.txtY]",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "tree": {
+      "type": "dir",
+      "mode": 493
+    },
+    "tree/link": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "a.txt"
+    },
+    "tree/empty": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "tree/b.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YmJi"
+      }
+    },
+    "tree/a.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWFh"
+      }
+    },
+    "tree/sub": {
+      "type": "dir",
+      "mode": 493
+    },
+    "tree/sub/c.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Y2Nj"
+      }
+    }
+  }
+}

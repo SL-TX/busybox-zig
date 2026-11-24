@@ -1,0 +1,8 @@
+{
+  "applet": "bzcat",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "bzcat: invalid magic\n",
+  "exit": 1,
+  "tree": {}
+}

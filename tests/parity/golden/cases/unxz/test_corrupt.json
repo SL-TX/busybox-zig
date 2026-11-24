@@ -1,0 +1,16 @@
+{
+  "applet": "unxz",
+  "name": "test_corrupt",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a.xz": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    }
+  }
+}

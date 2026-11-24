@@ -1,0 +1,95 @@
+{
+  "applet": "modprobe",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z",
+        "x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "remove_no_args",
+      "argv": [
+        "-r"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "already_loaded",
+      "argv": [
+        "overlay"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "already_loaded_quiet",
+      "argv": [
+        "-q",
+        "overlay"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

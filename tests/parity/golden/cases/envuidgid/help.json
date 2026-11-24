@@ -1,0 +1,8 @@
+{
+  "applet": "envuidgid",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: envuidgid USER PROG ARGS\n\nSet $UID to USER's uid and $GID to USER's gid, run PROG\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "id",
+  "name": "Gn",
+  "stdout": "sl adm dialout fax cdrom floppy tape sudo audio dip video plugdev users netdev scanner bluetooth lpadmin docker\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

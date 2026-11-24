@@ -1,0 +1,8 @@
+{
+  "applet": "dc",
+  "name": "output_base",
+  "stdout": "FF\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

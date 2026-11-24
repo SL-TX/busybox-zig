@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "pipeline_status",
+  "stdout": "0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

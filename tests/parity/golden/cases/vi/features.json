@@ -1,0 +1,8 @@
+{
+  "applet": "vi",
+  "name": "features",
+  "stdout": "These features are available:\n\tPattern searches with / and ?\n\tLast command repeat with .\n\tLine marking with 'x\n\tNamed buffers with \"x\n\tSome colon mode commands with :\n\tSettable options with \":set\"\n\tSignal catching- ^C\n\tJob suspend and resume with ^Z\n\tAdapt to window re-sizes\n",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: vi [-c CMD] [-R] [-H] [FILE]...\n\nEdit FILE\n\n\t-c CMD\tInitial command to run ($EXINIT and ~/.exrc also available)\n\t-R\tRead-only\n\t-H\tList available features\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "stty",
+  "name": "modes_with_display",
+  "stdout": "",
+  "stderr": "stty: modes may not be set when -a or -g is used\n",
+  "exit": 1,
+  "tree": {}
+}

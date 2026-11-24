@@ -1,0 +1,8 @@
+{
+  "applet": "openvt",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: openvt [-c N] [-sw] [PROG ARGS]\n\nStart PROG on a new virtual terminal\n\n\t-c N\tUse specified VT\n\t-s\tSwitch to the VT\n\t-w\tWait for PROG to exit\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

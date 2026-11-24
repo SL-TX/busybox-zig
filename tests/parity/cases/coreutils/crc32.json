@@ -1,0 +1,56 @@
+{
+  "applet": "crc32",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "stdin",
+      "argv": [],
+      "stdin": "hello\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "file",
+      "argv": [
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "hello\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "whoami",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: whoami\n\nPrint the user name associated with the current effective user id\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

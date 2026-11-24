@@ -1,0 +1,8 @@
+{
+  "applet": "nmeter",
+  "name": "swap",
+  "stdout": "<MATCH>.<MATCH>g\r\n<MATCH>",
+  "stderr": "",
+  "exit": -2,
+  "tree": {}
+}

@@ -1,0 +1,536 @@
+{
+  "applet": "wget",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogusoption"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_output_doc",
+      "argv": [
+        "-O"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_output_file",
+      "argv": [
+        "-o"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_timeout",
+      "argv": [
+        "-T"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_timeout",
+      "argv": [
+        "-T",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_tries",
+      "argv": [
+        "-t",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_address",
+      "argv": [
+        "notaurl"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "empty_host",
+      "argv": [
+        "http://"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "connect_refused",
+      "argv": [
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "quiet",
+      "argv": [
+        "-q",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ftp_url",
+      "argv": [
+        "ftp://127.0.0.1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "post_data_missing_arg",
+      "argv": [
+        "--post-data"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "post_data",
+      "argv": [
+        "--post-data",
+        "x=1",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "long_options",
+      "argv": [
+        "--spider",
+        "--header",
+        "X: y",
+        "-U",
+        "Agent",
+        "-P",
+        ".",
+        "-t",
+        "1",
+        "-T",
+        "1",
+        "--no-check-certificate",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "log_file",
+      "argv": [
+        "-o",
+        "log.txt",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "show_response",
+      "argv": [
+        "-S",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "proxy_off",
+      "argv": [
+        "-Y",
+        "off",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "proxy_on",
+      "argv": [
+        "-Y",
+        "on",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "continue",
+      "argv": [
+        "-c",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "user_agent",
+      "argv": [
+        "-U",
+        "Agent",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "output_doc",
+      "argv": [
+        "-O",
+        "out.html",
+        "http://127.0.0.1:1/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "read_timeout",
+      "argv": [
+        "-q",
+        "-T",
+        "1",
+        "-O",
+        "-",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
+    },
+    {
+      "name": "retries_exhausted",
+      "argv": [
+        "-q",
+        "-t",
+        "1",
+        "-O",
+        "out",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 12000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "partial_n",
+        "fail_count": 2
+      }
+    },
+    {
+      "name": "retries_succeed",
+      "argv": [
+        "-q",
+        "-t",
+        "2",
+        "-Oout",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 12000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "partial_n",
+        "fail_count": 2
+      }
+    },
+    {
+      "name": "attached_timeout",
+      "argv": [
+        "-qT1",
+        "-O",
+        "-",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
+    },
+    {
+      "name": "spider_alone",
+      "argv": [
+        "-q",
+        "-O",
+        "-",
+        "--spider",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 0,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
+    },
+    {
+      "name": "header_alone",
+      "argv": [
+        "-q",
+        "-O",
+        "-",
+        "--header",
+        "X: y",
+        "http://127.0.0.1:<PORT>/"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 0,
+        "data": "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHELLO"
+      }
+    }
+  ]
+}

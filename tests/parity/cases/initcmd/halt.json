@@ -1,0 +1,11 @@
+{
+  "applet": "halt",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"no_args","argv":[],"expect":{"exit":1,"stdout":"","stderr":"halt: : Operation not permitted\n"}},
+    {"name":"force_no_sync","argv":["-n","-f"],"expect":{"exit":1,"stderr":"halt: : Operation not permitted\n"}},
+    {"name":"delay_invalid","argv":["-d","x"],"expect":{"exit":1,"stderr":"halt: invalid number 'x'\n"}},
+    {"name":"wtmp_only","argv":["-w"],"expect":{"exit":0,"stdout":"","stderr":""}},
+    {"name":"invalid_option","argv":["-z"],"expect":{"exit":1}}
+  ]
+}

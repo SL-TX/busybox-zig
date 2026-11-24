@@ -1,0 +1,16 @@
+{
+  "applet": "hush",
+  "name": "redir_out",
+  "stdout": "hi\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "aGkK"
+      }
+    }
+  }
+}

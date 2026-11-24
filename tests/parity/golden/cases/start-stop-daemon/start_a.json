@@ -1,0 +1,8 @@
+{
+  "applet": "start-stop-daemon",
+  "name": "start_a",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

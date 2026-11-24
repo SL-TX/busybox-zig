@@ -1,0 +1,8 @@
+{
+  "applet": "chrt",
+  "name": "conflicting_policies",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: chrt -m | [-rfobiR] { -p [PRIO] PID | PRIO PROG ARGS }\n\nChange scheduling priority and class (default RR) for a process\n\n\t-m\tShow min/max priorities\n\t-p\tOperate on PID\n\t-r\tSet SCHED_RR class\n\t-f\tSet SCHED_FIFO class\n\t-o\tSet SCHED_OTHER class\n\t-b\tSet SCHED_BATCH class\n\t-i\tSet SCHED_IDLE class\n\t-R\tSet SCHED_RESET_ON_FORK\n",
+  "exit": 1,
+  "tree": {}
+}

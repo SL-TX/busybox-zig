@@ -1,0 +1,8 @@
+{
+  "applet": "rm",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: rm [-irf] FILE...\n\nRemove (unlink) FILEs\n\n\t-i\tAlways prompt before removing\n\t-f\tNever prompt\n\t-R,-r\tRecurse\n",
+  "exit": 1,
+  "tree": {}
+}

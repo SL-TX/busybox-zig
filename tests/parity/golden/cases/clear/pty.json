@@ -1,0 +1,8 @@
+{
+  "applet": "clear",
+  "name": "pty",
+  "stdout": "\u001b[H\u001b[J",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

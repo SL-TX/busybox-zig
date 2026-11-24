@@ -1,0 +1,8 @@
+{
+  "applet": "top",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: top [-bmH] [-n COUNT] [-d SECONDS]\n\nShow a view of process activity in real time.\nRead the status of all processes from /proc each SECONDS\nand show a screenful of them.\nKeys:\n\tN/M/P/T: show CPU usage, sort by pid/mem/cpu/time\n\tS: show memory\n\tR: reverse sort\n\tH: toggle threads, 1: toggle SMP\n\tQ,^C: exit\nOptions:\n\t-b\tBatch mode\n\t-n N\tExit after N iterations\n\t-d SEC\tDelay between updates\n\t-m\tSame as 's' key\n\t-H\tShow threads\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ipneigh",
+  "name": "show_bad_dev",
+  "stdout": "",
+  "stderr": "ipneigh: can't find device 'nosuch'\n",
+  "exit": 1,
+  "tree": {}
+}

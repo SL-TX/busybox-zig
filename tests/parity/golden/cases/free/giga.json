@@ -1,0 +1,8 @@
+{
+  "applet": "free",
+  "name": "giga",
+  "stdout": "              total        used        free      shared  buff/cache   available\nMem:<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\nSwap:<MATCH><MATCH><MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

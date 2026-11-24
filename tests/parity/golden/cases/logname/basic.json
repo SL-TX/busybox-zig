@@ -1,0 +1,8 @@
+{
+  "applet": "logname",
+  "name": "basic",
+  "stdout": "sl\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

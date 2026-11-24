@@ -1,0 +1,16 @@
+{
+  "applet": "bzip2",
+  "name": "test_ok",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a.bz2": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QlpoOTFBWSZTWe+/vVRW77+9AAAHUe+/vQAQQAAGRO+/ve+/vSAAIu+/ve+/vUNPRCDJiO+/vSIpa1bvv73vv718Xe+/vRTvv71CQu+/vVFaSA=="
+      }
+    }
+  }
+}

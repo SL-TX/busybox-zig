@@ -1,0 +1,13 @@
+{
+  "applet": "svok",
+  "name": "down",
+  "stdout": "",
+  "stderr": "",
+  "exit": 100,
+  "tree": {
+    "svcdir": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

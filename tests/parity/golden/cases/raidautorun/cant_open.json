@@ -1,0 +1,8 @@
+{
+  "applet": "raidautorun",
+  "name": "cant_open",
+  "stdout": "",
+  "stderr": "raidautorun: can't open 'nofile': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

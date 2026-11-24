@@ -1,0 +1,8 @@
+{
+  "applet": "uname",
+  "name": "multi",
+  "stdout": "Linux sl-ser6\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

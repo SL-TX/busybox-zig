@@ -1,0 +1,117 @@
+{
+  "applet": "setuidgid",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "only_user",
+      "argv": [
+        "nobody"
+      ],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "bad_user",
+      "argv": [
+        "nosuchuser",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "setuidgid: unknown user/group nosuchuser\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "unprivileged",
+      "argv": [
+        "nobody",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "setuidgid: setgroups: Operation not permitted\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z",
+        "nobody",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}

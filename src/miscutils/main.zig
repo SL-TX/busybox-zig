@@ -1,4 +1,5 @@
-//! miscutils applet implementations (renice, ionice, crontab).
+//! miscutils applet implementations (renice, ionice, crontab plus the
+//! Task 16a safe-miscutils wave).
 
 const std = @import("std");
 const linux = std.os.linux;
@@ -411,3 +412,71 @@ pub fn crontab_main(argc: c_int, argv: [*][*:0]const u8) c_int {
         },
     }
 }
+
+// ---------------------------------------------------------------- Task 16a
+// Re-exports of the safe miscutils implemented in sibling files. The registry
+// (src/applets.zig) resolves each applet name through mainFor().
+
+pub const common = @import("common.zig");
+pub const ascii_main = @import("ascii.zig").main;
+pub const ttysize_main = @import("ttysize.zig").main;
+pub const tree_main = @import("tree.zig").main;
+pub const strings_main = @import("strings.zig").main;
+pub const ts_main = @import("ts.zig").main;
+pub const time_main = @import("time.zig").main;
+pub const runlevel_main = @import("runlevel.zig").main;
+pub const mim_main = @import("mim.zig").main;
+pub const dc_main = @import("dc.zig").main;
+pub const bc_main = @import("bc.zig").main;
+pub const bbconfig_main = @import("bbconfig.zig").main;
+pub const i2cdetect_main = @import("i2c_tools.zig").i2cdetect_main;
+pub const i2cdump_main = @import("i2c_tools.zig").i2cdump_main;
+pub const i2cget_main = @import("i2c_tools.zig").i2cget_main;
+pub const i2cset_main = @import("i2c_tools.zig").i2cset_main;
+pub const i2ctransfer_main = @import("i2c_tools.zig").i2ctransfer_main;
+pub const devmem_main = @import("device.zig").devmem_main;
+pub const lsscsi_main = @import("device.zig").lsscsi_main;
+pub const partprobe_main = @import("device.zig").partprobe_main;
+pub const readahead_main = @import("device.zig").readahead_main;
+pub const volname_main = @import("device.zig").volname_main;
+pub const watchdog_main = @import("device.zig").watchdog_main;
+pub const beep_main = @import("device.zig").beep_main;
+pub const mt_main = @import("device.zig").mt_main;
+pub const hdparm_main = @import("device.zig").hdparm_main;
+pub const setserial_main = @import("device.zig").setserial_main;
+pub const fbsplash_main = @import("device.zig").fbsplash_main;
+pub const conspy_main = @import("device.zig").conspy_main;
+pub const getfattr_main = @import("batch3.zig").getfattr_main;
+pub const setfattr_main = @import("batch3.zig").setfattr_main;
+pub const makedevs_main = @import("batch3.zig").makedevs_main;
+pub const seedrng_main = @import("batch3.zig").seedrng_main;
+pub const crond_main = @import("batch3.zig").crond_main;
+pub const chat_main = @import("batch3.zig").chat_main;
+pub const less_main = @import("batch3.zig").less_main;
+pub const man_main = @import("batch3.zig").man_main;
+pub const microcom_main = @import("batch3.zig").microcom_main;
+pub const hexedit_main = @import("batch3.zig").hexedit_main;
+pub const rx_main = @import("batch3.zig").rx_main;
+pub const flash_eraseall_main = @import("batch4.zig").flash_eraseall_main;
+pub const flash_lock_main = @import("batch4.zig").flash_lock_main;
+pub const flash_unlock_main = @import("batch4.zig").flash_unlock_main;
+pub const flashcp_main = @import("batch4.zig").flashcp_main;
+pub const inotifyd_main = @import("batch4.zig").inotifyd_main;
+pub const rfkill_main = @import("batch4.zig").rfkill_main;
+
+// Task 16b — privileged/device-bound miscutils wave
+pub const priv = @import("privileged.zig");
+pub const setMtdRawMode = priv.setMtdRawMode;
+pub const mtdRawModeErrno = priv.mtdRawModeErrno;
+pub const adjtimex_main = priv.adjtimex_main;
+pub const devfsd_main = priv.devfsd_main;
+pub const nanddump_main = priv.nanddump_main;
+pub const nandwrite_main = priv.nandwrite_main;
+pub const raidautorun_main = priv.raidautorun_main;
+pub const ubiattach_main = priv.ubiattach_main;
+pub const ubidetach_main = priv.ubidetach_main;
+pub const ubimkvol_main = priv.ubimkvol_main;
+pub const ubirename_main = priv.ubirename_main;
+pub const ubirmvol_main = priv.ubirmvol_main;
+pub const ubirsvol_main = priv.ubirsvol_main;
+pub const ubiupdatevol_main = priv.ubiupdatevol_main;

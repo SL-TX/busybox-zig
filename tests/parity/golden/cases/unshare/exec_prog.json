@@ -1,0 +1,8 @@
+{
+  "applet": "unshare",
+  "name": "exec_prog",
+  "stdout": "hi\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

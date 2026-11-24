@@ -1,0 +1,8 @@
+{
+  "applet": "ntpd",
+  "name": "flags_dnqNwl",
+  "stdout": "",
+  "stderr": "ntpd: bind: Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

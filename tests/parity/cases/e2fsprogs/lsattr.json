@@ -1,0 +1,249 @@
+{
+  "applet": "lsattr",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "long",
+      "argv": [
+        "-l",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "version",
+      "argv": [
+        "-v",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "projid",
+      "argv": [
+        "-p",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dirs_opt",
+      "argv": [
+        "-d",
+        "sub"
+      ],
+      "stdin": null,
+      "files": {
+        "sub/a": "1"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dir_contents",
+      "argv": [
+        "sub"
+      ],
+      "stdin": null,
+      "files": {
+        "sub/a": "1"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "all",
+      "argv": [
+        "-a",
+        "sub"
+      ],
+      "stdin": null,
+      "files": {
+        "sub/a": "1",
+        "sub/.b": "2"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "recurse",
+      "argv": [
+        "-R",
+        "sub"
+      ],
+      "stdin": null,
+      "files": {
+        "sub/a": "1",
+        "sub/b": "2"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "long_all",
+      "argv": [
+        "-la",
+        "sub"
+      ],
+      "stdin": null,
+      "files": {
+        "sub/a": "1"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing",
+      "argv": [
+        "missing"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "multiple",
+      "argv": [
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x",
+        "g": "y"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

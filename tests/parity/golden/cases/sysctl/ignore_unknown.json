@@ -1,0 +1,8 @@
+{
+  "applet": "sysctl",
+  "name": "ignore_unknown",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

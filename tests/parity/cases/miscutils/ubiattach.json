@@ -1,0 +1,114 @@
+{
+  "applet": "ubiattach",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "missing_dev",
+      "argv": [
+        "-m",
+        "0"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open",
+      "argv": [
+        "-m",
+        "0",
+        "nofile"
+      ]
+    },
+    {
+      "name": "no_m_option",
+      "argv": [
+        "nofile"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X",
+        "-m",
+        "0",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "bad_m",
+      "argv": [
+        "-m",
+        "abc",
+        "nofile"
+      ]
+    },
+    {
+      "name": "bad_d",
+      "argv": [
+        "-m",
+        "0",
+        "-d",
+        "abc",
+        "nofile"
+      ]
+    },
+    {
+      "name": "bad_O",
+      "argv": [
+        "-m",
+        "0",
+        "-O",
+        "abc",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "ioctl_fail",
+      "argv": [
+        "-m",
+        "0",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "all_opts",
+      "argv": [
+        "-m",
+        "1",
+        "-d",
+        "2",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    }
+  ]
+}

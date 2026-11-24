@@ -1,0 +1,16 @@
+{
+  "applet": "cat",
+  "name": "b",
+  "stdout": "     1\ta\n\n     2\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQoKYgo="
+      }
+    }
+  }
+}

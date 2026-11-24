@@ -1,0 +1,8 @@
+{
+  "applet": "route",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: route [-ne] [-A inet[6]] [{add|del} [-net|-host] TARGET [netmask MASK]\n\t[gw GATEWAY] [metric N] [mss BYTES] [window BYTES] [reject] [IFACE]]\n\nShow or edit kernel routing tables\n\n\t-n\tDon't resolve names\n\t-e\tDisplay other/more information\n\t-A inet[6]\tSelect address family\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

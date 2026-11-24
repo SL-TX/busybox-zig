@@ -1,0 +1,110 @@
+{
+  "applet": "nproc",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "all",
+      "argv": [
+        "--all"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ignore",
+      "argv": [
+        "--ignore=1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ignore_big",
+      "argv": [
+        "--ignore=999"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ignore_missing",
+      "argv": [
+        "--ignore"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

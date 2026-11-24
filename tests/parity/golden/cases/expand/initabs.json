@@ -1,0 +1,8 @@
+{
+  "applet": "expand",
+  "name": "initabs",
+  "stdout": "  a\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

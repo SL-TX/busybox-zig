@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "wait_receives",
+  "stdout": "PONG\n",
+  "stderr": "127.0.0.1 (127.0.0.1:<PORT>) open\nsent 0, rcvd 5\n",
+  "exit": 0,
+  "tree": {}
+}

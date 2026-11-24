@@ -1,0 +1,8 @@
+{
+  "applet": "runsv",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: runsv DIR\n\nStart and monitor a service and optionally an appendant log service\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

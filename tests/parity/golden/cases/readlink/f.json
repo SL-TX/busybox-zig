@@ -1,0 +1,14 @@
+{
+  "applet": "readlink",
+  "name": "f",
+  "stdout": "<TMP>/target\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "s": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "target"
+    }
+  }
+}

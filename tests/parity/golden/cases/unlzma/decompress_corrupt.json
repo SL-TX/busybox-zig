@@ -1,0 +1,16 @@
+{
+  "applet": "unlzma",
+  "name": "decompress_corrupt",
+  "stdout": "",
+  "stderr": "unlzma: unexpected EOF\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    }
+  }
+}

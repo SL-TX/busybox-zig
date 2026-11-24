@@ -1,0 +1,8 @@
+{
+  "applet": "tac",
+  "name": "stdin",
+  "stdout": "c\nb\na\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

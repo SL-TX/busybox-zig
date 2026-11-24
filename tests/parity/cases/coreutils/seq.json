@@ -1,0 +1,169 @@
+{
+  "applet": "seq",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "one",
+      "argv": [
+        "3"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "two",
+      "argv": [
+        "2",
+        "5"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "three",
+      "argv": [
+        "1",
+        "2",
+        "7"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "sep",
+      "argv": [
+        "-s",
+        ",",
+        "1",
+        "3"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "width",
+      "argv": [
+        "-w",
+        "8",
+        "10"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "empty",
+      "argv": [
+        "3",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "float",
+      "argv": [
+        "1",
+        "0.5",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    }
+  ]
+}

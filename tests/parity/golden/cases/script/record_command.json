@@ -1,0 +1,8 @@
+{
+  "applet": "script",
+  "name": "record_command",
+  "stdout": "hi\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "unix2dos",
+  "name": "file",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQ0KYg0K"
+      }
+    }
+  }
+}

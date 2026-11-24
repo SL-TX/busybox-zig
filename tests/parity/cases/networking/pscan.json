@@ -1,0 +1,197 @@
+{
+  "applet": "pscan",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_p",
+      "argv": [
+        "-p"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_p",
+      "argv": [
+        "-p",
+        "abc",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_P",
+      "argv": [
+        "-P"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_t",
+      "argv": [
+        "-t"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_T",
+      "argv": [
+        "-T"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_host",
+      "argv": [
+        "nosuchhost.invalid"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "scan_open",
+      "argv": [
+        "-p",
+        "<PORT>",
+        "-P",
+        "<PORT>",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 8000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "echo"
+      }
+    },
+    {
+      "name": "scan_closed",
+      "argv": [
+        "-c",
+        "-p",
+        "1",
+        "-P",
+        "1",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 8000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

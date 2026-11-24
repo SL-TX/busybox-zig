@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "trace",
+  "stdout": "a b\n",
+  "stderr": "echo a b\n",
+  "exit": 0,
+  "tree": {}
+}

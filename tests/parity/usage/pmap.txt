@@ -1,0 +1,7 @@
+
+Usage: pmap [-xq] PID...
+
+Display process memory usage
+
+	-x	Show details
+	-q	Quiet

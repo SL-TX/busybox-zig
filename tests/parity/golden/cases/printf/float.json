@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "float",
+  "stdout": "3.14\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

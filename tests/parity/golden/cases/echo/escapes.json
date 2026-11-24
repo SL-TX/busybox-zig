@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "escapes",
+  "stdout": "a\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

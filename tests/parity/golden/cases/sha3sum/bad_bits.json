@@ -1,0 +1,8 @@
+{
+  "applet": "sha3sum",
+  "name": "bad_bits",
+  "stdout": "",
+  "stderr": "sha3sum: bad -a999\n",
+  "exit": 1,
+  "tree": {}
+}

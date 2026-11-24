@@ -1,0 +1,8 @@
+{
+  "applet": "adduser",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: adduser [OPTIONS] USER [GROUP]\n\nCreate new user, or add USER to GROUP\n\n\t-h DIR\t\tHome directory\n\t-g GECOS\tGECOS field\n\t-s SHELL\tLogin shell\n\t-G GRP\t\tGroup\n\t-S\t\tCreate a system user\n\t-D\t\tDon't assign a password\n\t-H\t\tDon't create home directory\n\t-u UID\t\tUser id\n\t-k SKEL\t\tSkeleton directory (/etc/skel)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

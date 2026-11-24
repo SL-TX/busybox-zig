@@ -1,0 +1,8 @@
+{
+  "applet": "fsck.minix",
+  "name": "missing_device",
+  "stdout": "",
+  "stderr": "fsck.minix: can't open '/nonexistent': No such file or directory\n",
+  "exit": 8,
+  "tree": {}
+}

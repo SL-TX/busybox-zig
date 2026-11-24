@@ -1,0 +1,8 @@
+{
+  "applet": "cpio",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: cpio [-dmvu] [-F FILE] [-R USER[:GRP]] [-H newc] [-tio] [-p DIR] [EXTR_FILE]...\n\nExtract (-i) or list (-t) files from a cpio archive on stdin, or\ntake file list from stdin and create an archive (-o) or copy files (-p)\n\nMain operation mode:\n\t-t\tList\n\t-i\tExtract EXTR_FILEs (or all)\n\t-o\tCreate (requires -H newc)\n\t-p DIR\tCopy files to DIR\nOptions:\n\t-H newc\tArchive format\n\t-d\tMake leading directories\n\t-m\tRestore mtime\n\t-v\tVerbose\n\t-u\tOverwrite\n\t-F FILE\tInput (-t,-i,-p) or output (-o) file\n\t-R USER[:GRP]\tSet owner of created files\n\t-L\tDereference symlinks\n\t-0\tNUL terminated input\n\t--ignore-devno\n\t--renumber-inodes\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

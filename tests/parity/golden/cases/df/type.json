@@ -1,0 +1,8 @@
+{
+  "applet": "df",
+  "name": "type",
+  "stdout": "Filesystem           Type       1K-blocks      Used Available Use% Mounted on\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

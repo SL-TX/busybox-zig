@@ -1,0 +1,27 @@
+{
+  "applet": "unzip",
+  "name": "keep_suid",
+  "stdout": "Archive:  z\n  inflating: suid.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out": {
+      "type": "dir",
+      "mode": 509
+    },
+    "out/suid.txt": {
+      "type": "file",
+      "mode": 493,
+      "content": {
+        "__base64__": "ZGF0YQo="
+      }
+    },
+    "z": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "UEsDBBQAAAAAAAAAIQDvv73vv73vv73vv70FAAAABQAAAAgAAABzdWlkLnR4dGRhdGEKUEsBAhQDFAAAAAAAAAAhAO+/ve+/ve+/ve+/vQUAAAAFAAAACAAAAAAAAAAAAAAA77+9AAAAAHN1aWQudHh0UEsFBgAAAAABAAEANgAAACsAAAAAAA=="
+      }
+    }
+  }
+}

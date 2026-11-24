@@ -1,0 +1,8 @@
+{
+  "applet": "cpio",
+  "name": "mtime_restore",
+  "stdout": "True\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

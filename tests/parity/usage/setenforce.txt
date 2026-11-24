@@ -1,0 +1,2 @@
+
+Usage: setenforce [Enforcing | Permissive | 1 | 0]

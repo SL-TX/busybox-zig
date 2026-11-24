@@ -1,0 +1,8 @@
+{
+  "applet": "ipaddr",
+  "name": "del_bad_dev",
+  "stdout": "",
+  "stderr": "ipaddr: can't find device 'nosuch'\n",
+  "exit": 1,
+  "tree": {}
+}

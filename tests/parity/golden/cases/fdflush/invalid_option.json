@@ -1,0 +1,8 @@
+{
+  "applet": "fdflush",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "fdflush: can't open '-z': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

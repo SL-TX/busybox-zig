@@ -1,0 +1,16 @@
+{
+  "applet": "link",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "link: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: link FILE LINK\n\nCreate hard LINK to FILE\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

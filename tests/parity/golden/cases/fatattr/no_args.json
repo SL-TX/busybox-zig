@@ -1,0 +1,8 @@
+{
+  "applet": "fatattr",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fatattr [-+rhsvda] FILE...\n\nChange file attributes on FAT filesystem\n\n\t-\tClear attributes\n\t+\tSet attributes\n\tr\tRead only\n\th\tHidden\n\ts\tSystem\n\tv\tVolume label\n\td\tDirectory\n\ta\tArchive\n",
+  "exit": 1,
+  "tree": {}
+}

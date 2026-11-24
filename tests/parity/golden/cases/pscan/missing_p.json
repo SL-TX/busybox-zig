@@ -1,0 +1,8 @@
+{
+  "applet": "pscan",
+  "name": "missing_p",
+  "stdout": "",
+  "stderr": "pscan: option requires an argument -- 'p'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: pscan [-cb] [-p MIN_PORT] [-P MAX_PORT] [-t TIMEOUT] [-T MIN_RTT] HOST\n\nScan HOST, print all open ports\n\n\t-c\tShow closed ports too\n\t-b\tShow blocked ports too\n\t-p PORT\tScan from this port (default 1)\n\t-P PORT\tScan up to this port (default 1024)\n\t-t MS\tTimeout (default 5000 ms)\n\t-T MS\tMinimum rtt (default 5 ms)\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,23 @@
+{
+  "applet": "diff",
+  "name": "identical",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiCmMK"
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiCmMK"
+      }
+    }
+  }
+}

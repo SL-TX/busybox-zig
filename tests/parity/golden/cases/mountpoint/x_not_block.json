@@ -1,0 +1,8 @@
+{
+  "applet": "mountpoint",
+  "name": "x_not_block",
+  "stdout": "",
+  "stderr": "mountpoint: /dev/null: not a block device\n",
+  "exit": 1,
+  "tree": {}
+}

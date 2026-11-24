@@ -1,0 +1,8 @@
+{
+  "applet": "mt",
+  "name": "unknown_opcode",
+  "stdout": "",
+  "stderr": "mt: unrecognized opcode bogus\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ifdown",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ifdown [-nmvf] [-i FILE] -a | IFACE...\n\n\t-a\tDeconfigure all interfaces\n\t-i FILE\tUse FILE instead of /etc/network/interfaces\n\t-n\tDry run\n\t\t(note: doesn't disable mappings)\n\t-m\tDon't run any mappings\n\t-v\tPrint out what would happen before doing it\n\t-f\tForce\n",
+  "exit": 1,
+  "tree": {}
+}

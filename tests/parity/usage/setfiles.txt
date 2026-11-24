@@ -1,0 +1,7 @@
+
+Usage: setfiles [-dnpqsvW] [-e DIR]... [-o FILE] [-r alt_root_path] pathname
+
+Reset file contexts under pathname according to spec_file
+
+	-d	Show which specification matched each file
+	-l	Log changes in file labels to syslog

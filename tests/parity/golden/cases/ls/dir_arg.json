@@ -1,0 +1,24 @@
+{
+  "applet": "ls",
+  "name": "dir_arg",
+  "stdout": "s\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/s": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/s/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

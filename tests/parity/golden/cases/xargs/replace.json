@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "replace",
+  "stdout": "[a b c]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "rfkill",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "rfkill: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

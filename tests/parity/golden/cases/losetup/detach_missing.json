@@ -1,0 +1,8 @@
+{
+  "applet": "losetup",
+  "name": "detach_missing",
+  "stdout": "",
+  "stderr": "losetup: /dev/loop9: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

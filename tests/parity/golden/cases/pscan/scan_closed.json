@@ -1,0 +1,8 @@
+{
+  "applet": "pscan",
+  "name": "scan_closed",
+  "stdout": "Scanning 127.0.0.1 ports 1 to 1\n Port\tProto\tState\tService\n    1\ttcp\tclosed\ttcpmux\n1 closed, 0 open, 0 timed out (or blocked) ports\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

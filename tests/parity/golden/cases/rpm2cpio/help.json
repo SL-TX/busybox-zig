@@ -1,0 +1,8 @@
+{
+  "applet": "rpm2cpio",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: rpm2cpio PACKAGE.rpm\n\nOutput a cpio archive of the rpm file\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "nsenter",
+  "name": "target_bad_pid",
+  "stdout": "",
+  "stderr": "nsenter: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

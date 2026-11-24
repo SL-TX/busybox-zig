@@ -1,0 +1,204 @@
+{
+  "applet": "install",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "copy",
+      "argv": [
+        "src",
+        "dst"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "mode",
+      "argv": [
+        "-m",
+        "700",
+        "src",
+        "dst"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dir",
+      "argv": [
+        "-d",
+        "newdir"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "D",
+      "argv": [
+        "-D",
+        "src",
+        "a/b/c"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "t",
+      "argv": [
+        "-t",
+        "tdir",
+        "src"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "x"
+      },
+      "dirs": [
+        "tdir"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "t_missing",
+      "argv": [
+        "-t",
+        "missing",
+        "src"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "into_dir",
+      "argv": [
+        "src",
+        "dir"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "x"
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "one_arg",
+      "argv": [
+        "src"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z",
+        "src",
+        "dst"
+      ],
+      "stdin": null,
+      "files": {
+        "src": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

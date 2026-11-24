@@ -1,0 +1,27 @@
+{
+  "applet": "ls",
+  "name": "no_args",
+  "stdout": "a\nb\nd\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eQ=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    },
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

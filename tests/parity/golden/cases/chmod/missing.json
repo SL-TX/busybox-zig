@@ -1,0 +1,8 @@
+{
+  "applet": "chmod",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "chmod: missing: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

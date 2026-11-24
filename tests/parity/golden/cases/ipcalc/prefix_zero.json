@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "prefix_zero",
+  "stdout": "NETWORK=0.0.0.0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

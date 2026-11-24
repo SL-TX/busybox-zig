@@ -1,0 +1,4 @@
+
+Usage: usleep N
+
+Pause for N microseconds

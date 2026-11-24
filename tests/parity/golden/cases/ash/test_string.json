@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "test_string",
+  "stdout": "eq\nne\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "inetd",
+  "name": "bad_q",
+  "stdout": "",
+  "stderr": "inetd: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

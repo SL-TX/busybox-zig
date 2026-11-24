@@ -1,0 +1,23 @@
+{
+  "applet": "cp",
+  "name": "no_clobber",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b2xk"
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bmV3"
+      }
+    }
+  }
+}

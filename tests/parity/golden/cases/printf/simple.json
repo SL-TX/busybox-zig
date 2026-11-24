@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "simple",
+  "stdout": "abc|7|00007|ff|%|Z\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

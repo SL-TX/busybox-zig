@@ -1,0 +1,21 @@
+{
+  "applet": "ln",
+  "name": "verbose",
+  "stdout": "'b' -> 'a'\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "a"
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

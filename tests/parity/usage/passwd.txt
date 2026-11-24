@@ -1,0 +1,9 @@
+
+Usage: passwd [-a ALG] [-dlu] [USER]
+
+Change USER's password (default: current user)
+
+	-a ALG	des,md5,sha256/512,yescrypt (default des)
+	-d	Set password to ''
+	-l	Lock (disable) account
+	-u	Unlock (enable) account

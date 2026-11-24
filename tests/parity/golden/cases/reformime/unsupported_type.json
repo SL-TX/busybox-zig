@@ -1,0 +1,8 @@
+{
+  "applet": "reformime",
+  "name": "unsupported_type",
+  "stdout": "",
+  "stderr": "reformime: no support of content type 'multipart/alternative'\n",
+  "exit": 1,
+  "tree": {}
+}

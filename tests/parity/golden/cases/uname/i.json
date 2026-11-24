@@ -1,0 +1,8 @@
+{
+  "applet": "uname",
+  "name": "i",
+  "stdout": "unknown\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

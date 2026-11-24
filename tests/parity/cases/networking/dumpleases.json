@@ -1,0 +1,339 @@
+{
+  "applet": "dumpleases",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_f",
+      "argv": [
+        "-f"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "empty_lease",
+      "argv": [
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "expired",
+      "argv": [
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "expired_r",
+      "argv": [
+        "-r",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "expired_d",
+      "argv": [
+        "-d",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "expired_a",
+      "argv": [
+        "-a",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "absolute",
+      "argv": [
+        "-a",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u007f\u007f\u007f\u007f\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "long_file",
+      "argv": [
+        "--file",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "long_absolute",
+      "argv": [
+        "--absolute",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u007f\u007f\u007f\u007f\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "long_remaining",
+      "argv": [
+        "--remaining",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "long_decimal",
+      "argv": [
+        "--decimal",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "-f",
+        "no-such-file"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "conflict_ar",
+      "argv": [
+        "-a",
+        "-r",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "conflict_ra",
+      "argv": [
+        "-r",
+        "-a",
+        "-f",
+        "leases"
+      ],
+      "stdin": null,
+      "files": {
+        "leases": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u007f\u0000\u0000\u0001\u0000\u0011\"3DUmyhost\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

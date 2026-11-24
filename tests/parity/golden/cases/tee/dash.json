@@ -1,0 +1,16 @@
+{
+  "applet": "tee",
+  "name": "dash",
+  "stdout": "one\ntwo\nthree\none\ntwo\nthree\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "b25lCnR3bwp0aHJlZQo="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "nameif",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: nameif [-s] [-c FILE] [IFNAME SELECTOR]...\n\nRename network interface while it in the down state.\nThe device matched by SELECTOR is renamed to IFNAME.\nSELECTOR can be a combination of:\n\tdriver=STRING\n\tbus=STRING\n\tphy_address=NUM\n\t[mac=]XX:XX:XX:XX:XX:XX\n\n\t-c FILE\tConfiguration file (default: /etc/mactab)\n\t-s\tLog to syslog\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

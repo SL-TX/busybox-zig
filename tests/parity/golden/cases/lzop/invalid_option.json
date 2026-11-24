@@ -1,0 +1,8 @@
+{
+  "applet": "lzop",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "lzop: unrecognized option '--badopt'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: lzop [-cfUvd123456789CF] [FILE]...\n\n\t-1..9\tCompression level\n\t-d\tDecompress\n\t-c\tWrite to stdout\n\t-f\tForce\n\t-U\tDelete input files\n\t-v\tVerbose\n\t-F\tDon't store or verify checksum\n\t-C\tAlso write checksum of compressed block\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "last",
+  "stdout": "a\nb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

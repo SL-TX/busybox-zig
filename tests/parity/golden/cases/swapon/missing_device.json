@@ -1,0 +1,8 @@
+{
+  "applet": "swapon",
+  "name": "missing_device",
+  "stdout": "",
+  "stderr": "swapon: /nonexistent: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

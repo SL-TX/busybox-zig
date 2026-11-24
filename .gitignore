@@ -2,6 +2,10 @@
 /tools/
 /reference/
 
+# Python bytecode
+__pycache__/
+*.pyc
+
 # Build artifacts
 /.zig-cache/
 **/.zig-cache/

@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "equals_with_remove",
+  "stdout": "",
+  "stderr": "chattr: = is incompatible with - and +\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

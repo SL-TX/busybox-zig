@@ -1,0 +1,8 @@
+{
+  "applet": "ifplugd",
+  "name": "kill",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

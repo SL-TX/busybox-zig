@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "sub_global",
+  "stdout": "XXX\nb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

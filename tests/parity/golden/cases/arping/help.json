@@ -1,0 +1,8 @@
+{
+  "applet": "arping",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: arping [-fqbDUA] [-c CNT] [-w TIMEOUT] [-I IFACE] [-s SRC_IP] DST_IP\n\nSend ARP requests/replies\n\n\t-f\t\tQuit on first ARP reply\n\t-q\t\tQuiet\n\t-b\t\tKeep broadcasting, don't go unicast\n\t-D\t\tExit with 1 if DST_IP replies\n\t-U\t\tUnsolicited ARP mode, update your neighbors\n\t-A\t\tARP answer mode, update your neighbors\n\t-c N\t\tStop after sending N ARP requests\n\t-w TIMEOUT\tSeconds to wait for ARP reply\n\t-I IFACE\tInterface to use (default eth0)\n\t-s SRC_IP\tSender IP address\n\tDST_IP\t\tTarget IP address\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

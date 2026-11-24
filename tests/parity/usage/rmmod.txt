@@ -1,0 +1,4 @@
+
+Usage: rmmod MODULE...
+
+Unload kernel modules

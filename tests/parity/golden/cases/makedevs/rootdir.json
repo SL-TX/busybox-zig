@@ -1,0 +1,13 @@
+{
+  "applet": "makedevs",
+  "name": "rootdir",
+  "stdout": "rootdir=root\ntable=<stdin>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "root": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

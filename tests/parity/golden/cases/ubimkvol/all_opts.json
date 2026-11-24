@@ -1,0 +1,23 @@
+{
+  "applet": "ubimkvol",
+  "name": "all_opts",
+  "stdout": "",
+  "stderr": "ubimkvol: UBI_IOCMKVOL: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

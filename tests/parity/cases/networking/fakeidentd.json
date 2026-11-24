@@ -1,0 +1,111 @@
+{
+  "applet": "fakeidentd",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_b",
+      "argv": [
+        "-b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_string",
+      "argv": [
+        "-i",
+        "test answer"
+      ],
+      "stdin": "1, 2\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "inetd_default",
+      "argv": [
+        "-i"
+      ],
+      "stdin": "1, 2\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "inetd_quoted",
+      "argv": [
+        "-i"
+      ],
+      "stdin": "1234, 5678\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 4000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

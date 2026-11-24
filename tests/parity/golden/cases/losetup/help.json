@@ -1,0 +1,8 @@
+{
+  "applet": "losetup",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: losetup [-rP] [-o OFS] {-f|LOOPDEV} FILE: associate loop devices\n\tlosetup -c LOOPDEV: reread file size\n\tlosetup -d LOOPDEV: disassociate\n\tlosetup -a: show status\n\tlosetup -f: show next free loop device\n\n\t-o OFS\tStart OFS bytes into FILE\n\t-P\tScan for partitions\n\t-r\tRead-only\n\t-f\tShow/use next free loop device\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

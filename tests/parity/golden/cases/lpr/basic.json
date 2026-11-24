@@ -1,0 +1,8 @@
+{
+  "applet": "lpr",
+  "name": "basic",
+  "stdout": "",
+  "stderr": "lpr: can't connect to remote host (127.0.0.1): Connection refused\n",
+  "exit": 1,
+  "tree": {}
+}

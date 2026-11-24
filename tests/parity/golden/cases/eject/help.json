@@ -1,0 +1,8 @@
+{
+  "applet": "eject",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: eject [-s] [-t] [-T] [DEVICE]\n\nEject DEVICE or default /dev/cdrom\n\n\t-s\tSCSI device\n\t-t\tClose tray\n\t-T\tOpen/close tray (toggle)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

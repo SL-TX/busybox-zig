@@ -1,0 +1,8 @@
+{
+  "applet": "i2cset",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: i2cset [-fy] [-m MASK] BUS CHIP-ADDRESS DATA-ADDRESS [VALUE] ... [MODE]\n\nSet I2C registers\n\n\tI2CBUS\tI2C bus number\n\tADDRESS\t0x03-0x77\nMODE is:\n\tc\tByte, no value\n\tb\tByte data (default)\n\tw\tWord data\n\ti\tI2C block data\n\ts\tSMBus block data\n\tAppend p for SMBus PEC\n\n\t-f\tForce access\n\t-y\tDisable interactive mode\n\t-r\tRead back and compare the result\n\t-m MASK\tMask specifying which bits to write\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

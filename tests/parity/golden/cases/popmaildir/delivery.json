@@ -1,0 +1,28 @@
+{
+  "applet": "popmaildir",
+  "name": "delivery",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "transcript.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "QzogU1RBVApDOiBSRVRSIDEKQzogRnJvbTogYUBiCkM6IFN1YmplY3Q6IG9uZQpDOiAKQzogRmlyc3QgbWVzc2FnZSBib2R5CkM6IFFVSVQK"
+      }
+    },
+    "md": {
+      "type": "dir",
+      "mode": 509
+    },
+    "md/new": {
+      "type": "dir",
+      "mode": 493
+    },
+    "md/tmp": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

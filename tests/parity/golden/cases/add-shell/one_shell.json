@@ -1,0 +1,8 @@
+{
+  "applet": "add-shell",
+  "name": "one_shell",
+  "stdout": "",
+  "stderr": "add-shell: can't open '/etc/shells.tmp': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

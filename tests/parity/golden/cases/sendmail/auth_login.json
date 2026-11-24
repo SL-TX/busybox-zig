@@ -1,0 +1,16 @@
+{
+  "applet": "sendmail",
+  "name": "auth_login",
+  "stdout": "",
+  "stderr": "sendmail: recv:'220 test ESMTP ready'\nsendmail: send:'EHLO <HOST>'\nsendmail: recv:'250-test'\nsendmail: recv:'250 8BITMIME'\nsendmail: send:'AUTH LOGIN'\nsendmail: recv:'334 VXNlcm5hbWU6'\nsendmail: send:''\nsendmail: recv:'334 UGFzc3dvcmQ6'\nsendmail: send:''\nsendmail: recv:'235 2.7.0 Authentication successful'\nsendmail: send:'MAIL FROM:<a@b>'\nsendmail: recv:'250 2.1.0 Ok'\nsendmail: send:'RCPT TO:<bob@example.com>'\nsendmail: recv:'250 2.1.5 Ok'\nsendmail: send:'DATA'\nsendmail: recv:'354 End data with <CR><LF>.<CR><LF>'\nsendmail: send:'Subject: test\r'\nsendmail: send:'To: bob@example.com\r'\nsendmail: send:'\r'\nsendmail: send:'Hello body\r'\nsendmail: send:'.'\nsendmail: recv:'250 2.0.0 Ok: queued'\nsendmail: send:'QUIT'\nsendmail: recv:'221 2.0.0 Bye'\n",
+  "exit": 0,
+  "tree": {
+    "transcript.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "QzogRUhMTyA8SE9TVD4KQzogQVVUSCBMT0dJTgpDOiBkWE5sY2c9PQpDOiBjR0Z6Y3c9PQpDOiBNQUlMIEZST006PGFAYj4KQzogUkNQVCBUTzo8Ym9iQGV4YW1wbGUuY29tPgpDOiBEQVRBCkM6IFN1YmplY3Q6IHRlc3QKQzogVG86IGJvYkBleGFtcGxlLmNvbQpDOiAKQzogSGVsbG8gYm9keQpDOiAuCkM6IFFVSVQK"
+      }
+    }
+  }
+}

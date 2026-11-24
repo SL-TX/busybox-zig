@@ -1,0 +1,8 @@
+{
+  "applet": "id",
+  "name": "default",
+  "stdout": "uid=1000(sl) gid=1000(sl) groups=4(adm),20(dialout),21(fax),24(cdrom),25(floppy),26(tape),27(sudo),29(audio),30(dip),44(video),46(plugdev),100(users),101(netdev),102(scanner),110(bluetooth),113(lpadmin),120(docker),1000(sl)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sync",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "sync: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: sync [-df] [FILE]...\n\nWrite all buffered blocks (in FILEs) to disk\n\t-d\tAvoid syncing metadata\n\t-f\tSync filesystems underlying FILEs\n",
+  "exit": 1,
+  "tree": {}
+}

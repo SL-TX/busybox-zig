@@ -1,0 +1,9 @@
+
+Usage: mountpoint [-q] { [-dn] DIR | -x DEVICE }
+
+Check if DIR is a mountpoint
+
+	-q	Quiet
+	-d	Print major:minor of the filesystem
+	-n	Print device name of the filesystem
+	-x	Print major:minor of DEVICE

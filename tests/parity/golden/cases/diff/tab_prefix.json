@@ -1,0 +1,23 @@
+{
+  "applet": "diff",
+  "name": "tab_prefix",
+  "stdout": "--- a\n+++ b\n@@ -1 +1 @@\n-\t\tx\n+\t\ty\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "CXkK"
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "CXgK"
+      }
+    }
+  }
+}

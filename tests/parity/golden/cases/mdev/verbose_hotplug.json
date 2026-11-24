@@ -1,0 +1,8 @@
+{
+  "applet": "mdev",
+  "name": "verbose_hotplug",
+  "stdout": "",
+  "stderr": "mdev: <TIMESTAMP> ACTION:add SEQNUM:1 SUBSYSTEM:mem DEVNAME:(null) DEVPATH:/devices/virtual/mem/null\nmdev: dev 1,3\nmdev: mknod null (1,3) 20660 0:0\nmdev: <TIMESTAMP> exiting\n",
+  "exit": 0,
+  "tree": {}
+}

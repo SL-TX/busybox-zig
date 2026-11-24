@@ -1,0 +1,16 @@
+{
+  "applet": "shred",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "shred: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: shred [-fuz] [-n N] [-s SIZE] FILE...\n\nOverwrite/delete FILEs\n\n\t-f\tChmod to ensure writability\n\t-s SIZE\tSize to write\n\t-n N\tOverwrite N times (default 3)\n\t-z\tFinal overwrite with zeros\n\t-u\tRemove file\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

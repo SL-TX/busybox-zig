@@ -1,0 +1,8 @@
+{
+  "applet": "patch",
+  "name": "missing_patch",
+  "stdout": "",
+  "stderr": "patch: can't open 'nosuch': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

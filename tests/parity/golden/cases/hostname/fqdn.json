@@ -1,0 +1,8 @@
+{
+  "applet": "hostname",
+  "name": "fqdn",
+  "stdout": "<HOST>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

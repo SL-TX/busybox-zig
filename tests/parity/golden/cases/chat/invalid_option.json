@@ -1,0 +1,8 @@
+{
+  "applet": "chat",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "chat: invalid option -- 'f'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: chat EXPECT [SEND [EXPECT [SEND]]...]\n\nUseful for interacting with a modem connected to stdin/stdout.\nA script consists of \"expect-send\" argument pairs.\nExample:\nchat '' ATZ OK ATD123456 CONNECT '' ogin: pppuser word: ppppass '~'\n",
+  "exit": 2,
+  "tree": {}
+}

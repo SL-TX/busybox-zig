@@ -1,0 +1,168 @@
+{
+  "applet": "getty",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_arg",
+      "argv": [
+        "-t"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_number",
+      "argv": [
+        "-t",
+        "abc",
+        "9600",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "too_few_args",
+      "argv": [
+        "9600"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_speed",
+      "argv": [
+        "abc",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_speed_number",
+      "argv": [
+        "999999",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_speed_alternate",
+      "argv": [
+        "9600,abc",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_issue_file",
+      "argv": [
+        "-f",
+        "/no/such/issue",
+        "abc",
+        "/dev/null"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pty_invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": []
+    }
+  ]
+}

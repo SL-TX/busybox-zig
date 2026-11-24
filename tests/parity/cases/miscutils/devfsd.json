@@ -1,0 +1,54 @@
+{
+  "applet": "devfsd",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": []
+    },
+    {
+      "name": "mntpnt",
+      "argv": [
+        "/dev"
+      ]
+    },
+    {
+      "name": "bad_option",
+      "argv": [
+        "-X"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "version",
+      "argv": [
+        "/dev",
+        "-v"
+      ]
+    },
+    {
+      "name": "foreground",
+      "argv": [
+        "/dev",
+        "-fg"
+      ]
+    },
+    {
+      "name": "no_polling",
+      "argv": [
+        "/dev",
+        "-np"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "applet": "svc",
+  "name": "no_supervise",
+  "stdout": "warning: ./svcdir: can't open supervise/ok: No such file or directory\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "svcdir": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

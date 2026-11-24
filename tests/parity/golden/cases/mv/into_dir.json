@@ -1,0 +1,20 @@
+{
+  "applet": "mv",
+  "name": "into_dir",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

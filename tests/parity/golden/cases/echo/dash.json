@@ -1,0 +1,8 @@
+{
+  "applet": "echo",
+  "name": "dash",
+  "stdout": "- foo\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

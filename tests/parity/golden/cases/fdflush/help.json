@@ -1,0 +1,8 @@
+{
+  "applet": "fdflush",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fdflush DEVICE\n\nForce floppy disk drive to detect disk change\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

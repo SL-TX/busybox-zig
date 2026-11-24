@@ -1,0 +1,8 @@
+{
+  "applet": "unlink",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: unlink FILE\n\nDelete FILE by calling unlink()\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

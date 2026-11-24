@@ -1,0 +1,8 @@
+{
+  "applet": "blockdev",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: blockdev OPTION BLOCKDEV\n\n\t--setro\t\tSet ro\n\t--setrw\t\tSet rw\n\t--getro\t\tGet ro\n\t--getss\t\tGet sector size\n\t--getbsz\tGet block size\n\t--setbsz BYTES\tSet block size\n\t--getsz\t\tGet device size in 512-byte sectors\n\t--getsize64\tGet device size in bytes\n\t--getra\t\tGet readahead in 512-byte sectors\n\t--setra SECTORS\tSet readahead\n\t--flushbufs\tFlush buffers\n\t--rereadpt\tReread partition table\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

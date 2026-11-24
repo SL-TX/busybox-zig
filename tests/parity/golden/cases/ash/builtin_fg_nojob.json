@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "builtin_fg_nojob",
+  "stdout": "",
+  "stderr": "ash: fg: line 0: No current job\n",
+  "exit": 2,
+  "tree": {}
+}

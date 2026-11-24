@@ -1,0 +1,8 @@
+{
+  "applet": "ifconfig",
+  "name": "set_on_missing",
+  "stdout": "",
+  "stderr": "ifconfig: SIOCGIFFLAGS: No such device\n",
+  "exit": 1,
+  "tree": {}
+}

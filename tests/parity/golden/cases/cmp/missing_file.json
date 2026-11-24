@@ -1,0 +1,8 @@
+{
+  "applet": "cmp",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "cmp: a: No such file or directory\n",
+  "exit": 2,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "pgrep",
+  "name": "bad_sid",
+  "stdout": "",
+  "stderr": "pgrep: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "wget",
+  "name": "log_file",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "log.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "Q29ubmVjdGluZyB0byAxMjcuMC4wLjE6MSAoMTI3LjAuMC4xOjEpCndnZXQ6IGNhbid0IGNvbm5lY3QgdG8gcmVtb3RlIGhvc3QgKDEyNy4wLjAuMSk6IENvbm5lY3Rpb24gcmVmdXNlZAo="
+      }
+    }
+  }
+}

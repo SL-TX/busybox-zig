@@ -1,0 +1,8 @@
+{
+  "applet": "nproc",
+  "name": "ignore_missing",
+  "stdout": "",
+  "stderr": "nproc: option '--ignore' requires an argument\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: nproc [--all] [--ignore=N]\n\nPrint number of available CPUs\n\n\t--all\t\tNumber of installed CPUs\n\t--ignore=N\tExclude N CPUs\n",
+  "exit": 1,
+  "tree": {}
+}

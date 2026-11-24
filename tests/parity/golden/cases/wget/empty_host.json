@@ -1,0 +1,8 @@
+{
+  "applet": "wget",
+  "name": "empty_host",
+  "stdout": "",
+  "stderr": "wget: bad address ''\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "modinfo",
+  "name": "missing_module",
+  "stdout": "",
+  "stderr": "modinfo: module '/lib/modules/6.12.111+deb13-amd64/nosuchmod_xyz' not found\n",
+  "exit": 0,
+  "tree": {}
+}

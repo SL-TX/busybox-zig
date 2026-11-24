@@ -1,0 +1,30 @@
+{
+  "applet": "run-parts",
+  "name": "execute",
+  "stdout": "\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "rp": {
+      "type": "dir",
+      "mode": 493
+    },
+    "rp/02true": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "/bin/true"
+    },
+    "rp/01echo": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "/bin/echo"
+    },
+    "rp/03skip": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bm90ZXhlYwo="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "fakeidentd",
+  "name": "bad_string",
+  "stdout": "1, 2 : USERID : UNIX : test answer\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

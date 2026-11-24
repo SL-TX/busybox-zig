@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "printf_b_precision",
+  "stdout": "rc=1\n",
+  "stderr": "ash: %.2b\\n: invalid format\n",
+  "exit": 0,
+  "tree": {}
+}

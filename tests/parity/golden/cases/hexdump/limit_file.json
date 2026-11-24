@@ -1,0 +1,16 @@
+{
+  "applet": "hexdump",
+  "name": "limit_file",
+  "stdout": "0000000 6261 0063                              \n0000003\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "data": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjZGVm"
+      }
+    }
+  }
+}

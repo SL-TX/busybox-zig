@@ -1,0 +1,8 @@
+{
+  "applet": "swapoff",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: swapoff [-a] [DEVICE]\n\nStop swapping on DEVICE\n\n\t-a\tStop swapping on all swap devices\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

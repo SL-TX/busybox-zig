@@ -1,0 +1,409 @@
+{
+  "applet": "fsck",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_t_arg",
+      "argv": [
+        "-t"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dry_run_title",
+      "argv": [
+        "-N",
+        "/dev/sda1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dry_run_no_title",
+      "argv": [
+        "-N",
+        "-T",
+        "/dev/sda1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "explicit_type",
+      "argv": [
+        "-N",
+        "-T",
+        "-t",
+        "ext4",
+        "/dev/sda1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "verbose_type",
+      "argv": [
+        "-N",
+        "-T",
+        "-VVV",
+        "-t",
+        "ext4",
+        "/dev/sda1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "check_all",
+      "argv": [
+        "-N",
+        "-T",
+        "-A"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "check_all_verbose",
+      "argv": [
+        "-N",
+        "-V",
+        "-A"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "check_all_very_verbose",
+      "argv": [
+        "-N",
+        "-VV",
+        "-A"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "skip_root",
+      "argv": [
+        "-N",
+        "-T",
+        "-R",
+        "-A"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "all_filter_type",
+      "argv": [
+        "-N",
+        "-T",
+        "-A",
+        "-t",
+        "ext2"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "negated_type",
+      "argv": [
+        "-N",
+        "-T",
+        "-t",
+        "noext4",
+        "/dev/sda1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "mixed_negation",
+      "argv": [
+        "-N",
+        "-T",
+        "-t",
+        "ext2,noext3",
+        "/dev/sda1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unknown_device",
+      "argv": [
+        "-N",
+        "-T",
+        "/dev/sdc1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "fs_opts_passthrough",
+      "argv": [
+        "-N",
+        "-T",
+        "-a",
+        "/dev/sdc1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "two_devices",
+      "argv": [
+        "-N",
+        "-T",
+        "/dev/sda1",
+        "/dev/sdb1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "double_dash",
+      "argv": [
+        "-N",
+        "-T",
+        "--",
+        "/dev/sdc1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "parallel_flag",
+      "argv": [
+        "-N",
+        "-T",
+        "-P",
+        "-A"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "loop_type",
+      "argv": [
+        "-N",
+        "-T",
+        "-t",
+        "loop",
+        "/dev/sda1"
+      ],
+      "stdin": null,
+      "files": {
+        "fstab": "/dev/sda1 / ext4 defaults 0 1\n/dev/sdb1 /mnt ext2 defaults 0 2\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "FSTAB_FILE": "<TMP>/fstab"
+      },
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

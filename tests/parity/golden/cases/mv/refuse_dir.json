@@ -1,0 +1,20 @@
+{
+  "applet": "mv",
+  "name": "refuse_dir",
+  "stdout": "",
+  "stderr": "mv: 'd' is a directory\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    },
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

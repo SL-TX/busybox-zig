@@ -1,0 +1,30 @@
+{
+  "applet": "ash",
+  "name": "glob_class",
+  "stdout": "a1 a2 b1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b1": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "a2": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "a1": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

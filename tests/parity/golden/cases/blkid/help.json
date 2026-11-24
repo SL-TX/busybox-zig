@@ -1,0 +1,8 @@
+{
+  "applet": "blkid",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: blkid [BLOCKDEV]...\n\nPrint UUIDs of all filesystems\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

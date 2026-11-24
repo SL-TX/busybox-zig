@@ -1,0 +1,8 @@
+{
+  "applet": "pwdx",
+  "name": "proc_prefix",
+  "stdout": "/proc/999999: No such process\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

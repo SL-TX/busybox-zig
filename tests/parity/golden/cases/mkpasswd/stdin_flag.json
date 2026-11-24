@@ -1,0 +1,8 @@
+{
+  "applet": "mkpasswd",
+  "name": "stdin_flag",
+  "stdout": "abNANd1rDfiNc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

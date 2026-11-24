@@ -1,0 +1,16 @@
+{
+  "applet": "touch",
+  "name": "basic",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

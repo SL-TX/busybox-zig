@@ -1,0 +1,8 @@
+{
+  "applet": "tcpsvd",
+  "name": "bad_c",
+  "stdout": "",
+  "stderr": "tcpsvd: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

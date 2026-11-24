@@ -1,0 +1,23 @@
+{
+  "applet": "sha384sum",
+  "name": "check_ok",
+  "stdout": "f: OK\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    },
+    "sums": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "NTllMTc0ODc3NzQ0OGM2OWRlNmI4MDBkN2EzM2JiZmI5ZmYxYjQ2M2U0NDM1NGMzNTUzYmNkYjljNjY2ZmE5MDEyNWEzYzc5ZjkwMzk3YmRmNWY2YTEzZGU4Mjg2ODRmICBmCg=="
+      }
+    }
+  }
+}

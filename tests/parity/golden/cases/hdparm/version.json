@@ -1,0 +1,8 @@
+{
+  "applet": "hdparm",
+  "name": "version",
+  "stdout": "",
+  "stderr": "hdparm: invalid option -- 'V'\nhdparm: short read\n",
+  "exit": 1,
+  "tree": {}
+}

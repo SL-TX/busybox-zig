@@ -1,0 +1,8 @@
+{
+  "applet": "fbset",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "fbset: can't open '/dev/fb0': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,109 @@
+{
+  "applet": "setsebool",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    },
+    {
+      "name": "set",
+      "argv": [
+        "httpd_enable_homedirs",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    },
+    {
+      "name": "persistent",
+      "argv": [
+        "-P",
+        "httpd_enable_homedirs",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    },
+    {
+      "name": "bad_value",
+      "argv": [
+        "httpd_enable_homedirs",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "selinux"
+      ]
+    }
+  ]
+}

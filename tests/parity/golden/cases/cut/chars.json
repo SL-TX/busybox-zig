@@ -1,0 +1,8 @@
+{
+  "applet": "cut",
+  "name": "chars",
+  "stdout": "bcd\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "vconfig",
+  "name": "valid_add",
+  "stdout": "",
+  "stderr": "vconfig: ioctl error for add: No such device\n",
+  "exit": 1,
+  "tree": {}
+}

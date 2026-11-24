@@ -1,0 +1,8 @@
+{
+  "applet": "pkill",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "pkill: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: pkill [-l|-SIGNAL] [-xfvnoe] [-s SID|-P PPID|PATTERN]\n\nSend signal to processes selected by regex PATTERN\n\n\t-l\tList all signals\n\t-x\tMatch whole name (not substring)\n\t-f\tMatch against entire command line\n\t-s SID\tMatch session ID (0 for current)\n\t-P PPID\tMatch parent process ID\n\t-v\tNegate the match\n\t-n\tSignal the newest process only\n\t-o\tSignal the oldest process only\n\t-e\tDisplay name and PID of the process being killed\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,20 @@
+{
+  "applet": "ls",
+  "name": "long_dir",
+  "stdout": "total 4\n-rw-r--r--    1 sl       sl               1 <MATCH> f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

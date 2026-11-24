@@ -1,0 +1,8 @@
+{
+  "applet": "od",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: od [-abcdfhilovxs] [-t TYPE] [-A RADIX] [-N SIZE] [-j SKIP] [-S MINSTR] [-w WIDTH] [FILE]...\n\nPrint FILEs (or stdin) unambiguously, as octal bytes by default\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

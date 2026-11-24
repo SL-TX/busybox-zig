@@ -1,0 +1,8 @@
+{
+  "applet": "devfsd",
+  "name": "no_polling",
+  "stdout": "",
+  "stderr": "devfsd: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

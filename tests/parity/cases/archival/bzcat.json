@@ -1,0 +1,117 @@
+{
+  "applet": "bzcat",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file",
+      "argv": [
+        "a.bz2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.bz2": "QlpoOTFBWSZTWaNUVpIAAAdRgAAQQAAGRJCAIAAiv9VDT0QgyYjiIilrVpiMfF3JFOFCQo1RWkg="
+      }
+    },
+    {
+      "name": "two_files",
+      "argv": [
+        "a.bz2",
+        "a.bz2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.bz2": "QlpoOTFBWSZTWaNUVpIAAAdRgAAQQAAGRJCAIAAiv9VDT0QgyYjiIilrVpiMfF3JFOFCQo1RWkg="
+      }
+    },
+    {
+      "name": "plain_file",
+      "argv": [
+        "plain"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "plain": "aGVsbG8gd29ybGQKaGVsbG8gd29ybGQKaGVsbG8gd29ybGQK"
+      }
+    },
+    {
+      "name": "stdin",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "stdin_b64": "QlpoOTFBWSZTWaNUVpIAAAdRgAAQQAAGRJCAIAAiv9VDT0QgyYjiIilrVpiMfF3JFOFCQo1RWkg="
+    }
+  ]
+}

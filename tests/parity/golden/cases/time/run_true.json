@@ -1,0 +1,8 @@
+{
+  "applet": "time",
+  "name": "run_true",
+  "stdout": "",
+  "stderr": "real\t0m <MATCH>s\nuser\t0m <MATCH>s\nsys\t0m <MATCH>s\n",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ipcrm",
+  "name": "illegal_key",
+  "stdout": "",
+  "stderr": "ipcrm: illegal key (0)\n",
+  "exit": 1,
+  "tree": {}
+}

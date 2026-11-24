@@ -1,0 +1,8 @@
+{
+  "applet": "hostname",
+  "name": "set_name",
+  "stdout": "",
+  "stderr": "hostname: sethostname: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

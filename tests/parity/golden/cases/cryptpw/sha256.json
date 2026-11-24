@@ -1,0 +1,8 @@
+{
+  "applet": "cryptpw",
+  "name": "sha256",
+  "stdout": "$5$abcdefgh$gruCpC7VkOTspMQTTSAR8mtlO9Upms.fwqE5y16JVM.\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

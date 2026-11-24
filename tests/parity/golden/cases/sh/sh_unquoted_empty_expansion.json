@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_unquoted_empty_expansion",
+  "stdout": "a b c\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

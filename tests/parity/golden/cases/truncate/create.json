@@ -1,0 +1,16 @@
+{
+  "applet": "truncate",
+  "name": "create",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "newf": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "AAA="
+      }
+    }
+  }
+}

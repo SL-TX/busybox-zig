@@ -1,0 +1,39 @@
+{
+  "applet": "sh",
+  "name": "sh_glob_multicomponent",
+  "stdout": "d1/sub/f d2/sub/f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d2": {
+      "type": "dir",
+      "mode": 509
+    },
+    "d2/sub": {
+      "type": "dir",
+      "mode": 509
+    },
+    "d2/sub/f": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "d1": {
+      "type": "dir",
+      "mode": 509
+    },
+    "d1/sub": {
+      "type": "dir",
+      "mode": 509
+    },
+    "d1/sub/f": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "volname",
+  "name": "device",
+  "stdout": "",
+  "stderr": "volname: can't open '/dev/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

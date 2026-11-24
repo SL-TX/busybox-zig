@@ -1,0 +1,8 @@
+{
+  "applet": "depmod",
+  "name": "missing_version",
+  "stdout": "",
+  "stderr": "depmod: can't change directory to 'notaversion': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

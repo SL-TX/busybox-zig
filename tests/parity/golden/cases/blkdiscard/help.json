@@ -1,0 +1,8 @@
+{
+  "applet": "blkdiscard",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: blkdiscard [-o OFS] [-l LEN] [-s] DEVICE\n\nDiscard sectors on DEVICE\n\n\t-o OFS\tByte offset into device\n\t-l LEN\tNumber of bytes to discard\n\t-s\tPerform a secure discard\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

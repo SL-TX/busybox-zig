@@ -1,0 +1,16 @@
+{
+  "applet": "tar",
+  "name": "corrupt",
+  "stdout": "",
+  "stderr": "tar: invalid tar magic\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QkFEIQ=="
+      }
+    }
+  }
+}

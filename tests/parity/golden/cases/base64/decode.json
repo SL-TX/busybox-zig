@@ -1,0 +1,8 @@
+{
+  "applet": "base64",
+  "name": "decode",
+  "stdout": "hello",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

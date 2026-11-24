@@ -1,0 +1,8 @@
+{
+  "applet": "losetup",
+  "name": "list_all",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

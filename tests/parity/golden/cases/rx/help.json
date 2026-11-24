@@ -1,0 +1,8 @@
+{
+  "applet": "rx",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: rx FILE\n\nReceive a file using the xmodem protocol\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

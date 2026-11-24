@@ -1,0 +1,8 @@
+{
+  "applet": "nslookup",
+  "name": "invalid_query_type",
+  "stdout": "",
+  "stderr": "nslookup: invalid query type \"bogus\"\n",
+  "exit": 1,
+  "tree": {}
+}

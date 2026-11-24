@@ -1,0 +1,24 @@
+{
+  "applet": "du",
+  "name": "summarize",
+  "stdout": "4\td\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MTIzNDU="
+      }
+    },
+    "d/s": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

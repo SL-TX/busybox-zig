@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "umask",
+  "stdout": "0077\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

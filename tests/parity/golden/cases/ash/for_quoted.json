@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "for_quoted",
+  "stdout": "[a b]\n[c]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

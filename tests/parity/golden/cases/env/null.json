@@ -1,0 +1,8 @@
+{
+  "applet": "env",
+  "name": "null",
+  "stdout": "bar\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

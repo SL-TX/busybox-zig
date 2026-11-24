@@ -1,0 +1,174 @@
+{
+  "applet": "zcat",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "gzip_file",
+      "argv": [
+        "a.gz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.gz": "H4sIAAAAAAAC/8tIzcnJVyjPL8pJ4crAwQYAjPgJ6yQAAAA="
+      }
+    },
+    {
+      "name": "bzip2_file",
+      "argv": [
+        "a.bz2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.bz2": "QlpoOTFBWSZTWaNUVpIAAAdRgAAQQAAGRJCAIAAiv9VDT0QgyYjiIilrVpiMfF3JFOFCQo1RWkg="
+      }
+    },
+    {
+      "name": "xz_file",
+      "argv": [
+        "a.xz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.xz": "/Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4AAjABNdADQZSe6N6ReJOjNf/LOBBLcgAAAAAB27l4fLotvRAAEvJJdpmQ4ftvN9AQAAAAAEWVo="
+      }
+    },
+    {
+      "name": "lzma_file",
+      "argv": [
+        "a.lzma"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.lzma": "XQAAgAD//////////wA0GUnujekXiTozX/yzgQT83JP//982AAA="
+      }
+    },
+    {
+      "name": "plain_file",
+      "argv": [
+        "plain"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "plain": "aGVsbG8gd29ybGQKaGVsbG8gd29ybGQKaGVsbG8gd29ybGQK"
+      }
+    },
+    {
+      "name": "two_files",
+      "argv": [
+        "a.gz",
+        "a.bz2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.gz": "H4sIAAAAAAAC/8tIzcnJVyjPL8pJ4crAwQYAjPgJ6yQAAAA=",
+        "a.bz2": "QlpoOTFBWSZTWaNUVpIAAAdRgAAQQAAGRJCAIAAiv9VDT0QgyYjiIilrVpiMfF3JFOFCQo1RWkg="
+      }
+    },
+    {
+      "name": "stdin",
+      "argv": [
+        "-c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "stdin_b64": "H4sIAAAAAAAC/8tIzcnJVyjPL8pJ4crAwQYAjPgJ6yQAAAA="
+    }
+  ]
+}

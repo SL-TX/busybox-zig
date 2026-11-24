@@ -1,0 +1,163 @@
+{
+  "applet": "gunzip",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "-c",
+        "nonexist"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "decompress_file",
+      "argv": [
+        "-c",
+        "a.gz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.gz": "H4sIAAAAAAAC/8tIzcnJVyjPL8pJ4crAwQYAjPgJ6yQAAAA="
+      }
+    },
+    {
+      "name": "decompress_stdin",
+      "argv": [
+        "-c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "stdin_b64": "H4sIAAAAAAAC/8tIzcnJVyjPL8pJ4crAwQYAjPgJ6yQAAAA="
+    },
+    {
+      "name": "test_ok",
+      "argv": [
+        "-t",
+        "a.gz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.gz": "H4sIAAAAAAAC/8tIzcnJVyjPL8pJ4crAwQYAjPgJ6yQAAAA="
+      }
+    },
+    {
+      "name": "test_corrupt",
+      "argv": [
+        "-t",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    },
+    {
+      "name": "decompress_corrupt",
+      "argv": [
+        "-c",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    },
+    {
+      "name": "keep_file",
+      "argv": [
+        "-k",
+        "-c",
+        "a.gz"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.gz": "H4sIAAAAAAAC/8tIzcnJVyjPL8pJ4crAwQYAjPgJ6yQAAAA="
+      }
+    }
+  ]
+}

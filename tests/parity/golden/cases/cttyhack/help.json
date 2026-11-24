@@ -1,0 +1,8 @@
+{
+  "applet": "cttyhack",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: cttyhack [PROG ARGS]\n\nGive PROG a controlling tty if possible.\nExample for /etc/inittab (for busybox init):\n\t::respawn:/bin/cttyhack /bin/sh\nGiving controlling tty to shell running with PID 1:\n\t$ exec cttyhack sh\nStarting interactive shell from boot shell script:\n\tsetsid cttyhack sh\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

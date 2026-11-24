@@ -1,0 +1,8 @@
+{
+  "applet": "touch",
+  "name": "missing_parent",
+  "stdout": "",
+  "stderr": "touch: missing/deep/f: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "dc",
+  "name": "print_stack",
+  "stdout": "3\n2\n1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

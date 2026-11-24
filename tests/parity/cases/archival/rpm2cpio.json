@@ -1,0 +1,69 @@
+{
+  "applet": "rpm2cpio",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "corrupt",
+      "argv": [
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "QkFEIQ=="
+      }
+    },
+    {
+      "name": "valid",
+      "argv": [
+        "rpm"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "rpm": "7avu2wADAAAAAQAAaGVsbG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAjq3oAQAAAAAAAAAAAAAAAI6t6AEAAAAAAAAABwAAACMAAAPoAAAABgAAAAAAAAABAAAD6QAAAAYAAAAGAAAAAQAAA+oAAAAGAAAACgAAAAEAAAP+AAAABgAAAAwAAAABAAAD/QAAAAYAAAATAAAAAQAABGQAAAAGAAAAGQAAAAEAAARlAAAABgAAAB4AAAABaGVsbG8AMS4wADEAbm9hcmNoAGxpbnV4AGNwaW8AZ3ppcAAfiwgAAAAAAAADMzAHQkMDCADTFoaJJgbYgSEaPxmHOnSQCGNkpObk5OuVVJQwgFkK5flFOSlcFLmBWJAEY4QEOXr6uAYpKioyAAEApmSdQgABAAA="
+      }
+    }
+  ]
+}

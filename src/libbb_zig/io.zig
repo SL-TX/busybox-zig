@@ -52,8 +52,29 @@ pub fn write(fd: fd_t, buf: []const u8) !usize {
 pub fn writeAll(fd: fd_t, bytes: []const u8) !void {
     var done: usize = 0;
     while (done < bytes.len) {
-        done += try write(fd, bytes[done..]);
+        const rc = linux.write(fd, bytes[done..].ptr, bytes.len - done);
+        const e = linux.errno(rc);
+        if (e == .INTR) continue;
+        if (e != .SUCCESS) {
+            process.errno = @intFromEnum(e);
+            return error.SyscallFailed;
+        }
+        done += @intCast(rc);
     }
+}
+
+/// Full-write: keep going until every byte is accepted (handles short writes).
+pub const fullWrite = writeAll;
+
+/// Full-read: read until the buffer is full or EOF is reached.
+pub fn fullRead(fd: fd_t, buf: []u8) !usize {
+    var done: usize = 0;
+    while (done < buf.len) {
+        const n = try read(fd, buf[done..]);
+        if (n == 0) break;
+        done += n;
+    }
+    return done;
 }
 
 pub fn lseek(fd: fd_t, offset: i64, whence: u32) !u64 {
@@ -164,4 +185,72 @@ pub fn warn(msg: []const u8) void {
 pub fn die(msg: []const u8) noreturn {
     warn(msg);
     std.process.exit(1);
+}
+
+// --- filesystem/process helpers added for libbb parity ----------------------
+
+/// Copy every byte from `src_fd` to `dst_fd`, returning the number copied.
+/// Handles short reads/writes and EINTR. This is the canonical implementation
+/// used by `copy.copyFd` and `copy.copyFile`.
+pub fn copyFd(src_fd: fd_t, dst_fd: fd_t) !u64 {
+    var buf: [64 * 1024]u8 = undefined;
+    var total: u64 = 0;
+    while (true) {
+        const rc = linux.read(src_fd, &buf, buf.len);
+        const e = linux.errno(rc);
+        if (e == .INTR) continue;
+        if (e != .SUCCESS) {
+            process.errno = @intFromEnum(e);
+            return error.SyscallFailed;
+        }
+        if (rc == 0) break;
+        const n: usize = @intCast(rc);
+        try writeAll(dst_fd, buf[0..n]);
+        total += n;
+    }
+    return total;
+}
+
+pub fn symlink(target: []const u8, linkpath: []const u8) !void {
+    var a: [max_path:0]u8 = undefined;
+    var b: [max_path:0]u8 = undefined;
+    try check(linux.symlink(try pathZ(target, &a), try pathZ(linkpath, &b)));
+}
+
+pub fn link(old: []const u8, new: []const u8) !void {
+    var a: [max_path:0]u8 = undefined;
+    var b: [max_path:0]u8 = undefined;
+    try check(linux.link(try pathZ(old, &a), try pathZ(new, &b)));
+}
+
+pub fn mknod(path: []const u8, mode: mode_t, dev: u64) !void {
+    var buf: [max_path:0]u8 = undefined;
+    try check(linux.mknod(try pathZ(path, &buf), mode, dev));
+}
+
+pub fn fchmod(fd: fd_t, mode: mode_t) !void {
+    try check(linux.fchmod(fd, mode));
+}
+
+pub fn fchown(fd: fd_t, owner: process.uid_t, group: process.gid_t) !void {
+    try check(linux.fchown(fd, owner, group));
+}
+
+/// Set file times (seconds/nanoseconds) via utimensat on a path.
+pub fn setTimes(path: []const u8, sec: i64, nsec: i64) !void {
+    var buf: [max_path:0]u8 = undefined;
+    const p = try pathZ(path, &buf);
+    const times = [2]linux.timespec{
+        .{ .sec = sec, .nsec = nsec },
+        .{ .sec = sec, .nsec = nsec },
+    };
+    try check(linux.utimensat(linux.AT.FDCWD, p, &times, 0));
+}
+
+pub fn readlink(path: []const u8, buf: []u8) !usize {
+    var zbuf: [max_path:0]u8 = undefined;
+    const p = try pathZ(path, &zbuf);
+    const rc = linux.readlink(p, buf.ptr, buf.len);
+    try check(rc);
+    return @intCast(rc);
 }

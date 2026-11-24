@@ -1,0 +1,16 @@
+{
+  "applet": "fsync",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "fsync: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fsync [-d] FILE...\n\nWrite all buffered blocks in FILEs to disk\n\n\t-d\tAvoid syncing metadata\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ZGF0YQ=="
+      }
+    }
+  }
+}

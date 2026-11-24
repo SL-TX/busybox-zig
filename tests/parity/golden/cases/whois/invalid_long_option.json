@@ -1,0 +1,8 @@
+{
+  "applet": "whois",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "whois: unrecognized option '--bogusoption'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: whois [-i] [-h SERVER] [-p PORT] NAME...\n\nQuery WHOIS info about NAME\n\n\t-i\tShow redirect results too\n\t-h,-p\tServer to query\n",
+  "exit": 1,
+  "tree": {}
+}

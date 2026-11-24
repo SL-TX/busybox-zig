@@ -1,0 +1,8 @@
+{
+  "applet": "tftp",
+  "name": "put_no_local",
+  "stdout": "",
+  "stderr": "tftp: can't open 'r': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

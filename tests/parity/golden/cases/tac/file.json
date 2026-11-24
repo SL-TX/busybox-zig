@@ -1,0 +1,16 @@
+{
+  "applet": "tac",
+  "name": "file",
+  "stdout": "y\nx\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eAp5Cg=="
+      }
+    }
+  }
+}

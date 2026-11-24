@@ -1,0 +1,16 @@
+{
+  "applet": "reformime",
+  "name": "unsupported_encoding",
+  "stdout": "",
+  "stderr": "reformime: encoding 'quoted-printable' not supported\n",
+  "exit": 1,
+  "tree": {
+    "qp.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

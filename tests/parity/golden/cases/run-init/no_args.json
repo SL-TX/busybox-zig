@@ -1,0 +1,8 @@
+{
+  "applet": "run-init",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: run-init [-d CAP,CAP...] [-n] [-c CONSOLE_DEV] NEW_ROOT NEW_INIT [ARGS]\n\nFree initramfs and switch to another root fs:\nchroot to NEW_ROOT, delete all in /, move NEW_ROOT to /,\nexecute NEW_INIT. PID must be 1. NEW_ROOT must be a mountpoint.\n\n\t-c DEV\tReopen stdio to DEV after switch\n\t-d CAPS\tDrop capabilities\n\t-n\tDry run\n",
+  "exit": 1,
+  "tree": {}
+}

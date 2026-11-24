@@ -1,0 +1,8 @@
+{
+  "applet": "cat",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "cat: can't open 'nope': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ipcrm",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ipcrm [-MQS key] [-mqs id]\n\nUpper-case options MQS remove an object by shmkey value.\nLower-case options remove an object by shmid value.\n\n\t-mM\tRemove memory segment after last detach\n\t-qQ\tRemove message queue\n\t-sS\tRemove semaphore\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

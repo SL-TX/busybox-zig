@@ -1,0 +1,8 @@
+{
+  "applet": "cal",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: cal [-jmy] [[MONTH] YEAR]\n\nDisplay a calendar\n\n\t-j\tUse julian dates\n\t-m\tWeek starts on Monday\n\t-y\tDisplay the entire year\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

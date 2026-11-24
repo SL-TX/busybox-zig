@@ -1,0 +1,8 @@
+{
+  "applet": "seq",
+  "name": "two",
+  "stdout": "2\n3\n4\n5\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

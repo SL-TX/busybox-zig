@@ -1,0 +1,23 @@
+{
+  "applet": "wc",
+  "name": "two_files",
+  "stdout": "        1         1         2 f\n        1         2         4 g\n        2         3         6 total\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YiBjCg=="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQo="
+      }
+    }
+  }
+}

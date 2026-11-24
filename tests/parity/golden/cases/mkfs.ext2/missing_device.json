@@ -1,0 +1,8 @@
+{
+  "applet": "mkfs.ext2",
+  "name": "missing_device",
+  "stdout": "",
+  "stderr": "mkfs.ext2: can't open '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

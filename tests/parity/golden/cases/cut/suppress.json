@@ -1,0 +1,8 @@
+{
+  "applet": "cut",
+  "name": "suppress",
+  "stdout": "b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "route",
+  "name": "add_default",
+  "stdout": "",
+  "stderr": "route: SIOCADDRT: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

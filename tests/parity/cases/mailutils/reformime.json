@@ -1,0 +1,224 @@
+{
+  "applet": "reformime",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args_noopts",
+      "argv": [],
+      "stdin": "Content-Type: text/plain\nContent-Disposition: inline; filename=\"hello.txt\"\nContent-Transfer-Encoding: 7bit\n\nhello\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "base64_section",
+      "argv": [],
+      "stdin": "Content-Type: application/octet-stream\nContent-Disposition: inline; filename=\"enc.bin\"\nContent-Transfer-Encoding: base64\n\naGVsbG8gd29ybGQK",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "extract_prefix",
+      "argv": [
+        "-x",
+        "OUT/"
+      ],
+      "stdin": "From: me@example.com\nMime-Version: 1.0\nContent-Type: multipart/mixed; boundary=\"BOUND\"\n\npreamble\n--BOUND\nContent-Type: text/plain\nContent-Disposition: inline; filename=\"one.txt\"\nContent-Transfer-Encoding: 7bit\n\nfirst\n--BOUND\nContent-Type: text/plain\nContent-Disposition: inline; filename=\"two.txt\"\nContent-Transfer-Encoding: base64\n\nc2Vjb25kCg==--BOUND--\n",
+      "files": {},
+      "dirs": [
+        "OUT"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+"
+      ],
+      "requires": [],
+      "normalize_paths": true
+    },
+    {
+      "name": "multipart_two_sections",
+      "argv": [],
+      "stdin": "From: me@example.com\nMime-Version: 1.0\nContent-Type: multipart/mixed; boundary=\"BOUND\"\n\npreamble\n--BOUND\nContent-Type: text/plain\nContent-Disposition: inline; filename=\"one.txt\"\nContent-Transfer-Encoding: 7bit\n\nfirst\n--BOUND\nContent-Type: text/plain\nContent-Disposition: inline; filename=\"two.txt\"\nContent-Transfer-Encoding: base64\n\nc2Vjb25kCg==--BOUND--\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+"
+      ],
+      "requires": [],
+      "normalize_paths": true
+    },
+    {
+      "name": "crlf",
+      "argv": [],
+      "stdin": "Content-Type: text/plain\r\nContent-Disposition: inline; filename=\"crlf.txt\"\r\nContent-Transfer-Encoding: 7bit\r\n\r\none\r\ntwo\r\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "compat_opts",
+      "argv": [
+        "-d",
+        "-e",
+        "-i",
+        "-r",
+        "-c",
+        "UTF-8"
+      ],
+      "stdin": "Content-Type: text/plain\nContent-Disposition: inline; filename=\"hello.txt\"\nContent-Transfer-Encoding: 7bit\n\nhello\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "filter_cat",
+      "argv": [
+        "-X",
+        "<BB>",
+        "cat"
+      ],
+      "stdin": "Content-Type: text/plain\nContent-Disposition: inline; filename=\"hello.txt\"\nContent-Transfer-Encoding: 7bit\n\nhello\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "filter_failure",
+      "argv": [
+        "-X",
+        "<BB>",
+        "false"
+      ],
+      "stdin": "Content-Type: text/plain\nContent-Disposition: inline; filename=\"hello.txt\"\nContent-Transfer-Encoding: 7bit\n\nhello\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unsupported_encoding",
+      "argv": [],
+      "stdin": "Content-Type: text/plain\nContent-Disposition: inline; filename=\"qp.txt\"\nContent-Transfer-Encoding: quoted-printable\n\nhello=20world\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unsupported_type",
+      "argv": [],
+      "stdin": "Content-Type: multipart/alternative; boundary=\"BOUND\"\n\n--BOUND\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_x_arg",
+      "argv": [
+        "-x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "x_and_X",
+      "argv": [
+        "-x",
+        "pre",
+        "-X",
+        "echo"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

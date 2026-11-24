@@ -1,0 +1,8 @@
+{
+  "applet": "remove-shell",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "remove-shell: can't open '/etc/shells.tmp': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

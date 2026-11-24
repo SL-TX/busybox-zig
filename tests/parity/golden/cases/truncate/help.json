@@ -1,0 +1,8 @@
+{
+  "applet": "truncate",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: truncate [-c] -s SIZE FILE...\n\nTruncate FILEs to SIZE\n\n\t-c\tDo not create files\n\t-s SIZE\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

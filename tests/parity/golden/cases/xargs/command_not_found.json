@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "command_not_found",
+  "stdout": "",
+  "stderr": "xargs: definitely_no_such_cmd_xyz: No such file or directory\n",
+  "exit": 127,
+  "tree": {}
+}

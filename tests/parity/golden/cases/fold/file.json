@@ -1,0 +1,16 @@
+{
+  "applet": "fold",
+  "name": "file",
+  "stdout": "abcdefghij\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjZGVmZ2hpago="
+      }
+    }
+  }
+}

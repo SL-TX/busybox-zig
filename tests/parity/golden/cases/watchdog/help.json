@@ -1,0 +1,8 @@
+{
+  "applet": "watchdog",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: watchdog [-t N[ms]] [-T N[ms]] [-F] DEV\n\nPeriodically write to watchdog device DEV\n\n\t-T N\tReboot after N seconds if not reset (default 60)\n\t-t N\tReset every N seconds (default 30)\n\t-F\tRun in foreground\n\nUse 500ms to specify period in milliseconds\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

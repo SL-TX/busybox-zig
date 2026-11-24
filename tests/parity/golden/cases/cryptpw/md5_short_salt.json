@@ -1,0 +1,8 @@
+{
+  "applet": "cryptpw",
+  "name": "md5_short_salt",
+  "stdout": "$1$ab$dslkcXxVH.x8LwW1W/oAB/\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

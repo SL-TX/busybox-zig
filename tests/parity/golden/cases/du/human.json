@@ -1,0 +1,16 @@
+{
+  "applet": "du",
+  "name": "human",
+  "stdout": "4.0K\ta\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

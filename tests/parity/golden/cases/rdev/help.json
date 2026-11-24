@@ -1,0 +1,8 @@
+{
+  "applet": "rdev",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: rdev\n\nPrint the device node associated with the filesystem mounted at '/'\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

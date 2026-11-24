@@ -1,0 +1,8 @@
+{
+  "applet": "fbset",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fbset [OPTIONS] [MODE]\n\nShow and modify frame buffer settings\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

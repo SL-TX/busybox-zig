@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "redir_combined",
+  "stdout": "both\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "both.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "Ym90aAo="
+      }
+    }
+  }
+}

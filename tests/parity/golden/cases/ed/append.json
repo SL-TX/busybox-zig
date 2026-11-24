@@ -1,0 +1,16 @@
+{
+  "applet": "ed",
+  "name": "append",
+  "stdout": "one\nthree\n",
+  "stderr": "Really quit? ",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b25lCg=="
+      }
+    }
+  }
+}

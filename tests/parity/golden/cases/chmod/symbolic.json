@@ -1,0 +1,16 @@
+{
+  "applet": "chmod",
+  "name": "symbolic",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 484,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

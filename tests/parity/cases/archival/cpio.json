@@ -1,0 +1,332 @@
+{
+  "applet": "cpio",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "list",
+      "argv": [
+        "-t",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "list_verbose",
+      "argv": [
+        "-v",
+        "-t",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "extract",
+      "argv": [
+        "-i",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "extract_overwrite",
+      "argv": [
+        "-i",
+        "-u",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "extract_dirs",
+      "argv": [
+        "-i",
+        "-d",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "-t",
+        "-F",
+        "nope"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "corrupt_stdin",
+      "argv": [
+        "-t"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "stdin_b64": "QkFEIQ=="
+    },
+    {
+      "name": "roundtrip_create",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys; bb=sys.argv[1]; tmp=sys.argv[2]; os.makedirs(tmp,exist_ok=True); open(os.path.join(tmp,'rt.txt'),'wb').write(b'roundtrip payload\\n'); c=subprocess.run([bb,'cpio','-o','-H','newc'],input=b'rt.txt\\n',cwd=tmp,stdout=subprocess.PIPE,check=True).stdout; r=subprocess.run([bb,'cpio','-t'],input=c,cwd=tmp,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True); sys.stdout.buffer.write(r.stdout)",
+        "<BB>",
+        "<TMP>"
+      ],
+      "expect": {
+        "stdout": "rt.txt\n"
+      }
+    },
+    {
+      "name": "mtime_default",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys; bb=sys.argv[1]; tmp=sys.argv[2]; extra=sys.argv[3]; os.makedirs(tmp,exist_ok=True); f=os.path.join(tmp,'f'); open(f,'wb').write(b'hi'); os.utime(f,(1234567890,1234567890)); a=subprocess.run([bb,'cpio','-o','-H','newc'],input=b'f\\n',cwd=tmp,stdout=subprocess.PIPE,check=True).stdout; os.remove(f); subprocess.run([bb,'cpio','-i']+([extra] if extra else []),input=a,cwd=tmp,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE); print(os.stat(f).st_mtime==1234567890.0); os.remove(f)",
+        "<BB>",
+        "<TMP>",
+        ""
+      ],
+      "expect": {
+        "stdout": "False\n"
+      }
+    },
+    {
+      "name": "mtime_restore",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys; bb=sys.argv[1]; tmp=sys.argv[2]; extra=sys.argv[3]; os.makedirs(tmp,exist_ok=True); f=os.path.join(tmp,'f'); open(f,'wb').write(b'hi'); os.utime(f,(1234567890,1234567890)); a=subprocess.run([bb,'cpio','-o','-H','newc'],input=b'f\\n',cwd=tmp,stdout=subprocess.PIPE,check=True).stdout; os.remove(f); subprocess.run([bb,'cpio','-i']+([extra] if extra else []),input=a,cwd=tmp,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE); print(os.stat(f).st_mtime==1234567890.0); os.remove(f)",
+        "<BB>",
+        "<TMP>",
+        "-m"
+      ],
+      "expect": {
+        "stdout": "True\n"
+      }
+    },
+    {
+      "name": "bad_format",
+      "argv": [
+        "-o",
+        "-H",
+        "odc"
+      ],
+      "stdin": "f\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "create_symlink_default",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys; bb=sys.argv[1]; tmp=sys.argv[2]; extra=sys.argv[3]; os.makedirs(tmp,exist_ok=True); open(os.path.join(tmp,'target'),'wb').write(b'data'); os.symlink('target',os.path.join(tmp,'link')); cmd=[bb,'cpio','-o','-H','newc']+([extra] if extra else []); a=subprocess.run(cmd,input=b'link\\n',cwd=tmp,stdout=subprocess.PIPE,check=True).stdout; r=subprocess.run([bb,'cpio','-tv'],input=a,cwd=tmp,stdout=subprocess.PIPE,check=True); sys.stdout.buffer.write(r.stdout[:1]+b'\\n'); [os.remove(os.path.join(tmp,f)) for f in ['target','link']]",
+        "<BB>",
+        "<TMP>",
+        ""
+      ],
+      "expect": {
+        "stdout": "l\n"
+      }
+    },
+    {
+      "name": "create_symlink_deref",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "-c",
+        "import os,subprocess,sys; bb=sys.argv[1]; tmp=sys.argv[2]; extra=sys.argv[3]; os.makedirs(tmp,exist_ok=True); open(os.path.join(tmp,'target'),'wb').write(b'data'); os.symlink('target',os.path.join(tmp,'link')); cmd=[bb,'cpio','-o','-H','newc']+([extra] if extra else []); a=subprocess.run(cmd,input=b'link\\n',cwd=tmp,stdout=subprocess.PIPE,check=True).stdout; r=subprocess.run([bb,'cpio','-tv'],input=a,cwd=tmp,stdout=subprocess.PIPE,check=True); sys.stdout.buffer.write(r.stdout[:1]+b'\\n'); [os.remove(os.path.join(tmp,f)) for f in ['target','link']]",
+        "<BB>",
+        "<TMP>",
+        "-L"
+      ],
+      "expect": {
+        "stdout": "-\n"
+      }
+    },
+    {
+      "name": "owner_spec",
+      "argv": [
+        "-i",
+        "-R",
+        "1234:1234",
+        "-F",
+        "cpio"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "cpio": "MDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMGMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBhMDAwMDAwMDBoZWxsby50eHQAaGVsbG8gd29ybGQKMDcwNzAxMDAwMDAwMDEwMDAwODFhNDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDBiMDAwMDAwMDBUUkFJTEVSISEhAAAAAA=="
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "groups",
+  "name": "unknown",
+  "stdout": "",
+  "stderr": "groups: unknown user nosuchuser_xyz\n",
+  "exit": 1,
+  "tree": {}
+}

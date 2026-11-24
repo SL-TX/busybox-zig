@@ -1,0 +1,8 @@
+{
+  "applet": "netstat",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "netstat: unrecognized option '--bogusoption'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: netstat [-ral] [-tuwx] [-enWp]\n\nDisplay networking information\n\n\t-r\tRouting table\n\t-a\tAll sockets\n\t-l\tListening sockets\n\t\tElse: connected sockets\n\t-t\tTCP sockets\n\t-u\tUDP sockets\n\t-w\tRaw sockets\n\t-x\tUnix sockets\n\t\tElse: all socket types\n\t-e\tOther/more information\n\t-n\tDon't resolve names\n\t-W\tWide display\n\t-p\tShow PID/program name for sockets\n",
+  "exit": 1,
+  "tree": {}
+}

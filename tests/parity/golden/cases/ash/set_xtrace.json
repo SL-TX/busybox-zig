@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "set_xtrace",
+  "stdout": "traced\n",
+  "stderr": "+ echo traced\n+ cat trace.txt\n",
+  "exit": 0,
+  "tree": {
+    "trace.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

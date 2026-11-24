@@ -1,0 +1,8 @@
+{
+  "applet": "arp",
+  "name": "no_args",
+  "stdout": "<MATCH>(109.168.160.204) at 28:de:e5:f5:7b:f6 [ether]  on enp1s0\n<MATCH>(192.168.0.24) at 1c:87:2c:5e:a6:33 [ether]  on enp1s0\n<MATCH>(192.168.0.17) at 08:d8:33:6f:67:1e [ether]  on enp1s0\n<MATCH>(192.168.0.100) at <incomplete>  on enp1s0\n<MATCH>(192.168.0.1) at 28:de:e5:f5:7b:f6 [ether]  on enp1s0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

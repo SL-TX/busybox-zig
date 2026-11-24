@@ -1,0 +1,8 @@
+{
+  "applet": "who",
+  "name": "H",
+  "stdout": "USER\t\tTTY\t\tIDLE\tTIME\t\t HOST\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

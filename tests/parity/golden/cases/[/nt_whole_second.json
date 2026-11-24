@@ -1,0 +1,23 @@
+{
+  "applet": "[",
+  "name": "nt_whole_second",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Yg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQ=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "acpid",
+  "name": "config_dir",
+  "stdout": "",
+  "stderr": "acpid: /dev/input/event0: Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

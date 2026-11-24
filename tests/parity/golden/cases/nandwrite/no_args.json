@@ -1,0 +1,8 @@
+{
+  "applet": "nandwrite",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: nandwrite [-np] [-s ADDR] MTD_DEVICE [FILE]\n\nWrite to MTD_DEVICE\n\n\t-n\tWrite without ecc\n\t-p\tPad to page size\n\t-s ADDR\tStart address\n",
+  "exit": 1,
+  "tree": {}
+}

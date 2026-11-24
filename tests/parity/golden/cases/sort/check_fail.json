@@ -1,0 +1,8 @@
+{
+  "applet": "sort",
+  "name": "check_fail",
+  "stdout": "",
+  "stderr": "Check line 1\n",
+  "exit": 1,
+  "tree": {}
+}

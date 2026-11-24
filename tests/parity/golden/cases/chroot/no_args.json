@@ -1,0 +1,8 @@
+{
+  "applet": "chroot",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: chroot NEWROOT [PROG ARGS]\n\nRun PROG with root directory set to NEWROOT\n",
+  "exit": 1,
+  "tree": {}
+}

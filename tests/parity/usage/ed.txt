@@ -1,0 +1,2 @@
+
+Usage: ed [-p PROMPT] [-s] [FILE]

@@ -1,0 +1,8 @@
+{
+  "applet": "i2ctransfer",
+  "name": "bus_only",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: i2ctransfer [-fay] I2CBUS { rLENGTH[@ADDR] | wLENGTH[@ADDR] DATA...}...\n\nRead/write I2C data in one transfer\n\n\t-f\tForce access to busy addresses\n\t-a\tForce access to non-regular addresses\n\t-y\tDisable interactive mode\n",
+  "exit": 1,
+  "tree": {}
+}

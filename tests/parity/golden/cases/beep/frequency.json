@@ -1,0 +1,8 @@
+{
+  "applet": "beep",
+  "name": "frequency",
+  "stdout": "",
+  "stderr": "beep: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

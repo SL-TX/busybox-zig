@@ -1,0 +1,8 @@
+{
+  "applet": "tar",
+  "name": "create_symlink_follow",
+  "stdout": "-\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "udhcpc6",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "udhcpc6: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: udhcpc6 [-fbqvR] [-t N] [-T SEC] [-A SEC|-n] [-i IFACE] [-s PROG]\n\t[-p PIDFILE] [-mldo] [-r IPv6] [-x OPT:VAL]... [-O OPT]...\n\n\t-i IFACE\tInterface to use (default eth0)\n\t-p FILE\t\tCreate pidfile\n\t-s PROG\t\tRun PROG at DHCP events (default /usr/share/udhcpc/default6.script)\n\t-t N\t\tSend up to N discover packets\n\t-T SEC\t\tPause between packets (default 3)\n\t-A SEC\t\tWait if lease is not obtained (default 20)\n\t-b\t\tBackground if lease is not obtained\n\t-n\t\tExit if lease is not obtained\n\t-q\t\tExit after obtaining lease\n\t-R\t\tRelease IP on exit\n\t-f\t\tRun in foreground\n\t-S\t\tLog to syslog too\n\t-m\t\tSend multicast renew requests rather than unicast ones\n\t-l\t\tSend 'information request' instead of 'solicit'\n\t\t\t(used for servers which do not assign IPv6 addresses)\n\t-r IPv6\t\tRequest this address ('no' to not request any IP)\n\t-d\t\tRequest prefix\n\t-o\t\tDon't request any options (unless -O is given)\n\t-O OPT\t\tRequest option OPT from server (cumulative)\n\t-x OPT:VAL\tInclude option OPT in sent packets (cumulative)\n\t\t\tExamples of string, numeric, and hex byte opts:\n\t\t\t-x hostname:bbox - option 12\n\t\t\t-x lease:3600 - option 51 (lease time)\n\t\t\t-x 0x3d:0100BEEFC0FFEE - option 61 (client id)\n\t\t\t-x 14:'\"dumpfile\"' - option 14 (shell-quoted)\n\t-v\t\tVerbose\nSignals:\n\tUSR1\tRenew lease\n\tUSR2\tRelease lease\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "param_hash_forms",
+  "stdout": ":1\n<MATCH>\n1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "test_file",
+  "stdout": "file\ndir\nzero\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "udhcpd",
+  "name": "missing_I",
+  "stdout": "",
+  "stderr": "udhcpd: option requires an argument -- 'I'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: udhcpd [-fS] [-I ADDR] [-a MSEC] [CONFFILE]\n\nDHCP server\n\n\t-f\tRun in foreground\n\t-S\tLog to syslog too\n\t-I ADDR\tLocal address\n\t-a MSEC\tTimeout for ARP ping (default 2000)\nSignals:\n\tUSR1\tUpdate lease file\n",
+  "exit": 1,
+  "tree": {}
+}

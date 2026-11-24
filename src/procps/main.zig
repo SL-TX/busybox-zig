@@ -226,117 +226,40 @@ pub fn formatPsRow(pid: i32, ppid: i32, state: u8, command: []const u8, buf: []u
     });
 }
 
-pub fn ps_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    _ = argc;
-    _ = argv;
-    const a = std.heap.page_allocator;
-    const rows = collectRows(a) catch return 1;
-    defer freeRows(a, rows);
-    out("  PID  PPID STAT COMMAND\n");
-    var line: [1024]u8 = undefined;
-    for (rows) |r| {
-        const text = formatPsRow(r.stat.pid, r.stat.ppid, r.stat.state, r.command, &line) catch continue;
-        out(text);
-    }
-    return 0;
-}
+pub const ps_main = @import("ps.zig").main;
 
-pub fn top_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    _ = argc;
-    _ = argv;
-    const a = std.heap.page_allocator;
-    const rows = collectRows(a) catch return 1;
-    defer freeRows(a, rows);
-    std.mem.sort(Row, rows, {}, struct {
-        fn lessThan(_: void, x: Row, y: Row) bool {
-            return x.stat.utime + x.stat.stime > y.stat.utime + y.stat.stime;
-        }
-    }.lessThan);
-    out("  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM COMMAND\n");
-    var line: [1024]u8 = undefined;
-    for (rows) |r| {
-        const text = std.fmt.bufPrint(&line, "{d: >5} root      20   0    0    0    0 {c}  0.0  0.0 {s}\n", .{
-            @as(u32, @intCast(r.stat.pid)), r.stat.state, r.command,
-        }) catch continue;
-        out(text);
-    }
-    return 0;
-}
+// Task 17 procps wave: one source file per applet, re-exported here so the
+// registered `procps` module keeps a single public namespace.
 
-fn signalFromArgs(args: []const []const u8, name_index: *usize) ?linux.SIG {
-    var sig: linux.SIG = .TERM;
-    var i: usize = 1;
-    while (i < args.len) : (i += 1) {
-        const arg = args[i];
-        if (eq(arg, "-s") and i + 1 < args.len) {
-            i += 1;
-            sig = parseSignal(args[i]) catch return null;
-        } else if (arg.len > 1 and arg[0] == '-') {
-            sig = parseSignal(arg[1..]) catch return null;
-        } else {
-            break;
-        }
-    }
-    name_index.* = i;
-    return sig;
-}
+pub const top_main = @import("top.zig").main;
+pub const kill_main = @import("kill.zig").main;
+pub const killall_main = @import("killall.zig").main;
+pub const killall5_main = @import("killall5.zig").main;
+pub const free_main = @import("free.zig").main;
+pub const fuser_main = @import("fuser.zig").main;
+pub const iostat_main = @import("iostat.zig").main;
+pub const lsof_main = @import("lsof.zig").main;
+pub const mpstat_main = @import("mpstat.zig").main;
+pub const nmeter_main = @import("nmeter.zig").main;
+pub const pgrep_main = @import("pgrep.zig").main;
+pub const pidof_main = @import("pidof.zig").main;
+pub const pkill_main = @import("pkill.zig").main;
+pub const pmap_main = @import("pmap.zig").main;
+pub const powertop_main = @import("powertop.zig").main;
+pub const pstree_main = @import("pstree.zig").main;
+pub const pwdx_main = @import("pwdx.zig").main;
+pub const smemcap_main = @import("smemcap.zig").main;
+pub const sysctl_main = @import("sysctl.zig").main;
+pub const uptime_main = @import("uptime.zig").main;
+pub const vmstat_main = @import("vmstat.zig").main;
+pub const watch_main = @import("watch.zig").main;
 
-pub fn kill_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var start: usize = 1;
-    const sig = signalFromArgs(args, &start) orelse return 1;
-    if (start >= args.len) return 1;
-    for (args[start..]) |pid_s| {
-        const pid = std.fmt.parseInt(i32, pid_s, 10) catch return 1;
-        if (linux.errno(linux.kill(pid, sig)) != .SUCCESS) return 1;
-    }
-    return 0;
-}
-
-pub fn killall_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const args = argsFrom(argv, argc);
-    var start: usize = 1;
-    const sig = signalFromArgs(args, &start) orelse return 1;
-    if (start >= args.len) return 1;
-    const name = args[start];
-
-    const a = std.heap.page_allocator;
-    const dirs = listProcessDirs(a) catch return 1;
-    defer {
-        for (dirs) |d| a.free(d);
-        a.free(dirs);
-    }
-    var killed = false;
-    for (dirs) |pid_s| {
-        const pid = std.fmt.parseInt(i32, pid_s, 10) catch continue;
-        if (pid == linux.getpid()) continue;
-        const cmd_path = std.fmt.allocPrint(a, "/proc/{s}/cmdline", .{pid_s}) catch continue;
-        defer a.free(cmd_path);
-        const cmd = readFile(a, cmd_path) orelse continue;
-        defer a.free(cmd);
-        if (!matchesProcName(cmd, name)) continue;
-        _ = linux.kill(pid, sig);
-        killed = true;
-    }
-    return if (killed) 0 else 1;
-}
-
-pub fn free_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    _ = argc;
-    _ = argv;
-    const a = std.heap.page_allocator;
-    const data = readFile(a, "/proc/meminfo") orelse return 1;
-    defer a.free(data);
-    const m = parseMemInfo(data) catch return 1;
-
-    const used = m.total -| m.free -| m.buffers -| m.cached;
-    const swap_used = m.swap_total -| m.swap_free;
-    var line: [512]u8 = undefined;
-    const header = std.fmt.bufPrint(&line, "{s: >16} {s: >12} {s: >12} {s: >12}\n", .{ "", "total", "used", "free" }) catch return 1;
-    out(header);
-    const mem = std.fmt.bufPrint(&line, "{s: >16} {d: >12} {d: >12} {d: >12}\n", .{ "Mem:", m.total, used, m.free }) catch return 1;
-    out(mem);
-    const swap = std.fmt.bufPrint(&line, "{s: >16} {d: >12} {d: >12} {d: >12}\n", .{ "Swap:", m.swap_total, swap_used, m.swap_free }) catch return 1;
-    out(swap);
-    return 0;
-}
+// Exposed for the unit tests that verify non-trivial computed values.
+pub const formatTime = @import("ps.zig").formatTime;
+pub const rowValues = @import("top.zig").rowValues;
+pub const nmeterScale = @import("nmeter.zig").scale;
+pub const iostatCpuPercents = @import("iostat.zig").cpuPercents;
+pub const mpstatParseIrqCounts = @import("mpstat.zig").parseIrqCounts;
+pub const topFormatColumns = @import("top.zig").formatColumns;
+pub const topRowValues = @import("top.zig").rowValues;
+pub const topSmartSize5 = @import("top.zig").smartSize5;

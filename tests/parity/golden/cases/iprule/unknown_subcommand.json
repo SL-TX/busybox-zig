@@ -1,0 +1,8 @@
+{
+  "applet": "iprule",
+  "name": "unknown_subcommand",
+  "stdout": "",
+  "stderr": "iprule: invalid argument 'bogus' to 'iprule'\n",
+  "exit": 1,
+  "tree": {}
+}

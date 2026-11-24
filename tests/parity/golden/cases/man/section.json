@@ -1,0 +1,8 @@
+{
+  "applet": "man",
+  "name": "section",
+  "stdout": "",
+  "stderr": "man: no manual entry for 'nosuchpage'\n",
+  "exit": 1,
+  "tree": {}
+}

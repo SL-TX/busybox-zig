@@ -1,0 +1,173 @@
+{
+  "applet": "awk",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "field",
+      "argv": [
+        "{print $1}"
+      ],
+      "stdin": "1 2\n3 4\n5 6\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "1\n3\n5\n"
+      }
+    },
+    {
+      "name": "fs_option",
+      "argv": [
+        "-F",
+        ",",
+        "{print $2}"
+      ],
+      "stdin": "1 2\n3 4\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "\n\n"
+      }
+    },
+    {
+      "name": "pattern",
+      "argv": [
+        "/3/ {print $2}"
+      ],
+      "stdin": "1 2\n3 4\n5 6\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "4\n"
+      }
+    },
+    {
+      "name": "begin_end",
+      "argv": [
+        "BEGIN{print \"start\"} {print} END{print \"end\"}"
+      ],
+      "stdin": "1 2\n3 4\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "start\n1 2\n3 4\nend\n"
+      }
+    },
+    {
+      "name": "nf",
+      "argv": [
+        "{print NF}"
+      ],
+      "stdin": "a b c\nx y\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "3\n2\n"
+      }
+    },
+    {
+      "name": "nr_zero",
+      "argv": [
+        "{print NR, $0}"
+      ],
+      "stdin": "a b\nc d\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "1 a b\n2 c d\n"
+      }
+    },
+    {
+      "name": "sum",
+      "argv": [
+        "{sum += $1} END {print sum}"
+      ],
+      "stdin": "1 2\n3 4\n5 6\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "9\n"
+      }
+    },
+    {
+      "name": "var",
+      "argv": [
+        "-v",
+        "x=5",
+        "{print x}"
+      ],
+      "stdin": "a\nb\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "5\n5\n"
+      }
+    },
+    {
+      "name": "begin_fs",
+      "argv": [
+        "BEGIN{FS=\":\"} {print $1}"
+      ],
+      "stdin": "a:b\nc:d\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "a\nc\n"
+      }
+    },
+    {
+      "name": "printf",
+      "argv": [
+        "{printf \"%s=%d\\n\", $1, NR}"
+      ],
+      "stdin": "a b\nc d\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "a=1\nc=2\n"
+      }
+    },
+    {
+      "name": "compare",
+      "argv": [
+        "$1 > 1 {print $2}"
+      ],
+      "stdin": "1 a\n2 b\n3 c\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "b\nc\n"
+      }
+    },
+    {
+      "name": "invalid_short",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "invalid_long",
+      "argv": [
+        "--bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
+    }
+  ]
+}

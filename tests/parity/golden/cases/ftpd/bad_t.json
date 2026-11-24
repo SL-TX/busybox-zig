@@ -1,0 +1,8 @@
+{
+  "applet": "ftpd",
+  "name": "bad_t",
+  "stdout": "",
+  "stderr": "ftpd: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

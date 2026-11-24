@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "no_mode",
+  "stdout": "",
+  "stderr": "chattr: must use -v, -p, =, - or +\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

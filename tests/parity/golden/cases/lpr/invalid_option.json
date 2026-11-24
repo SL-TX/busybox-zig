@@ -1,0 +1,8 @@
+{
+  "applet": "lpr",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "lpr: unrecognized option '--bogus'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: lpr -P queue[@host[:port]] -U USERNAME -J TITLE -Vmh [FILE]...\n\n\t-P\tlp service to connect to (else uses $PRINTER)\n\t-m\tSend mail on completion\n\t-h\tPrint banner page too\n\t-V\tVerbose\n",
+  "exit": 1,
+  "tree": {}
+}

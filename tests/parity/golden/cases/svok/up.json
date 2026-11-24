@@ -1,0 +1,24 @@
+{
+  "applet": "svok",
+  "name": "up",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "svcdir": {
+      "type": "dir",
+      "mode": 509
+    },
+    "svcdir/supervise": {
+      "type": "dir",
+      "mode": 493
+    },
+    "svcdir/supervise/ok": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

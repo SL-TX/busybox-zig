@@ -1,0 +1,8 @@
+{
+  "applet": "logread",
+  "name": "follow",
+  "stdout": "",
+  "stderr": "logread: can't find syslogd buffer: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

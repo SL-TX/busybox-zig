@@ -1,0 +1,8 @@
+{
+  "applet": "runsv",
+  "name": "option_as_dir",
+  "stdout": "",
+  "stderr": "runsv: can't change directory to '-z': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "printf_b",
+  "stdout": "a\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

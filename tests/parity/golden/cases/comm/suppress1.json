@@ -1,0 +1,23 @@
+{
+  "applet": "comm",
+  "name": "suppress1",
+  "stdout": "\tb\n\tc\nd\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YgpjCmQK"
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiCmMK"
+      }
+    }
+  }
+}

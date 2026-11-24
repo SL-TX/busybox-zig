@@ -1,0 +1,13 @@
+
+Usage: mkfs.vfat [-Cv] [-n LABEL] [-F12|16|32] [-b NUM] [-R NUM] [-S SECTSIZE] [-s SECTCLUST] FILE|BLOCKDEV [KBYTES]
+
+Make FAT filesystem
+
+	-C	Create new FILE
+	-F 12|16|32
+	-b BACKUP_SECT
+	-R FAT_START	FAT start sector
+	-S SECTOR_SIZE
+	-s SECTORS_PER_CLUSTER
+	-n LBL	Volume label
+	-v	Verbose

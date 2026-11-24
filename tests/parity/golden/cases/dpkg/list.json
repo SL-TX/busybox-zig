@@ -1,0 +1,8 @@
+{
+  "applet": "dpkg",
+  "name": "list",
+  "stdout": "    Name           Version\n+++-==============-==============\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

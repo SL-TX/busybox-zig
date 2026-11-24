@@ -1,0 +1,8 @@
+{
+  "applet": "shuf",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "shuf: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: shuf [-n NUM] [-o FILE] [-z] [FILE | -e [ARG...] | -i L-H]\n\nRandomly permute lines\n\n\t-n NUM\tOutput at most NUM lines\n\t-o FILE\tWrite to FILE, not standard output\n\t-z\tNUL terminated output\n\t-e\tTreat ARGs as lines\n\t-i L-H\tTreat numbers L-H as lines\n",
+  "exit": 1,
+  "tree": {}
+}

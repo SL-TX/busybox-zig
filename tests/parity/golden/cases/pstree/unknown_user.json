@@ -1,0 +1,8 @@
+{
+  "applet": "pstree",
+  "name": "unknown_user",
+  "stdout": "",
+  "stderr": "pstree: unknown user nonexistentuser_xyz\n",
+  "exit": 1,
+  "tree": {}
+}

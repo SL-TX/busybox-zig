@@ -1,0 +1,8 @@
+{
+  "applet": "setkeycodes",
+  "name": "two_pairs",
+  "stdout": "",
+  "stderr": "setkeycodes: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

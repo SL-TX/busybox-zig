@@ -1,0 +1,8 @@
+{
+  "applet": "base64",
+  "name": "encode",
+  "stdout": "aGVsbG8=\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "su",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "su: must be suid to work properly\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,158 @@
+{
+  "applet": "patch",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "missing_patch",
+      "argv": [
+        "-i",
+        "nosuch"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "patch: can't open 'nosuch': No such file or directory\n"
+      }
+    },
+    {
+      "name": "apply",
+      "argv": [
+        "-i",
+        "p.diff",
+        "f"
+      ],
+      "files": {
+        "f": "a\nb\nc\n",
+        "p.diff": "--- a\n+++ b\n@@ -1,3 +1,3 @@\n a\n-b\n+B\n c\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": "patching file f\n"
+      }
+    },
+    {
+      "name": "reverse",
+      "argv": [
+        "-R",
+        "-i",
+        "p.diff",
+        "f"
+      ],
+      "files": {
+        "f": "a\nB\nc\n",
+        "p.diff": "--- a\n+++ b\n@@ -1,3 +1,3 @@\n a\n-b\n+B\n c\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": "patching file f\n"
+      }
+    },
+    {
+      "name": "failed_hunk",
+      "argv": [
+        "-i",
+        "p.diff",
+        "f"
+      ],
+      "files": {
+        "f": "a\nB\nc\n",
+        "p.diff": "--- a\n+++ b\n@@ -1,3 +1,3 @@\n a\n-b\n+B\n c\n"
+      },
+      "expect": {
+        "exit": 1,
+        "stdout": "patching file f\n",
+        "stderr": "Hunk 1 FAILED 1/1.\n a\n-b\n+B\n c\n"
+      }
+    },
+    {
+      "name": "strip_p",
+      "argv": [
+        "-p",
+        "1",
+        "-i",
+        "p.diff"
+      ],
+      "files": {
+        "f": "a\nb\nc\n",
+        "p.diff": "--- a/f\n+++ b/f\n@@ -1,3 +1,3 @@\n a\n-b\n+B\n c\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": "patching file f\n"
+      }
+    },
+    {
+      "name": "erase_empty",
+      "argv": [
+        "-E",
+        "-i",
+        "p",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x\n",
+        "p": "--- a\n+++ b\n@@ -1 +0,0 @@\n-x\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "removing f\n"
+      }
+    },
+    {
+      "name": "no_op_flag",
+      "argv": [
+        "-N",
+        "-i",
+        "p",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a\nb\nc\n",
+        "p": "--- a\n+++ b\n@@ -1,3 +1,3 @@\n a\n-b\n+B\n c\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "patching file f\n"
+      }
+    }
+  ]
+}

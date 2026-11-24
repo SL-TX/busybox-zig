@@ -1,0 +1,52 @@
+{
+  "applet": "resize",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pty_reply",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": [
+        "\u001b[24;80R"
+      ]
+    }
+  ]
+}

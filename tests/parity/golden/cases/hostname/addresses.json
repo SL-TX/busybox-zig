@@ -1,0 +1,8 @@
+{
+  "applet": "hostname",
+  "name": "addresses",
+  "stdout": "127.0.1.1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

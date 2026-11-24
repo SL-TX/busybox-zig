@@ -1,0 +1,8 @@
+{
+  "applet": "kill",
+  "name": "invalid_number",
+  "stdout": "",
+  "stderr": "kill: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

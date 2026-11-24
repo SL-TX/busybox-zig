@@ -1,0 +1,13 @@
+{
+  "applet": "sh",
+  "name": "cd",
+  "stdout": "<TMP>/sub\n<TMP>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "sub": {
+      "type": "dir",
+      "mode": 509
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "hush_stdin",
+  "stdout": "hushstdin\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

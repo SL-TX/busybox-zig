@@ -1,0 +1,8 @@
+{
+  "applet": "fdisk",
+  "name": "list_missing",
+  "stdout": "",
+  "stderr": "fdisk: can't open '/nonexistent': No such file or directory\n",
+  "exit": 0,
+  "tree": {}
+}

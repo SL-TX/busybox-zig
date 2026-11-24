@@ -1,0 +1,8 @@
+{
+  "applet": "crond",
+  "name": "foreground_missing_dir",
+  "stdout": "",
+  "stderr": "crond: can't change directory to '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

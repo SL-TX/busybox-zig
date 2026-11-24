@@ -1,0 +1,16 @@
+{
+  "applet": "link",
+  "name": "exists",
+  "stdout": "",
+  "stderr": "link: can't create hardlink 'a' to 'a': File exists\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

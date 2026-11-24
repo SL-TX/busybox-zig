@@ -1,0 +1,8 @@
+{
+  "applet": "cttyhack",
+  "name": "no_args",
+  "stdout": "/dev/tty0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

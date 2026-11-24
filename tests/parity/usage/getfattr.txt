@@ -1,0 +1,9 @@
+
+Usage: getfattr [-h] {-d|-n ATTR} FILE...
+
+
+Get extended attributes
+
+	-h		Do not follow symlinks
+	-d		Dump all attributes
+	-n ATTR		Get attribute ATTR

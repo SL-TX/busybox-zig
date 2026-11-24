@@ -1,0 +1,8 @@
+{
+  "applet": "setconsole",
+  "name": "reset",
+  "stdout": "",
+  "stderr": "setconsole: can't open '/dev/console': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

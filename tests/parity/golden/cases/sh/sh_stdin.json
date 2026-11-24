@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_stdin",
+  "stdout": "shstdin\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

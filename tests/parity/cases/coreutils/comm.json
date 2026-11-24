@@ -1,0 +1,129 @@
+{
+  "applet": "comm",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "default",
+      "argv": [
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a\nb\nc\n",
+        "g": "b\nc\nd\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "suppress1",
+      "argv": [
+        "-1",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a\nb\nc\n",
+        "g": "b\nc\nd\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "suppress23",
+      "argv": [
+        "-2",
+        "-3",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a\nb\nc\n",
+        "g": "b\nc\nd\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "missing",
+      "argv": [
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "a\n",
+        "g": "a\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    }
+  ]
+}

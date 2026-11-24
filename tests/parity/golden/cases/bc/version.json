@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "version",
+  "stdout": "bc 1.39.0.git\nAdapted from https://github.com/gavinhoward/bc\nOriginal code (c) 2018 Gavin D. Howard and contributors\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

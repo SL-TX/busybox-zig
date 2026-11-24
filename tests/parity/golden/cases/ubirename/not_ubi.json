@@ -1,0 +1,8 @@
+{
+  "applet": "ubirename",
+  "name": "not_ubi",
+  "stdout": "",
+  "stderr": "ubirename: not an UBI device: 'nonexistent'\n",
+  "exit": 1,
+  "tree": {}
+}

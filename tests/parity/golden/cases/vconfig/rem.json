@@ -1,0 +1,8 @@
+{
+  "applet": "vconfig",
+  "name": "rem",
+  "stdout": "",
+  "stderr": "vconfig: ioctl error for rem: No such device\n",
+  "exit": 1,
+  "tree": {}
+}

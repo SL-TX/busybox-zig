@@ -1,0 +1,8 @@
+{
+  "applet": "pstree",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "pstree: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: pstree [-p] [PID|USER]\n\nDisplay process tree, optionally start from USER or PID\n\n\t-p\tShow pids\n",
+  "exit": 1,
+  "tree": {}
+}

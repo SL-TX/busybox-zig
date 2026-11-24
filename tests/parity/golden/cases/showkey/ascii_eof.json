@@ -1,0 +1,8 @@
+{
+  "applet": "showkey",
+  "name": "ascii_eof",
+  "stdout": "Press any keys, program terminates on EOF (ctrl-D):\r\n\n",
+  "stderr": "showkey: can't tcsetattr for stdin: Inappropriate ioctl for device\nshowkey: can't tcsetattr for stdin: Inappropriate ioctl for device\n",
+  "exit": 0,
+  "tree": {}
+}

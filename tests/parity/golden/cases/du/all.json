@@ -1,0 +1,20 @@
+{
+  "applet": "du",
+  "name": "all",
+  "stdout": "4\t./a\n0\t./d\n4\t.\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    },
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

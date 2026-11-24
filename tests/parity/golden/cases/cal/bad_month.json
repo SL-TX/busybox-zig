@@ -1,0 +1,8 @@
+{
+  "applet": "cal",
+  "name": "bad_month",
+  "stdout": "",
+  "stderr": "cal: number 13 is not in 1..12 range\n",
+  "exit": 1,
+  "tree": {}
+}

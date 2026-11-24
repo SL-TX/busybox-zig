@@ -1,0 +1,8 @@
+{
+  "applet": "tftpd",
+  "name": "flags_crl",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: tftpd [-crl] [-u USER] [DIR]\n\nTransfer a file on tftp client's request\n\ntftpd is an inetd service, inetd.conf line:\n\t69 dgram udp nowait root tftpd tftpd -l /files/to/serve\nCan be run from udpsvd:\n\tudpsvd -vE 0.0.0.0 69 tftpd /files/to/serve\n\n\t-r\tProhibit upload\n\t-c\tAllow file creation via upload\n\t-u USER\tAccess files as USER\n\t-l\tLog to syslog (inetd mode requires this)\n",
+  "exit": 1,
+  "tree": {}
+}

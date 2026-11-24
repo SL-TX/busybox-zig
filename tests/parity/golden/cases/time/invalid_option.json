@@ -1,0 +1,8 @@
+{
+  "applet": "time",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "time: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: time [-vpa] [-o FILE] PROG ARGS\n\nRun PROG, display resource usage when it exits\n\n\t-v\tVerbose\n\t-p\tPOSIX output format\n\t-f FMT\tCustom format\n\t-o FILE\tWrite result to FILE\n\t-a\tAppend (else overwrite)\n",
+  "exit": 1,
+  "tree": {}
+}

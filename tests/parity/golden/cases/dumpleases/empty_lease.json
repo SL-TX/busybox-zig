@@ -1,0 +1,16 @@
+{
+  "applet": "dumpleases",
+  "name": "empty_lease",
+  "stdout": "Mac Address       IP Address      Host Name           Expires in\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "leases": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "AAAAAAAAAAA="
+      }
+    }
+  }
+}

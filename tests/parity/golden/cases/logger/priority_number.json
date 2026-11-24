@@ -1,0 +1,8 @@
+{
+  "applet": "logger",
+  "name": "priority_number",
+  "stdout": "",
+  "stderr": "tag: msg\n",
+  "exit": 0,
+  "tree": {}
+}

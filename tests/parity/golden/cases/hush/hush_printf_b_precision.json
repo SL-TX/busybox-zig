@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "hush_printf_b_precision",
+  "stdout": "rc=1\n",
+  "stderr": "hush: %.2b\\n: invalid format\n",
+  "exit": 0,
+  "tree": {}
+}

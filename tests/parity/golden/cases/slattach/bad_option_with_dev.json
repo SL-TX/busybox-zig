@@ -1,0 +1,8 @@
+{
+  "applet": "slattach",
+  "name": "bad_option_with_dev",
+  "stdout": "",
+  "stderr": "slattach: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: slattach [-ehmLF] [-c SCRIPT] [-s BAUD] [-p PROTOCOL] SERIAL_DEVICE\n\nConfigure serial line as SLIP network interface\n\n\t-p PROT\tProtocol: slip, cslip (default), slip6, clisp6, adaptive\n\t-s BAUD\tLine speed\n\t-e\tExit after initialization\n\t-h\tExit if carrier is lost (else never exits)\n\t-c PROG\tRun PROG on carrier loss\n\t-m\tDo NOT set raw 8bit mode\n\t-L\tEnable 3-wire operation\n\t-F\tDisable RTS/CTS flow control\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "which",
+  "name": "all",
+  "stdout": "/usr/bin/sh\n/bin/sh\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

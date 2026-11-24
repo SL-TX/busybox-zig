@@ -1,0 +1,8 @@
+{
+  "applet": "kbd_mode",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "kbd_mode: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: kbd_mode [-a|k|s|u] [-C TTY]\n\nReport or set VT console keyboard mode\n\n\t-a\tDefault (ASCII)\n\t-k\tMedium-raw (keycode)\n\t-s\tRaw (scancode)\n\t-u\tUnicode (utf-8)\n\t-C TTY\tAffect TTY\n",
+  "exit": 1,
+  "tree": {}
+}

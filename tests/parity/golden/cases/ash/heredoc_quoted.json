@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "heredoc_quoted",
+  "stdout": "hello $X\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

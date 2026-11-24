@@ -1,0 +1,27 @@
+{
+  "applet": "svlogd",
+  "name": "replace",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "logs": {
+      "type": "dir",
+      "mode": 493
+    },
+    "logs/current": {
+      "type": "file",
+      "mode": 484,
+      "content": {
+        "__base64__": "YVhiCg=="
+      }
+    },
+    "logs/lock": {
+      "type": "file",
+      "mode": 384,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

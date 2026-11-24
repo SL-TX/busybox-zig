@@ -1,0 +1,8 @@
+{
+  "applet": "start-stop-daemon",
+  "name": "stop_no_match_spec",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: start-stop-daemon -S|-K [OPTIONS] [-- ARGS]\n\nSearch for matching processes, and then\n-S: start a process unless a matching process is found\n-K: stop all matching processes\n\nProcess matching:\n\t-u USERNAME|UID\tMatch only this user's processes\n\t-n NAME\t\tMatch processes with NAME\n\t\t\tin comm field in /proc/PID/stat\n\t-x EXECUTABLE\tMatch processes with this command\n\t\t\tin /proc/PID/cmdline\n\t-p FILE\t\tMatch a process with PID from FILE\n\tAll specified conditions must match\n-S only:\n\t-x EXECUTABLE\tProgram to run\n\t-a NAME\t\tZeroth argument\n\t-b\t\tBackground\n\t-O FILE\t\tAppend stdout and stderr to FILE\n\t-N N\t\tChange nice level\n\t-c USER[:[GRP]]\tChange user/group\n\t-d DIR\t\tChange to DIR\n\t-m\t\tWrite PID to pidfile specified by -p\n-K only:\n\t-s SIG\t\tSignal to send\n\t-t\t\tMatch only, exit with 0 if found\nOther:\n\t-o\t\tExit with status 0 if nothing is done\n\t-v\t\tVerbose\n\t-q\t\tQuiet\n",
+  "exit": 1,
+  "tree": {}
+}

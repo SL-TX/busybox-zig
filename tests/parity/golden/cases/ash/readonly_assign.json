@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "readonly_assign",
+  "stdout": "",
+  "stderr": "ash: line 0: a: is read only\n",
+  "exit": 2,
+  "tree": {}
+}

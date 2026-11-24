@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "cmdsub",
+  "stdout": "out:inner\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

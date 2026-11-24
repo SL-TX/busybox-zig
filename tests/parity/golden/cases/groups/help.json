@@ -1,0 +1,8 @@
+{
+  "applet": "groups",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: groups [USER]\n\nPrint the groups USER is in\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

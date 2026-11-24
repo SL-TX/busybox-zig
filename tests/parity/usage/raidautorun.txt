@@ -1,0 +1,4 @@
+
+Usage: raidautorun DEVICE
+
+Tell the kernel to automatically search and start RAID arrays

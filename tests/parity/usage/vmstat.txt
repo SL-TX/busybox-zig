@@ -1,0 +1,6 @@
+
+Usage: vmstat [-n] [INTERVAL [COUNT]]
+
+Show virtual memory statistics
+
+	-n	Show header once

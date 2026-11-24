@@ -1,0 +1,16 @@
+{
+  "applet": "crc32",
+  "name": "file",
+  "stdout": "363a3020 f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8K"
+      }
+    }
+  }
+}

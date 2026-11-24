@@ -1,0 +1,8 @@
+
+Usage: matchpathcon [-n] [-N] [-f file_contexts_file] [-p prefix] [-V]
+
+	-n	Don't display path
+	-N	Don't use translations
+	-f	Use alternate file_context file
+	-p	Use prefix to speed translations
+	-V	Verify file context on disk matches defaults

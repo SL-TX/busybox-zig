@@ -1,0 +1,8 @@
+{
+  "applet": "makemime",
+  "name": "missing_file",
+  "stdout": "Mime-Version: 1.0\nContent-Type: multipart/mixed; boundary=\"<MATCH>\"\n\n--<MATCH>\nContent-Type: text/plain; charset=us-ascii\nContent-Disposition: inline; filename=\"missing.txt\"\nContent-Transfer-Encoding: base64\n",
+  "stderr": "makemime: can't open 'missing.txt': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

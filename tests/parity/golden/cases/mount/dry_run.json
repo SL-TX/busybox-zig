@@ -1,0 +1,8 @@
+{
+  "applet": "mount",
+  "name": "dry_run",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "ipcalc: unrecognized option '--bogusoption'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ipcalc [-bnmphs] ADDRESS[/PREFIX] [NETMASK]\n\nCalculate and display network settings from IP address\n\n\t-b\tBroadcast address\n\t-n\tNetwork address\n\t-m\tDefault netmask for IP\n\t-p\tPrefix for IP/NETMASK\n\t-h\tResolved host name\n\t-s\tNo error messages\n",
+  "exit": 1,
+  "tree": {}
+}

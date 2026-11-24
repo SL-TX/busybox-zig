@@ -1,0 +1,8 @@
+{
+  "applet": "uniq",
+  "name": "unique",
+  "stdout": "c\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

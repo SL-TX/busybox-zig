@@ -1,0 +1,8 @@
+{
+  "applet": "bash",
+  "name": "c_flag",
+  "stdout": "",
+  "stderr": "bash: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

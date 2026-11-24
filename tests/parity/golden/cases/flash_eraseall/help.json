@@ -1,0 +1,8 @@
+{
+  "applet": "flash_eraseall",
+  "name": "help",
+  "stdout": "",
+  "stderr": "flash_eraseall: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

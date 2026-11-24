@@ -1,0 +1,8 @@
+{
+  "applet": "date",
+  "name": "invalid_date",
+  "stdout": "",
+  "stderr": "date: invalid date 'bogus'\n",
+  "exit": 1,
+  "tree": {}
+}

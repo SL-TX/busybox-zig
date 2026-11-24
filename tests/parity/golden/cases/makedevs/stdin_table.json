@@ -1,0 +1,13 @@
+{
+  "applet": "makedevs",
+  "name": "stdin_table",
+  "stdout": "rootdir=root\ntable=<stdin>\n",
+  "stderr": "makedevs: line 1: regular file 'file' does not exist: No such file or directory\n",
+  "exit": 1,
+  "tree": {
+    "root": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

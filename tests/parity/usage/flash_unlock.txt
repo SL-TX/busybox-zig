@@ -1,0 +1,4 @@
+
+Usage: flash_unlock MTD_DEVICE
+
+Unlock an MTD device

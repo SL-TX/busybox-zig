@@ -1,0 +1,4 @@
+
+Usage: loadfont < font
+
+Load a console font from stdin

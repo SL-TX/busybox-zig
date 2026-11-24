@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "escape",
+  "stdout": "a\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

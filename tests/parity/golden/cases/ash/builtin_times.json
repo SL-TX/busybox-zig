@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "builtin_times",
+  "stdout": "2\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "unexpand",
+  "name": "all",
+  "stdout": "a    b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

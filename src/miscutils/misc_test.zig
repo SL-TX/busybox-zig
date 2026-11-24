@@ -64,3 +64,13 @@ test "spoolPath honors the environment override" {
     const expected = try std.fmt.bufPrint(&expected_buf, "/tmp/bb-spool/{d}", .{std.os.linux.getuid()});
     try std.testing.expectEqualStrings(expected, path);
 }
+
+// Task 16b round 1: `nanddump -n` must issue the post-MEMGETINFO MTDFILEMODE
+// ioctl. On a non-MTD fd that ioctl returns ENOTTY, so the boolean is directly
+// observable without a real NAND device.
+test "nanddump -n raw-mode flag drives the MTDFILEMODE ioctl" {
+    const fd = try @import("libbb_zig").io.open("/dev/null", .{ .ACCMODE = .RDONLY }, 0);
+    defer @import("libbb_zig").io.close(fd) catch {};
+    try std.testing.expectEqual(@as(?c_int, null), misc.mtdRawModeErrno(fd, false));
+    try std.testing.expect(misc.mtdRawModeErrno(fd, true) != null);
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "env",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: env [-i0] [-u NAME]... [-] [NAME=VALUE]... [PROG ARGS]\n\nPrint current environment or run PROG after setting up environment\n\n\t-, -i\tStart with empty environment\n\t-0\tNUL terminated output\n\t-u NAME\tRemove variable from environment\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

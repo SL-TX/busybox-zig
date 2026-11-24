@@ -1,0 +1,8 @@
+{
+  "applet": "ping6",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "ping6: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ping6 [OPTIONS] HOST\n\nSend ICMP ECHO_REQUESTs to HOST\n\n\t-c CNT\t\tSend only CNT pings\n\t-s SIZE\t\tSend SIZE data bytes in packets (default 56)\n\t-i SECS\t\tInterval\n\t-A\t\tPing as soon as reply is received\n\t-I IFACE/IP\tSource interface or IP address\n\t-W SEC\t\tSeconds to wait for the first response (default 10)\n\t\t\t(after all -c CNT packets are sent)\n\t-w SEC\t\tSeconds until ping exits (default:infinite)\n\t\t\t(can exit earlier with -c CNT)\n\t-q\t\tQuiet, only display output at start/finish\n\t-p HEXBYTE\tPayload pattern\n",
+  "exit": 1,
+  "tree": {}
+}

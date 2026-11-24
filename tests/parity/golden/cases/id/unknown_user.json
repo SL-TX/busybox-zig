@@ -1,0 +1,8 @@
+{
+  "applet": "id",
+  "name": "unknown_user",
+  "stdout": "",
+  "stderr": "id: unknown user nosuchuser_xyz\n",
+  "exit": 1,
+  "tree": {}
+}

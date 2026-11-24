@@ -1,0 +1,8 @@
+{
+  "applet": "hexdump",
+  "name": "canonical",
+  "stdout": "00000000  48 65 6c 6c 6f                                    |Hello|\n00000005\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

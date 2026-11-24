@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "trap_exit",
+  "stdout": "hello\nbye\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

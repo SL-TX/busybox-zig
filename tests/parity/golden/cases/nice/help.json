@@ -1,0 +1,8 @@
+{
+  "applet": "nice",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: nice [-n ADJUST] [PROG ARGS]\n\nChange scheduling priority, run PROG\n\n\t-n ADJUST\tAdjust priority by ADJUST\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

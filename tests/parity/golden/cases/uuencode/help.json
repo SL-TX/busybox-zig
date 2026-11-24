@@ -1,0 +1,8 @@
+{
+  "applet": "uuencode",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: uuencode [-m] [FILE] STORED_FILENAME\n\nUuencode FILE (or stdin) to stdout\n\n\t-m\tUse base64 encoding per RFC1521\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

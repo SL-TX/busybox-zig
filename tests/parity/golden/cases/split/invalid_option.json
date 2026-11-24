@@ -1,0 +1,8 @@
+{
+  "applet": "split",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "split: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: split [OPTIONS] [INPUT [PREFIX]]\n\n\t-b N[k|m]\tSplit by N (kilo|mega)bytes\n\t-l N\t\tSplit by N lines\n\t-a N\t\tUse N letters as suffix\n",
+  "exit": 1,
+  "tree": {}
+}

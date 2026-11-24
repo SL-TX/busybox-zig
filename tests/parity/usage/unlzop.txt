@@ -1,0 +1,6 @@
+
+Usage: unlzop [-cfUvF] [FILE]...
+
+	-c	Write to stdout
+	-f	Force
+	-U	Delete input files

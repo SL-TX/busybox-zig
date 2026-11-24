@@ -1,0 +1,139 @@
+{
+  "applet": "chpasswd",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "md5",
+      "argv": [
+        "-m"
+      ],
+      "stdin": "user:password\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "encrypted",
+      "argv": [
+        "-e"
+      ],
+      "stdin": "user:hash\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "alg",
+      "argv": [
+        "-c",
+        "md5"
+      ],
+      "stdin": "user:password\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "alg_sha512",
+      "argv": [
+        "-c",
+        "sha512"
+      ],
+      "stdin": "user:password\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "root",
+      "argv": [
+        "-R",
+        "/tmp/no-chroot-x"
+      ],
+      "stdin": "user:password\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_colon",
+      "argv": [],
+      "stdin": "user-no-colon\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

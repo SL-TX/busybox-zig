@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "invalid_format",
+  "stdout": "",
+  "stderr": "printf: %q: invalid format\n",
+  "exit": 1,
+  "tree": {}
+}

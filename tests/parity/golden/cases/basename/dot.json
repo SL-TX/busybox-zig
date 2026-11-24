@@ -1,0 +1,8 @@
+{
+  "applet": "basename",
+  "name": "dot",
+  "stdout": ".\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

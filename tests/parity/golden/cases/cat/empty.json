@@ -1,0 +1,16 @@
+{
+  "applet": "cat",
+  "name": "empty",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "empty": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

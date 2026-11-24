@@ -1,0 +1,8 @@
+{
+  "applet": "less",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: less [-EFIMmNSRh~] [FILE]...\n\nView FILE (or stdin) one screenful at a time\n\n\t-E\tQuit once the end of a file is reached\n\t-F\tQuit if entire file fits on first screen\n\t-I\tIgnore case in all searches\n\t-M,-m\tDisplay status line with line numbers\n\t\tand percentage through the file\n\t-N\tPrefix line number to each line\n\t-S\tTruncate long lines\n\t-R\tRemove color escape codes in input\n\t-~\tSuppress ~s displayed past EOF\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

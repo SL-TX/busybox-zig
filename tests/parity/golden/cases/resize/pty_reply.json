@@ -1,0 +1,8 @@
+{
+  "applet": "resize",
+  "name": "pty_reply",
+  "stdout": "\u001b7\u001b[r\u001b[999;999H\u001b[6n\u001b8COLUMNS=80;LINES=24;export COLUMNS LINES;\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

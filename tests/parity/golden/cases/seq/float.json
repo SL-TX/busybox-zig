@@ -1,0 +1,8 @@
+{
+  "applet": "seq",
+  "name": "float",
+  "stdout": "1.0\n1.5\n2.0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

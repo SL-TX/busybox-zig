@@ -1,0 +1,172 @@
+{
+  "applet": "su",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dash",
+      "argv": [
+        "-"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "login",
+      "argv": [
+        "-l"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "preserve",
+      "argv": [
+        "-p"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "mimic",
+      "argv": [
+        "-m"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "command",
+      "argv": [
+        "-c",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "shell",
+      "argv": [
+        "-s",
+        "/bin/sh"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "user",
+      "argv": [
+        "someuser"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "user_command",
+      "argv": [
+        "someuser",
+        "-c",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "applet": "ubidetach",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "missing_dev",
+      "argv": [
+        "-d",
+        "0"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open",
+      "argv": [
+        "-d",
+        "0",
+        "nofile"
+      ]
+    },
+    {
+      "name": "no_d_option",
+      "argv": [
+        "nofile"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X",
+        "-d",
+        "0",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "bad_d",
+      "argv": [
+        "-d",
+        "abc",
+        "nofile"
+      ]
+    },
+    {
+      "name": "ioctl_fail",
+      "argv": [
+        "-d",
+        "0",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "applet": "makedevs",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "rootdir",
+      "argv": [
+        "root"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "root"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_root",
+      "argv": [
+        "nonexistent"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_table",
+      "argv": [
+        "-d",
+        "table",
+        "root"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "root"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_table",
+      "argv": [
+        "-d",
+        "table",
+        "root"
+      ],
+      "stdin": null,
+      "files": {
+        "table": "file f 644 0 0  - - - - -\n"
+      },
+      "dirs": [
+        "root"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "stdin_table",
+      "argv": [
+        "root"
+      ],
+      "stdin": "file f 644 0 0  - - - - -\n",
+      "files": {},
+      "dirs": [
+        "root"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

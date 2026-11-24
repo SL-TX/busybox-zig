@@ -1,0 +1,23 @@
+{
+  "applet": "diff",
+  "name": "ignore_case",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjCg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QUJDCg=="
+      }
+    }
+  }
+}

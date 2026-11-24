@@ -1,0 +1,6 @@
+
+Usage: mim [-f FILE] [SHELL_OPTIONS] [TARGET] ...
+
+Run a script from a Makefile-like specification file
+
+	-f FILE		Spec file (default Mimfile)

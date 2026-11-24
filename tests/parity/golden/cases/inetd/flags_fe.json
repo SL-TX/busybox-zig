@@ -1,0 +1,8 @@
+{
+  "applet": "inetd",
+  "name": "flags_fe",
+  "stdout": "",
+  "stderr": "inetd: non-root must specify config file\n",
+  "exit": 1,
+  "tree": {}
+}

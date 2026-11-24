@@ -1,0 +1,8 @@
+{
+  "applet": "udhcpc",
+  "name": "missing_F",
+  "stdout": "",
+  "stderr": "udhcpc: option requires an argument -- 'F'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: udhcpc [-fbqvRB] [-a[MSEC]] [-t N] [-T SEC] [-A SEC|-n]\n\t[-i IFACE] [-s PROG] [-p PIDFILE]\n\t[-oC] [-r IP] [-V VENDOR] [-F NAME] [-x OPT:VAL]... [-O OPT]...\n\n\t-i IFACE\tInterface to use (default eth0)\n\t-s PROG\t\tRun PROG at DHCP events (default /usr/share/udhcpc/default.script)\n\t-p FILE\t\tCreate pidfile\n\t-B\t\tRequest broadcast replies\n\t-t N\t\tSend up to N discover packets (default 3)\n\t-T SEC\t\tPause between packets (default 3)\n\t-A SEC\t\tWait if lease is not obtained (default 20)\n\t-b\t\tBackground if lease is not obtained\n\t-n\t\tExit if lease is not obtained\n\t-q\t\tExit after obtaining lease\n\t-R\t\tRelease IP on exit\n\t-f\t\tRun in foreground\n\t-S\t\tLog to syslog too\n\t-a[MSEC]\tValidate offered address with ARP ping\n\t-r IP\t\tRequest this IP address\n\t-o\t\tDon't request any options (unless -O is given)\n\t-O OPT\t\tRequest option OPT from server (cumulative)\n\t-x OPT:VAL\tInclude option OPT in sent packets (cumulative)\n\t\t\tExamples of string, numeric, and hex byte opts:\n\t\t\t-x hostname:bbox - option 12\n\t\t\t-x lease:3600 - option 51 (lease time)\n\t\t\t-x 0x3d:0100BEEFC0FFEE - option 61 (client id)\n\t\t\t-x 14:'\"dumpfile\"' - option 14 (shell-quoted)\n\t-F NAME\t\tAsk server to update DNS mapping for NAME\n\t-V VENDOR\tVendor identifier (default 'udhcp VERSION')\n\t-C\t\tDon't send MAC as client identifier\n\t-v\t\tVerbose\nSignals:\n\tUSR1\tRenew lease\n\tUSR2\tRelease lease\n",
+  "exit": 1,
+  "tree": {}
+}

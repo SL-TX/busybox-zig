@@ -1,0 +1,8 @@
+{
+  "applet": "switch_root",
+  "name": "bad_dir",
+  "stdout": "",
+  "stderr": "switch_root: can't change directory to '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

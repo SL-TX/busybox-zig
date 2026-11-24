@@ -1,0 +1,8 @@
+{
+  "applet": "lzop",
+  "name": "high_level",
+  "stdout": "",
+  "stderr": "lzop: high compression not compiled in\n",
+  "exit": 1,
+  "tree": {}
+}

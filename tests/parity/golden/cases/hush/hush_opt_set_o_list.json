@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "hush_opt_set_o_list",
+  "stdout": "set +o pipefail\nset +o noexec\nset +o errexit\nset +o xtrace\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "wall",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: wall [FILE]\n\nWrite content of FILE or stdin to all logged-in users\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

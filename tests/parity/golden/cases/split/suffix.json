@@ -1,0 +1,23 @@
+{
+  "applet": "split",
+  "name": "suffix",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "xaab": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "Ygo="
+      }
+    },
+    "xaaa": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "YQo="
+      }
+    }
+  }
+}

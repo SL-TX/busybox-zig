@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "syntax_error",
+  "stdout": "",
+  "stderr": "expr: syntax error\n",
+  "exit": 2,
+  "tree": {}
+}

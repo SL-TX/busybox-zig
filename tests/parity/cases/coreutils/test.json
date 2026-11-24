@@ -1,0 +1,1564 @@
+{
+  "applet": "test",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "empty_string",
+      "argv": [
+        ""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "nonempty_string",
+      "argv": [
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "two_strings",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_eq_true",
+      "argv": [
+        "abc",
+        "=",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_eq_false",
+      "argv": [
+        "abc",
+        "=",
+        "abd"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_eq_eq",
+      "argv": [
+        "abc",
+        "==",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_ne_true",
+      "argv": [
+        "abc",
+        "!=",
+        "abd"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_ne_false",
+      "argv": [
+        "abc",
+        "!=",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_lt",
+      "argv": [
+        "a",
+        "<",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_gt",
+      "argv": [
+        "b",
+        ">",
+        "a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "str_lt_false",
+      "argv": [
+        "a",
+        "<",
+        "a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_eq_true",
+      "argv": [
+        "1",
+        "-eq",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_eq_false",
+      "argv": [
+        "1",
+        "-eq",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_ne",
+      "argv": [
+        "1",
+        "-ne",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_ge_true",
+      "argv": [
+        "2",
+        "-ge",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_ge_false",
+      "argv": [
+        "1",
+        "-ge",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_gt",
+      "argv": [
+        "2",
+        "-gt",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_le",
+      "argv": [
+        "1",
+        "-le",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "int_lt",
+      "argv": [
+        "1",
+        "-lt",
+        "2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_number",
+      "argv": [
+        "x",
+        "-eq",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "out_of_range",
+      "argv": [
+        "999999999999999999999999",
+        "-eq",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "number_whitespace",
+      "argv": [
+        " 3 ",
+        "-eq",
+        "3"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_operand",
+      "argv": [
+        "1",
+        "-eq"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unary_z_true",
+      "argv": [
+        "-z",
+        ""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unary_z_false",
+      "argv": [
+        "-z",
+        "a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unary_n_true",
+      "argv": [
+        "-n",
+        "a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unary_n_false",
+      "argv": [
+        "-n",
+        ""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unary_no_arg",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unary_no_arg_n",
+      "argv": [
+        "-n"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "negate_true",
+      "argv": [
+        "!",
+        ""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "negate_false",
+      "argv": [
+        "!",
+        "a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "negate_only",
+      "argv": [
+        "!"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "and_true",
+      "argv": [
+        "a",
+        "-a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "and_false",
+      "argv": [
+        "a",
+        "-a",
+        ""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "or_true",
+      "argv": [
+        "",
+        "-o",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "or_false",
+      "argv": [
+        "",
+        "-o",
+        ""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "parens",
+      "argv": [
+        "(",
+        "a",
+        "=",
+        "a",
+        ")"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "parens_nested",
+      "argv": [
+        "(",
+        "",
+        "-o",
+        "a",
+        ")",
+        "-a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_paren",
+      "argv": [
+        "(",
+        "a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "close_paren_only",
+      "argv": [
+        ")"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "open_paren_only",
+      "argv": [
+        "("
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unknown_operand",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "extra_operand",
+      "argv": [
+        "3",
+        "-lt",
+        "5",
+        "6"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dashdash",
+      "argv": [
+        "--",
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dashdash_only",
+      "argv": [
+        "--"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "negate_binary",
+      "argv": [
+        "!",
+        "a",
+        "=",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "negate_paren",
+      "argv": [
+        "!",
+        "(",
+        "a",
+        "=",
+        "a",
+        ")"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "help_with_expr",
+      "argv": [
+        "--help",
+        "-a",
+        "x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_f",
+      "argv": [
+        "-f",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_d",
+      "argv": [
+        "-d",
+        "dir"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_e_true",
+      "argv": [
+        "-e",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_e_false",
+      "argv": [
+        "-e",
+        "missing"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_s_true",
+      "argv": [
+        "-s",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_s_false",
+      "argv": [
+        "-s",
+        "empty"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_L",
+      "argv": [
+        "-L",
+        "link"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_h",
+      "argv": [
+        "-h",
+        "link"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_L_false",
+      "argv": [
+        "-L",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_r",
+      "argv": [
+        "-r",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_w",
+      "argv": [
+        "-w",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_x",
+      "argv": [
+        "-x",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_O",
+      "argv": [
+        "-O",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_G",
+      "argv": [
+        "-G",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_u",
+      "argv": [
+        "-u",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_g",
+      "argv": [
+        "-g",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_k",
+      "argv": [
+        "-k",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_S",
+      "argv": [
+        "-S",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_c",
+      "argv": [
+        "-c",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_b",
+      "argv": [
+        "-b",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_p",
+      "argv": [
+        "-p",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_nt_true",
+      "argv": [
+        "file",
+        "-nt",
+        "missing"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_nt_false",
+      "argv": [
+        "missing",
+        "-nt",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_ot_true",
+      "argv": [
+        "missing",
+        "-ot",
+        "file"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_ef_true",
+      "argv": [
+        "file",
+        "-ef",
+        "link"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_ef_false",
+      "argv": [
+        "file",
+        "-ef",
+        "missing"
+      ],
+      "stdin": null,
+      "files": {
+        "file": "hello",
+        "empty": ""
+      },
+      "dirs": [
+        "dir"
+      ],
+      "symlinks": {
+        "link": "file"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "t_fd1",
+      "argv": [
+        "-t",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "t_bad",
+      "argv": [
+        "-t",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "nt_subsecond_equal_sec",
+      "argv": [
+        "b",
+        "-nt",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000000900000000
+      }
+    },
+    {
+      "name": "ot_subsecond_equal_sec",
+      "argv": [
+        "a",
+        "-ot",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000000900000000
+      }
+    },
+    {
+      "name": "nt_whole_second",
+      "argv": [
+        "b",
+        "-nt",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000002000000000
+      }
+    },
+    {
+      "name": "ot_whole_second",
+      "argv": [
+        "a",
+        "-ot",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "a",
+        "b": "b"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "mtimes": {
+        "a": 1000000000000000000,
+        "b": 1000000002000000000
+      }
+    }
+  ]
+}

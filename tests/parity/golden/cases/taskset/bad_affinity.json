@@ -1,0 +1,8 @@
+{
+  "applet": "taskset",
+  "name": "bad_affinity",
+  "stdout": "",
+  "stderr": "taskset: bad affinity 'zzz'\n",
+  "exit": 1,
+  "tree": {}
+}

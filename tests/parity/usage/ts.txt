@@ -1,0 +1,7 @@
+
+Usage: ts [-is] [STRFTIME]
+
+Pipe stdin to stdout, add timestamp to each line
+
+	-s	Time since start
+	-i	Time since previous line

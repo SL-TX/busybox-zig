@@ -1,0 +1,30 @@
+{
+  "applet": "run-parts",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "run-parts: invalid option -- 'v'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: run-parts [-a ARG]... [-u UMASK] [--reverse] [--test] [--exit-on-error] [--list] DIRECTORY\n\nRun a bunch of scripts in DIRECTORY\n\n\t-a ARG\t\tPass ARG as argument to scripts\n\t-u UMASK\tSet UMASK before running scripts\n\t--reverse\tReverse execution order\n\t--test\t\tDry run\n\t--exit-on-error\tExit if a script exits with non-zero\n\t--list\t\tPrint names of matching files even if they are not executable\n",
+  "exit": 1,
+  "tree": {
+    "rp": {
+      "type": "dir",
+      "mode": 493
+    },
+    "rp/02true": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "/bin/true"
+    },
+    "rp/01echo": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "/bin/echo"
+    },
+    "rp/03skip": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bm90ZXhlYwo="
+      }
+    }
+  }
+}

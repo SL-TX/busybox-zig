@@ -1,0 +1,8 @@
+{
+  "applet": "id",
+  "name": "too_many",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: id [-ugGnr] [USER]\n\nPrint information about USER or the current user\n\n\t-u\tUser ID\n\t-g\tGroup ID\n\t-G\tSupplementary group IDs\n\t-n\tPrint names instead of numbers\n\t-r\tPrint real ID instead of effective ID\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sed",
+  "name": "quiet_addr",
+  "stdout": "b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,190 @@
+{
+  "applet": "sed",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "sub",
+      "argv": [
+        "s/a/X/"
+      ],
+      "stdin": "abc\nbcd\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "Xbc\nbcd\n"
+      }
+    },
+    {
+      "name": "sub_global",
+      "argv": [
+        "s/a/X/g"
+      ],
+      "stdin": "aaa\nb\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "XXX\nb\n"
+      }
+    },
+    {
+      "name": "quiet_addr",
+      "argv": [
+        "-n",
+        "2p"
+      ],
+      "stdin": "a\nb\nc\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "b\n"
+      }
+    },
+    {
+      "name": "delete",
+      "argv": [
+        "/b/d"
+      ],
+      "stdin": "a\nb\nc\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "a\nc\n"
+      }
+    },
+    {
+      "name": "char_class",
+      "argv": [
+        "s/[0-9]/X/g"
+      ],
+      "stdin": "a1 b2\nc3\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "aX bX\ncX\n"
+      }
+    },
+    {
+      "name": "extended_backref",
+      "argv": [
+        "-E",
+        "s/(a)(b)/\\2\\1/"
+      ],
+      "stdin": "ab\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "ba\n"
+      }
+    },
+    {
+      "name": "range",
+      "argv": [
+        "1,2p"
+      ],
+      "stdin": "a\nb\nc\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "a\na\nb\nb\nc\n"
+      }
+    },
+    {
+      "name": "last",
+      "argv": [
+        "$d"
+      ],
+      "stdin": "a\nb\nc\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "a\nb\n"
+      }
+    },
+    {
+      "name": "two_expr",
+      "argv": [
+        "-e",
+        "s/a/X/",
+        "-e",
+        "s/b/Y/"
+      ],
+      "stdin": "ab\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "XY\n"
+      }
+    },
+    {
+      "name": "translate",
+      "argv": [
+        "y/abc/xyz/"
+      ],
+      "stdin": "abc\ncba\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "xyz\nzyx\n"
+      }
+    },
+    {
+      "name": "block",
+      "argv": [
+        "-n",
+        "1,2{s/a/X/;p}"
+      ],
+      "stdin": "abc\nbcd\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "Xbc\nbcd\n"
+      }
+    },
+    {
+      "name": "in_place",
+      "argv": [
+        "-i",
+        "s/a/X/",
+        "f"
+      ],
+      "files": {
+        "f": "a\nb\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": ""
+      }
+    },
+    {
+      "name": "invalid_short",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "invalid_long",
+      "argv": [
+        "--posix"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 1
+      }
+    }
+  ]
+}

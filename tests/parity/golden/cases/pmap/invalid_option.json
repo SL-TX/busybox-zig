@@ -1,0 +1,8 @@
+{
+  "applet": "pmap",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "pmap: invalid option -- 'z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: pmap [-xq] PID...\n\nDisplay process memory usage\n\n\t-x\tShow details\n\t-q\tQuiet\n",
+  "exit": 1,
+  "tree": {}
+}

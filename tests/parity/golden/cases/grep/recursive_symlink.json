@@ -1,0 +1,25 @@
+{
+  "applet": "grep",
+  "name": "recursive_symlink",
+  "stdout": "./link/f:hit\n./real/f:hit\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "link": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "real"
+    },
+    "real": {
+      "type": "dir",
+      "mode": 493
+    },
+    "real/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGl0Cg=="
+      }
+    }
+  }
+}

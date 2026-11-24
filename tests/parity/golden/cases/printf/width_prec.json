@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "width_prec",
+  "stdout": "[     abc][12   ]\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

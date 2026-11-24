@@ -1,0 +1,8 @@
+{
+  "applet": "tftp",
+  "name": "blocksize_out_of_range",
+  "stdout": "",
+  "stderr": "tftp: bad blocksize '99999'\n",
+  "exit": 1,
+  "tree": {}
+}

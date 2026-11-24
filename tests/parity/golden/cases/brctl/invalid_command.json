@@ -1,0 +1,8 @@
+{
+  "applet": "brctl",
+  "name": "invalid_command",
+  "stdout": "",
+  "stderr": "brctl: invalid argument 'bogus' to 'brctl'\n",
+  "exit": 1,
+  "tree": {}
+}

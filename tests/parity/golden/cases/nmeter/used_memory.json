@@ -1,0 +1,8 @@
+{
+  "applet": "nmeter",
+  "name": "used_memory",
+  "stdout": "<MATCH>m\r\n<MATCH>",
+  "stderr": "",
+  "exit": -2,
+  "tree": {}
+}

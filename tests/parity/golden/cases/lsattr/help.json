@@ -1,0 +1,8 @@
+{
+  "applet": "lsattr",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: lsattr [-Radlpv] [FILE]...\n\nList ext2 file attributes\n\n\t-R\tRecurse\n\t-a\tInclude names starting with .\n\t-d\tList directory names, not contents\n\t-l\tList long flag names\n\t-p\tList project ID\n\t-v\tList version/generation number\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

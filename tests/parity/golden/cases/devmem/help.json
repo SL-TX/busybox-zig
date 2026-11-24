@@ -1,0 +1,8 @@
+{
+  "applet": "devmem",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: devmem ADDRESS [WIDTH [VALUE]]\n\nRead/write from physical address\n\n\tADDRESS\tAddress to act upon\n\tWIDTH\tWidth (8/16/...)\n\tVALUE\tData to be written\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

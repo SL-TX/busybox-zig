@@ -1,0 +1,8 @@
+{
+  "applet": "kill",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "kill: bad signal name 'z'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,20 @@
+{
+  "applet": "envdir",
+  "name": "only_dir",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: envdir DIR PROG ARGS\n\nSet various environment variables as specified by files\nin the directory DIR, run PROG\n",
+  "exit": 1,
+  "tree": {
+    "envd": {
+      "type": "dir",
+      "mode": 493
+    },
+    "envd/FOO": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YmFyCg=="
+      }
+    }
+  }
+}

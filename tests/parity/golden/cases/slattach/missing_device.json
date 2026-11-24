@@ -1,0 +1,8 @@
+{
+  "applet": "slattach",
+  "name": "missing_device",
+  "stdout": "",
+  "stderr": "slattach: can't open '/dev/nosuchdev': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

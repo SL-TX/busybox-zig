@@ -1,0 +1,842 @@
+{
+  "applet": "grep",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "hello",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ignore_case",
+      "argv": [
+        "-i",
+        "hello",
+        "b.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invert",
+      "argv": [
+        "-v",
+        "a",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "count",
+      "argv": [
+        "-c",
+        "a",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "files_with_matches",
+      "argv": [
+        "-l",
+        "a",
+        "a.txt",
+        "b.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "files_without_matches",
+      "argv": [
+        "-L",
+        "a",
+        "a.txt",
+        "b.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "line_number",
+      "argv": [
+        "-n",
+        "hello",
+        "a.txt",
+        "b.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_filename",
+      "argv": [
+        "-h",
+        "hello",
+        "a.txt",
+        "b.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "only_matching",
+      "argv": [
+        "-o",
+        "ab",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "leftmost_longest",
+      "argv": [
+        "-o",
+        "-E",
+        "a|ab",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "leftmost_longest_group",
+      "argv": [
+        "-o",
+        "-E",
+        "(a|ab)+",
+        "a.txt"
+      ],
+      "stdin": "aabab\n",
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "leftmost_longest_alt",
+      "argv": [
+        "-o",
+        "-E",
+        "a+|ab",
+        "a.txt"
+      ],
+      "stdin": "aabab\n",
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "extended_interval",
+      "argv": [
+        "-E",
+        "a{2}",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "fixed",
+      "argv": [
+        "-F",
+        "a{2}",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "word",
+      "argv": [
+        "-w",
+        "ab",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "line",
+      "argv": [
+        "-x",
+        "ab",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "quiet_match",
+      "argv": [
+        "-q",
+        "hello",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "quiet_nomatch",
+      "argv": [
+        "-q",
+        "zzz",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "suppress_error",
+      "argv": [
+        "-s",
+        "a",
+        "nosuch"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "error_exit",
+      "argv": [
+        "a",
+        "nosuch"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "max_count",
+      "argv": [
+        "-m",
+        "1",
+        "a",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "after_context",
+      "argv": [
+        "-A",
+        "1",
+        "aXb",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "before_context",
+      "argv": [
+        "-B",
+        "1",
+        "abcabc",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "both_context",
+      "argv": [
+        "-C",
+        "1",
+        "abcabc",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "multiple_e",
+      "argv": [
+        "-e",
+        "ab",
+        "-e",
+        "hello",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pattern_file",
+      "argv": [
+        "-f",
+        "pat.txt",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "double_dash",
+      "argv": [
+        "--",
+        "-n",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "stdin",
+      "argv": [
+        "hello"
+      ],
+      "stdin": "hello world\nnope\n",
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "recursive",
+      "argv": [
+        "-r",
+        "hello",
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--bogus",
+        "a",
+        "a.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "missing_arg",
+      "argv": [
+        "-e"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "ab\naXb\nhello world\nabcabc\n",
+        "b.txt": "AA\nfoo\n",
+        "pat.txt": "foo\nbar\n",
+        "d/inner.txt": "hello\nx\n"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "context_gap",
+      "argv": [
+        "-A",
+        "1",
+        "-B",
+        "1",
+        "^ab$",
+        "f.txt"
+      ],
+      "stdin": null,
+      "files": {
+        "f.txt": "ab\nX\nY\nZ\nab\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "recursive_symlink",
+      "argv": [
+        "-R",
+        "hit",
+        "."
+      ],
+      "stdin": null,
+      "files": {
+        "real/f": "hit\n"
+      },
+      "dirs": [
+        "real"
+      ],
+      "symlinks": {
+        "link": "real"
+      },
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

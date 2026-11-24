@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "expr: too few arguments\n",
+  "exit": 2,
+  "tree": {}
+}

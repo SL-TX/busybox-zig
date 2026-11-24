@@ -1,0 +1,31 @@
+{
+  "applet": "ash",
+  "name": "glob_multicomponent2",
+  "stdout": "d1/sub d1/x\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d1": {
+      "type": "dir",
+      "mode": 509
+    },
+    "d1/x": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "d1/sub": {
+      "type": "dir",
+      "mode": 509
+    },
+    "d1/sub/f": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

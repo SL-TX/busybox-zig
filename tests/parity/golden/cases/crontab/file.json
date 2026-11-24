@@ -1,0 +1,8 @@
+{
+  "applet": "crontab",
+  "name": "file",
+  "stdout": "",
+  "stderr": "crontab: must be suid to work properly\n",
+  "exit": 1,
+  "tree": {}
+}

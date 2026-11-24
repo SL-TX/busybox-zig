@@ -1,0 +1,13 @@
+{
+  "applet": "makedevs",
+  "name": "missing_table",
+  "stdout": "rootdir=root\ntable='table'\n",
+  "stderr": "makedevs: table: No such file or directory\n",
+  "exit": 0,
+  "tree": {
+    "root": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

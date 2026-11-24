@@ -1,0 +1,23 @@
+{
+  "applet": "ls",
+  "name": "all",
+  "stdout": ".\n..\n.h\na\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    ".h": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eQ=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

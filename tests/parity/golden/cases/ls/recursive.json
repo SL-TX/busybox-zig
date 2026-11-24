@@ -1,0 +1,31 @@
+{
+  "applet": "ls",
+  "name": "recursive",
+  "stdout": "d:\nf\ns\n\nd/s:\ng\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    },
+    "d/s": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/s/g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eQ=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sha3sum",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: sha3sum [-c[sw]] [-a BITS] [FILE]...\n\nPrint or check SHA3 checksums\n\n\t-c\tCheck sums against list in FILEs\n\t-s\tDon't output anything, status code shows success\n\t-w\tWarn about improperly formatted checksum lines\n\t-a BITS\t224 (default), 256, 384, 512\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,57 @@
+{
+  "applet": "depmod",
+  "name": "name_dashes",
+  "stdout": "kernel/drivers/x-bar.ko my_alias symbol:my_sym\nother_mod\n\nkernel/drivers/bar.ko bar_alias symbol:barsym\n\nkernel/drivers/foo.ko pci:v0000 usb:1 symbol:mysym\nmodb moda\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "lib": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules/testver": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules/testver/kernel": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules/testver/kernel/drivers": {
+      "type": "dir",
+      "mode": 493
+    },
+    "lib/modules/testver/kernel/drivers/x-bar.ko": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "f0VMRgBhbGlhcz1teS1hbGlhcwBkZXBlbmRzPW90aGVyLW1vZABfX2tzeW10YWJfbXktc3ltAA=="
+      }
+    },
+    "lib/modules/testver/kernel/drivers/notes.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "bm90IGEgbW9kdWxl"
+      }
+    },
+    "lib/modules/testver/kernel/drivers/bar.ko": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "f0VMRgBhbGlhcz1iYXItYWxpYXMAX19rc3ltdGFiX2JhcnN5bQA="
+      }
+    },
+    "lib/modules/testver/kernel/drivers/foo.ko": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "f0VMRgBhbGlhcz1wY2k6djAwMDAAYWxpYXM9dXNiOjEAZGVwZW5kcz1tb2RiLG1vZGEAX19rc3ltdGFiX215c3ltAF9fa3N5bXRhYl9ncGwA"
+      }
+    }
+  }
+}

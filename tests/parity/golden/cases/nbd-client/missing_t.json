@@ -1,0 +1,8 @@
+{
+  "applet": "nbd-client",
+  "name": "missing_t",
+  "stdout": "",
+  "stderr": "nbd-client: option '-timeout' requires an argument\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: nbd-client { [-b BLKSIZE] [-N NAME] [-t SEC] [-p] HOST [PORT] | -d } BLOCKDEV\n\nConnect to HOST and provide network block device on BLOCKDEV\n",
+  "exit": 1,
+  "tree": {}
+}

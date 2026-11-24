@@ -1,0 +1,23 @@
+{
+  "applet": "paste",
+  "name": "serial",
+  "stdout": "a\tb\n1\t2\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQoyCg=="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiCg=="
+      }
+    }
+  }
+}

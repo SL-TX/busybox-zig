@@ -1,0 +1,17 @@
+{
+  "applet": "ash",
+  "name": "glob_trailing_slash",
+  "stdout": "d1/ d2/\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "d2": {
+      "type": "dir",
+      "mode": 509
+    },
+    "d1": {
+      "type": "dir",
+      "mode": 509
+    }
+  }
+}

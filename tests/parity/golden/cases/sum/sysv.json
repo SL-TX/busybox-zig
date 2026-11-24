@@ -1,0 +1,8 @@
+{
+  "applet": "sum",
+  "name": "sysv",
+  "stdout": "542 1 -\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

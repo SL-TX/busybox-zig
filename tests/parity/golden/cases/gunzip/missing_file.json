@@ -1,0 +1,8 @@
+{
+  "applet": "gunzip",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "gunzip: nonexist: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

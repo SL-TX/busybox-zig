@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "local_error",
+  "stdout": "",
+  "stderr": "ash: local: line 0: not in a function\n",
+  "exit": 2,
+  "tree": {}
+}

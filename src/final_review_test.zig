@@ -56,6 +56,27 @@ test "config inclusion gates the applet registry" {
     try std.testing.expect(applets.findAppletByName("ping") != null);
 }
 
+test "registry carries SUID and location metadata for privileged applets" {
+    const passwd = applets.findAppletByName("passwd").?;
+    try std.testing.expectEqual(applets.Suid.require, passwd.suid);
+    try std.testing.expectEqualStrings("usr/bin", passwd.location);
+
+    const ping = applets.findAppletByName("ping").?;
+    try std.testing.expectEqual(applets.Suid.maybe, ping.suid);
+
+    // Reference gates the busybox applet on FEATURE_SH_STANDALONE &&
+    // FEATURE_TAB_COMPLETION, so it is absent in the committed defconfig.
+    if (@import("config").CONFIG_FEATURE_SH_STANDALONE and
+        @import("config").CONFIG_FEATURE_TAB_COMPLETION)
+    {
+        const busybox = applets.findAppletByName("busybox").?;
+        try std.testing.expectEqualStrings("bin", busybox.location);
+        try std.testing.expectEqual(applets.Suid.maybe, busybox.suid);
+    } else {
+        try std.testing.expect(applets.findAppletByName("busybox") == null);
+    }
+}
+
 test "dirent64 layout matches the kernel ABI" {
     try std.testing.expectEqual(@as(usize, 19), @offsetOf(linux.dirent64, "name"));
     try std.testing.expectEqual(@as(usize, 24), @sizeOf(linux.dirent64));

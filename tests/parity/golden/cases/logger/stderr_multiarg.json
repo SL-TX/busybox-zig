@@ -1,0 +1,8 @@
+{
+  "applet": "logger",
+  "name": "stderr_multiarg",
+  "stdout": "",
+  "stderr": "tag: one two\n",
+  "exit": 0,
+  "tree": {}
+}

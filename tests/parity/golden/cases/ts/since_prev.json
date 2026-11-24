@@ -1,0 +1,8 @@
+{
+  "applet": "ts",
+  "name": "since_prev",
+  "stdout": "<TIMESTAMP> hello\n<TIMESTAMP> world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

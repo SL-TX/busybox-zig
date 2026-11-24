@@ -1,0 +1,8 @@
+{
+  "applet": "iptunnel",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: iptunnel add|change|del|show [NAME]\n\t[mode ipip|gre|sit] [remote ADDR] [local ADDR] [ttl TTL]\n\niptunnel add|change|del|show [NAME]\n\t[mode ipip|gre|sit] [remote ADDR] [local ADDR]\n\t[[i|o]seq] [[i|o]key KEY] [[i|o]csum]\n\t[ttl TTL] [tos TOS] [[no]pmtudisc] [dev PHYS_DEV]\n",
+  "exit": 1,
+  "tree": {}
+}

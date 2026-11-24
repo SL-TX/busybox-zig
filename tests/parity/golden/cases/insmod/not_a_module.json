@@ -1,0 +1,16 @@
+{
+  "applet": "insmod",
+  "name": "not_a_module",
+  "stdout": "",
+  "stderr": "insmod: can't insert 'f': Operation not permitted\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "cGxhaW4gdGV4dA=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "printf_basic",
+  "stdout": "abc|42|ff\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

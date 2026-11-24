@@ -1,0 +1,16 @@
+{
+  "applet": "chown",
+  "name": "numeric_group",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

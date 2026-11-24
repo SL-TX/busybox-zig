@@ -1,0 +1,460 @@
+{
+  "applet": "nc",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogusoption"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dash_h",
+      "argv": [
+        "-h"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_port",
+      "argv": [
+        "127.0.0.1",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_local_port",
+      "argv": [
+        "-p",
+        "abc",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_wait",
+      "argv": [
+        "-w",
+        "abc",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "too_many_args",
+      "argv": [
+        "127.0.0.1",
+        "1",
+        "extra"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "listen_permission",
+      "argv": [
+        "-l",
+        "-p",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "verbose_refused",
+      "argv": [
+        "-v",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "double_verbose_refused",
+      "argv": [
+        "-vv",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "numeric_refused",
+      "argv": [
+        "-n",
+        "-v",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "exec_requires_no_host",
+      "argv": [
+        "-e",
+        "/bin/echo",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_source_addr",
+      "argv": [
+        "-s",
+        "1.2.3.4",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "keep_listen",
+      "argv": [
+        "-l",
+        "-k",
+        "-p",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_interval",
+      "argv": [
+        "-i",
+        "abc",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "zero_io",
+      "argv": [
+        "-z",
+        "-v",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "udp_listen",
+      "argv": [
+        "-u",
+        "-l",
+        "-p",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "hexdump_file",
+      "argv": [
+        "-o",
+        "trace.hex",
+        "-v",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "wait_timeout",
+      "argv": [
+        "-w",
+        "1",
+        "-vv",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "PONG\n"
+      }
+    },
+    {
+      "name": "wait_receives",
+      "argv": [
+        "-w",
+        "5",
+        "-vv",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "PONG\n"
+      }
+    },
+    {
+      "name": "interval_late",
+      "argv": [
+        "-i",
+        "1",
+        "-w",
+        "5",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": "A\nB\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 15000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "timed_echo",
+        "threshold_ms": 500
+      }
+    },
+    {
+      "name": "interval_early",
+      "argv": [
+        "-w",
+        "5",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": "A\nB\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 15000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "timed_echo",
+        "threshold_ms": 500
+      }
+    },
+    {
+      "name": "attached_wait",
+      "argv": [
+        "-w1",
+        "-vv",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "mode": "delayed",
+        "delay_ms": 3000,
+        "data": "PONG\n"
+      }
+    }
+  ]
+}

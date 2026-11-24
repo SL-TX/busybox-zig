@@ -1,0 +1,4 @@
+
+Usage: more [FILE]...
+
+View FILE (or stdin) one screenful at a time

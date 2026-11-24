@@ -1,0 +1,8 @@
+{
+  "applet": "mknod",
+  "name": "blk",
+  "stdout": "",
+  "stderr": "mknod: blk: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

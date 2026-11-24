@@ -1,0 +1,8 @@
+{
+  "applet": "tar",
+  "name": "create_symlink_default",
+  "stdout": "l\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

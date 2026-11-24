@@ -1,0 +1,8 @@
+{
+  "applet": "touch",
+  "name": "invalid_date_d",
+  "stdout": "",
+  "stderr": "touch: invalid date 'bogus'\n",
+  "exit": 1,
+  "tree": {}
+}

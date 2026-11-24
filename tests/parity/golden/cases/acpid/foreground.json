@@ -1,0 +1,8 @@
+{
+  "applet": "acpid",
+  "name": "foreground",
+  "stdout": "",
+  "stderr": "acpid: can't open '/var/log/acpid.log': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

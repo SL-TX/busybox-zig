@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "cmdsub_nested",
+  "stdout": "abc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

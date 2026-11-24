@@ -1,0 +1,8 @@
+{
+  "applet": "brctl",
+  "name": "showmacs_unknown",
+  "stdout": "",
+  "stderr": "brctl: bridge br0 does not exist\n",
+  "exit": 1,
+  "tree": {}
+}

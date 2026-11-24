@@ -1,0 +1,27 @@
+{
+  "applet": "dpkg-deb",
+  "name": "extract",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out": {
+      "type": "dir",
+      "mode": 509
+    },
+    "out/hello.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQK"
+      }
+    },
+    "deb": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ITxhcmNoPgpkZWJpYW4tYmluYXJ5LyAgMCAgICAgICAgICAgMCAgICAgMCAgICAgNjQ0ICAgICA0ICAgICAgICAgYAoyLjAKY29udHJvbC50YXIuZ3ovIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTkxICAgICAgIGAKH++/vQgAAAAAAALvv73vv73vv73vv71qAjEQ77+977+977+9FHnvv71tFu+/vRUWEQXvv71CD++/vT3vv71BF++/vWbJju+/ve+/vTdVKO+/ve+/ve+/vV7vv73vv71g77+9D++/ve+/ve+/vSXvv71RS07vv73vv73vv73vv73vv73vv73vv73vv71977+9aO+/ve+/ve+/vXzvv73vv70777+977+9B++/vVlD77+9L++/vXN6D++/vRzvv73Su++/ve+/ve+/ve+/vUHvv70877+9d23vv73vv73vv73vv73ToBLvv71a77+9Qkjvv73vv73vv70wag0p77+977+9y6xu77+9a++/ve+/vcuU77+977+977+977+977+9W++/vWMZJu+/ve+/ve+/vc+N77+977+977+977+977+9NwAAAAAAAAAAAAAAAADvv73vv73vv70A77+9Wj44ACgAAApkYXRhLnRhci5nei8gICAgMCAgICAgICAgICAgMCAgICAgMCAgICAgNjQ0ICAgICAxMTQgICAgICAgYAof77+9CAAAAAAAAu+/ve+/ve+/vTEK77+9QBAF0Kk9RU4QN++/ve+/ve+/vQgKFgvvv73vv70hHu+/vWUb77+9XkF877+977+977+9b34x77+977+9di1lGe+/vcan77+977+9c++/ve+/vT1T77+977+977+977+977+9PO+/vSnvv70UX++/ve+/ve+/vXlt77+977+977+977+977+9fVnvv73vv70QAAAAAAAAAAAA77+977+9J++/vQLvv713ACgAAA=="
+      }
+    }
+  }
+}

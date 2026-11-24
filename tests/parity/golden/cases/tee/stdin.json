@@ -1,0 +1,8 @@
+{
+  "applet": "tee",
+  "name": "stdin",
+  "stdout": "one\ntwo\nthree\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

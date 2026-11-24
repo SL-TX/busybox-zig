@@ -1,0 +1,8 @@
+{
+  "applet": "chpst",
+  "name": "bad_nice",
+  "stdout": "",
+  "stderr": "chpst: invalid number 'x'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "func_local",
+  "stdout": "inside\noutside\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

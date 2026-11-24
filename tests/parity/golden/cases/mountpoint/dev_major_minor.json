@@ -1,0 +1,8 @@
+{
+  "applet": "mountpoint",
+  "name": "dev_major_minor",
+  "stdout": "<MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

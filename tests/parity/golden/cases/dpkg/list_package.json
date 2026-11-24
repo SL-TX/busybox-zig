@@ -1,0 +1,8 @@
+{
+  "applet": "dpkg",
+  "name": "list_package",
+  "stdout": "    Name           Version\n+++-==============-==============\nii  python3        3.13.5-1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

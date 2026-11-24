@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "tilde_colon_assignment",
+  "stdout": "[/root:/root]\n<:/root>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "showkey",
+  "name": "pty_mode",
+  "stdout": "showkey: KDGKBMODE: Inappropriate ioctl for device\n",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

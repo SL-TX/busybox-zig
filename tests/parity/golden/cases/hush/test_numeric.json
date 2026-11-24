@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "test_numeric",
+  "stdout": "gt\neq\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

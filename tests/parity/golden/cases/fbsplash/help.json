@@ -1,0 +1,8 @@
+{
+  "applet": "fbsplash",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fbsplash -s IMGFILE [-c] [-d DEV] [-i INIFILE] [-f CMD]\n\n\t-s\tImage\n\t-c\tHide cursor\n\t-d\tFramebuffer device (default /dev/fb0)\n\t-i\tConfig file (var=value):\n\t\t\tBAR_LEFT,BAR_TOP,BAR_WIDTH,BAR_HEIGHT\n\t\t\tBAR_R,BAR_G,BAR_B,IMG_LEFT,IMG_TOP\n\t-f\tControl pipe (else exit after drawing image)\n\t\t\tcommands: 'NN' (% for progress bar) or 'exit'\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "hush",
+  "name": "pty_prompt",
+  "stdout": "~ $ echo hi\r\nhi\r\n~ $ exit\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    ".hush_history": {
+      "type": "file",
+      "mode": 384,
+      "content": {
+        "__base64__": "ZWNobyBoaQpleGl0Cg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "invalid_attr",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: chattr [-R] [-v VERSION] [-p PROJID] [-+=AacDdijsStTu] FILE...\n\nChange ext2 file attributes\n\n\t-R\tRecurse\n\t-v NUM\tSet version/generation number\n\t-p NUM\tSet project number\nModifiers:\n\t-,+,=\tRemove/add/set attributes\nAttributes:\n\tA\tNo atime\n\ta\tAppend only\n\tC\tNo copy-on-write\n\tc\tCompressed\n\tD\tSynchronous dir updates\n\td\tDon't backup with dump\n\tE\tEncrypted\n\te\tFile uses extents\n\tF\tCase-insensitive dir\n\tI\tIndexed dir\n\ti\tImmutable\n\tj\tWrite data to journal first\n\tN\tFile is stored in inode\n\tP\tHierarchical project ID dir\n\tS\tSynchronous file updates\n\ts\tZero storage when deleted\n\tT\tTop of dir hierarchy\n\tt\tDon't tail-merge with other files\n\tu\tAllow undelete\n\tV\tVerity\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

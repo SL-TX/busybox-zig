@@ -1,0 +1,8 @@
+{
+  "applet": "adduser",
+  "name": "dont_set_pass",
+  "stdout": "",
+  "stderr": "adduser: permission denied (are you root?)\n",
+  "exit": 1,
+  "tree": {}
+}

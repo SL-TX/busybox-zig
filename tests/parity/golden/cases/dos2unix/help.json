@@ -1,0 +1,8 @@
+{
+  "applet": "dos2unix",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: dos2unix [-ud] [FILE]\n\nConvert FILE in-place from DOS to Unix format.\nWhen no file is given, use stdin/stdout.\n\n\t-u\tdos2unix\n\t-d\tunix2dos\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

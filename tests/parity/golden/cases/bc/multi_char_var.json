@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "multi_char_var",
+  "stdout": "5\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

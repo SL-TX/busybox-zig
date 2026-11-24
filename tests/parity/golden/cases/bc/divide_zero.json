@@ -1,0 +1,8 @@
+{
+  "applet": "bc",
+  "name": "divide_zero",
+  "stdout": "",
+  "stderr": "bc: divide by zero\n",
+  "exit": 1,
+  "tree": {}
+}

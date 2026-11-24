@@ -1,0 +1,8 @@
+{
+  "applet": "ts",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ts [-is] [STRFTIME]\n\nPipe stdin to stdout, add timestamp to each line\n\n\t-s\tTime since start\n\t-i\tTime since previous line\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

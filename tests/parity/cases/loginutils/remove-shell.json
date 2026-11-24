@@ -1,0 +1,136 @@
+{
+  "applet": "remove-shell",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "etc_sandbox"
+      ]
+    },
+    {
+      "name": "one_shell",
+      "argv": [
+        "/bin/zsh"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "etc_sandbox"
+      ]
+    },
+    {
+      "name": "multiple_shells",
+      "argv": [
+        "/bin/zsh",
+        "/usr/bin/zsh"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "etc_sandbox"
+      ]
+    },
+    {
+      "name": "duplicate_shell",
+      "argv": [
+        "/bin/sh",
+        "/bin/sh"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "etc_sandbox"
+      ]
+    },
+    {
+      "name": "empty_shell",
+      "argv": [
+        ""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "etc_sandbox"
+      ]
+    },
+    {
+      "name": "dash_arg",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {
+        "SHELLS_FILE": "<TMP>/shells"
+      },
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [
+        "etc_sandbox"
+      ]
+    }
+  ]
+}

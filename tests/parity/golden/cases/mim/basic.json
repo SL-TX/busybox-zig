@@ -1,0 +1,16 @@
+{
+  "applet": "mim",
+  "name": "basic",
+  "stdout": "hello from all\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "Mimfile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWxsOgoJZWNobyBoZWxsbyBmcm9tIGFsbAo="
+      }
+    }
+  }
+}

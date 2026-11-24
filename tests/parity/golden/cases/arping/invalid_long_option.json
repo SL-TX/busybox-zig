@@ -1,0 +1,8 @@
+{
+  "applet": "arping",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "arping: socket: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

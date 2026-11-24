@@ -62,7 +62,18 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    procps.addImport("libbb_zig", libbb_zig);
     exe.root_module.addImport("procps", procps);
+
+    // Task 18 — console-tools module
+    const console_tools = b.addModule("console_tools", .{
+        .root_source_file = b.path("console_tools/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    console_tools.addImport("libbb_zig", libbb_zig);
+    console_tools.addImport("coreutils", coreutils);
+    exe.root_module.addImport("console_tools", console_tools);
 
     // Add shell module
     const shell = b.addModule("shell", .{

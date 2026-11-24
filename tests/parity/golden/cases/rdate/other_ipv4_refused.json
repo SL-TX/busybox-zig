@@ -1,0 +1,8 @@
+{
+  "applet": "rdate",
+  "name": "other_ipv4_refused",
+  "stdout": "",
+  "stderr": "rdate: can't connect to remote host (127.0.0.2): Connection refused\n",
+  "exit": 1,
+  "tree": {}
+}

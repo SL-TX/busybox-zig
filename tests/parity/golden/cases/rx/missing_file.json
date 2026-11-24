@@ -1,0 +1,8 @@
+{
+  "applet": "rx",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "rx: can't open '/nonexistent': Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

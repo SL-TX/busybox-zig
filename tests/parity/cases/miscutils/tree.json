@@ -1,0 +1,112 @@
+{
+  "applet": "tree",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "with_files",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "a/f1.txt": "x",
+        "a/sub/f2": "y",
+        "topfile": "z"
+      },
+      "dirs": [
+        "b",
+        "a/sub"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "subdir",
+      "argv": [
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a/f1.txt": "x",
+        "a/sub/f2": "y"
+      },
+      "dirs": [
+        "a/sub"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_path",
+      "argv": [
+        "-a"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "multiple",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a/f": "1",
+        "b/g": "2"
+      },
+      "dirs": [
+        "a",
+        "b"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

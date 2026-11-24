@@ -1,0 +1,23 @@
+{
+  "applet": "test",
+  "name": "nt_subsecond_equal_sec",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Yg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQ=="
+      }
+    }
+  }
+}

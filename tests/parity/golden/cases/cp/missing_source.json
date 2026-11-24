@@ -1,0 +1,8 @@
+{
+  "applet": "cp",
+  "name": "missing_source",
+  "stdout": "",
+  "stderr": "cp: can't stat 'missing': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

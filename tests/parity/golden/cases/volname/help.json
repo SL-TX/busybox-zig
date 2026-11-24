@@ -1,0 +1,8 @@
+{
+  "applet": "volname",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: volname [DEVICE]\n\nShow CD volume name of the DEVICE (default /dev/cdrom)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

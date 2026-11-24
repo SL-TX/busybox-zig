@@ -1,0 +1,68 @@
+{
+  "applet": "ubirename",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "one_arg",
+      "argv": [
+        "foo"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "not_ubi",
+      "argv": [
+        "nonexistent",
+        "old",
+        "new"
+      ]
+    },
+    {
+      "name": "volume_not_found",
+      "argv": [
+        "/dev/ubi0",
+        "old",
+        "new"
+      ]
+    },
+    {
+      "name": "two_renames",
+      "argv": [
+        "/dev/ubi0",
+        "old",
+        "new",
+        "old2",
+        "new2"
+      ]
+    },
+    {
+      "name": "dash_arg",
+      "argv": [
+        "-X",
+        "/dev/ubi0",
+        "old",
+        "new"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    }
+  ]
+}

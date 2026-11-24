@@ -1,0 +1,23 @@
+{
+  "applet": "tac",
+  "name": "two_files",
+  "stdout": "b\na\nd\nc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YwpkCg=="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiCg=="
+      }
+    }
+  }
+}

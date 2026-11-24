@@ -1,0 +1,8 @@
+{
+  "applet": "softlimit",
+  "name": "missing_prog",
+  "stdout": "",
+  "stderr": "softlimit: can't execute 'nosuchprog_zz': No such file or directory\n",
+  "exit": 127,
+  "tree": {}
+}

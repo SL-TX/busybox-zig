@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "param_substr",
+  "stdout": "bcd ef\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

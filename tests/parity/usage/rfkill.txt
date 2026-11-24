@@ -1,0 +1,12 @@
+
+Usage: rfkill COMMAND [INDEX|TYPE]
+
+Enable/disable wireless devices
+
+Commands:
+	list [INDEX|TYPE]	List current state
+	block INDEX|TYPE	Disable device
+	unblock INDEX|TYPE	Enable device
+
+	TYPE: all, wlan(wifi), bluetooth, uwb(ultrawideband),
+		wimax, wwan, gps, fm

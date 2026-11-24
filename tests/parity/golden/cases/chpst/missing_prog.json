@@ -1,0 +1,8 @@
+{
+  "applet": "chpst",
+  "name": "missing_prog",
+  "stdout": "",
+  "stderr": "chpst: can't execute 'nosuchprog_zz': No such file or directory\n",
+  "exit": 127,
+  "tree": {}
+}

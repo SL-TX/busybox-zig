@@ -1,0 +1,8 @@
+{
+  "applet": "ftpget",
+  "name": "bad_port",
+  "stdout": "",
+  "stderr": "ftpget: bad port 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

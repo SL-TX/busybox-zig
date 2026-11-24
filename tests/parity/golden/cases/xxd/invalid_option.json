@@ -1,0 +1,8 @@
+{
+  "applet": "xxd",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "xxd: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: xxd [-ri] [-ps] [-g N] [-c N] [-l LEN] [-s OFS] [-o OFS] [FILE]\n\nHex dump FILE (or stdin)\n\n\t-g N\t\tBytes per group (default 2)\n\t-c N\t\tBytes per line (default:16, -ps:30, -i:12)\n\t-ps\t\tShow only hex bytes (-c 0: output as one line)\n\t-i\t\tC include file style\n\t-l LENGTH\tShow only first LENGTH bytes\n\t-s OFFSET\tSkip OFFSET bytes\n\t-o OFFSET\tAdd OFFSET to displayed offset\n\t-r\t\tReverse (with -p, assumes no offsets in input)\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,165 @@
+{
+  "applet": "dpkg-deb",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "list",
+      "argv": [
+        "-c",
+        "deb"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "deb": "ITxhcmNoPgpkZWJpYW4tYmluYXJ5LyAgMCAgICAgICAgICAgMCAgICAgMCAgICAgNjQ0ICAgICA0ICAgICAgICAgYAoyLjAKY29udHJvbC50YXIuZ3ovIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTkxICAgICAgIGAKH4sIAAAAAAAC/+3NzWoCMRDA8ZzzFHmCbRa2FRYRBa9CD+I9hEEX42bJjuDjN1UotNfSXvz/YJgPhpnmJeZRS07m7/jqrevuufqZfbtov+rHfPHqO+O8+QfXWUOpL81zeg/xHI7Su5OklO1ByjzksXdt4+2mxNOgEvVa6kJIye7CMGoNKb3by6xuqWu5hcuUpIn5srJbmWMZJr3f0M+N6fHAuvC9NwAAAAAAAAAAAAAAAACA3/gAqFo+OAAoAAAKZGF0YS50YXIuZ3ovICAgIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTE0ICAgICAgIGAKH4sIAAAAAAAC/+3RMQrCQBAF0Kk9RU4QN7CY8wgKFguBuCEe32UbwV5BfK/5w29+MePxdi1lGeujxqek5pRzz+Y9U5ry6+79POcphhRfsN3reW2T8Z/694d9WcvlEAAAAAAAAAAAAPyMJ6ICtncAKAAA"
+      }
+    },
+    {
+      "name": "fields",
+      "argv": [
+        "-f",
+        "deb"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "deb": "ITxhcmNoPgpkZWJpYW4tYmluYXJ5LyAgMCAgICAgICAgICAgMCAgICAgMCAgICAgNjQ0ICAgICA0ICAgICAgICAgYAoyLjAKY29udHJvbC50YXIuZ3ovIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTkxICAgICAgIGAKH4sIAAAAAAAC/+3NzWoCMRDA8ZzzFHmCbRa2FRYRBa9CD+I9hEEX42bJjuDjN1UotNfSXvz/YJgPhpnmJeZRS07m7/jqrevuufqZfbtov+rHfPHqO+O8+QfXWUOpL81zeg/xHI7Su5OklO1ByjzksXdt4+2mxNOgEvVa6kJIye7CMGoNKb3by6xuqWu5hcuUpIn5srJbmWMZJr3f0M+N6fHAuvC9NwAAAAAAAAAAAAAAAACA3/gAqFo+OAAoAAAKZGF0YS50YXIuZ3ovICAgIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTE0ICAgICAgIGAKH4sIAAAAAAAC/+3RMQrCQBAF0Kk9RU4QN7CY8wgKFguBuCEe32UbwV5BfK/5w29+MePxdi1lGeujxqek5pRzz+Y9U5ry6+79POcphhRfsN3reW2T8Z/694d9WcvlEAAAAAAAAAAAAPyMJ6ICtncAKAAA"
+      }
+    },
+    {
+      "name": "extract",
+      "argv": [
+        "-x",
+        "deb",
+        "out"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "deb": "ITxhcmNoPgpkZWJpYW4tYmluYXJ5LyAgMCAgICAgICAgICAgMCAgICAgMCAgICAgNjQ0ICAgICA0ICAgICAgICAgYAoyLjAKY29udHJvbC50YXIuZ3ovIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTkxICAgICAgIGAKH4sIAAAAAAAC/+3NzWoCMRDA8ZzzFHmCbRa2FRYRBa9CD+I9hEEX42bJjuDjN1UotNfSXvz/YJgPhpnmJeZRS07m7/jqrevuufqZfbtov+rHfPHqO+O8+QfXWUOpL81zeg/xHI7Su5OklO1ByjzksXdt4+2mxNOgEvVa6kJIye7CMGoNKb3by6xuqWu5hcuUpIn5srJbmWMZJr3f0M+N6fHAuvC9NwAAAAAAAAAAAAAAAACA3/gAqFo+OAAoAAAKZGF0YS50YXIuZ3ovICAgIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTE0ICAgICAgIGAKH4sIAAAAAAAC/+3RMQrCQBAF0Kk9RU4QN7CY8wgKFguBuCEe32UbwV5BfK/5w29+MePxdi1lGeujxqek5pRzz+Y9U5ry6+79POcphhRfsN3reW2T8Z/694d9WcvlEAAAAAAAAAAAAPyMJ6ICtncAKAAA"
+      }
+    },
+    {
+      "name": "extract_verbose",
+      "argv": [
+        "-X",
+        "deb",
+        "out"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "deb": "ITxhcmNoPgpkZWJpYW4tYmluYXJ5LyAgMCAgICAgICAgICAgMCAgICAgMCAgICAgNjQ0ICAgICA0ICAgICAgICAgYAoyLjAKY29udHJvbC50YXIuZ3ovIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTkxICAgICAgIGAKH4sIAAAAAAAC/+3NzWoCMRDA8ZzzFHmCbRa2FRYRBa9CD+I9hEEX42bJjuDjN1UotNfSXvz/YJgPhpnmJeZRS07m7/jqrevuufqZfbtov+rHfPHqO+O8+QfXWUOpL81zeg/xHI7Su5OklO1ByjzksXdt4+2mxNOgEvVa6kJIye7CMGoNKb3by6xuqWu5hcuUpIn5srJbmWMZJr3f0M+N6fHAuvC9NwAAAAAAAAAAAAAAAACA3/gAqFo+OAAoAAAKZGF0YS50YXIuZ3ovICAgIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTE0ICAgICAgIGAKH4sIAAAAAAAC/+3RMQrCQBAF0Kk9RU4QN7CY8wgKFguBuCEe32UbwV5BfK/5w29+MePxdi1lGeujxqek5pRzz+Y9U5ry6+79POcphhRfsN3reW2T8Z/694d9WcvlEAAAAAAAAAAAAPyMJ6ICtncAKAAA"
+      }
+    },
+    {
+      "name": "extract_control",
+      "argv": [
+        "-e",
+        "deb",
+        "ctrl"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "deb": "ITxhcmNoPgpkZWJpYW4tYmluYXJ5LyAgMCAgICAgICAgICAgMCAgICAgMCAgICAgNjQ0ICAgICA0ICAgICAgICAgYAoyLjAKY29udHJvbC50YXIuZ3ovIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTkxICAgICAgIGAKH4sIAAAAAAAC/+3NzWoCMRDA8ZzzFHmCbRa2FRYRBa9CD+I9hEEX42bJjuDjN1UotNfSXvz/YJgPhpnmJeZRS07m7/jqrevuufqZfbtov+rHfPHqO+O8+QfXWUOpL81zeg/xHI7Su5OklO1ByjzksXdt4+2mxNOgEvVa6kJIye7CMGoNKb3by6xuqWu5hcuUpIn5srJbmWMZJr3f0M+N6fHAuvC9NwAAAAAAAAAAAAAAAACA3/gAqFo+OAAoAAAKZGF0YS50YXIuZ3ovICAgIDAgICAgICAgICAgIDAgICAgIDAgICAgIDY0NCAgICAgMTE0ICAgICAgIGAKH4sIAAAAAAAC/+3RMQrCQBAF0Kk9RU4QN7CY8wgKFguBuCEe32UbwV5BfK/5w29+MePxdi1lGeujxqek5pRzz+Y9U5ry6+79POcphhRfsN3reW2T8Z/694d9WcvlEAAAAAAAAAAAAPyMJ6ICtncAKAAA"
+      }
+    },
+    {
+      "name": "corrupt",
+      "argv": [
+        "-c",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "QkFEIQ=="
+      }
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "trap_exit_subshell",
+  "stdout": "Trapped\nOne:1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

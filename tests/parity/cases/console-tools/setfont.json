@@ -1,0 +1,281 @@
+{
+  "applet": "setfont",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "tty_missing",
+      "argv": [
+        "-C",
+        "/no/such",
+        "foo"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "font_missing",
+      "argv": [
+        "-C",
+        "/dev/null",
+        "missing.psf"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "font_garbage",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "garbage"
+      ]
+    },
+    {
+      "name": "font_psf1",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "psf1"
+      ]
+    },
+    {
+      "name": "font_psf2",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "psf2"
+      ]
+    },
+    {
+      "name": "font_badsize",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "badsize"
+      ]
+    },
+    {
+      "name": "font_h33",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "h33"
+      ]
+    },
+    {
+      "name": "font_mode6",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "mode6"
+      ]
+    },
+    {
+      "name": "font_ver9",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "ver9"
+      ]
+    },
+    {
+      "name": "font_short",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "driver.py": "import os,struct,subprocess,sys\nbb=sys.argv[1]; kind=sys.argv[2]\ndef w(name,data):\n open(name,\"wb\").write(data)\nif kind==\"garbage\": w(\"garbage.bin\",b\"not a font at all\")\nelif kind==\"psf1\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(256*16))\nelif kind==\"psf2\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",0,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"badsize\": w(\"font.bin\",bytes([0x36,4,0,0])+bytes(256))\nelif kind==\"h33\": w(\"font.bin\",bytes([0x36,4,0,33])+bytes(256*33))\nelif kind==\"mode6\": w(\"font.bin\",bytes([0x36,4,6,16])+bytes(256*16))\nelif kind==\"ver9\":\n w(\"font.bin\",bytes([0x72,0xb5,0x4a,0x86])+struct.pack(\"<7I\",9,32,0,256,16,16,8)+bytes(256*16))\nelif kind==\"short\": w(\"font.bin\",bytes([0x36,4,0,16])+bytes(100))\nelse: raise SystemExit(2)\nname=\"garbage.bin\" if kind==\"garbage\" else \"font.bin\"\nr=subprocess.run([bb,\"setfont\",\"-C\",\"/dev/null\",name],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\nsys.stdout.buffer.write(r.stdout); sys.stderr.buffer.write(r.stderr); raise SystemExit(r.returncode)\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": [],
+      "exec_argv": [
+        "python3",
+        "<TMP>/driver.py",
+        "<BB>",
+        "short"
+      ]
+    },
+    {
+      "name": "extra_args",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_map_arg",
+      "argv": [
+        "-m"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "nproc",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: nproc [--all] [--ignore=N]\n\nPrint number of available CPUs\n\n\t--all\t\tNumber of installed CPUs\n\t--ignore=N\tExclude N CPUs\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "iostat",
+  "name": "megabytes",
+  "stdout": "Linux<MATCH>+deb<MATCH>-amd<MATCH> <MATCH>\n\navg-cpu<MATCH>  %user   %nice %system %iowait  %steal   %idle<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\n\nDevice<MATCH>            tps    MB_read<MATCH>s    MB_wrtn<MATCH>s    MB_read    MB_wrtn\nnvme<MATCH>n<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\nnvme<MATCH>n<MATCH>p<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\nnvme<MATCH>n<MATCH>p<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\nnvme<MATCH>n<MATCH>p<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "poweroff",
+  "name": "delay_invalid",
+  "stdout": "",
+  "stderr": "poweroff: invalid number 'x'\n",
+  "exit": 1,
+  "tree": {}
+}

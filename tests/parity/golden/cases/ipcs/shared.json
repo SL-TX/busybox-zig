@@ -1,0 +1,8 @@
+{
+  "applet": "ipcs",
+  "name": "shared",
+  "stdout": "\n------ Shared Memory Segments --------\nkey        shmid      owner      perms      bytes      nattch     status      \n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "command_v",
+  "stdout": "echo\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "envdir",
+  "name": "missing_dir",
+  "stdout": "",
+  "stderr": "envdir: can't change directory to 'nosuch': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

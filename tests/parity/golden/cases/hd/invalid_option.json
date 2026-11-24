@@ -1,0 +1,8 @@
+{
+  "applet": "hd",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "hd: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: hd FILE...\n\nhd is an alias for hexdump -C\n",
+  "exit": 1,
+  "tree": {}
+}

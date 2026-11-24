@@ -1,0 +1,8 @@
+{
+  "applet": "setfattr",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "setfattr: /nonexistent: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

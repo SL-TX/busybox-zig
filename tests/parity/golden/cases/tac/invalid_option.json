@@ -1,0 +1,8 @@
+{
+  "applet": "tac",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "tac: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: tac [FILE]...\n\nConcatenate FILEs and print them in reverse\n",
+  "exit": 1,
+  "tree": {}
+}

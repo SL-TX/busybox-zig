@@ -1,0 +1,8 @@
+{
+  "applet": "brctl",
+  "name": "setfd",
+  "stdout": "",
+  "stderr": "brctl: can't open 'br0/bridge/forward_delay': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

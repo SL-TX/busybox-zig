@@ -1,0 +1,16 @@
+{
+  "applet": "join",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: join [-a 1|2 | -v 1|2] [-e STR] [-o LIST] [-t SEP_CHAR] [-1 NUM] [-2 NUM] FILE1 FILE2\n\nJoin FILE1 and FILE2, writing to stdout\n\n\t-a 1|2\tAlso write unpaired lines from FILE1/2\n\t-v 1|2\tOnly write unpaired lines from FILE1/2\n\t-e STR\tReplace empty fields with STR\n\t-o LIST\tWrite the fields in LIST\n\t-t CHAR\tUse a different field separator\n\t-1 NUM\tJoin on field NUM from FILE1\n\t-2 NUM\tJoin on field NUM from FILE2\n\nLIST is a space or comma separated list of 1/2.FIELD or 0 (the join field)\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YSAxCg=="
+      }
+    }
+  }
+}

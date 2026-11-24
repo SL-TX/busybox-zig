@@ -1,0 +1,8 @@
+{
+  "applet": "lsblk",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "lsblk: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: lsblk [BLOCKDEV]...\n\nList block devices\n",
+  "exit": 1,
+  "tree": {}
+}

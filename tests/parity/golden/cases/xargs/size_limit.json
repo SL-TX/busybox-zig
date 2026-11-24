@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "size_limit",
+  "stdout": "aa bb\ncc dd\nee\n",
+  "stderr": "echo aa bb\necho cc dd\necho ee\n",
+  "exit": 0,
+  "tree": {}
+}

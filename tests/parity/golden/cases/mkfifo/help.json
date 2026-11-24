@@ -1,0 +1,8 @@
+{
+  "applet": "mkfifo",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mkfifo [-m MODE] NAME\n\nCreate named pipe\n\n\t-m MODE\tMode (default a=rw)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

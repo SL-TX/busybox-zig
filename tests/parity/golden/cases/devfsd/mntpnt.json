@@ -1,0 +1,8 @@
+{
+  "applet": "devfsd",
+  "name": "mntpnt",
+  "stdout": "",
+  "stderr": "devfsd: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

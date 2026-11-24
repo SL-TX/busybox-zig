@@ -1,0 +1,8 @@
+{
+  "applet": "getopt",
+  "name": "long_opt",
+  "stdout": " 'val' 'foo' --\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

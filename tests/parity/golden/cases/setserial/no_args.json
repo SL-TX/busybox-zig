@@ -1,0 +1,8 @@
+{
+  "applet": "setserial",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: setserial [-abGvz] { DEVICE [PARAMETER [ARG]]... | -g DEVICE... }\n\nPrint or set serial port parameters\n\n\t-a\tPrint all\n\t-b\tPrint summary\n\t-G\tPrint as setserial PARAMETERs\n\t-v\tVerbose\n\t-z\tZero out serial flags before setting\n\t-g\tAll args are device names\n\nPARAMETERs: (* = takes ARG, ^ = can be turned off by preceding ^)\n\t*port, *irq, *divisor, *uart, *baud_base, *close_delay, *closing_wait,\n\t^fourport, ^auto_irq, ^skip_test, ^sak, ^session_lockout, ^pgrp_lockout,\n\t^callout_nohup, ^split_termios, ^hup_notify, ^low_latency, autoconfig,\n\tspd_normal, spd_hi, spd_vhi, spd_shi, spd_warp, spd_cust\nARG for uart:\n\tunknown, 8250, 16450, 16550, 16550A, Cirrus, 16650, 16650V2, 16750,\n\t16950, 16954, 16654, 16850, RSA, NS16550A, XSCALE, RM9000, OCTEON, AR7,\n\tU6_16550A\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,20 @@
+{
+  "applet": "rmdir",
+  "name": "nonempty",
+  "stdout": "",
+  "stderr": "rmdir: 'd': Directory not empty\n",
+  "exit": 1,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    },
+    "d/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "pidof",
+  "name": "omit_ppid",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

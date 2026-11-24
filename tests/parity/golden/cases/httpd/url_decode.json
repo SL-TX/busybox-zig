@@ -1,0 +1,8 @@
+{
+  "applet": "httpd",
+  "name": "url_decode",
+  "stdout": "a b c/d",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

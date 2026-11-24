@@ -1,0 +1,8 @@
+{
+  "applet": "nohup",
+  "name": "missing_prog",
+  "stdout": "",
+  "stderr": "nohup: can't execute 'nosuch_prog_xyz': No such file or directory\n",
+  "exit": 127,
+  "tree": {}
+}

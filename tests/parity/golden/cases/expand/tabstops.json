@@ -1,0 +1,8 @@
+{
+  "applet": "expand",
+  "name": "tabstops",
+  "stdout": "a   b\n    X\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

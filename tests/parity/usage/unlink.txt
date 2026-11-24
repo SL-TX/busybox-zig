@@ -1,0 +1,4 @@
+
+Usage: unlink FILE
+
+Delete FILE by calling unlink()

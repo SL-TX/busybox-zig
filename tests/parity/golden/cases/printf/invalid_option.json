@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "invalid_option",
+  "stdout": "-q",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "yes",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: yes [STRING]\n\nRepeatedly print a line with STRING, or 'y'\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

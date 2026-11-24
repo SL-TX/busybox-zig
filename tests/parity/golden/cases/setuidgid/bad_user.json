@@ -1,0 +1,8 @@
+{
+  "applet": "setuidgid",
+  "name": "bad_user",
+  "stdout": "",
+  "stderr": "setuidgid: unknown user/group nosuchuser\n",
+  "exit": 1,
+  "tree": {}
+}

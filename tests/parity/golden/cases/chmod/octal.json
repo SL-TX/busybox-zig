@@ -1,0 +1,16 @@
+{
+  "applet": "chmod",
+  "name": "octal",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 493,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

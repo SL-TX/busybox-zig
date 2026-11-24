@@ -1,0 +1,228 @@
+{
+  "applet": "arp",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogusoption"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "missing_H",
+      "argv": [
+        "-H"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "missing_i",
+      "argv": [
+        "-i"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "delete_no_host",
+      "argv": [
+        "-d"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "set_no_host",
+      "argv": [
+        "-s"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "set_no_hw",
+      "argv": [
+        "-s",
+        "1.2.3.4"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "delete_host",
+      "argv": [
+        "-d",
+        "1.2.3.4"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "show_unknown",
+      "argv": [
+        "-a",
+        "nosuchhost"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "show_numeric",
+      "argv": [
+        "-an",
+        "127.0.0.1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    },
+    {
+      "name": "numeric_all",
+      "argv": [
+        "-n"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\S+ (?=\\()"
+      ],
+      "requires": []
+    }
+  ]
+}

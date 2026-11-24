@@ -1,0 +1,16 @@
+{
+  "applet": "gunzip",
+  "name": "test_ok",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a.gz": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "H++/vQgAAAAAAALvv73vv71I77+977+977+9Vyjvv70v77+9Se+/ve+/ve+/ve+/vQYA77+977+9Ce+/vSQAAAA="
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+
+Usage: lzopcat [-vF] [FILE]...
+
+	-v	Verbose
+	-F	Don't verify checksum

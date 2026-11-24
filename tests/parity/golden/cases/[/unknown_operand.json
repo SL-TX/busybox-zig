@@ -1,0 +1,8 @@
+{
+  "applet": "[",
+  "name": "unknown_operand",
+  "stdout": "",
+  "stderr": "[: b: unknown operand\n",
+  "exit": 2,
+  "tree": {}
+}

@@ -1,0 +1,160 @@
+{
+  "applet": "nanddump",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-X",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open",
+      "argv": [
+        "nofile"
+      ]
+    },
+    {
+      "name": "all_opts",
+      "argv": [
+        "-n",
+        "-o",
+        "-s",
+        "0",
+        "-l",
+        "16",
+        "-f",
+        "-",
+        "nofile"
+      ]
+    },
+    {
+      "name": "bb_skipbad",
+      "argv": [
+        "--bb",
+        "skipbad",
+        "nofile"
+      ]
+    },
+    {
+      "name": "bb_padbad",
+      "argv": [
+        "--bb=padbad",
+        "nofile"
+      ]
+    },
+    {
+      "name": "bb_missing_arg",
+      "argv": [
+        "--bb"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "bb_unknown",
+      "argv": [
+        "--bbx",
+        "nofile"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "ioctl_fail",
+      "argv": [
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "ioctl_fail_all_opts",
+      "argv": [
+        "-n",
+        "-o",
+        "-s",
+        "0",
+        "-l",
+        "16",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "output_file",
+      "argv": [
+        "-f",
+        "out.bin",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "too_many_args",
+      "argv": [
+        "infile",
+        "extra"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      },
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "bad_f_arg",
+      "argv": [
+        "-f"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "raw_mode_ioctl",
+      "argv": [
+        "-n",
+        "-s",
+        "0",
+        "-l",
+        "4",
+        "/dev/mtd0"
+      ],
+      "requires": [
+        "root"
+      ]
+    }
+  ]
+}

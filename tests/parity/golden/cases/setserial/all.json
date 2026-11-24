@@ -1,0 +1,8 @@
+{
+  "applet": "setserial",
+  "name": "all",
+  "stdout": "/dev/ttyS0, Line 0, UART: unknown, Port: 0x03f8, IRQ: 4\n\tBaud_base: 115200, close_delay: 50, divisor: 0\n\tclosing_wait: 3000\n\tFlags: spd_normal skip_test\n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

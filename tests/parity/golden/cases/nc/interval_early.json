@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "interval_early",
+  "stdout": "EARLY\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

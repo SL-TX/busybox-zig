@@ -1,0 +1,8 @@
+{
+  "applet": "hdparm",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "hdparm: short read\n",
+  "exit": 1,
+  "tree": {}
+}

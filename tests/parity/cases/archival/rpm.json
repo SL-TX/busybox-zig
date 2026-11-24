@@ -1,0 +1,185 @@
+{
+  "applet": "rpm",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "query",
+      "argv": [
+        "-qp",
+        "rpm"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "rpm": "7avu2wADAAAAAQAAaGVsbG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAjq3oAQAAAAAAAAAAAAAAAI6t6AEAAAAAAAAABwAAACMAAAPoAAAABgAAAAAAAAABAAAD6QAAAAYAAAAGAAAAAQAAA+oAAAAGAAAACgAAAAEAAAP+AAAABgAAAAwAAAABAAAD/QAAAAYAAAATAAAAAQAABGQAAAAGAAAAGQAAAAEAAARlAAAABgAAAB4AAAABaGVsbG8AMS4wADEAbm9hcmNoAGxpbnV4AGNwaW8AZ3ppcAAfiwgAAAAAAAADMzAHQkMDCADTFoaJJgbYgSEaPxmHOnSQCGNkpObk5OuVVJQwgFkK5flFOSlcFLmBWJAEY4QEOXr6uAYpKioyAAEApmSdQgABAAA="
+      }
+    },
+    {
+      "name": "query_info",
+      "argv": [
+        "-qpi",
+        "rpm"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "rpm": "7avu2wADAAAAAQAAaGVsbG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAjq3oAQAAAAAAAAAAAAAAAI6t6AEAAAAAAAAABwAAACMAAAPoAAAABgAAAAAAAAABAAAD6QAAAAYAAAAGAAAAAQAAA+oAAAAGAAAACgAAAAEAAAP+AAAABgAAAAwAAAABAAAD/QAAAAYAAAATAAAAAQAABGQAAAAGAAAAGQAAAAEAAARlAAAABgAAAB4AAAABaGVsbG8AMS4wADEAbm9hcmNoAGxpbnV4AGNwaW8AZ3ppcAAfiwgAAAAAAAADMzAHQkMDCADTFoaJJgbYgSEaPxmHOnSQCGNkpObk5OuVVJQwgFkK5flFOSlcFLmBWJAEY4QEOXr6uAYpKioyAAEApmSdQgABAAA="
+      }
+    },
+    {
+      "name": "query_list",
+      "argv": [
+        "-qpl",
+        "rpm"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "rpm": "7avu2wADAAAAAQAAaGVsbG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAjq3oAQAAAAAAAAAAAAAAAI6t6AEAAAAAAAAABwAAACMAAAPoAAAABgAAAAAAAAABAAAD6QAAAAYAAAAGAAAAAQAAA+oAAAAGAAAACgAAAAEAAAP+AAAABgAAAAwAAAABAAAD/QAAAAYAAAATAAAAAQAABGQAAAAGAAAAGQAAAAEAAARlAAAABgAAAB4AAAABaGVsbG8AMS4wADEAbm9hcmNoAGxpbnV4AGNwaW8AZ3ppcAAfiwgAAAAAAAADMzAHQkMDCADTFoaJJgbYgSEaPxmHOnSQCGNkpObk5OuVVJQwgFkK5flFOSlcFLmBWJAEY4QEOXr6uAYpKioyAAEApmSdQgABAAA="
+      }
+    },
+    {
+      "name": "corrupt",
+      "argv": [
+        "-qp",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "QkFEIQ=="
+      }
+    },
+    {
+      "name": "install_corrupt",
+      "argv": [
+        "-i",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "QkFEIQ=="
+      }
+    },
+    {
+      "name": "query_files",
+      "argv": [
+        "-qpl",
+        "rpm"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "rpm": "7avu2wADAAAAAQAAaGVsbG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAjq3oAQAAAAAAAAAAAAAAAI6t6AEAAAAAAAAACwAAAHkAAAPoAAAABgAAAAAAAAAGAAAD6QAAAAYAAAAGAAAABAAAA+oAAAAGAAAACgAAAAIAAAP9AAAABgAAAAwAAAAGAAAD/gAAAAYAAAASAAAABwAABA0AAAAEAAAAGQAAAAMAAARcAAAABAAAACUAAAADAAAEXQAAAAgAAAAxAAAAAwAABF4AAAAIAAAASQAAAAMAAARkAAAABgAAAG8AAAAFAAAEZQAAAAYAAAB0AAAABWhlbGxvADEuMAAxAGxpbnV4AG5vYXJjaAAAAAAAAAAAAgAAAAEAAAAAAAAAAQAAAAJoZWxsbwBSRUFETUUAaGVsbG8uY29uZgAvdXNyL2Jpbi8AL3Vzci9zaGFyZS9kb2MvaGVsbG8vAC9ldGMvAGNwaW8AZ3ppcAAfiwgAAAAAAAADMzAHQkMDCADTFoaJJgbYgSEaPxmHOnSQCGNkpObk5OuVVJQwgFkK5flFOSlcFLmBWJAEY4QEOXr6uAYpKioyAAEApmSdQgABAAA="
+      }
+    },
+    {
+      "name": "query_docs",
+      "argv": [
+        "-qpd",
+        "rpm"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "rpm": "7avu2wADAAAAAQAAaGVsbG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAjq3oAQAAAAAAAAAAAAAAAI6t6AEAAAAAAAAACwAAAHkAAAPoAAAABgAAAAAAAAAGAAAD6QAAAAYAAAAGAAAABAAAA+oAAAAGAAAACgAAAAIAAAP9AAAABgAAAAwAAAAGAAAD/gAAAAYAAAASAAAABwAABA0AAAAEAAAAGQAAAAMAAARcAAAABAAAACUAAAADAAAEXQAAAAgAAAAxAAAAAwAABF4AAAAIAAAASQAAAAMAAARkAAAABgAAAG8AAAAFAAAEZQAAAAYAAAB0AAAABWhlbGxvADEuMAAxAGxpbnV4AG5vYXJjaAAAAAAAAAAAAgAAAAEAAAAAAAAAAQAAAAJoZWxsbwBSRUFETUUAaGVsbG8uY29uZgAvdXNyL2Jpbi8AL3Vzci9zaGFyZS9kb2MvaGVsbG8vAC9ldGMvAGNwaW8AZ3ppcAAfiwgAAAAAAAADMzAHQkMDCADTFoaJJgbYgSEaPxmHOnSQCGNkpObk5OuVVJQwgFkK5flFOSlcFLmBWJAEY4QEOXr6uAYpKioyAAEApmSdQgABAAA="
+      }
+    },
+    {
+      "name": "query_config",
+      "argv": [
+        "-qpc",
+        "rpm"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "rpm": "7avu2wADAAAAAQAAaGVsbG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAjq3oAQAAAAAAAAAAAAAAAI6t6AEAAAAAAAAACwAAAHkAAAPoAAAABgAAAAAAAAAGAAAD6QAAAAYAAAAGAAAABAAAA+oAAAAGAAAACgAAAAIAAAP9AAAABgAAAAwAAAAGAAAD/gAAAAYAAAASAAAABwAABA0AAAAEAAAAGQAAAAMAAARcAAAABAAAACUAAAADAAAEXQAAAAgAAAAxAAAAAwAABF4AAAAIAAAASQAAAAMAAARkAAAABgAAAG8AAAAFAAAEZQAAAAYAAAB0AAAABWhlbGxvADEuMAAxAGxpbnV4AG5vYXJjaAAAAAAAAAAAAgAAAAEAAAAAAAAAAQAAAAJoZWxsbwBSRUFETUUAaGVsbG8uY29uZgAvdXNyL2Jpbi8AL3Vzci9zaGFyZS9kb2MvaGVsbG8vAC9ldGMvAGNwaW8AZ3ppcAAfiwgAAAAAAAADMzAHQkMDCADTFoaJJgbYgSEaPxmHOnSQCGNkpObk5OuVVJQwgFkK5flFOSlcFLmBWJAEY4QEOXr6uAYpKioyAAEApmSdQgABAAA="
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "ping6",
+  "name": "bad_hostname",
+  "stdout": "",
+  "stderr": "ping6: bad address 'notahost'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "unzip",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: unzip [-lnojpqK] FILE[.zip] [FILE]... [-x FILE]... [-d DIR]\n\nExtract FILEs from ZIP archive\n\n\t-l\tList contents (with -q for short form)\n\t-n\tNever overwrite files (default: ask)\n\t-o\tOverwrite\n\t-j\tDo not restore paths\n\t-p\tWrite to stdout\n\t-t\tTest\n\t-q\tQuiet\n\t-K\tDo not clear SUID bit\n\t-x FILE\tExclude FILEs\n\t-d DIR\tExtract into DIR\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

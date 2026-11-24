@@ -1,0 +1,8 @@
+{
+  "applet": "mountpoint",
+  "name": "nonexistent",
+  "stdout": "",
+  "stderr": "mountpoint: /definitely/no/such/path: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

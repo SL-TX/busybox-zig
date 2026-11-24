@@ -1,0 +1,16 @@
+{
+  "applet": "nbd-client",
+  "name": "handshake_old",
+  "stdout": "",
+  "stderr": "nbd-client: BLKROSET: Inappropriate ioctl for device\n",
+  "exit": 1,
+  "tree": {
+    "dev": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

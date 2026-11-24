@@ -1,0 +1,8 @@
+{
+  "applet": "vconfig",
+  "name": "bad_vlan",
+  "stdout": "",
+  "stderr": "vconfig: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

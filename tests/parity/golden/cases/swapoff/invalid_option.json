@@ -1,0 +1,8 @@
+{
+  "applet": "swapoff",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "swapoff: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: swapoff [-a] [DEVICE]\n\nStop swapping on DEVICE\n\n\t-a\tStop swapping on all swap devices\n",
+  "exit": 1,
+  "tree": {}
+}

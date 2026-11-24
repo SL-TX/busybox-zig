@@ -1,0 +1,404 @@
+{
+  "applet": "ssl_client",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogus"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_s",
+      "argv": [
+        "-s"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_r",
+      "argv": [
+        "-r"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_n",
+      "argv": [
+        "-n"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "e_without_prog",
+      "argv": [
+        "-e"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_s",
+      "argv": [
+        "-s",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_r",
+      "argv": [
+        "-r",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "e_and_s",
+      "argv": [
+        "-s",
+        "3",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "s_with_host",
+      "argv": [
+        "-s",
+        "3",
+        "host"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "r_only",
+      "argv": [
+        "-r",
+        "4"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_fd",
+      "argv": [
+        "-s",
+        "3",
+        "-r",
+        "4"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "two_hosts",
+      "argv": [
+        "host1",
+        "host2"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "tls_mutual",
+      "argv": [
+        "-n",
+        "localhost",
+        "-e",
+        "<BB>",
+        "ssl_server",
+        "-f",
+        "crt.pem",
+        "<BB>",
+        "echo",
+        "HELLO"
+      ],
+      "stdin": "PING\n",
+      "files": {
+        "crt.pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF3HAw\n2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqBIkZ7\n8R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfujZFEs\n5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmiZeDR\n9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJArqn8+\nk3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABAoIBAFZuKYIaVB+UY5my\ncZCJI4gE60ri1veobWMDa12sJO/ZGk+PacihQw0BUCYqd/EE1k1YrY2Mchogcrg1\n4wwa6UEhlTpuX8W71DbkosWILEAheU4D2Knc6OSPlWfb2ph3tYL8VVzbDg/sYMK4\npwKBI/xF2rtlr9jGEoq84xVnfTsOC8a/mSq77fXj10wfIfNzIDuc6pRPGnHEOGVN\nsSgi9wJke9GuS4zwR0sqyLXNkOR545TRp7lmN9aCDqQ84pK387RG/OWO8m3+9Ain\nsrcP4BPLcLRMXOH7m9NXJCRvPiD5FJdHHhG4CS5ViRZEs+Oy0+gWjQ0QOLChuaN0\nZIiuI/ECgYEA75Mjst52WtbxrNqgx404t41tFVxqP757PhWC53yFBvTeWrFXNeKP\nYiiMzGPsK2wL8lkcBf0leHQ6apkdE4IrGD4MS2sgagk+yA/2pepI8wD4p64rMe6Z\nfE9X9ulj4vkcQ2hJ9as8DKgdeOU/RCZ7oLfyUT1rv26mOwa76mjRbDECgYEAz3Aq\nM1FEcgUNqGNo7tKtMDauJST0LGktuVf98BhAtvGSmZyr4SaL2bDH57cOUeRBoQX2\ndrCLhbrvqYjzSB7K2R1NpbPc0SinW3SR0WFRfaxSZnWcRReKuRNyouE+6VOt7Aly\nFAsc/8nCC1h22jNroDjie9IUb6KGfqaS7xx8dsMCgYEA4Ro1rrlMJ6pSxgFelGFi\n60SdPDbrNh26GumHaA4dyB2IV1rOALlx098Z/Gne3CXXS8zigdYLwRQkV0iqg0wJ\nRev3DV4IxNkO/lfRfq+V/43oFVWXDIGOAbljg4Jj8j3yinuREp3j/Fhx6MguG9C0\n1JxBuIenl+VVl5yKMIRwUeECgYEAztvhmW8vPCzB4+vOVmqM/olou+3P+QGh8TRI\nLUdiMY1RThIobMwNpjZeAzpO82cV80eI8e84E1HJcVz6ji72xfAs4FMunv1VdyQV\nzaCorRRMz5P1FAlX8xvrs3W/UNp7k+gPdOFoN8Ow17OOQiYI66wOXr+uVWzThjUC\nTaQwkhUCgYEAyDnTxef/fTjaS/k+gonzeuV8bZkWcNEvYEcSWsF3Y7MWIfflOz7m\nwCavF2nkY+x1YsQopIJwCKbAUTOsUpMgJTHw/O8WDtJRezd0IoKnh238jawRwOAr\n34B3LFoq48tNwWBhwbbTjdk70CNhk/4bniESJzDMJc0iUsGTIDJxGNE=\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIC1DCCAbygAwIBAgIULySunkBYe21cQTE05LWYq3JVeYcwDQYJKoZIhvcNAQEL\nBQAwFDESMBAGA1UEAwwJbG9jYWxob3N0MB4XDTIwMDEwMTAwMDAwMFoXDTQwMDEw\nMTAwMDAwMFowFDESMBAGA1UEAwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEF\nAAOCAQ8AMIIBCgKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF\n3HAw2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqB\nIkZ78R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfuj\nZFEs5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmi\nZeDR9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJAr\nqn8+k3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABox4wHDAaBgNVHREE\nEzARgglsb2NhbGhvc3SHBH8AAAEwDQYJKoZIhvcNAQELBQADggEBAFyWP8h8YylK\noeV0+6/gh75lk1eIEEpI+mWSOYAs8+14erxwO4VN5DaYsm0iMKKRLvgLncmlffIh\nlrU5MWPa+p7duO8+ZJWuz0ac+xFtHzvlp431nUw6FL0O53GUkUJYyd4xnV34Nh/Z\nbS7j77L3hzXa7xZvBxywy+RAp823JQyncRn5umDiiSKdAcI2o8pvTxZsWc/h34Lf\n6ljSEmCwfVSHPDu2QfNLN/o+MvHuJhaaj45o9vqNkPKnU8hZuM9UmACT5ZaKgcZe\nJDHVEhSKZb6VwIJ4OSSXVvlgpUjV/UzI63cCo0EBecBssuFfr40nD5WO0CtcT2pI\nP1jo5M3e+lg=\n-----END CERTIFICATE-----\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "tls_mutual_no_sni",
+      "argv": [
+        "-e",
+        "<BB>",
+        "ssl_server",
+        "-f",
+        "crt.pem",
+        "<BB>",
+        "echo",
+        "HELLO"
+      ],
+      "stdin": "PING\n",
+      "files": {
+        "crt.pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF3HAw\n2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqBIkZ7\n8R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfujZFEs\n5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmiZeDR\n9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJArqn8+\nk3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABAoIBAFZuKYIaVB+UY5my\ncZCJI4gE60ri1veobWMDa12sJO/ZGk+PacihQw0BUCYqd/EE1k1YrY2Mchogcrg1\n4wwa6UEhlTpuX8W71DbkosWILEAheU4D2Knc6OSPlWfb2ph3tYL8VVzbDg/sYMK4\npwKBI/xF2rtlr9jGEoq84xVnfTsOC8a/mSq77fXj10wfIfNzIDuc6pRPGnHEOGVN\nsSgi9wJke9GuS4zwR0sqyLXNkOR545TRp7lmN9aCDqQ84pK387RG/OWO8m3+9Ain\nsrcP4BPLcLRMXOH7m9NXJCRvPiD5FJdHHhG4CS5ViRZEs+Oy0+gWjQ0QOLChuaN0\nZIiuI/ECgYEA75Mjst52WtbxrNqgx404t41tFVxqP757PhWC53yFBvTeWrFXNeKP\nYiiMzGPsK2wL8lkcBf0leHQ6apkdE4IrGD4MS2sgagk+yA/2pepI8wD4p64rMe6Z\nfE9X9ulj4vkcQ2hJ9as8DKgdeOU/RCZ7oLfyUT1rv26mOwa76mjRbDECgYEAz3Aq\nM1FEcgUNqGNo7tKtMDauJST0LGktuVf98BhAtvGSmZyr4SaL2bDH57cOUeRBoQX2\ndrCLhbrvqYjzSB7K2R1NpbPc0SinW3SR0WFRfaxSZnWcRReKuRNyouE+6VOt7Aly\nFAsc/8nCC1h22jNroDjie9IUb6KGfqaS7xx8dsMCgYEA4Ro1rrlMJ6pSxgFelGFi\n60SdPDbrNh26GumHaA4dyB2IV1rOALlx098Z/Gne3CXXS8zigdYLwRQkV0iqg0wJ\nRev3DV4IxNkO/lfRfq+V/43oFVWXDIGOAbljg4Jj8j3yinuREp3j/Fhx6MguG9C0\n1JxBuIenl+VVl5yKMIRwUeECgYEAztvhmW8vPCzB4+vOVmqM/olou+3P+QGh8TRI\nLUdiMY1RThIobMwNpjZeAzpO82cV80eI8e84E1HJcVz6ji72xfAs4FMunv1VdyQV\nzaCorRRMz5P1FAlX8xvrs3W/UNp7k+gPdOFoN8Ow17OOQiYI66wOXr+uVWzThjUC\nTaQwkhUCgYEAyDnTxef/fTjaS/k+gonzeuV8bZkWcNEvYEcSWsF3Y7MWIfflOz7m\nwCavF2nkY+x1YsQopIJwCKbAUTOsUpMgJTHw/O8WDtJRezd0IoKnh238jawRwOAr\n34B3LFoq48tNwWBhwbbTjdk70CNhk/4bniESJzDMJc0iUsGTIDJxGNE=\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIC1DCCAbygAwIBAgIULySunkBYe21cQTE05LWYq3JVeYcwDQYJKoZIhvcNAQEL\nBQAwFDESMBAGA1UEAwwJbG9jYWxob3N0MB4XDTIwMDEwMTAwMDAwMFoXDTQwMDEw\nMTAwMDAwMFowFDESMBAGA1UEAwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEF\nAAOCAQ8AMIIBCgKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF\n3HAw2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqB\nIkZ78R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfuj\nZFEs5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmi\nZeDR9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJAr\nqn8+k3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABox4wHDAaBgNVHREE\nEzARgglsb2NhbGhvc3SHBH8AAAEwDQYJKoZIhvcNAQELBQADggEBAFyWP8h8YylK\noeV0+6/gh75lk1eIEEpI+mWSOYAs8+14erxwO4VN5DaYsm0iMKKRLvgLncmlffIh\nlrU5MWPa+p7duO8+ZJWuz0ac+xFtHzvlp431nUw6FL0O53GUkUJYyd4xnV34Nh/Z\nbS7j77L3hzXa7xZvBxywy+RAp823JQyncRn5umDiiSKdAcI2o8pvTxZsWc/h34Lf\n6ljSEmCwfVSHPDu2QfNLN/o+MvHuJhaaj45o9vqNkPKnU8hZuM9UmACT5ZaKgcZe\nJDHVEhSKZb6VwIJ4OSSXVvlgpUjV/UzI63cCo0EBecBssuFfr40nD5WO0CtcT2pI\nP1jo5M3e+lg=\n-----END CERTIFICATE-----\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "tls_python_server",
+      "argv": [
+        "-n",
+        "localhost",
+        "-e",
+        "/usr/bin/python3",
+        "tls_server_helper.py",
+        "crt.pem"
+      ],
+      "stdin": "PING\n",
+      "files": {
+        "crt.pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF3HAw\n2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqBIkZ7\n8R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfujZFEs\n5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmiZeDR\n9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJArqn8+\nk3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABAoIBAFZuKYIaVB+UY5my\ncZCJI4gE60ri1veobWMDa12sJO/ZGk+PacihQw0BUCYqd/EE1k1YrY2Mchogcrg1\n4wwa6UEhlTpuX8W71DbkosWILEAheU4D2Knc6OSPlWfb2ph3tYL8VVzbDg/sYMK4\npwKBI/xF2rtlr9jGEoq84xVnfTsOC8a/mSq77fXj10wfIfNzIDuc6pRPGnHEOGVN\nsSgi9wJke9GuS4zwR0sqyLXNkOR545TRp7lmN9aCDqQ84pK387RG/OWO8m3+9Ain\nsrcP4BPLcLRMXOH7m9NXJCRvPiD5FJdHHhG4CS5ViRZEs+Oy0+gWjQ0QOLChuaN0\nZIiuI/ECgYEA75Mjst52WtbxrNqgx404t41tFVxqP757PhWC53yFBvTeWrFXNeKP\nYiiMzGPsK2wL8lkcBf0leHQ6apkdE4IrGD4MS2sgagk+yA/2pepI8wD4p64rMe6Z\nfE9X9ulj4vkcQ2hJ9as8DKgdeOU/RCZ7oLfyUT1rv26mOwa76mjRbDECgYEAz3Aq\nM1FEcgUNqGNo7tKtMDauJST0LGktuVf98BhAtvGSmZyr4SaL2bDH57cOUeRBoQX2\ndrCLhbrvqYjzSB7K2R1NpbPc0SinW3SR0WFRfaxSZnWcRReKuRNyouE+6VOt7Aly\nFAsc/8nCC1h22jNroDjie9IUb6KGfqaS7xx8dsMCgYEA4Ro1rrlMJ6pSxgFelGFi\n60SdPDbrNh26GumHaA4dyB2IV1rOALlx098Z/Gne3CXXS8zigdYLwRQkV0iqg0wJ\nRev3DV4IxNkO/lfRfq+V/43oFVWXDIGOAbljg4Jj8j3yinuREp3j/Fhx6MguG9C0\n1JxBuIenl+VVl5yKMIRwUeECgYEAztvhmW8vPCzB4+vOVmqM/olou+3P+QGh8TRI\nLUdiMY1RThIobMwNpjZeAzpO82cV80eI8e84E1HJcVz6ji72xfAs4FMunv1VdyQV\nzaCorRRMz5P1FAlX8xvrs3W/UNp7k+gPdOFoN8Ow17OOQiYI66wOXr+uVWzThjUC\nTaQwkhUCgYEAyDnTxef/fTjaS/k+gonzeuV8bZkWcNEvYEcSWsF3Y7MWIfflOz7m\nwCavF2nkY+x1YsQopIJwCKbAUTOsUpMgJTHw/O8WDtJRezd0IoKnh238jawRwOAr\n34B3LFoq48tNwWBhwbbTjdk70CNhk/4bniESJzDMJc0iUsGTIDJxGNE=\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIC1DCCAbygAwIBAgIULySunkBYe21cQTE05LWYq3JVeYcwDQYJKoZIhvcNAQEL\nBQAwFDESMBAGA1UEAwwJbG9jYWxob3N0MB4XDTIwMDEwMTAwMDAwMFoXDTQwMDEw\nMTAwMDAwMFowFDESMBAGA1UEAwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEF\nAAOCAQ8AMIIBCgKCAQEAwiDxu2pcGHKcY88E9hZvRJmnjUKe9JNsQ/edo+HBCCxF\n3HAw2ghgP6EUd/U1nYF83ORv2P4dcL2xOk9nN3z4PXmeQO4HcyC6ucm//4jV1RqB\nIkZ78R3DIgzRYqykTARZ/OtLAuu+1qHMteOHAUBl5Cj2wl1n3IBZ/S29UIZLRfuj\nZFEs5CsFPKC+AwI3THp5cvg14RcZkEuT2Qh4+5zxCAbE/YCVwAZ7XoTY9adYDpmi\nZeDR9UvloQOL34VY/SLeBHocm5O7sTu9DC74TMwaryPitC8k2ohCw+JMTK5tkJAr\nqn8+k3poxuC8Q1eaJUSj/4bReGQsCfZKvtDjIx//UwIDAQABox4wHDAaBgNVHREE\nEzARgglsb2NhbGhvc3SHBH8AAAEwDQYJKoZIhvcNAQELBQADggEBAFyWP8h8YylK\noeV0+6/gh75lk1eIEEpI+mWSOYAs8+14erxwO4VN5DaYsm0iMKKRLvgLncmlffIh\nlrU5MWPa+p7duO8+ZJWuz0ac+xFtHzvlp431nUw6FL0O53GUkUJYyd4xnV34Nh/Z\nbS7j77L3hzXa7xZvBxywy+RAp823JQyncRn5umDiiSKdAcI2o8pvTxZsWc/h34Lf\n6ljSEmCwfVSHPDu2QfNLN/o+MvHuJhaaj45o9vqNkPKnU8hZuM9UmACT5ZaKgcZe\nJDHVEhSKZb6VwIJ4OSSXVvlgpUjV/UzI63cCo0EBecBssuFfr40nD5WO0CtcT2pI\nP1jo5M3e+lg=\n-----END CERTIFICATE-----\n",
+        "tls_server_helper.py": "import os, sys, ssl, socket, threading\nctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)\nctx.load_cert_chain(sys.argv[1])\nctx.minimum_version = ssl.TLSVersion.TLSv1_2\nctx.maximum_version = ssl.TLSVersion.TLSv1_2\nctx.set_ciphers('AES128-SHA256:@SECLEVEL=1')\na, b = socket.socketpair()\ndef to_sock():\n    try:\n        while True:\n            d = os.read(0, 4096)\n            if not d: break\n            a.sendall(d)\n    except OSError:\n        pass\n    try: a.shutdown(socket.SHUT_WR)\n    except OSError: pass\ndef to_stdout():\n    try:\n        while True:\n            d = a.recv(4096)\n            if not d: break\n            os.write(1, d)\n    except OSError:\n        pass\nthreading.Thread(target=to_sock, daemon=True).start()\nthreading.Thread(target=to_stdout).start()  # non-daemon: flush response before exit\ntry:\n    tls = ctx.wrap_socket(b, server_side=True)\n    tls.settimeout(4)\n    data = b''\n    while b'\\n' not in data:\n        c = tls.recv(4096)\n        if not c: break\n        data += c\n    tls.sendall(b'SRV:' + data)\n    tls.close()\n    b.close()  # lets the non-daemon relay thread observe EOF and exit\nexcept Exception as e:\n    os.write(2, ('helper: %r\\n' % e).encode())\n"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "s_invalid_with_e",
+      "argv": [
+        "-s",
+        "abc",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "s_attached_invalid_with_e",
+      "argv": [
+        "-sabc",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "r_invalid_with_e",
+      "argv": [
+        "-r",
+        "abc",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "numbers_valid_with_e",
+      "argv": [
+        "-s",
+        "3",
+        "-r",
+        "4",
+        "-e",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "e_then_nonoption",
+      "argv": [
+        "-e",
+        "true",
+        "-s",
+        "abc"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

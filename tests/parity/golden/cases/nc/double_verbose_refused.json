@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "double_verbose_refused",
+  "stdout": "",
+  "stderr": "nc: 127.0.0.1 (127.0.0.1:1): Connection refused\nsent 0, rcvd 0\n",
+  "exit": 1,
+  "tree": {}
+}

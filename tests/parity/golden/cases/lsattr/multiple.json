@@ -1,0 +1,23 @@
+{
+  "applet": "lsattr",
+  "name": "multiple",
+  "stdout": "-------------------- f\n-------------------- g\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eQ=="
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

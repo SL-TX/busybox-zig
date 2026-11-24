@@ -1,0 +1,8 @@
+{
+  "applet": "mim",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "mim: line 7: can't open /nonexistent: no such file\n",
+  "exit": 1,
+  "tree": {}
+}

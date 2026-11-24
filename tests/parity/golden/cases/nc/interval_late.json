@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "interval_late",
+  "stdout": "LATE\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

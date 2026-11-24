@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "dashopt",
+  "stdout": "-Z\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,141 @@
+{
+  "applet": "free",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\s+\\d+\\.?\\d*[kKmMgG]?",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "bytes",
+      "argv": [
+        "-b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\s+\\d+\\.?\\d*[kKmMgG]?",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "kilo",
+      "argv": [
+        "-k"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\s+\\d+\\.?\\d*[kKmMgG]?",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "mega",
+      "argv": [
+        "-m"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\s+\\d+\\.?\\d*[kKmMgG]?",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "giga",
+      "argv": [
+        "-g"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\s+\\d+\\.?\\d*[kKmMgG]?",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "human",
+      "argv": [
+        "-h"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\s+\\d+\\.?\\d*[kKmMgG]?",
+        "regex:\\s+\\d+"
+      ],
+      "requires": []
+    }
+  ]
+}

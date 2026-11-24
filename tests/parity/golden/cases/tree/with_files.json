@@ -1,0 +1,42 @@
+{
+  "applet": "tree",
+  "name": "with_files",
+  "stdout": ".\n├── a\n│   ├── f1.txt\n│   └── sub\n│       └── f2\n├── b\n└── topfile\n\n3 directories, 3 files\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "topfile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eg=="
+      }
+    },
+    "a": {
+      "type": "dir",
+      "mode": 493
+    },
+    "a/f1.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    },
+    "a/sub": {
+      "type": "dir",
+      "mode": 493
+    },
+    "a/sub/f2": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eQ=="
+      }
+    },
+    "b": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

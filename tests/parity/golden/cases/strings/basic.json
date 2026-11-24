@@ -1,0 +1,16 @@
+{
+  "applet": "strings",
+  "name": "basic",
+  "stdout": "helloworld\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "AGFiYwAAaGVsbG93b3JsZAABeHkAaGkA"
+      }
+    }
+  }
+}

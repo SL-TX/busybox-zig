@@ -1,0 +1,8 @@
+{
+  "applet": "conspy",
+  "name": "console",
+  "stdout": "",
+  "stderr": "conspy: can't open '/dev/vcsa0': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

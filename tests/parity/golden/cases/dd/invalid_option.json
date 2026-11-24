@@ -1,0 +1,8 @@
+{
+  "applet": "dd",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: dd [if=FILE] [of=FILE] [ibs=N obs=N/bs=N] [count=N] [skip=N] [seek=N]\n\t[conv=notrunc|noerror|sync|fsync]\n\t[iflag=skip_bytes|count_bytes|fullblock|direct] [oflag=seek_bytes|append|direct]\n\nCopy a file with converting and formatting\n\n\tif=FILE\t\tRead from FILE instead of stdin\n\tof=FILE\t\tWrite to FILE instead of stdout\n\tbs=N\t\tRead and write N bytes at a time\n\tibs=N\t\tRead N bytes at a time\n\tobs=N\t\tWrite N bytes at a time\n\tcount=N\t\tCopy only N input blocks\n\tskip=N\t\tSkip N input blocks\n\tseek=N\t\tSkip N output blocks\n\tconv=notrunc\tDon't truncate output file\n\tconv=noerror\tContinue after read errors\n\tconv=sync\tPad blocks with zeros\n\tconv=fsync\tPhysically write data out before finishing\n\tconv=swab\tSwap every pair of bytes\n\tiflag=skip_bytes\tskip=N is in bytes\n\tiflag=count_bytes\tcount=N is in bytes\n\toflag=seek_bytes\tseek=N is in bytes\n\tiflag=direct\tO_DIRECT input\n\toflag=direct\tO_DIRECT output\n\tiflag=fullblock\tRead full blocks\n\toflag=append\tOpen output in append mode\n\tstatus=noxfer\tSuppress rate output\n\tstatus=none\tSuppress all output\n\nN may be suffixed by c (1), w (2), b (512), kB (1000), k (1024), MB, M, GB, G\n",
+  "exit": 1,
+  "tree": {}
+}

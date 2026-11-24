@@ -1,0 +1,8 @@
+{
+  "applet": "iproute",
+  "name": "unknown_subcommand",
+  "stdout": "",
+  "stderr": "iproute: invalid argument 'bogus' to 'iproute'\n",
+  "exit": 1,
+  "tree": {}
+}

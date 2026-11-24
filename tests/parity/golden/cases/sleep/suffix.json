@@ -1,0 +1,8 @@
+{
+  "applet": "sleep",
+  "name": "suffix",
+  "stdout": "",
+  "stderr": "sleep: invalid number '1ms'\n",
+  "exit": 1,
+  "tree": {}
+}

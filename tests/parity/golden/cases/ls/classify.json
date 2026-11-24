@@ -1,0 +1,20 @@
+{
+  "applet": "ls",
+  "name": "classify",
+  "stdout": "a\nd/\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    },
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

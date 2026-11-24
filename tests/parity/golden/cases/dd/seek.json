@@ -1,0 +1,23 @@
+{
+  "applet": "dd",
+  "name": "seek",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "WFhBQlhYWFg="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QUJDRA=="
+      }
+    }
+  }
+}

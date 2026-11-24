@@ -1,0 +1,8 @@
+{
+  "applet": "tune2fs",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "tune2fs: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

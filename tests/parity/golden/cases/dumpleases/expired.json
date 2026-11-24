@@ -1,0 +1,16 @@
+{
+  "applet": "dumpleases",
+  "name": "expired",
+  "stdout": "Mac Address       IP Address      Host Name           Expires in\n<TIMESTAMP>:<TIMESTAMP> 127.0.0.1       myhost              expired\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "leases": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "AAAAAAAAAAAAAAABfwAAAQARIjNEVW15aG9zdAAAAAAAAAAAAAAAAAAAAAA="
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "applet": "raidautorun",
+  "name": "extra_arg",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: raidautorun DEVICE\n\nTell the kernel to automatically search and start RAID arrays\n",
+  "exit": 1,
+  "tree": {
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "base64",
+  "name": "wrap",
+  "stdout": "aGVs\nbG8g\nd29y\nbGQ=\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

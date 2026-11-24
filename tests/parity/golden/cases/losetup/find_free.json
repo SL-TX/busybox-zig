@@ -1,0 +1,8 @@
+{
+  "applet": "losetup",
+  "name": "find_free",
+  "stdout": "/dev/loop0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

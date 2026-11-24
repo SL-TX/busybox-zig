@@ -1,0 +1,8 @@
+{
+  "applet": "start-stop-daemon",
+  "name": "test_oknodo",
+  "stdout": "no nosuchproc_xyz found; none killed\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

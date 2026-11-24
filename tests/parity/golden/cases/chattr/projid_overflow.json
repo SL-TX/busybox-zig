@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "projid_overflow",
+  "stdout": "",
+  "stderr": "chattr: invalid number '4294967296'\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

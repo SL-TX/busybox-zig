@@ -1,0 +1,8 @@
+{
+  "applet": "fuser",
+  "name": "relative_missing",
+  "stdout": "",
+  "stderr": "fuser: can't stat 'nonexistentproc_xyz': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

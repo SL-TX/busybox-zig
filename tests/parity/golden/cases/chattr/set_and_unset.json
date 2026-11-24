@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "set_and_unset",
+  "stdout": "",
+  "stderr": "chattr: can't set and unset a flag\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

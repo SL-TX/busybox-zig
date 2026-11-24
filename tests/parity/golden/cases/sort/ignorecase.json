@@ -1,0 +1,8 @@
+{
+  "applet": "sort",
+  "name": "ignorecase",
+  "stdout": "A\na\nB\nb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

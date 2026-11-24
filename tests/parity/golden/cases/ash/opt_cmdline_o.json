@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "opt_cmdline_o",
+  "stdout": "oopt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

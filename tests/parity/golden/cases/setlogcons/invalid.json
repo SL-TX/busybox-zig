@@ -1,0 +1,8 @@
+{
+  "applet": "setlogcons",
+  "name": "invalid",
+  "stdout": "",
+  "stderr": "setlogcons: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

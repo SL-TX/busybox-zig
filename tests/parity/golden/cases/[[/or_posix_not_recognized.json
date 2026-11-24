@@ -1,0 +1,8 @@
+{
+  "applet": "[[",
+  "name": "or_posix_not_recognized",
+  "stdout": "",
+  "stderr": "[[: -o: unknown operand\n",
+  "exit": 2,
+  "tree": {}
+}

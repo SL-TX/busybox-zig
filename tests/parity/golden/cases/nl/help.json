@@ -1,0 +1,8 @@
+{
+  "applet": "nl",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: nl [OPTIONS] [FILE]...\n\nWrite FILEs to standard output with line numbers added\n\n\t-b STYLE\tWhich lines to number - a: all, t: nonempty, n: none\n\t-i N\t\tLine number increment\n\t-s STRING\tUse STRING as line number separator\n\t-v N\t\tStart from N\n\t-w N\t\tWidth of line numbers\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

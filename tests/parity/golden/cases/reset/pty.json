@@ -1,0 +1,8 @@
+{
+  "applet": "reset",
+  "name": "pty",
+  "stdout": "\u001bc\u001b(B\u001b[m\u001b[J\u001b[?25h",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

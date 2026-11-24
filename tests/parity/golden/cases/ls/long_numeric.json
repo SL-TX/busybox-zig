@@ -1,0 +1,16 @@
+{
+  "applet": "ls",
+  "name": "long_numeric",
+  "stdout": "total 4\n-rw-r--r--    1 1000     1000             1 <MATCH> a\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

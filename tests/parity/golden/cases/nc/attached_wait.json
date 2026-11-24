@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "attached_wait",
+  "stdout": "",
+  "stderr": "127.0.0.1 (127.0.0.1:<PORT>) open\nnet timeout\nsent 0, rcvd 0\n",
+  "exit": 0,
+  "tree": {}
+}

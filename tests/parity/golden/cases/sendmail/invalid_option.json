@@ -1,0 +1,8 @@
+{
+  "applet": "sendmail",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "sendmail: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: sendmail [-tv] [-f SENDER] [-amLOGIN 4<user_pass.txt | -auUSER -apPASS]\n\t\t[-w SECS] [-H 'PROG ARGS' | -S HOST] [RECIPIENT_EMAIL]...\n\nRead email from stdin and send it\n\nStandard options:\n\t-t\t\tRead additional recipients from message body\n\t-f SENDER\tFor use in MAIL FROM:<sender>. Can be empty string\n\t\t\tDefault: -auUSER, or username of current UID\n\t-o OPTIONS\tVarious options. -oi implied, others are ignored\n\t-i\t\t-oi synonym, implied and ignored\n\nBusybox specific options:\n\t-v\t\tVerbose\n\t-w SECS\t\tNetwork timeout\n\t-H 'PROG ARGS'\tRun connection helper. Examples:\n\t\topenssl s_client -quiet -tls1 -starttls smtp -connect smtp.gmail.com:25\n\t\topenssl s_client -quiet -tls1 -connect smtp.gmail.com:465\n\t\t\t$SMTP_ANTISPAM_DELAY: seconds to wait after helper connect\n\t-S HOST[:PORT]\tServer (default $SMTPHOST or 127.0.0.1)\n\t-amLOGIN\tLog in using AUTH LOGIN\n\t-amPLAIN\tor AUTH PLAIN\n\t\t\t(-amCRAM-MD5 not supported)\n\t-auUSER\t\tUsername for AUTH\n\t-apPASS \tPassword for AUTH\n\nIf no -a options are given, authentication is not done.\nIf -amLOGIN is given but no -au/-ap, user/password is read from fd #4.\nOther options are silently ignored; -oi is implied.\nUse makemime to create emails with attachments.\n",
+  "exit": 1,
+  "tree": {}
+}

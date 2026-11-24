@@ -1,0 +1,8 @@
+{
+  "applet": "sulogin",
+  "name": "missing_arg",
+  "stdout": "",
+  "stderr": "sulogin: option requires an argument -- 't'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: sulogin [-t N] [TTY]\n\nSingle user login\n\n\t-p\tStart a login shell\n\t-t SEC\tTimeout\n",
+  "exit": 1,
+  "tree": {}
+}

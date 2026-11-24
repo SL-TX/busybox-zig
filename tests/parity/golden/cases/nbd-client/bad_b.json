@@ -1,0 +1,8 @@
+{
+  "applet": "nbd-client",
+  "name": "bad_b",
+  "stdout": "",
+  "stderr": "nbd-client: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

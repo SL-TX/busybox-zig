@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "builtin_hash_lookup",
+  "stdout": "0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

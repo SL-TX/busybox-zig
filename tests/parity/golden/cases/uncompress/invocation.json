@@ -1,0 +1,8 @@
+{
+  "applet": "uncompress",
+  "name": "invocation",
+  "stdout": "",
+  "stderr": "uncompress: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

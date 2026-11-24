@@ -1,0 +1,8 @@
+{
+  "applet": "nanddump",
+  "name": "bad_f_arg",
+  "stdout": "",
+  "stderr": "nanddump: option requires an argument -- 'f'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: nanddump [-no] [--bb padbad|skipbad] [-s ADDR] [-l LEN] [-f FILE] MTD_DEVICE\n\nDump MTD_DEVICE\n\n\t-n\tRead without ecc\n\t-o\tDump oob data\n\t-s ADDR\tStart address\n\t-l LEN\tLength\n\t-f FILE\tDump to file ('-' for stdout)\n\t--bb METHOD\n\t\tskipbad: skip bad blocks\n\t\tpadbad: substitute bad blocks by 0xff (default)\n",
+  "exit": 1,
+  "tree": {}
+}

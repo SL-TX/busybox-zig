@@ -1,0 +1,8 @@
+{
+  "applet": "pstree",
+  "name": "default",
+  "stdout": "systemd-+-ModemManager-+-{gdbus}\n<MATCH><MATCH>",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

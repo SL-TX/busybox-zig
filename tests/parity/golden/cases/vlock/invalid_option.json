@@ -1,0 +1,8 @@
+{
+  "applet": "vlock",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "vlock: must be suid to work properly\n",
+  "exit": 1,
+  "tree": {}
+}

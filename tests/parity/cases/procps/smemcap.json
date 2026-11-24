@@ -1,0 +1,58 @@
+{
+  "applet": "smemcap",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:(?s)(\\d{1,7}/smaps).*",
+        "regex:\\s+\\d+",
+        "regex:[0-9a-f]{6,}",
+        "regex:\\d+"
+      ],
+      "requires": []
+    },
+    {
+      "name": "extra_arg",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:(?s)(\\d{1,7}/smaps).*",
+        "regex:\\s+\\d+",
+        "regex:[0-9a-f]{6,}",
+        "regex:\\d+"
+      ],
+      "requires": []
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "applet": "unzip",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "list",
+      "argv": [
+        "-l",
+        "zip"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "list_quiet",
+      "argv": [
+        "-l",
+        "-q",
+        "zip"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "test",
+      "argv": [
+        "-t",
+        "zip"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "print",
+      "argv": [
+        "-p",
+        "zip",
+        "hello.txt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "extract",
+      "argv": [
+        "-o",
+        "zip",
+        "-d",
+        "out"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "extract_quiet",
+      "argv": [
+        "-q",
+        "-o",
+        "zip",
+        "-d",
+        "out"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "extract_junk",
+      "argv": [
+        "-o",
+        "zip",
+        "-d",
+        "out",
+        "-j"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "exclude",
+      "argv": [
+        "-l",
+        "zip",
+        "-x",
+        "dir/*"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "missing_member",
+      "argv": [
+        "-l",
+        "zip",
+        "nope"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "zip": "UEsDBBQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAaGVsbG8udHh0y0jNyclXKM8vyknhAgBQSwMEFAAAAAgAE7F2XY2Vq+sJAAAABwAAAA4AAABkaXIvbmVzdGVkLnR4dMtLLS5JTeECAFBLAQIUAxQAAAAIABOxdl0tOwivDgAAAAwAAAAJAAAAAAAAAAAAAACAAQAAAABoZWxsby50eHRQSwECFAMUAAAACAATsXZdjZWr6wkAAAAHAAAADgAAAAAAAAAAAAAAgAE1AAAAZGlyL25lc3RlZC50eHRQSwUGAAAAAAIAAgBzAAAAagAAAAAA"
+      }
+    },
+    {
+      "name": "corrupt",
+      "argv": [
+        "-l",
+        "bad"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "bad": "QkFEIQ=="
+      }
+    },
+    {
+      "name": "keep_suid",
+      "argv": [
+        "-o",
+        "-K",
+        "z",
+        "-d",
+        "out"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "z": "UEsDBBQAAAAAAAAAIQCCxcHmBQAAAAUAAAAIAAAAc3VpZC50eHRkYXRhClBLAQIUAxQAAAAAAAAAIQCCxcHmBQAAAAUAAAAIAAAAAAAAAAAAAADtiQAAAABzdWlkLnR4dFBLBQYAAAAAAQABADYAAAArAAAAAAA="
+      }
+    }
+  ]
+}

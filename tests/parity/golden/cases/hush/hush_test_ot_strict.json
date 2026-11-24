@@ -1,0 +1,23 @@
+{
+  "applet": "hush",
+  "name": "hush_test_ot_strict",
+  "stdout": "OT\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "xxd",
+  "name": "seek_stdin_error",
+  "stdout": "",
+  "stderr": "xxd: stdin: Illegal seek\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "cat",
+  "name": "n",
+  "stdout": "     1\tone\n     2\ttwo\n     3\tthree\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b25lCnR3bwp0aHJlZQo="
+      }
+    }
+  }
+}

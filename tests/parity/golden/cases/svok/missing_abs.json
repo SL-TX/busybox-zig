@@ -1,0 +1,8 @@
+{
+  "applet": "svok",
+  "name": "missing_abs",
+  "stdout": "",
+  "stderr": "svok: can't change directory to '<TMP>/nosuch': No such file or directory\n",
+  "exit": 111,
+  "tree": {}
+}

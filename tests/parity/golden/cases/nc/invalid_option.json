@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "nc: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: nc [OPTIONS] HOST PORT  - connect\nnc [OPTIONS] -l -p PORT [HOST] [PORT]  - listen\n\n\t-e PROG\tRun PROG after connect (must be last)\n\t-l\tListen mode, for inbound connects\n\t-lk\tWith -e, provides persistent server\n\t-p PORT\tLocal port\n\t-s ADDR\tLocal address\n\t-w SEC\tTimeout for connects and final net reads\n\t-i SEC\tDelay interval for lines sent\n\t-n\tDon't do DNS resolution\n\t-u\tUDP mode\n\t-b\tAllow broadcasts\n\t-v\tVerbose\n\t-o FILE\tHex dump traffic\n\t-z\tZero-I/O mode (scanning)\n",
+  "exit": 1,
+  "tree": {}
+}

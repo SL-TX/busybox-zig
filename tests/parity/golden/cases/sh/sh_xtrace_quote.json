@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_xtrace_quote",
+  "stdout": "a b  q'uote\n",
+  "stderr": "+ echo 'a b'  'q'\"'\"'uote'\n",
+  "exit": 0,
+  "tree": {}
+}

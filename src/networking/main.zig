@@ -288,6 +288,12 @@ pub fn pingHost(host: []const u8, count: u16, timeout_ms: u32) !PingStats {
 // ------------------------------------------------------------------- applets
 
 pub fn ifconfig_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13a audit: route the meta-CLI through the reference-faithful
+    // implementation; the legacy helpers below remain for unit tests.
+    return @import("ifconfig.zig").ifconfigMain(argc, argv);
+}
+
+fn legacy_ifconfig_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     _ = argc;
     _ = argv;
     const a = std.heap.page_allocator;
@@ -309,6 +315,12 @@ pub fn ifconfig_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn ping_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13a audit: the meta-CLI reference path is delegated to the exact
+    // ping implementation (raw-socket permission error, numeric validation).
+    return @import("ping.zig").pingMain(argc, argv);
+}
+
+fn legacy_ping_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     var count: u16 = 4;
     var timeout: u32 = 1000;
@@ -341,6 +353,12 @@ pub fn ping_main(argc: c_int, argv: [*][*:0]const u8) c_int {
 }
 
 pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13b audit: the meta-CLI path uses the reference-faithful client;
+    // the legacy helpers below stay available for the pure unit tests.
+    return @import("wget.zig").wgetMain(argc, argv);
+}
+
+fn legacy_wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     const a = std.heap.page_allocator;
     var outfile: ?[]const u8 = null;
@@ -381,7 +399,83 @@ pub fn wget_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     return 0;
 }
 
+// Task 13a — diagnostics and addressing applets. Each lives in its own file;
+// this module root only re-exports their entry points.
+pub const ipcalc_main = @import("ipcalc.zig").ipcalcMain;
+pub const nslookup_main = @import("nslookup.zig").nslookupMain;
+pub const arp_main = @import("arp.zig").arpMain;
+pub const netstat_main = @import("netstat.zig").netstatMain;
+pub const route_main = @import("route.zig").routeMain;
+pub const ping6_main = @import("ping.zig").ping6Main;
+pub const traceroute_main = @import("traceroute.zig").tracerouteMain;
+pub const traceroute6_main = @import("traceroute.zig").traceroute6Main;
+pub const ip_main = @import("ip_common.zig").ipMainDispatch;
+pub const ipaddr_main = @import("ip_common.zig").ipaddrMain;
+pub const iplink_main = @import("ip_common.zig").iplinkMain;
+pub const ipneigh_main = @import("ip_common.zig").ipneighMain;
+pub const iproute_main = @import("ip_common.zig").iprouteMain;
+pub const iprule_main = @import("ip_common.zig").ipruleMain;
+pub const iptunnel_main = @import("ip_common.zig").iptunnelMain;
+pub const arping_main = @import("arping.zig").arpingMain;
+pub const brctl_main = @import("brctl.zig").brctlMain;
+pub const dnsdomainname_main = @import("hostname.zig").dnsdomainnameMain;
+pub const ether_wake_main = @import("etherwake.zig").etherwakeMain;
+pub const hostname_main = @import("hostname.zig").hostnameMain;
+pub const ifdown_main = @import("ifupdown.zig").ifdownMain;
+pub const ifenslave_main = @import("ifenslave.zig").ifenslaveMain;
+pub const ifplugd_main = @import("ifplugd.zig").ifplugdMain;
+pub const ifup_main = @import("ifupdown.zig").ifupMain;
+pub const nameif_main = @import("nameif.zig").nameifMain;
+pub const slattach_main = @import("slattach.zig").slattachMain;
+pub const tunctl_main = @import("tunctl.zig").tunctlMain;
+pub const vconfig_main = @import("vconfig.zig").vconfigMain;
+pub const zcip_main = @import("zcip.zig").zcipMain;
+
+// Task 13b — network clients.
+pub const ftpget_main = @import("ftp.zig").ftpgetMain;
+pub const ftpput_main = @import("ftp.zig").ftpputMain;
+pub const telnet_main = @import("telnet.zig").telnetMain;
+pub const tftp_main = @import("tftp.zig").tftpMain;
+pub const whois_main = @import("whois.zig").whoisMain;
+pub const netcat_main = @import("nc.zig").netcatMain;
+
 pub fn nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
+    // Task 13b audit: replace the simplified option-ignoring client with the
+    // reference-faithful bloaty-nc implementation in nc.zig.
+    return @import("nc.zig").ncMain(argc, argv);
+}
+
+// Task 13c — network servers. Each lives in its own file; the module root
+// only re-exports their entry points.
+pub const dumpleases_main = @import("dumpleases.zig").dumpleasesMain;
+pub const dhcprelay_main = @import("dhcprelay.zig").dhcprelayMain;
+pub const dnsd_main = @import("dnsd.zig").dnsdMain;
+pub const httpd_main = @import("httpd.zig").httpdMain;
+pub const fakeidentd_main = @import("fakeidentd.zig").fakeidentdMain;
+pub const pscan_main = @import("pscan.zig").pscanMain;
+pub const ftpd_main = @import("ftpd.zig").ftpdMain;
+pub const tftpd_main = @import("tftpd.zig").tftpdMain;
+pub const inetd_main = @import("inetd.zig").inetdMain;
+pub const ntpd_main = @import("ntpd.zig").ntpdMain;
+pub const tcpsvd_main = @import("tcpsvd.zig").tcpsvdMain;
+pub const udpsvd_main = @import("tcpsvd.zig").udpsvdMain;
+pub const udhcpc_main = @import("udhcp.zig").udhcpcMain;
+pub const udhcpc6_main = @import("udhcp.zig").udhcpc6Main;
+pub const udhcpd_main = @import("udhcp.zig").udhcpdMain;
+pub const telnetd_main = @import("telnetd.zig").telnetdMain;
+pub const tc_main = @import("tc.zig").tcMain;
+
+// Task 13d — TLS applets and the NBD client.
+pub const tls_core = @import("tls_core.zig");
+pub const ssl_client_main = @import("ssl_client.zig").sslClientMain;
+pub const ssl_server_main = @import("ssl_server.zig").sslServerMain;
+pub const nbdclient = @import("nbd_client.zig");
+pub const nbdclient_main = nbdclient.nbdClientMain;
+// Re-exported so the focused unit tests can reach the pure formatter/parser
+// through the `networking` module (a file cannot belong to two modules).
+pub const tc = @import("tc.zig");
+
+fn legacy_nc_main(argc: c_int, argv: [*][*:0]const u8) c_int {
     const args = argsFrom(argv, argc);
     if (args.len < 3) return 1;
     const port = std.fmt.parseInt(u16, args[2], 10) catch return 1;

@@ -1,0 +1,8 @@
+{
+  "applet": "ttysize",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ttysize [w] [h]\n\nPrint dimensions of stdin tty, or 80x24\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "udhcpd",
+  "name": "nonexistent_conf",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

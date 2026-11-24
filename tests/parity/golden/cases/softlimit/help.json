@@ -1,0 +1,8 @@
+{
+  "applet": "softlimit",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: softlimit [-a BYTES] [-m BYTES] [-d BYTES] [-s BYTES] [-l BYTES]\n\t[-f BYTES] [-c BYTES] [-r BYTES] [-o N] [-p N] [-t N]\n\tPROG ARGS\n\nSet soft resource limits, then run PROG\n\n\t-a BYTES\tLimit total size of all segments\n\t-m BYTES\tSame as -d BYTES -s BYTES -l BYTES -a BYTES\n\t-d BYTES\tLimit data segment\n\t-s BYTES\tLimit stack segment\n\t-l BYTES\tLimit locked memory size\n\t-o N\t\tLimit number of open files per process\n\t-p N\t\tLimit number of processes per uid\nOptions controlling file sizes:\n\t-f BYTES\tLimit output file sizes\n\t-c BYTES\tLimit core file size\nEfficiency opts:\n\t-r BYTES\tLimit resident set size\n\t-t N\t\tLimit CPU time, process receives\n\t\t\ta SIGXCPU after N seconds\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

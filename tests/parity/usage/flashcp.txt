@@ -1,0 +1,6 @@
+
+Usage: flashcp [-v] FILE MTD_DEVICE
+
+Copy FILE to MTD device
+
+	-v	Verbose

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Довести `busybox-zig` до полного поведенческого паритета с BusyBox 1.39.0 (коммит `6412da2`): 443 апплета, 412 в defconfig, 946 config-символов, точные usage-тексты, метаданные и дифференциальные тесты против референса.
+**Goal:** Довести `busybox-zig` до полного поведенческого паритета с BusyBox 1.39.0 (коммит `6412da2`): 443 апплета, 411 в defconfig, 946 config-символов, точные usage-тексты, метаданные и дифференциальные тесты против референса.
 
 **Architecture:** Сначала генерация манифеста/конфига/usage и дифференциальный стенд; затем волны категорий. libbb-хелперы добавляются под текущую волну и сразу покрываются unit-тестами. Каждый апплет реализуется по протоколу TDD: кейсы → падение → реализация → зелёный прогон → коммит.
 
@@ -14,7 +14,7 @@
 
 - Zig **0.17.1**; Linux **x86_64**; один статический бинарник `busybox`.
 - Референс закреплён: `reference/busybox`, git `6412da255d465be1f1860ae109ccbf2564810af2`, BusyBox **1.39.0.git**.
-- Цель: **443** имени апплетов; **412** в defconfig; **946** символов конфигурации (895 boolean, 51 не-boolean).
+- Цель: **443** имени апплетов; **411** в defconfig; **946** символов конфигурации (895 boolean, 51 не-boolean).
 - Точный текст `APPLET --help`; точные `--list`, `--list-full`, `--install`, `--show`, `--version`.
 - Никакого C-кода в бинарнике; никаких вызовов системных `busybox`/`coreutils` вместо реализации.
 - Лицензия GPLv2+.
@@ -268,7 +268,7 @@ Run:
 python3 -m unittest scripts/parity/tests/test_extract_manifest.py -v
 python3 scripts/parity/extract_manifest.py --ref reference/busybox --check
 ```
-Expected: fixture PASS; reference check prints `443 applets, 412 default-enabled` and exits 0. Если `reference/` отсутствует, integration-тест пропускается с явным `SKIP: reference not present`.
+Expected: fixture PASS; reference check prints `443 applets, 411 default-enabled` and exits 0. Если `reference/` отсутствует, integration-тест пропускается с явным `SKIP: reference not present`.
 
 - [ ] **Step 5: Generate committed artifacts**
 
@@ -393,7 +393,7 @@ git commit -m "feat(parity): generate full config from reference defconfig"
 test "list has no internal helper names" {
     const names = try applets.appletNames(std.testing.allocator);
     defer std.testing.allocator.free(names);
-    try std.testing.expectEqual(@as(usize, 412), names.len);
+    try std.testing.expectEqual(@as(usize, 411), names.len);
     for (names) |n| try std.testing.expect(!std.mem.eql(u8, n, "tls_aes"));
     try std.testing.expect(std.mem.indexOfScalar([]const u8, names, "[") != null);
 }
@@ -533,7 +533,7 @@ git commit -m "feat(parity): reference usage text and applet --help"
 - Create: `scripts/parity/run.py`
 - Create: `scripts/parity/sandbox.py`
 - Create: `scripts/parity/normalize.py`
-- Create: `scripts/parity/pty.py`
+- Create: `scripts/parity/pty_helper.py`
 - Create: `scripts/parity/ns.py`
 - Create: `scripts/parity/tests/test_run.py`
 - Create: `tests/parity/cases/_smoke/echo.json`
@@ -699,13 +699,14 @@ usleep uudecode uuencode w wc who whoami yes
 
 Разбить на под-волны, каждая — отдельный sub-plan:
 
-- **7a. Простые:** `true false echo printf pwd basename dirname cat head tail
+- **7a. Простые (45):** `true false echo printf pwd basename dirname cat head tail
   wc tee yes sleep usleep nproc sync fsync link unlink rmdir mkdir mkfifo
   mknod mktemp readlink realpath truncate install printenv env id whoami
   logname groups users who w tty hostid uname arch nice nohup timeout`.
-- **7b. Текст/числа:** `sort uniq cut fold expand unexpand join nl od paste
-  split shuf comm cmp sum cksum crc32 base32 base64 md5sum sha1sum sha256sum
-  sha384sum sha3sum sha512sum uudecode uuencode factor expr`.
+- **7b. Текст/числа (34):** `sort uniq cut fold expand unexpand join nl od paste
+  split shuf comm sum cksum crc32 base32 base64 md5sum sha1sum sha256sum
+  sha384sum sha3sum sha512sum uudecode uuencode factor expr seq tac tr tsort
+  dos2unix unix2dos`.
 - **7c. Файлы/метаданные:** `cp mv rm ln ls du df chmod chown chgrp chroot
   touch stat dd date stty shred`.
 - **7d. Тестовые встроенные:** `test [ [[` (общий `test_main` с разбором
@@ -1198,7 +1199,7 @@ diff <(./zig-out/bin/busybox --list-full | sort) <(/tmp/opencode/bb-ref/busybox 
 Expected: empty diffs; `--version` печатает banner `BusyBox v1.39.0...` без `multi-call binary`; вывод без аргументов содержит ` multi-call binary.`
 
 - [ ] **Step 5: Verify config gating.** Build with `configs/defconfig` and
-  with an all-on config; check `--list` counts 412 and 443; disable a
+  with an all-on config; check `--list` counts 411 and 443; disable a
   feature flag and assert behavior changes in its differential case.
 
 - [ ] **Step 6: Update docs and CI.** README status, matrix totals,

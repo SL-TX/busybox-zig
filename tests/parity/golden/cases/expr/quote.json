@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "quote",
+  "stdout": "+\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

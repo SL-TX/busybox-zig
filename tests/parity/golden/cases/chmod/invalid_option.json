@@ -1,0 +1,16 @@
+{
+  "applet": "chmod",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "chmod: 755: No such file or directory\nchmod: invalid mode '-Z'\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

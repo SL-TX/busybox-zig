@@ -1,0 +1,123 @@
+{
+  "applet": "lzma",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "--badopt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "-d",
+        "-c",
+        "nonexist"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "decompress_file",
+      "argv": [
+        "-d",
+        "-c",
+        "a.lzma"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.lzma": "XQAAgAD//////////wA0GUnujekXiTozX/yzgQT83JP//982AAA="
+      }
+    },
+    {
+      "name": "test_ok",
+      "argv": [
+        "-t",
+        "a.lzma"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.lzma": "XQAAgAD//////////wA0GUnujekXiTozX/yzgQT83JP//982AAA="
+      }
+    },
+    {
+      "name": "test_corrupt",
+      "argv": [
+        "-t",
+        "a.lzma"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "files_b64": {
+        "a.lzma": "bm90IGNvbXByZXNzZWQgZGF0YQo="
+      }
+    }
+  ]
+}

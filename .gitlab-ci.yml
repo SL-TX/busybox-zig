@@ -1,10 +1,16 @@
 stages:
   - build
-  - test
+  - unit
+  - freshness
+  - parity-golden
+  - fuzz-smoke
+  - parity-reference
 
 variables:
   ZIG_IMAGE: "$CI_REGISTRY_IMAGE/zig:0.17.1"
   GIT_DEPTH: "1"
+  # Provisioned by the runner for the nightly job; not stored in the repo.
+  REFERENCE_BB: "/opt/busybox-reference/busybox"
 
 # The Zig toolchain is baked into the image (see ci/Dockerfile), so the
 # pipeline never depends on ziglang.org being reachable.
@@ -19,8 +25,83 @@ build:
       - zig-out/bin/busybox
     expire_in: 1 week
 
-test:
+unit:
   image: $ZIG_IMAGE
-  stage: test
+  stage: unit
+  needs: [build]
   script:
     - zig build test
+
+# Generated-file authority: every committed artifact must match its source.
+freshness:
+  image: $ZIG_IMAGE
+  stage: freshness
+  script:
+    - zig build manifest
+    - zig build config-check
+    - python3 scripts/parity/extract_usage.py --check
+    # gen_meta_golden.py auto-detects the reference: reference-backed check
+    # when present, offline golden <-> generated Zig consistency check when not.
+    - python3 scripts/parity/gen_meta_golden.py --check
+
+# Differential cases against committed reference goldens.  No reference
+# binary is needed here: goldens are produced ahead of time with --update-golden.
+# From Task 27 the known-failures list must be empty.
+parity-golden:
+  image: $ZIG_IMAGE
+  stage: parity-golden
+  needs: [build]
+  variables:
+    PARITY_KNOWN_FAILURES_STRICT: "1"
+  script:
+    - python3 scripts/parity/run.py --all --golden tests/parity/golden --zig zig-out/bin/busybox --cases tests/parity/cases > parity-golden.log
+    - cat parity-golden.log
+    - |
+      if [ "$PARITY_KNOWN_FAILURES_STRICT" = "1" ] && [ -s tests/parity/known-failures.txt ]; then
+        echo "known-failures.txt must be empty from Task 27 onwards" >&2
+        exit 1
+      fi
+  artifacts:
+    paths:
+      - parity-golden.log
+    expire_in: 1 week
+
+# Crash/hang/OOM guard for the parser and format entry points.  Output
+# divergences are recorded in the JSON report, not silently accepted.
+# fuzz.py self-skips (exit 0 + status:"skip" report) when no reference binary
+# is provisioned, so this stage passes cleanly in reference-less pipelines.
+fuzz-smoke:
+  image: $ZIG_IMAGE
+  stage: fuzz-smoke
+  needs: [build]
+  script:
+    - python3 scripts/parity/fuzz.py --ref "$REFERENCE_BB" --zig zig-out/bin/busybox --smoke --out fuzz-smoke-report.json
+  artifacts:
+    paths:
+      - fuzz-smoke-report.json
+    expire_in: 1 week
+
+# Nightly: live differential against the reference binary plus the final
+# formatted report.  Only scheduled pipelines run it; the reference is a
+# runner-provisioned artifact, never committed.
+parity-reference:
+  image: $ZIG_IMAGE
+  stage: parity-reference
+  needs: [build, parity-golden]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - test -x "$REFERENCE_BB" || { echo "reference binary not provisioned at $REFERENCE_BB" >&2; exit 1; }
+    - python3 scripts/parity/run.py --all --ref "$REFERENCE_BB" --zig zig-out/bin/busybox > parity-reference.log
+    - cat parity-reference.log
+    - python3 scripts/parity/fuzz.py --ref "$REFERENCE_BB" --zig zig-out/bin/busybox --iterations 20 --seed 20261124 --out fuzz-report.json
+    # Every known residual is passed explicitly: the generated artifact must
+    # never drop fuzz divergences or environment-specific gaps.
+    - python3 scripts/parity/report.py --fuzz fuzz-report.json --differential parity-reference.log --golden parity-golden.log --residual "shell ash_test: 100/327 divergences (Task 22 breaker ruling; accepted exotics only [[ ]], <(...) and job stop/resume; the remaining ash-misc/ash-vars/quoting/heredoc/redir/parsing/psubst/arith/glob buckets are real in-scope gaps)" --residual "fuzz divergences recorded as bugs (not fixed): malformed sed/awk programs exit 1 in reference vs 0 in Zig; nslookup malformed/empty names exit status; dumpleases random lease stdout; malformed grep -e patterns; httpd/SSL option combinations" --residual "meta-CLI --list/--list-full differ by one name (tc): comparison reference built with CONFIG_TC=n, our defconfig has CONFIG_TC=y; no normalizer hides this" --residual "smemcap goldens embed host /proc/meminfo, cmdline, stat and kernel version; host-sensitive and needing recapture on a different host" --residual "config-disabled stubs: minips and mkfs.reiser have no main and are absent from the defconfig registry (all-on config would resolve them to stubMain); busybox is main-less and extra-gated" --residual "per-wave deferred minor findings are listed in .superpowers/sdd/2026-11-21-full-parity-master-plan/progress.md; full BusyBox 1.39.0 parity is NOT achieved" --out parity-report.md
+    - cat parity-report.md
+  artifacts:
+    paths:
+      - parity-reference.log
+      - fuzz-report.json
+      - parity-report.md
+    expire_in: 1 month

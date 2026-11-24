@@ -1,0 +1,8 @@
+{
+  "applet": "i2cdump",
+  "name": "invalid_bus",
+  "stdout": "",
+  "stderr": "i2cdump: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

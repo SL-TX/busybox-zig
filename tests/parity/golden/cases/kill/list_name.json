@@ -1,0 +1,8 @@
+{
+  "applet": "kill",
+  "name": "list_name",
+  "stdout": "15\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "mv",
+  "name": "missing_source",
+  "stdout": "",
+  "stderr": "mv: can't rename 'missing': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

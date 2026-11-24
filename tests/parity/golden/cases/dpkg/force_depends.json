@@ -1,0 +1,16 @@
+{
+  "applet": "dpkg",
+  "name": "force_depends",
+  "stdout": "",
+  "stderr": "dpkg: short read\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QkFEIQ=="
+      }
+    }
+  }
+}

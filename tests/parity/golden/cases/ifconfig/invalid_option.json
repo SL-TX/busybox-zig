@@ -1,0 +1,8 @@
+{
+  "applet": "ifconfig",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "ifconfig: -Z: error fetching interface information: Device not found\n",
+  "exit": 1,
+  "tree": {}
+}

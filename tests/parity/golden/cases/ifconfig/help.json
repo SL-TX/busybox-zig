@@ -1,0 +1,8 @@
+{
+  "applet": "ifconfig",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ifconfig [-a] [IFACE] [ADDRESS]\n\nConfigure a network interface\n\n\t[add ADDRESS[/PREFIXLEN]]\n\t[del ADDRESS[/PREFIXLEN]]\n\t[[-]broadcast [ADDRESS]] [[-]pointopoint [ADDRESS]]\n\t[netmask ADDRESS] [dstaddr ADDRESS]\n\t[outfill NN] [keepalive NN]\n\t[hw ether|infiniband ADDRESS] [metric NN] [mtu NN]\n\t[[-]trailers] [[-]arp] [[-]allmulti]\n\t[multicast] [[-]promisc] [txqueuelen NN] [[-]dynamic]\n\t[mem_start NN] [io_addr NN] [irq NN]\n\t[up|down] ...\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,7 @@
+
+Usage: sulogin [-t N] [TTY]
+
+Single user login
+
+	-p	Start a login shell
+	-t SEC	Timeout

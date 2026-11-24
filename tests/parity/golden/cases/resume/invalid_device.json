@@ -1,0 +1,8 @@
+{
+  "applet": "resume",
+  "name": "invalid_device",
+  "stdout": "",
+  "stderr": "resume: invalid resume device: /nonexistent\n",
+  "exit": 1,
+  "tree": {}
+}

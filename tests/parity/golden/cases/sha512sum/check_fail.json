@@ -1,0 +1,23 @@
+{
+  "applet": "sha512sum",
+  "name": "check_fail",
+  "stdout": "f: FAILED\n",
+  "stderr": "sha512sum: WARNING: 1 of 1 computed checksums did NOT match\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    },
+    "sums": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCAgZgo="
+      }
+    }
+  }
+}

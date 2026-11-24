@@ -1,0 +1,8 @@
+{
+  "applet": "uudecode",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "uudecode: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: uudecode [-o OUTFILE] [INFILE]\n\nUudecode a file\nFinds OUTFILE in uuencoded source unless -o is given\n",
+  "exit": 1,
+  "tree": {}
+}

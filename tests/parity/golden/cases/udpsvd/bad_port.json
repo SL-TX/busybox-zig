@@ -1,0 +1,8 @@
+{
+  "applet": "udpsvd",
+  "name": "bad_port",
+  "stdout": "",
+  "stderr": "udpsvd: bad port 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "install",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: install [-cdDsp] [-o USER] [-g GRP] [-m MODE] [-t DIR] [SOURCE]... DEST\n\nCopy files and set attributes\n\n\t-c\tJust copy (default)\n\t-d\tCreate directories\n\t-D\tCreate leading target directories\n\t-s\tStrip symbol table\n\t-p\tPreserve date\n\t-o USER\tSet ownership\n\t-g GRP\tSet group ownership\n\t-m MODE\tSet permissions\n\t-t DIR\tInstall to DIR\n",
+  "exit": 1,
+  "tree": {}
+}

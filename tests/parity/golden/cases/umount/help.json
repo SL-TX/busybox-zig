@@ -1,0 +1,8 @@
+{
+  "applet": "umount",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: umount [-rlfda] [-t FSTYPE] FILESYSTEM|DIRECTORY\n\nUnmount filesystems\n\n\t-a\tUnmount all filesystems\n\t-r\tRemount devices read-only if mount is busy\n\t-l\tLazy umount (detach filesystem)\n\t-f\tForce umount (i.e., unreachable NFS server)\n\t-d\tFree loop device if it has been used\n\t-t FSTYPE[,...]\tUnmount only these filesystem type(s)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

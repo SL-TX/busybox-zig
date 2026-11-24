@@ -1,0 +1,30 @@
+{
+  "applet": "ls",
+  "name": "sort_reverse",
+  "stdout": "c\nb\na\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "c": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mw=="
+      }
+    },
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQ=="
+      }
+    }
+  }
+}

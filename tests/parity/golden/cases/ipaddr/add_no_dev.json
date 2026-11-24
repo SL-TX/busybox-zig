@@ -1,0 +1,8 @@
+{
+  "applet": "ipaddr",
+  "name": "add_no_dev",
+  "stdout": "",
+  "stderr": "ipaddr: need \"dev IFACE\"\n",
+  "exit": 1,
+  "tree": {}
+}

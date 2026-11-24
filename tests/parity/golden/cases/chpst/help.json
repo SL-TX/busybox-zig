@@ -1,0 +1,8 @@
+{
+  "applet": "chpst",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: chpst [-vP012] [-u USER[:GRP]] [-U USER[:GRP]] [-e DIR]\n\t[-/ DIR] [-n NICE] [-m BYTES] [-d BYTES] [-o N]\n\t[-p N] [-f BYTES] [-c BYTES] PROG ARGS\n\nChange the process state, run PROG\n\n\t-u USER[:GRP]\tSet uid and gid\n\t-U USER[:GRP]\tSet $UID and $GID in environment\n\t-e DIR\t\tSet environment variables as specified by files\n\t\t\tin DIR: file=1st_line_of_file\n\t-/ DIR\t\tChroot to DIR\n\t-n NICE\t\tAdd NICE to nice value\n\t-m BYTES\tSame as -d BYTES -s BYTES -l BYTES\n\t-d BYTES\tLimit data segment\n\t-o N\t\tLimit number of open files per process\n\t-p N\t\tLimit number of processes per uid\n\t-f BYTES\tLimit output file sizes\n\t-c BYTES\tLimit core file size\n\t-v\t\tVerbose\n\t-P\t\tCreate new process group\n\t-0\t\tClose stdin\n\t-1\t\tClose stdout\n\t-2\t\tClose stderr\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

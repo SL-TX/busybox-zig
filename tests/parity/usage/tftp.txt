@@ -1,0 +1,10 @@
+
+Usage: tftp -g|p [OPTIONS] HOST [PORT]
+
+Transfer a file from/to tftp server
+
+	-g	Get file
+	-p	Put file
+	-l FILE	Local FILE
+	-r FILE	Remote FILE
+	-b SIZE	Transfer blocks in bytes

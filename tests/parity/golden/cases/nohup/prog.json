@@ -1,0 +1,8 @@
+{
+  "applet": "nohup",
+  "name": "prog",
+  "stdout": "ok\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "flock",
+  "name": "run_command",
+  "stdout": "hello\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "lock": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

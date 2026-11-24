@@ -1,0 +1,8 @@
+{
+  "applet": "mount",
+  "name": "bad_option",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

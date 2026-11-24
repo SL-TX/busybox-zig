@@ -1,0 +1,8 @@
+{
+  "applet": "wget",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: wget [-cqS] [--spider] [-O FILE] [-o LOGFILE] [--header STR]...\n\t[-U AGENT] [--post-data STR | --post-file FILE] [-Y on/off]\n\t[--no-check-certificate] [-P DIR] [-T SEC] [-t TRIES] URL...\n\nRetrieve files via HTTP or FTP\n\n\t--spider\tOnly check URL existence: $? is 0 if exists\n\t--header STR\tAdd STR (of form 'header: value') to headers\n\t-U AGENT\tUse AGENT for User-Agent header\n\t--post-data STR\tSend STR using POST method\n\t--post-file FILE\tSend FILE using POST method\n\t--no-check-certificate\tDon't validate the server's certificate\n\t-c\t\tContinue retrieval of partial download\n\t-q\t\tQuiet\n\t-P DIR\t\tSave to DIR (default .)\n\t-S    \t\tShow server response\n\t-t TRIES\tRetry count (default 20)\n\t-T SEC\t\tNetwork read timeout is SEC seconds\n\t-O FILE\t\tSave to FILE ('-' for stdout)\n\t-o LOGFILE\tLog messages to FILE\n\t-Y on/off\tUse proxy\n",
+  "exit": 1,
+  "tree": {}
+}

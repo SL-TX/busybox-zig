@@ -1,0 +1,16 @@
+{
+  "applet": "chgrp",
+  "name": "unknown_group",
+  "stdout": "",
+  "stderr": "chgrp: unknown group missing\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

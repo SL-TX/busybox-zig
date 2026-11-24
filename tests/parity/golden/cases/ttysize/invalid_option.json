@@ -1,0 +1,8 @@
+{
+  "applet": "ttysize",
+  "name": "invalid_option",
+  "stdout": "\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

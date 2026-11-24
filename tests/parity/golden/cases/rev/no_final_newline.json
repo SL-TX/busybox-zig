@@ -1,0 +1,8 @@
+{
+  "applet": "rev",
+  "name": "no_final_newline",
+  "stdout": "olleh",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

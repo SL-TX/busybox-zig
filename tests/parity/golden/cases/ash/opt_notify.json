@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "opt_notify",
+  "stdout": "ok\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

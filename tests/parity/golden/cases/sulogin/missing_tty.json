@@ -1,0 +1,8 @@
+{
+  "applet": "sulogin",
+  "name": "missing_tty",
+  "stdout": "",
+  "stderr": "sulogin: can't open '/dev/no_such_tty_xyz': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

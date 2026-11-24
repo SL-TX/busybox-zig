@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "script_with_args",
+  "stdout": "pos:ash:AA:BB\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

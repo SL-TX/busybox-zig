@@ -1,0 +1,8 @@
+{
+  "applet": "eject",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "eject: can't open '/dev/cdrom': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

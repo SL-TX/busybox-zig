@@ -1,0 +1,8 @@
+{
+  "applet": "iproute",
+  "name": "add",
+  "stdout": "",
+  "stderr": "iproute: RTNETLINK answers: Operation not permitted\n",
+  "exit": 2,
+  "tree": {}
+}

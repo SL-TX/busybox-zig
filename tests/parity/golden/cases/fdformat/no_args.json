@@ -1,0 +1,8 @@
+{
+  "applet": "fdformat",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: fdformat [-n] DEVICE\n\nFormat floppy disk\n\n\t-n\tDon't verify after format\n",
+  "exit": 1,
+  "tree": {}
+}

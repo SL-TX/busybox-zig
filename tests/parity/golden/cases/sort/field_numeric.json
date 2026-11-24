@@ -1,0 +1,8 @@
+{
+  "applet": "sort",
+  "name": "field_numeric",
+  "stdout": "c:1\na:2\nb:10\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

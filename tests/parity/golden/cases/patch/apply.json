@@ -1,0 +1,23 @@
+{
+  "applet": "patch",
+  "name": "apply",
+  "stdout": "patching file f\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpCCmMK"
+      }
+    },
+    "p.diff": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "LS0tIGEKKysrIGIKQEAgLTEsMyArMSwzIEBACiBhCi1iCitCCiBjCg=="
+      }
+    }
+  }
+}

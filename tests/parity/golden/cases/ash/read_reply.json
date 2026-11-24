@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "read_reply",
+  "stdout": "hello\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "lzopcat",
+  "name": "invocation",
+  "stdout": "",
+  "stderr": "lzopcat: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

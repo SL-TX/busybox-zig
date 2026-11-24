@@ -1,0 +1,16 @@
+{
+  "applet": "cmp",
+  "cases": [
+    {"name":"help","argv":["--help"],"expect":{"exit":0}},
+    {"name":"no_args","argv":[],"expect":{"exit":1}},
+    {"name":"missing_file","argv":["a","b"],"expect":{"exit":2,"stderr":"cmp: a: No such file or directory\n"}},
+    {"name":"identical","argv":["a","a"],"files":{"a":"abc\n"},"expect":{"exit":0,"stdout":"","stderr":""}},
+    {"name":"differ","argv":["a","b"],"files":{"a":"abc\n","b":"abd\n"},"expect":{"exit":1,"stdout":"a b differ: byte 3, line 1\n"}},
+    {"name":"list","argv":["-l","a","b"],"files":{"a":"abc\n","b":"abd\n"},"expect":{"exit":1,"stdout":"3 143 144\n"}},
+    {"name":"quiet","argv":["-s","a","b"],"files":{"a":"abc\n","b":"abd\n"},"expect":{"exit":1,"stdout":""}},
+    {"name":"limit","argv":["-n","2","a","b"],"files":{"a":"abc\n","b":"abd\n"},"expect":{"exit":0,"stdout":""}},
+    {"name":"skip","argv":["a","b","1","1"],"files":{"a":"abc\n","b":"abd\n"},"expect":{"exit":1,"stdout":"a b differ: byte 2, line 1\n"}},
+    {"name":"stdin","argv":["a"],"files":{"a":"abc\n"},"stdin":"abc\n","expect":{"exit":0,"stdout":""}},
+    {"name":"invalid_option","argv":["-z"],"expect":{"exit":1}}
+  ]
+}

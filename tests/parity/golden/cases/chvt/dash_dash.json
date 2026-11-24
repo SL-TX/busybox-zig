@@ -1,0 +1,8 @@
+{
+  "applet": "chvt",
+  "name": "dash_dash",
+  "stdout": "",
+  "stderr": "chvt: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

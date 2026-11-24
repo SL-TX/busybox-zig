@@ -1,0 +1,6 @@
+
+Usage: fdformat [-n] DEVICE
+
+Format floppy disk
+
+	-n	Don't verify after format

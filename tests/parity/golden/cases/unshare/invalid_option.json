@@ -1,0 +1,8 @@
+{
+  "applet": "unshare",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "unshare: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: unshare [OPTIONS] [PROG ARGS]\n\n\t-m,--mount[=FILE]\tUnshare mount namespace\n\t-u,--uts[=FILE]\t\tUnshare UTS namespace (hostname etc.)\n\t-i,--ipc[=FILE]\t\tUnshare System V IPC namespace\n\t-n,--net[=FILE]\t\tUnshare network namespace\n\t-p,--pid[=FILE]\t\tUnshare PID namespace\n\t-U,--user[=FILE]\tUnshare user namespace\n\t-f\t\t\tFork before execing PROG\n\t-r\t\t\tMap current user to root (implies -U)\n\t--mount-proc[=DIR]\tMount /proc filesystem first (implies -m)\n\t--propagation slave|shared|private|unchanged\n\t\t\t\tModify mount propagation in mount namespace\n\t--setgroups allow|deny\tControl the setgroups syscall in user namespaces\n",
+  "exit": 1,
+  "tree": {}
+}

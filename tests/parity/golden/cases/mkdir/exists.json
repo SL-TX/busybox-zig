@@ -1,0 +1,13 @@
+{
+  "applet": "mkdir",
+  "name": "exists",
+  "stdout": "",
+  "stderr": "mkdir: can't create directory 'd': File exists\n",
+  "exit": 1,
+  "tree": {
+    "d": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

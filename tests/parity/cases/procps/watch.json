@@ -1,0 +1,145 @@
+{
+  "applet": "watch",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_period",
+      "argv": [
+        "-n",
+        "abc",
+        "true"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_program",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "pty_quiet",
+      "argv": [
+        "-n",
+        "0.2",
+        "-t",
+        "kill -TERM $PPID"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [
+        "timestamp",
+        "regex:Every [0-9.]+s:",
+        "regex:\\x1b\\[H\\x1b\\[J"
+      ],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": []
+    },
+    {
+      "name": "pty_header",
+      "argv": [
+        "-n",
+        "0.2",
+        "kill -TERM $PPID"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [
+        "timestamp",
+        "regex:Every [0-9.]+s:",
+        "regex:\\x1b\\[H\\x1b\\[J"
+      ],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": []
+    },
+    {
+      "name": "pty_exec",
+      "argv": [
+        "-n",
+        "0.2",
+        "-x",
+        "-t",
+        "sh",
+        "-c",
+        "kill -TERM $PPID"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 3000,
+      "normalize": [
+        "timestamp",
+        "regex:Every [0-9.]+s:",
+        "regex:\\x1b\\[H\\x1b\\[J"
+      ],
+      "requires": [
+        "tty"
+      ],
+      "tty": true,
+      "script": []
+    }
+  ]
+}

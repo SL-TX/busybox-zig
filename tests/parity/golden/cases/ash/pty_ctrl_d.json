@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "pty_ctrl_d",
+  "stdout": "~ $ \r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

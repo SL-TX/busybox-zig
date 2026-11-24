@@ -1,0 +1,8 @@
+{
+  "applet": "bzip2",
+  "name": "roundtrip",
+  "stdout": "hello world\nhello world\nhello world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

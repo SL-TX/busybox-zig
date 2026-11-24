@@ -1,0 +1,8 @@
+{
+  "applet": "ipcalc",
+  "name": "all_options",
+  "stdout": "NETMASK=255.255.255.192\nBROADCAST=192.168.1.127\nNETWORK=192.168.1.64\nPREFIX=26\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

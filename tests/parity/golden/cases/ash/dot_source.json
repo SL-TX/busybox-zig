@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "dot_source",
+  "stdout": "sourced\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "s.sh": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "ZWNobyBzb3VyY2VkCg=="
+      }
+    }
+  }
+}

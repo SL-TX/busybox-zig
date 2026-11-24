@@ -1,0 +1,8 @@
+{
+  "applet": "pscan",
+  "name": "bad_p",
+  "stdout": "",
+  "stderr": "pscan: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

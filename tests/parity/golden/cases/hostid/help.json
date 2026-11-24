@@ -1,0 +1,8 @@
+{
+  "applet": "hostid",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: hostid\n\nPrint out a unique 32-bit identifier for the machine\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

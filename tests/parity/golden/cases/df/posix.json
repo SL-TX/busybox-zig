@@ -1,0 +1,8 @@
+{
+  "applet": "df",
+  "name": "posix",
+  "stdout": "Filesystem           1024-blocks    Used Available Capacity Mounted on\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

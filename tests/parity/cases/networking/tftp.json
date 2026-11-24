@@ -1,0 +1,366 @@
+{
+  "applet": "tftp",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_long_option",
+      "argv": [
+        "--bogusoption"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "get_only",
+      "argv": [
+        "-g"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "put_only",
+      "argv": [
+        "-p"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "get_and_put",
+      "argv": [
+        "-g",
+        "-p"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_local",
+      "argv": [
+        "-l"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_remote",
+      "argv": [
+        "-r"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_blocksize",
+      "argv": [
+        "-b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_blocksize",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "8",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "blocksize_out_of_range",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "99999",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "put_no_local",
+      "argv": [
+        "-p",
+        "-r",
+        "r",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "put_missing_file",
+      "argv": [
+        "-p",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "127.0.0.1",
+        "1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_host",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "blocksize_below_min",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "62",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
+    },
+    {
+      "name": "blocksize_min",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "63",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
+    },
+    {
+      "name": "blocksize_min_plus_one",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b",
+        "64",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
+    },
+    {
+      "name": "blocksize_attached",
+      "argv": [
+        "-g",
+        "-l",
+        "f",
+        "-r",
+        "r",
+        "-b63",
+        "127.0.0.1",
+        "<PORT>"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 6000,
+      "normalize": [],
+      "requires": [],
+      "server": {
+        "proto": "udp",
+        "mode": "tftp_error"
+      }
+    }
+  ]
+}

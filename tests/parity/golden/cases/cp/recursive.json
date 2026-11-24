@@ -1,0 +1,53 @@
+{
+  "applet": "cp",
+  "name": "recursive",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "dst": {
+      "type": "dir",
+      "mode": 493
+    },
+    "dst/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eg=="
+      }
+    },
+    "dst/s": {
+      "type": "dir",
+      "mode": 493
+    },
+    "dst/s/g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "dw=="
+      }
+    },
+    "src": {
+      "type": "dir",
+      "mode": 493
+    },
+    "src/s": {
+      "type": "dir",
+      "mode": 493
+    },
+    "src/s/g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "dw=="
+      }
+    },
+    "src/f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "pwdx",
+  "name": "two_pids",
+  "stdout": "999998: No such process\n999999: No such process\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

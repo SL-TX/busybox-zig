@@ -1,0 +1,8 @@
+{
+  "applet": "depmod",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: depmod [-n]\n\nGenerate modules.dep.bb\n\n\t-n\tDry run: print file to stdout\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

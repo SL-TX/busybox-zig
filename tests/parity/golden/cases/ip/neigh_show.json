@@ -1,0 +1,8 @@
+{
+  "applet": "ip",
+  "name": "neigh_show",
+  "stdout": "109.168.160.204 dev enp1s0 lladdr 28:de:e5:f5:7b:f6 <MATCH> probes 0 STALE\n192.168.0.24 dev enp1s0 lladdr 1c:87:2c:5e:a6:33 <MATCH> probes 1 STALE\n192.168.0.17 dev enp1s0 lladdr 08:d8:33:6f:67:1e <MATCH> probes 0 STALE\n192.168.0.100 dev enp1s0  <MATCH> probes 6 FAILED\n192.168.0.1 dev enp1s0 lladdr 28:de:e5:f5:7b:f6 ref 1 <MATCH> probes 1 REACHABLE\nfe80::1 dev enp1s0 lladdr 28:de:e5:f5:7b:f6 router <MATCH> probes 0 STALE\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

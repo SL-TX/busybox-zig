@@ -1,0 +1,16 @@
+{
+  "applet": "nbd-client",
+  "name": "handshake_bad_magic",
+  "stdout": "",
+  "stderr": "nbd-client: login failed\n",
+  "exit": 1,
+  "tree": {
+    "dev": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

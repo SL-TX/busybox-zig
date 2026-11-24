@@ -1,0 +1,242 @@
+{
+  "applet": "dd",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:\\d+\\.\\d+ seconds",
+        "regex:\\d+B/s"
+      ],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "if=a",
+        "of=b",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello world"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bs_count",
+      "argv": [
+        "if=a",
+        "of=b",
+        "bs=5",
+        "count=2",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello world"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "to_stdout",
+      "argv": [
+        "if=a",
+        "bs=4",
+        "count=2",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello world"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_input",
+      "argv": [
+        "if=missing",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "notrunc",
+      "argv": [
+        "if=a",
+        "of=b",
+        "bs=4",
+        "count=2",
+        "conv=notrunc",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello",
+        "b": "XXXXXXXXXX"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "swab",
+      "argv": [
+        "if=a",
+        "of=b",
+        "bs=2",
+        "count=2",
+        "conv=swab",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "abcd"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "skip",
+      "argv": [
+        "if=a",
+        "of=b",
+        "bs=1",
+        "count=2",
+        "skip=1",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "abcdef"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "seek",
+      "argv": [
+        "if=a",
+        "of=b",
+        "bs=1",
+        "count=2",
+        "seek=2",
+        "conv=notrunc",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "ABCD",
+        "b": "XXXXXXXX"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "count_zero",
+      "argv": [
+        "if=a",
+        "of=b",
+        "bs=1",
+        "count=0",
+        "status=none"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "abc",
+        "b": "keep"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

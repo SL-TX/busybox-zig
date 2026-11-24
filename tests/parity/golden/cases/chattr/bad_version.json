@@ -1,0 +1,16 @@
+{
+  "applet": "chattr",
+  "name": "bad_version",
+  "stdout": "",
+  "stderr": "chattr: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

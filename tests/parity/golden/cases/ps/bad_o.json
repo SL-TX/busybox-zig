@@ -1,0 +1,8 @@
+{
+  "applet": "ps",
+  "name": "bad_o",
+  "stdout": "",
+  "stderr": "ps: bad -o argument 'bogus', supported arguments: user,group,comm,args,pid,ppid,pgid,etime,nice,rgroup,ruser,time,tty,vsz,sid,stat,rss\n",
+  "exit": 1,
+  "tree": {}
+}

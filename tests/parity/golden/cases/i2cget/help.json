@@ -1,0 +1,8 @@
+{
+  "applet": "i2cget",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: i2cget [-fy] BUS CHIP-ADDRESS [DATA-ADDRESS [MODE]]\n\nRead from I2C/SMBus chip registers\n\n\tI2CBUS\tI2C bus number\n\tADDRESS\t0x03-0x77\nMODE is:\n\tb\tRead byte data (default)\n\tw\tRead word data\n\tc\tWrite byte/read byte\n\tAppend p for SMBus PEC\n\n\t-f\tForce access\n\t-y\tDisable interactive mode\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

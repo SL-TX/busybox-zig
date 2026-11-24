@@ -1,0 +1,4 @@
+
+Usage: fbset [OPTIONS] [MODE]
+
+Show and modify frame buffer settings

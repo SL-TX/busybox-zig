@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "pty_ignoreeof",
+  "stdout": "~ $ set -o ignoreeof\r\n~ $ \r\nUse \"exit\" to leave shell.\r\n~ $ \r\nUse \"exit\" to leave shell.\r\n~ $ exit\r\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    ".ash_history": {
+      "type": "file",
+      "mode": 384,
+      "content": {
+        "__base64__": "c2V0IC1vIGlnbm9yZWVvZgpleGl0Cg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "applet": "tee",
+  "name": "append",
+  "stdout": "one\ntwo\nthree\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b2xkCm9uZQp0d28KdGhyZWUK"
+      }
+    }
+  }
+}

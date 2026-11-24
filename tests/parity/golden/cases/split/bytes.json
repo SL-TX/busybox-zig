@@ -1,0 +1,37 @@
+{
+  "applet": "split",
+  "name": "bytes",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "xad": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "ag=="
+      }
+    },
+    "xac": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "Z2hp"
+      }
+    },
+    "xab": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "ZGVm"
+      }
+    },
+    "xaa": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "YWJj"
+      }
+    }
+  }
+}

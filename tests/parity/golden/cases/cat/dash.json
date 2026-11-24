@@ -1,0 +1,8 @@
+{
+  "applet": "cat",
+  "name": "dash",
+  "stdout": "one\ntwo\nthree\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

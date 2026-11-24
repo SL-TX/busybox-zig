@@ -1,0 +1,8 @@
+{
+  "applet": "fold",
+  "name": "width",
+  "stdout": "abcd\nefgh\nij\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

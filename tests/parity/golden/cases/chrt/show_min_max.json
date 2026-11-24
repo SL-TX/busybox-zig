@@ -1,0 +1,8 @@
+{
+  "applet": "chrt",
+  "name": "show_min_max",
+  "stdout": "SCHED_OTHER min/max priority\t: 0/0\nSCHED_FIFO min/max priority\t: 1/99\nSCHED_RR min/max priority\t: 1/99\nSCHED_BATCH min/max priority\t: 0/0\nSCHED_IDLE min/max priority\t: 0/0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

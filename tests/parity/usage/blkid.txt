@@ -1,0 +1,4 @@
+
+Usage: blkid [BLOCKDEV]...
+
+Print UUIDs of all filesystems

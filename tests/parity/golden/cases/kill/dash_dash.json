@@ -1,0 +1,8 @@
+{
+  "applet": "kill",
+  "name": "dash_dash",
+  "stdout": "",
+  "stderr": "kill: can't kill pid -123: No such process\n",
+  "exit": 1,
+  "tree": {}
+}

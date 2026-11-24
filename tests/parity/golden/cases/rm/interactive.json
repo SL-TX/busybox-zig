@@ -1,0 +1,8 @@
+{
+  "applet": "rm",
+  "name": "interactive",
+  "stdout": "",
+  "stderr": "rm: remove 'a'? ",
+  "exit": 0,
+  "tree": {}
+}

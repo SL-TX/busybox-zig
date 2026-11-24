@@ -1,0 +1,17 @@
+
+Usage: chcon [-chfRv] CONTEXT FILE...
+	chcon [-chfRv] [-u USER] [-r ROLE] [-l RANGE] [-t TYPE] FILE...
+	chcon [-chfRv] --reference=RFILE FILE...
+
+Change the security context of FILEs to CONTEXT
+
+	-v	Verbose
+	-c	Report changes made
+	-h	Affect symlinks instead of their targets
+	-f	Suppress most error messages
+	--reference RFILE Use RFILE's group instead of using a CONTEXT value
+	-u USER	Set user/role/type/range in the target security context
+	-r ROLE
+	-t TYPE
+	-l RANGE
+	-R	Recurse

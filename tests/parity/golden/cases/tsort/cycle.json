@@ -1,0 +1,8 @@
+{
+  "applet": "tsort",
+  "name": "cycle",
+  "stdout": "a\nb\nc\n",
+  "stderr": "tsort: cycle at a\n",
+  "exit": 1,
+  "tree": {}
+}

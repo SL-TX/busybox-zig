@@ -1,0 +1,4 @@
+
+Usage: lsof
+
+Show all open files

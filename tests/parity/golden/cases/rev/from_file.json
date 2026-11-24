@@ -1,0 +1,16 @@
+{
+  "applet": "rev",
+  "name": "from_file",
+  "stdout": "eno\nowt\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "input": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "b25lCnR3bwo="
+      }
+    }
+  }
+}

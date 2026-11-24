@@ -1,0 +1,16 @@
+{
+  "applet": "dpkg",
+  "name": "remove",
+  "stdout": "",
+  "stderr": "dpkg: package bad is uninstalled or unknown\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QkFEIQ=="
+      }
+    }
+  }
+}

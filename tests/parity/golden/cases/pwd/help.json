@@ -1,0 +1,8 @@
+{
+  "applet": "pwd",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: pwd\n\nPrint the full filename of the current working directory\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

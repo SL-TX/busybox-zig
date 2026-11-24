@@ -1,0 +1,8 @@
+{
+  "applet": "time",
+  "name": "posix",
+  "stdout": "",
+  "stderr": "real <MATCH>\nuser <MATCH>\nsys <MATCH>\n",
+  "exit": 0,
+  "tree": {}
+}

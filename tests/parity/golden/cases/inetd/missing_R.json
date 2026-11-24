@@ -1,0 +1,8 @@
+{
+  "applet": "inetd",
+  "name": "missing_R",
+  "stdout": "",
+  "stderr": "inetd: option requires an argument -- 'R'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: inetd [-fe] [-q N] [-R N] [CONFFILE]\n\nListen for network connections and launch programs\n\n\t-f\tRun in foreground\n\t-e\tLog to stderr\n\t-q N\tSocket listen queue (default 128)\n\t-R N\tPause services after N connects/min\n\t\t(default 0 - disabled)\n\tDefault CONFFILE is /etc/inetd.conf\n",
+  "exit": 1,
+  "tree": {}
+}

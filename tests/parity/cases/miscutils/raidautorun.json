@@ -1,0 +1,65 @@
+{
+  "applet": "raidautorun",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "cant_open",
+      "argv": [
+        "nofile"
+      ]
+    },
+    {
+      "name": "ioctl_fail",
+      "argv": [
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      }
+    },
+    {
+      "name": "extra_arg",
+      "argv": [
+        "infile",
+        "extra"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      },
+      "normalize": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "dash_arg",
+      "argv": [
+        "-X",
+        "infile"
+      ],
+      "files": {
+        "infile": "hello",
+        "image.bin": "DATA1234"
+      },
+      "normalize": [
+        "timestamp"
+      ]
+    }
+  ]
+}

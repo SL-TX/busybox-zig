@@ -1,0 +1,8 @@
+{
+  "applet": "mountpoint",
+  "name": "root",
+  "stdout": "/ is a mountpoint\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

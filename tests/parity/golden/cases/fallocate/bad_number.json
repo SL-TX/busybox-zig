@@ -1,0 +1,16 @@
+{
+  "applet": "fallocate",
+  "name": "bad_number",
+  "stdout": "",
+  "stderr": "fallocate: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {
+    "data": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

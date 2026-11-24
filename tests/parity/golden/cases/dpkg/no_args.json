@@ -1,0 +1,8 @@
+{
+  "applet": "dpkg",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: dpkg -i|P|r|--unpack|--configure [--force-OPT] PACKAGE | -l [PATTERN]\n\nManage Debian packages\n\n\t-i,--install\tInstall PACKAGE.deb\n\t-P,--purge\tPurge all files of PACKAGE\n\t-r,--remove\tRemove all but configuration files of PACKAGE\n\t--unpack\tUnpack PACKAGE.deb relative to /, don't configure\n\t--configure\tConfigure unpacked PACKAGE\n\t--force-depends\tIgnore dependency problems\n\t--force-confnew\tOverwrite existing config files when installing\n\t--force-confold\tKeep old config files when installing\n\t-l,--list\tList installed packages\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,4 @@
+
+Usage: fsfreeze --[un]freeze MOUNTPOINT
+
+Flush and halt writes to MOUNTPOINT

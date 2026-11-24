@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "hush_ansi_c_quote",
+  "stdout": "a\tb\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

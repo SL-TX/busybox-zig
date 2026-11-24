@@ -1,0 +1,6 @@
+
+Usage: ubidetach -d UBI_NUM UBI_CTRL_DEV
+
+Detach MTD device from UBI
+
+	-d UBI_NUM	UBI device number

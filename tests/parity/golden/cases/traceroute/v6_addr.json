@@ -1,0 +1,8 @@
+{
+  "applet": "traceroute",
+  "name": "v6_addr",
+  "stdout": "",
+  "stderr": "traceroute: socket: Operation not permitted\n",
+  "exit": 1,
+  "tree": {}
+}

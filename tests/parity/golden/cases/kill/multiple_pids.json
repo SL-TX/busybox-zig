@@ -1,0 +1,8 @@
+{
+  "applet": "kill",
+  "name": "multiple_pids",
+  "stdout": "",
+  "stderr": "kill: can't kill pid 999998: No such process\nkill: can't kill pid 999999: No such process\n",
+  "exit": 2,
+  "tree": {}
+}

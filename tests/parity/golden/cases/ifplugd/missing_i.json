@@ -1,0 +1,8 @@
+{
+  "applet": "ifplugd",
+  "name": "missing_i",
+  "stdout": "",
+  "stderr": "ifplugd: option requires an argument -- 'i'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: ifplugd [OPTIONS]\n\nNetwork interface plug detection daemon\n\n\t-n\t\tRun in foreground\n\t-s\t\tDon't log to syslog\n\t-i IFACE\tInterface\n\t-f/-F\t\tTreat link detection error as link down/link up\n\t\t\t(otherwise exit on error)\n\t-a\t\tDon't up interface at each link probe\n\t-M\t\tMonitor creation/destruction of interface\n\t\t\t(otherwise it must exist)\n\t-A\t\tDon't up newly appeared interface\n\t-r PROG\t\tScript to run\n\t-x ARG\t\tExtra argument for script\n\t-I\t\tDon't exit on nonzero exit code from script\n\t-p\t\tDon't run \"up\" script on startup\n\t-q\t\tDon't run \"down\" script on exit\n\t-l\t\tAlways run script on startup\n\t-t SECS\t\tPoll time in seconds\n\t-u SECS\t\tDelay before running script after link up\n\t-d SECS\t\tDelay after link down\n\t-m MODE\t\tAPI mode (mii, priv, ethtool, wlan, iff, auto)\n\t-k\t\tKill running daemon\n",
+  "exit": 1,
+  "tree": {}
+}

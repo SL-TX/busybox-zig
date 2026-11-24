@@ -1,0 +1,6 @@
+
+Usage: swapoff [-a] [DEVICE]
+
+Stop swapping on DEVICE
+
+	-a	Stop swapping on all swap devices

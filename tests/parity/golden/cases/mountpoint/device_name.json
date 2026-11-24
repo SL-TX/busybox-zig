@@ -1,0 +1,8 @@
+{
+  "applet": "mountpoint",
+  "name": "device_name",
+  "stdout": "<MATCH> /\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

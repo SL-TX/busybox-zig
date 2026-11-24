@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "arith_assign",
+  "stdout": "7 7\n7 8\n7 7\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

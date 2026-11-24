@@ -1,0 +1,8 @@
+{
+  "applet": "setkeycodes",
+  "name": "one_arg",
+  "stdout": "",
+  "stderr": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: setkeycodes { SCANCODE KEYCODE }...\n\nModify kernel's scancode-to-keycode map,\nallowing unusual keyboards to generate usable keycodes.\n\nSCANCODE is either xx or e0xx (hexadecimal), KEYCODE is decimal.\n",
+  "exit": 1,
+  "tree": {}
+}

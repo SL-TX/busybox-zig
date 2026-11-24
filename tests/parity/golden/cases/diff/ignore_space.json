@@ -1,0 +1,23 @@
+{
+  "applet": "diff",
+  "name": "ignore_space",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YSAgYgo="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YSBiCg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "applet": "cksum",
+  "name": "two_files",
+  "stdout": "3015617425 6 f\n1576634217 6 g\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "g": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "d29ybGQK"
+      }
+    },
+    "f": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8K"
+      }
+    }
+  }
+}

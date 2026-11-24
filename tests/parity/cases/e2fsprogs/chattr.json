@@ -1,0 +1,402 @@
+{
+  "applet": "chattr",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-z",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_attr",
+      "argv": [
+        "+Z",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "equals_with_add",
+      "argv": [
+        "=a",
+        "+i",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "equals_with_remove",
+      "argv": [
+        "=a",
+        "-i",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "set_and_unset",
+      "argv": [
+        "+a",
+        "-a",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_mode",
+      "argv": [
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "add_attr",
+      "argv": [
+        "+i",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "set_attr",
+      "argv": [
+        "=a",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "remove_attr",
+      "argv": [
+        "-i",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "set_version",
+      "argv": [
+        "-v",
+        "3",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "set_projid",
+      "argv": [
+        "-p",
+        "5",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "+i",
+        "nofile"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_version",
+      "argv": [
+        "-v",
+        "abc",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "bad_projid",
+      "argv": [
+        "-p",
+        "abc",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "multiple_files",
+      "argv": [
+        "+i",
+        "f",
+        "g"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x",
+        "g": "y"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "ignored_options",
+      "argv": [
+        "-ARRVf",
+        "+i",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "equals_multi",
+      "argv": [
+        "=aiS",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "unsupported_attr",
+      "argv": [
+        "+s",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "version_negative",
+      "argv": [
+        "-v",
+        "-1",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "projid_overflow",
+      "argv": [
+        "-p",
+        "4294967296",
+        "f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

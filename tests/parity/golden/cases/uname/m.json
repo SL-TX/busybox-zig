@@ -1,0 +1,8 @@
+{
+  "applet": "uname",
+  "name": "m",
+  "stdout": "x86_64\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

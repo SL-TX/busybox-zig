@@ -1,0 +1,209 @@
+{
+  "applet": "mv",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "one_arg",
+      "argv": [
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z",
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "into_dir",
+      "argv": [
+        "a",
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "hello"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "multi_into_dir",
+      "argv": [
+        "a",
+        "b",
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x",
+        "b": "y"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "target_dir",
+      "argv": [
+        "-t",
+        "d",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_source",
+      "argv": [
+        "missing",
+        "b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_clobber",
+      "argv": [
+        "-n",
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "new",
+        "b": "old"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "refuse_dir",
+      "argv": [
+        "-T",
+        "a",
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

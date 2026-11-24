@@ -1,0 +1,16 @@
+{
+  "applet": "sendmail",
+  "name": "no_recipients",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "transcript.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "QzogRUhMTyA8SE9TVD4KQzogTUFJTCBGUk9NOjxhQGI+CkM6IERBVEEKQzogCkM6IC4KQzogUVVJVAo="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "rm",
+  "name": "missing",
+  "stdout": "",
+  "stderr": "rm: can't remove 'missing': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

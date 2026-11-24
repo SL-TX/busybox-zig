@@ -1,0 +1,8 @@
+{
+  "applet": "link",
+  "name": "missing_src",
+  "stdout": "",
+  "stderr": "link: can't create hardlink 'b' to 'nope': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "timeout",
+  "name": "kill",
+  "stdout": "",
+  "stderr": "",
+  "exit": -9,
+  "tree": {}
+}

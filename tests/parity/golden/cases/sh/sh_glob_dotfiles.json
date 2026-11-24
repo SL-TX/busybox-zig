@@ -1,0 +1,30 @@
+{
+  "applet": "sh",
+  "name": "sh_glob_dotfiles",
+  "stdout": ". .. .a .b\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "visible": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    ".b": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    },
+    ".a": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": ""
+      }
+    }
+  }
+}

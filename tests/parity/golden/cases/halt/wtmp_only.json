@@ -1,0 +1,8 @@
+{
+  "applet": "halt",
+  "name": "wtmp_only",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "fbsplash",
+  "name": "image",
+  "stdout": "",
+  "stderr": "fbsplash: can't open '/dev/fb0': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

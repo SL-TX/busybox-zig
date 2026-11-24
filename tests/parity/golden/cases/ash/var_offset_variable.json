@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "var_offset_variable",
+  "stdout": "cdef:ef:ef\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

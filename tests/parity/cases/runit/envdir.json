@@ -1,0 +1,146 @@
+{
+  "applet": "envdir",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "only_dir",
+      "argv": [
+        "envd"
+      ],
+      "files": {
+        "envd/FOO": "bar\n"
+      },
+      "expect": {
+        "exit": 1
+      },
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "run",
+      "argv": [
+        "envd",
+        "<BB>",
+        "printenv",
+        "FOO"
+      ],
+      "files": {
+        "envd/FOO": "bar\n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": "bar\n"
+      },
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "empty_unsets",
+      "argv": [
+        "envd",
+        "<BB>",
+        "printenv",
+        "EMPTY"
+      ],
+      "files": {
+        "envd/EMPTY": ""
+      },
+      "expect": {
+        "exit": 1,
+        "stdout": ""
+      },
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "trailing_ws",
+      "argv": [
+        "envd",
+        "<BB>",
+        "printenv",
+        "FOO"
+      ],
+      "files": {
+        "envd/FOO": "  bar  \n"
+      },
+      "expect": {
+        "exit": 0,
+        "stdout": "  bar\n"
+      },
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    },
+    {
+      "name": "missing_dir",
+      "argv": [
+        "nosuch",
+        "<BB>",
+        "echo",
+        "hi"
+      ],
+      "expect": {
+        "exit": 1,
+        "stderr": "envdir: can't change directory to 'nosuch': No such file or directory\n"
+      },
+      "files": {},
+      "dirs": [],
+      "stdin": null,
+      "normalize": [],
+      "requires": [],
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "readahead",
+  "name": "multiple_missing",
+  "stdout": "",
+  "stderr": "readahead: can't open 'a': No such file or directory\nreadahead: can't open 'b': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

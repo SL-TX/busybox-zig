@@ -1,0 +1,27 @@
+{
+  "applet": "lsattr",
+  "name": "all",
+  "stdout": "-------------------- sub/.\n-------------------- sub/..\n-------------------- sub/.b\n-------------------- sub/a\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "sub": {
+      "type": "dir",
+      "mode": 493
+    },
+    "sub/.b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Mg=="
+      }
+    },
+    "sub/a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "MQ=="
+      }
+    }
+  }
+}

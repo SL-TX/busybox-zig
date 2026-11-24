@@ -1,0 +1,401 @@
+{
+  "applet": "ls",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {
+        "a": "x",
+        "b": "y"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "one_column",
+      "argv": [
+        "-1"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x",
+        "b": "y"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "all",
+      "argv": [
+        "-a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x",
+        ".h": "y"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "almost_all",
+      "argv": [
+        "-A"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x",
+        ".h": "y"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing",
+      "argv": [
+        "missing"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z",
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "file_arg",
+      "argv": [
+        "a"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "dir_arg",
+      "argv": [
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "d/s/f": "x"
+      },
+      "dirs": [
+        "d",
+        "d/s"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "list_dirs",
+      "argv": [
+        "-d",
+        "d"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "recursive",
+      "argv": [
+        "-R",
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "d/f": "x",
+        "d/s/g": "y"
+      },
+      "dirs": [
+        "d",
+        "d/s"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "multiple",
+      "argv": [
+        "a",
+        "b"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x",
+        "b": "y"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "slashes",
+      "argv": [
+        "-p"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "classify",
+      "argv": [
+        "-F"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "long",
+      "argv": [
+        "-l"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "aaa",
+        "b": "bb",
+        "ccc": "c"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[A-Z][a-z]{2} [ 0-9]{2} \\d{2}:\\d{2}"
+      ],
+      "requires": []
+    },
+    {
+      "name": "long_numeric",
+      "argv": [
+        "-ln"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[A-Z][a-z]{2} [ 0-9]{2} \\d{2}:\\d{2}"
+      ],
+      "requires": []
+    },
+    {
+      "name": "long_dir",
+      "argv": [
+        "-l",
+        "d"
+      ],
+      "stdin": null,
+      "files": {
+        "d/f": "x"
+      },
+      "dirs": [
+        "d"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "regex:[A-Z][a-z]{2} [ 0-9]{2} \\d{2}:\\d{2}"
+      ],
+      "requires": []
+    },
+    {
+      "name": "sort_size",
+      "argv": [
+        "-S"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "x",
+        "b": "xxxxx",
+        "c": "xxx"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sort_extension",
+      "argv": [
+        "-X"
+      ],
+      "stdin": null,
+      "files": {
+        "a.txt": "1",
+        "b.sh": "2",
+        "c.c": "3"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sort_version",
+      "argv": [
+        "-v"
+      ],
+      "stdin": null,
+      "files": {
+        "a1": "1",
+        "a10": "2",
+        "a2": "3"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sort_reverse",
+      "argv": [
+        "-r"
+      ],
+      "stdin": null,
+      "files": {
+        "a": "1",
+        "b": "2",
+        "c": "3"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

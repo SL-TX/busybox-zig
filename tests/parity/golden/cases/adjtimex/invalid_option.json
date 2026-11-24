@@ -1,0 +1,8 @@
+{
+  "applet": "adjtimex",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "adjtimex: invalid option -- 'X'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: adjtimex [-q] [-o OFS] [-f FREQ] [-p TCONST] [-t TICK]\n\nRead or set kernel time variables. See adjtimex(2)\n\n\t-q\tQuiet\n\t-o OFF\tTime offset, microseconds\n\t-f FREQ\tFrequency adjust, integer kernel units (65536 is 1ppm)\n\t-t TICK\tMicroseconds per tick, usually 10000\n\t\t(positive -t or -f values make clock run faster)\n\t-p TCONST\n",
+  "exit": 1,
+  "tree": {}
+}

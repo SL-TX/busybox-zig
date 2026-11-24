@@ -1,0 +1,4 @@
+
+Usage: dumpkmap > keymap
+
+Print a binary keyboard translation table to stdout

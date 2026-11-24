@@ -1,0 +1,8 @@
+{
+  "applet": "xargs",
+  "name": "size_too_small",
+  "stdout": "",
+  "stderr": "xargs: can't fit single argument within argument list size limit\n",
+  "exit": 1,
+  "tree": {}
+}

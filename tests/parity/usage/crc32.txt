@@ -1,0 +1,4 @@
+
+Usage: crc32 FILE...
+
+Calculate CRC32 checksum of FILEs

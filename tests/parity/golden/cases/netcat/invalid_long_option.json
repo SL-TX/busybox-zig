@@ -1,0 +1,8 @@
+{
+  "applet": "netcat",
+  "name": "invalid_long_option",
+  "stdout": "",
+  "stderr": "netcat: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "cpio",
+  "name": "create_symlink_deref",
+  "stdout": "-\n",
+  "stderr": "1 blocks\n",
+  "exit": 0,
+  "tree": {}
+}

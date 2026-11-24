@@ -1,0 +1,8 @@
+{
+  "applet": "dnsd",
+  "name": "bad_t",
+  "stdout": "",
+  "stderr": "dnsd: invalid number 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

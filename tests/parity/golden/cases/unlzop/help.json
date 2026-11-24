@@ -1,0 +1,8 @@
+{
+  "applet": "unlzop",
+  "name": "help",
+  "stdout": "",
+  "stderr": "unlzop: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

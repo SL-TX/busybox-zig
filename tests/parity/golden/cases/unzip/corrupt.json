@@ -1,0 +1,16 @@
+{
+  "applet": "unzip",
+  "name": "corrupt",
+  "stdout": "Archive:  bad\n  Length      Date    Time    Name\n---------  ---------- -----   ----\n",
+  "stderr": "unzip: short read\n",
+  "exit": 1,
+  "tree": {
+    "bad": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QkFEIQ=="
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "applet": "depmod",
+  "name": "no_modules",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "lib": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules/testver": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules/testver/kernel": {
+      "type": "dir",
+      "mode": 509
+    },
+    "lib/modules/testver/kernel/drivers": {
+      "type": "dir",
+      "mode": 493
+    },
+    "lib/modules/testver/kernel/drivers/notes.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGk="
+      }
+    }
+  }
+}

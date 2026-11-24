@@ -1,0 +1,8 @@
+{
+  "applet": "tunctl",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "tunctl: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: tunctl [-f DEVICE] [-t NAME | -d NAME] [-u USER] [-g GRP] [-b]\n\nCreate or delete TUN/TAP interfaces\n\n\t-f DEV\tTUN device (default /dev/net/tun)\n\t-t NAME\tCreate iface (default: tapN)\n\t-d NAME\tDelete iface\n\t-u USER\tSet iface owner\n\t-g GRP\tSet iface group\n\t-b\tBrief output\n",
+  "exit": 1,
+  "tree": {}
+}

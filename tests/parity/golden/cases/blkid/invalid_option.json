@@ -1,0 +1,8 @@
+{
+  "applet": "blkid",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

@@ -1,0 +1,4 @@
+
+Usage: ssl_server -f PRIVKEY_CERT.pem PROG ARGSInetd-style TLS server
+
+	-f PEMFILE	HAProxy-style CRT file

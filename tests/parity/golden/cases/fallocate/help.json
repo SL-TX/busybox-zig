@@ -1,0 +1,8 @@
+{
+  "applet": "fallocate",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: fallocate [-o OFS] -l LEN FILE\n\nPreallocate space for FILE\n\n\t-o OFS\tOffset of range\n\t-l LEN\tLength of range\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

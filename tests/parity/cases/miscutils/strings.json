@@ -1,0 +1,177 @@
+{
+  "applet": "strings",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "basic",
+      "argv": [
+        "bin"
+      ],
+      "stdin": null,
+      "files": {
+        "bin": "\u0000abc\u0000\u0000helloworld\u0000\u0001xy\u0000hi\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "min_len",
+      "argv": [
+        "-n",
+        "3",
+        "bin"
+      ],
+      "stdin": null,
+      "files": {
+        "bin": "\u0000abc\u0000\u0000helloworld\u0000\u0001xy\u0000hi\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "offset_dec",
+      "argv": [
+        "-t",
+        "d",
+        "bin"
+      ],
+      "stdin": null,
+      "files": {
+        "bin": "\u0000abc\u0000\u0000helloworld\u0000\u0001xy\u0000hi\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "offset_octal",
+      "argv": [
+        "-o",
+        "bin"
+      ],
+      "stdin": null,
+      "files": {
+        "bin": "\u0000abc\u0000\u0000helloworld\u0000\u0001xy\u0000hi\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "with_filename",
+      "argv": [
+        "-f",
+        "bin"
+      ],
+      "stdin": null,
+      "files": {
+        "bin": "\u0000abc\u0000\u0000helloworld\u0000\u0001xy\u0000hi\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_file",
+      "argv": [
+        "/nonexistent"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_radix",
+      "argv": [
+        "-t",
+        "q",
+        "bin"
+      ],
+      "stdin": null,
+      "files": {
+        "bin": "\u0000abc\u0000\u0000helloworld\u0000\u0001xy\u0000hi\u0000"
+      },
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [
+        "timestamp"
+      ],
+      "requires": []
+    }
+  ]
+}

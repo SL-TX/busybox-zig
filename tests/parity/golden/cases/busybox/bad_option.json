@@ -1,0 +1,8 @@
+{
+  "applet": "busybox",
+  "name": "bad_option",
+  "stdout": "",
+  "stderr": "--bogus: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "flash_unlock",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "flash_unlock: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

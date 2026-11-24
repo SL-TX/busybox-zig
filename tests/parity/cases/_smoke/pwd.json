@@ -1,0 +1,33 @@
+{
+  "applet": "pwd",
+  "cases": [
+    {
+      "name": "basic",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": ["sub"],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": ["tmp_path"],
+      "requires": [],
+      "expect": { "exit": 0, "stdout": "<TMP>\n", "stderr": "" }
+    },
+    {
+      "name": "from_subdir",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": ["sub"],
+      "symlinks": {},
+      "env": {},
+      "cwd": "sub",
+      "timeout_ms": 5000,
+      "normalize": ["tmp_path"],
+      "requires": [],
+      "expect": { "exit": 0, "stdout": "<TMP>/sub\n", "stderr": "" }
+    }
+  ]
+}

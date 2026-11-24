@@ -1,0 +1,122 @@
+{
+  "applet": "vi",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "features",
+      "argv": [
+        "-H"
+      ],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "screen_quit",
+      "argv": [
+        "-c",
+        "q",
+        "f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "screen_readonly",
+      "argv": [
+        "-R",
+        "-c",
+        "q",
+        "f"
+      ],
+      "files": {
+        "f": "old line\n"
+      },
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "pty_quit",
+      "argv": [
+        "-c",
+        "q",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "use_pty": true,
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "no_input",
+      "argv": [],
+      "expect": {
+        "exit": 1
+      }
+    },
+    {
+      "name": "cmd_sub_write",
+      "argv": [
+        "-c",
+        "s/one/two/",
+        "-c",
+        "wq",
+        "<TMP>/f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "one\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "use_pty": true,
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "cmd_write",
+      "argv": [
+        "-c",
+        "w",
+        "-c",
+        "q",
+        "<TMP>/f"
+      ],
+      "stdin": null,
+      "files": {
+        "f": "one\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "use_pty": true,
+      "expect": {
+        "exit": 0
+      }
+    }
+  ]
+}

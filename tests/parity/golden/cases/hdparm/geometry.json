@@ -1,0 +1,8 @@
+{
+  "applet": "hdparm",
+  "name": "geometry",
+  "stdout": "",
+  "stderr": "hdparm: can't open '/dev/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

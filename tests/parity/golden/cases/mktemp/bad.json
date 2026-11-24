@@ -1,0 +1,8 @@
+{
+  "applet": "mktemp",
+  "name": "bad",
+  "stdout": "",
+  "stderr": "mktemp: : Invalid argument\n",
+  "exit": 1,
+  "tree": {}
+}

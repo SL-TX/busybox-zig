@@ -1,0 +1,8 @@
+{
+  "applet": "tee",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: tee [-ai] [FILE]...\n\nCopy stdin to each FILE, and also to stdout\n\n\t-a\tAppend to the given FILEs, don't overwrite\n\t-i\tIgnore interrupt signals (SIGINT)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

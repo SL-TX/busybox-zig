@@ -1,0 +1,14 @@
+
+Usage: fdisk [-uls] [-C CYLINDERS] [-H HEADS] [-S SECTORS] [-b SSZ] [-t PARTTYPE] DISK
+
+Change partition table
+
+	-u		Start and End are in cylinders (instead of sectors)
+			Also enable rounding of sizes to cylinders
+	-l		Show partition table for each DISK and exit
+	-s		Show size in kb for each DISK and exit
+	-b 2048		(for certain MO disks) use 2048-byte sectors
+	-t PARTTYPE	Force 'dos' partition if 'gpt' also present
+	-C CYLINDERS	Set number of cylinders/heads/sectors
+	-H HEADS	Typically 255
+	-S SECTORS	Typically 63

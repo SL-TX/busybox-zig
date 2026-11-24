@@ -1,0 +1,8 @@
+{
+  "applet": "mountpoint",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: mountpoint [-q] { [-dn] DIR | -x DEVICE }\n\nCheck if DIR is a mountpoint\n\n\t-q\tQuiet\n\t-d\tPrint major:minor of the filesystem\n\t-n\tPrint device name of the filesystem\n\t-x\tPrint major:minor of DEVICE\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

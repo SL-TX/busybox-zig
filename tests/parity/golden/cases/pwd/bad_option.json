@@ -1,0 +1,8 @@
+{
+  "applet": "pwd",
+  "name": "bad_option",
+  "stdout": "",
+  "stderr": "pwd: invalid option -- 'Z'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: pwd\n\nPrint the full filename of the current working directory\n",
+  "exit": 1,
+  "tree": {}
+}

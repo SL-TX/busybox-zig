@@ -7,10 +7,31 @@
 
 ## Статус
 
-Проект в активной разработке. В `src/config.zig` объявлено 316 applet-ов, в
-реестре `src/applets.zig` зарегистрировано более 250. Часть applet-ов пока
-представлена заглушками (`stubNotImplemented`) и постепенно заменяется
-реальными реализациями.
+Порт applet-ов BusyBox 1.39.0 завершён: в сгенерированном манифесте 443 имени,
+в конфигурации `configs/defconfig` включено 411 applet-ов, и все 411
+зарегистрированы в `src/applets.zig` с реальными реализациями. Заглушек
+(`stubNotImplemented`) не осталось; `stubMain` остаётся только как защитный
+fallback для имён, которые отключены конфигурацией или дополнительными
+гейтами (`busybox`, `unit`, `minips`, `mkfs.reiser`) и поэтому не попадают
+в реестр defconfig.
+
+**Полной совместимости с BusyBox 1.39.0 не объявлено.** Остались честно
+учтённые расхождения:
+
+- **Shell (волна Task 22):** 100 из 327 тестов upstream `ash_test`
+  расходятся. Приняты как exotics только `[[ ]]`, `<(...)`, stop/resume
+  заданий; остальные корзины (ash-misc, ash-vars, quoting, heredoc, redir,
+  parsing, psubst, arith, glob) — реальные пробелы в рамках задачи,
+  запаркованные решением breaker'а и перенесённые в финальный отчёт.
+- **Отложенные minor-пункты** по отдельным applet-ам перечислены в
+  `.superpowers/sdd/2026-11-21-full-parity-master-plan/progress.md`.
+- Дифференциальный и golden-стенды: по 3860 PASS / 100 capability SKIP /
+  0 FAIL. Обнаруженные 10 дрейфов host-state исправлены узкими
+  нормализаторами для конкретных полей и перезаписью golden из референса;
+  найденные fuzz-ом расхождения записаны в отчёт как баги.
+
+Итоговая проверка и формулировки — в
+`.superpowers/sdd/2026-11-21-full-parity-master-plan/task-27-report.md`.
 
 ## Требования
 
@@ -39,7 +60,7 @@ zig build
 ```sh
 ./zig-out/bin/busybox --list        # список applet-ов
 ./zig-out/bin/busybox echo "hello"  # через аргумент
-./zig-out/bin/busybox --version     # версия (1.36.1)
+./zig-out/bin/busybox --version     # версия (BusyBox v1.39.0.git)
 
 # многофункциональный режим: имя символической ссылки задаёт applet
 ln -s busybox zig-out/bin/echo
@@ -55,12 +76,38 @@ zig build test
 Тестовый стенд подключает те же модули, что и исполняемый файл, и проверяет
 реестр applet-ов (`src/applets_test.zig`, `src/tests.zig`).
 
+Проверка свежести сгенерированных файлов (манифест, конфиг, usage, meta-CLI):
+
+```sh
+zig build manifest
+zig build config-check
+python3 scripts/parity/extract_usage.py --check
+python3 scripts/parity/gen_meta_golden.py --check
+```
+
+Дифференциальный и golden-стенды (сравнение с референсным бинарником):
+
+```sh
+python3 scripts/parity/run.py --all --ref /tmp/opencode/bb-ref2/busybox --zig zig-out/bin/busybox
+python3 scripts/parity/run.py --all --golden tests/parity/golden --zig zig-out/bin/busybox
+```
+
+Fuzz/smoke парсеров и форматов, а также генерация итогового отчёта:
+
+```sh
+python3 scripts/parity/fuzz.py --ref /tmp/opencode/bb-ref2/busybox --zig zig-out/bin/busybox --smoke
+python3 scripts/parity/report.py --differential diff.log --golden golden.log --out parity.md
+```
+
 ## Конфигурация
 
 Applet-ы включаются и отключаются флагами `APPLET_*` в `src/config.zig`
-(аналог `.config` в Kconfig). Реестр в `src/applets.zig` использует эти флаги
-через `putIfEnabled`, поэтому аппарат, отключённый в конфигурации, не попадает
-в бинарный файл.
+(аналог `.config` в Kconfig); файл генерируется из `configs/defconfig`
+командой `zig build gen-config`. Реестр в `src/applets.zig` использует эти
+флаги, поэтому аппарат, отключённый в конфигурации, не попадает в бинарный
+файл и в `--list`. В defconfig включено 411 applet-ов; во all-on конфигурации
+доступны все 443 имени манифеста. `busybox` дополнительно требует
+`FEATURE_SH_STANDALONE` и `FEATURE_TAB_COMPLETION`, `unit` — `UNIT_TEST`.
 
 ## Структура
 
@@ -79,8 +126,10 @@ Applet-ы включаются и отключаются флагами `APPLET_
 ## Документация
 
 - [Спецификация порта](docs/superpowers/specs/2026-11-18-busybox-zig-port-design.md)
+- [Матрица совместимости BusyBox 1.39.0](docs/superpowers/specs/2026-11-21-busybox-parity-matrix.md)
 - [План порта](docs/superpowers/plans/2026-11-18-busybox-zig-port.md)
 - [Журнал выполнения](docs/superpowers/plans/execution-ledger.md)
+- [Итоговый отчёт Task 27](.superpowers/sdd/2026-11-21-full-parity-master-plan/task-27-report.md)
 
 ## Образ CI
 

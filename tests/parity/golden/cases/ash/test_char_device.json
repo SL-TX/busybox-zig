@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "test_char_device",
+  "stdout": "char\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

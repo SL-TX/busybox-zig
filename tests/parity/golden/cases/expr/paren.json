@@ -1,0 +1,8 @@
+{
+  "applet": "expr",
+  "name": "paren",
+  "stdout": "9\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

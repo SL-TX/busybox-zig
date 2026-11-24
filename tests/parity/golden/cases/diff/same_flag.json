@@ -1,0 +1,23 @@
+{
+  "applet": "diff",
+  "name": "same_flag",
+  "stdout": "Files a and b are identical\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjCg=="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YWJjCg=="
+      }
+    }
+  }
+}

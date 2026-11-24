@@ -1,0 +1,16 @@
+{
+  "applet": "chown",
+  "name": "root_denied",
+  "stdout": "",
+  "stderr": "chown: a: Operation not permitted\n",
+  "exit": 1,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

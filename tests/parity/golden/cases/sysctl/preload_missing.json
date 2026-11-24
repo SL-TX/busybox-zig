@@ -1,0 +1,8 @@
+{
+  "applet": "sysctl",
+  "name": "preload_missing",
+  "stdout": "",
+  "stderr": "sysctl: /nonexistent/sysctl_xyz.conf: No such file or directory\n",
+  "exit": 0,
+  "tree": {}
+}

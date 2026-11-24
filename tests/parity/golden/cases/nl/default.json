@@ -1,0 +1,8 @@
+{
+  "applet": "nl",
+  "name": "default",
+  "stdout": "     1\ta\n     2\tb\n       \n     3\tc\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

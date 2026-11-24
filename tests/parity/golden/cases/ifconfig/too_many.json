@@ -1,0 +1,8 @@
+{
+  "applet": "ifconfig",
+  "name": "too_many",
+  "stdout": "",
+  "stderr": "ifconfig: SIOCGIFFLAGS: No such device\n",
+  "exit": 1,
+  "tree": {}
+}

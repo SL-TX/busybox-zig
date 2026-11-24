@@ -1,0 +1,8 @@
+{
+  "applet": "env",
+  "name": "all",
+  "stdout": "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nLC_ALL=C\nLANG=C\nTZ=UTC\nHOME=<TMP>\nTMPDIR=<TMP>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

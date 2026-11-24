@@ -1,0 +1,16 @@
+{
+  "applet": "sendmail",
+  "name": "dot_stuffing",
+  "stdout": "",
+  "stderr": "sendmail: recv:'220 test ESMTP ready'\nsendmail: send:'EHLO <HOST>'\nsendmail: recv:'250-test'\nsendmail: recv:'250 8BITMIME'\nsendmail: send:'MAIL FROM:<a@b>'\nsendmail: recv:'250 2.1.0 Ok'\nsendmail: send:'RCPT TO:<bob@example.com>'\nsendmail: recv:'250 2.1.5 Ok'\nsendmail: send:'DATA'\nsendmail: recv:'354 End data with <CR><LF>.<CR><LF>'\nsendmail: send:'Subject: t\r'\nsendmail: send:'\r'\nsendmail: send:'To: bob@example.com'\nsendmail: send:'.first\r'\nsendmail: send:'..second\r'\nsendmail: send:'last\r'\nsendmail: send:'.'\nsendmail: recv:'250 2.0.0 Ok: queued'\nsendmail: send:'QUIT'\nsendmail: recv:'221 2.0.0 Bye'\n",
+  "exit": 0,
+  "tree": {
+    "transcript.txt": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "QzogRUhMTyA8SE9TVD4KQzogTUFJTCBGUk9NOjxhQGI+CkM6IFJDUFQgVE86PGJvYkBleGFtcGxlLmNvbT4KQzogREFUQQpDOiBTdWJqZWN0OiB0CkM6IApDOiBUbzogYm9iQGV4YW1wbGUuY29tCkM6IC4uZmlyc3QKQzogLi4uc2Vjb25kCkM6IGxhc3QKQzogLgpDOiBRVUlUCg=="
+      }
+    }
+  }
+}

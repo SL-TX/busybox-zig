@@ -1,0 +1,8 @@
+{
+  "applet": "sysctl",
+  "name": "no_names",
+  "stdout": "",
+  "stderr": "sysctl: error: 'nonexistent/key/xyz' is an unknown key\n",
+  "exit": 1,
+  "tree": {}
+}

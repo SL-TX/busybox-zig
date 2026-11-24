@@ -1,0 +1,8 @@
+{
+  "applet": "flashcp",
+  "name": "help",
+  "stdout": "",
+  "stderr": "flashcp: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

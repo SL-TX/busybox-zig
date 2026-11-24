@@ -1,0 +1,8 @@
+{
+  "applet": "date",
+  "name": "format_seconds",
+  "stdout": "0\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

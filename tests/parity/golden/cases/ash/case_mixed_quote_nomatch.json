@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "case_mixed_quote_nomatch",
+  "stdout": "N\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

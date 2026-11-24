@@ -1,0 +1,8 @@
+{
+  "applet": "netcat",
+  "name": "missing_port",
+  "stdout": "",
+  "stderr": "netcat: applet not found\n",
+  "exit": 127,
+  "tree": {}
+}

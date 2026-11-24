@@ -1,0 +1,8 @@
+{
+  "applet": "uevent",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: uevent [PROG ARGS]\n\nuevent runs PROG for every netlink notification.\nPROG's environment contains data passed from the kernel.\nTypical usage (daemon for dynamic device node creation):\n\t# uevent mdev & mdev -s\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

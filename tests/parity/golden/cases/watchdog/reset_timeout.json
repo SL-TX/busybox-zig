@@ -1,0 +1,8 @@
+{
+  "applet": "watchdog",
+  "name": "reset_timeout",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

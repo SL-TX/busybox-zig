@@ -1,0 +1,8 @@
+{
+  "applet": "chvt",
+  "name": "leading_zero",
+  "stdout": "",
+  "stderr": "chvt: can't open console\n",
+  "exit": 1,
+  "tree": {}
+}

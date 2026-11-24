@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "bad_source_addr",
+  "stdout": "",
+  "stderr": "nc: bind: Cannot assign requested address\n",
+  "exit": 1,
+  "tree": {}
+}

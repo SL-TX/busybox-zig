@@ -1,0 +1,8 @@
+{
+  "applet": "gzip",
+  "name": "missing_file",
+  "stdout": "",
+  "stderr": "gzip: nonexist: No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

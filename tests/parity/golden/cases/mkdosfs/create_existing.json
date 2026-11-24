@@ -1,0 +1,16 @@
+{
+  "applet": "mkdosfs",
+  "name": "create_existing",
+  "stdout": "",
+  "stderr": "mkdosfs: can't open 'disk.img': File exists\n",
+  "exit": 1,
+  "tree": {
+    "disk.img": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

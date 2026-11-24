@@ -1,0 +1,8 @@
+{
+  "applet": "lzcat",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "lzcat: bad lzma header\n",
+  "exit": 1,
+  "tree": {}
+}

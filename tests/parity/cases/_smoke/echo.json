@@ -1,0 +1,47 @@
+{
+  "applet": "echo",
+  "cases": [
+    {
+      "name": "basic",
+      "argv": ["hello", "world"],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": { "exit": 0, "stdout": "hello world\n", "stderr": "" }
+    },
+    {
+      "name": "no_newline",
+      "argv": ["-n", "hello"],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": { "exit": 0, "stdout": "hello", "stderr": "" }
+    },
+    {
+      "name": "escapes",
+      "argv": ["-e", "a\\tb"],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": [],
+      "expect": { "exit": 0, "stdout": "a\tb\n", "stderr": "" }
+    }
+  ]
+}

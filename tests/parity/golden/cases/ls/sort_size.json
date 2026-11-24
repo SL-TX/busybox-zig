@@ -1,0 +1,30 @@
+{
+  "applet": "ls",
+  "name": "sort_size",
+  "stdout": "b\nc\na\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "c": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eHh4"
+      }
+    },
+    "b": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eHh4eHg="
+      }
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

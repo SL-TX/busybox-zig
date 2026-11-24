@@ -1,0 +1,8 @@
+{
+  "applet": "netstat",
+  "name": "tcp_numeric",
+  "stdout": "Active Internet connections (w/o servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \n<MATCH>",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

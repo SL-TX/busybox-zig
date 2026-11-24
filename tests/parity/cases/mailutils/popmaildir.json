@@ -1,0 +1,291 @@
+{
+  "applet": "popmaildir",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "no_args",
+      "argv": [],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "invalid_option",
+      "argv": [
+        "-Z"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "missing_t_arg",
+      "argv": [
+        "-t"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "fetch",
+      "argv": [
+        "-s",
+        "md",
+        "--",
+        "/bin/sh",
+        "-c",
+        "exec <BB> nc 127.0.0.1 <PORT> 2>/dev/null"
+      ],
+      "stdin": "",
+      "files": {},
+      "dirs": [
+        "md/tmp",
+        "md/new"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+\\.",
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "pop3",
+        "transcript": "transcript.txt",
+        "messages": [
+          "From: a@b\r\nSubject: one\r\n\r\nFirst message body\r\n"
+        ]
+      },
+      "normalize_paths": true
+    },
+    {
+      "name": "keep",
+      "argv": [
+        "-s",
+        "-k",
+        "md",
+        "--",
+        "/bin/sh",
+        "-c",
+        "exec <BB> nc 127.0.0.1 <PORT> 2>/dev/null"
+      ],
+      "stdin": "",
+      "files": {},
+      "dirs": [
+        "md/tmp",
+        "md/new"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+\\.",
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "pop3",
+        "transcript": "transcript.txt",
+        "messages": [
+          "From: a@b\r\nSubject: one\r\n\r\nFirst message body\r\n"
+        ]
+      },
+      "normalize_paths": true
+    },
+    {
+      "name": "top",
+      "argv": [
+        "-s",
+        "-T",
+        "-H",
+        "5",
+        "md",
+        "--",
+        "/bin/sh",
+        "-c",
+        "exec <BB> nc 127.0.0.1 <PORT> 2>/dev/null"
+      ],
+      "stdin": "",
+      "files": {},
+      "dirs": [
+        "md/tmp",
+        "md/new"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+\\.",
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "pop3",
+        "transcript": "transcript.txt",
+        "messages": [
+          "From: a@b\r\nSubject: one\r\n\r\nFirst message body\r\n"
+        ]
+      },
+      "normalize_paths": true
+    },
+    {
+      "name": "delivery",
+      "argv": [
+        "-s",
+        "-M",
+        "<BB> cat",
+        "md",
+        "--",
+        "/bin/sh",
+        "-c",
+        "exec <BB> nc 127.0.0.1 <PORT> 2>/dev/null"
+      ],
+      "stdin": "",
+      "files": {},
+      "dirs": [
+        "md/tmp",
+        "md/new"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+\\.",
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "pop3",
+        "transcript": "transcript.txt",
+        "messages": [
+          "From: a@b\r\nSubject: one\r\n\r\nFirst message body\r\n"
+        ]
+      },
+      "normalize_paths": true
+    },
+    {
+      "name": "apop",
+      "argv": [
+        "-a",
+        "md",
+        "--",
+        "/bin/sh",
+        "-c",
+        "exec <BB> nc 127.0.0.1 <PORT> 2>/dev/null"
+      ],
+      "stdin": "user@example.com\nsecret\n",
+      "files": {},
+      "dirs": [
+        "md/tmp",
+        "md/new"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+\\.",
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "pop3",
+        "transcript": "transcript.txt",
+        "greeting": "+OK <stamp@example.com>\r\n",
+        "messages": [
+          "From: a@b\r\nSubject: one\r\n\r\nFirst message body\r\n"
+        ]
+      },
+      "normalize_paths": true
+    },
+    {
+      "name": "auth",
+      "argv": [
+        "md",
+        "--",
+        "/bin/sh",
+        "-c",
+        "exec <BB> nc 127.0.0.1 <PORT> 2>/dev/null"
+      ],
+      "stdin": "user@example.com\nsecret\n",
+      "files": {},
+      "dirs": [
+        "md/tmp",
+        "md/new"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 10000,
+      "normalize": [
+        "regex:[0-9]+\\.[0-9]+\\.",
+        "hostname"
+      ],
+      "requires": [],
+      "server": {
+        "mode": "pop3",
+        "transcript": "transcript.txt",
+        "messages": [
+          "From: a@b\r\nSubject: one\r\n\r\nFirst message body\r\n"
+        ]
+      },
+      "normalize_paths": true
+    },
+    {
+      "name": "reject_pass_scripted",
+      "argv": [
+        "md"
+      ],
+      "stdin": "user\npass\n+OK POP3 ready\r\n+OK user accepted\r\n-ERR authentication failed\r\n",
+      "files": {},
+      "dirs": [
+        "md/tmp",
+        "md/new"
+      ],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}

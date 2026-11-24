@@ -1,0 +1,16 @@
+{
+  "applet": "shred",
+  "name": "zero_pass",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "AAAAAAAA"
+      }
+    }
+  }
+}

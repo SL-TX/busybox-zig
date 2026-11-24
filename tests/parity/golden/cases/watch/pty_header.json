@@ -1,0 +1,8 @@
+{
+  "applet": "watch",
+  "name": "pty_header",
+  "stdout": "<MATCH><MATCH> kill -TERM $PPID                                <TIMESTAMP>\r\n\r\n",
+  "stderr": "",
+  "exit": -15,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "udpsvd",
+  "name": "missing_c",
+  "stdout": "",
+  "stderr": "udpsvd: option requires an argument -- 'c'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: udpsvd [-hEv] [-c N] [-u USER] [-l NAME] IP PORT PROG\n\nCreate UDP socket, bind to IP:PORT and wait for incoming packets.\nRun PROG for each packet, redirecting all further packets with same\npeer ip:port to it.\n\n\tIP PORT\t\tIP:PORT to listen on\n\tPROG ARGS\tProgram to run\n\t-u USER[:GRP]\tChange to user/group after bind\n\t-c N\t\tUp to N connections simultaneously (default 30)\n\t-E\t\tDon't set up environment\n\t-h\t\tLook up peer's hostname\n\t-l NAME\t\tLocal hostname (else look up local hostname in DNS)\n\t-v\t\tVerbose\n\nEnvironment if no -E:\nPROTO='UDP'\nUDPREMOTEADDR='ip:port' ('[ip]:port' for IPv6)\nUDPLOCALADDR='ip:port'\nIf -h:\nUDPLOCALHOST='hostname' (-l NAME is used if specified)\nUDPREMOTEHOST='hostname'\n",
+  "exit": 1,
+  "tree": {}
+}

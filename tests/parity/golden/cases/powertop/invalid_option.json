@@ -1,0 +1,8 @@
+{
+  "applet": "powertop",
+  "name": "invalid_option",
+  "stdout": "Collecting data for 10 seconds\n\n",
+  "stderr": "powertop: run as root to collect enough information\n",
+  "exit": 0,
+  "tree": {}
+}

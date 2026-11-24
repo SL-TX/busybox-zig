@@ -1,0 +1,8 @@
+{
+  "applet": "awk",
+  "name": "begin_end",
+  "stdout": "start\n1 2\n3 4\nend\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

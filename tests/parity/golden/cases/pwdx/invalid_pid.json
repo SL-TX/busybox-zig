@@ -1,0 +1,8 @@
+{
+  "applet": "pwdx",
+  "name": "invalid_pid",
+  "stdout": "",
+  "stderr": "pwdx: invalid process id: 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

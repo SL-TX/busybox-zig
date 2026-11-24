@@ -1,0 +1,5 @@
+
+Usage: uudecode [-o OUTFILE] [INFILE]
+
+Uudecode a file
+Finds OUTFILE in uuencoded source unless -o is given

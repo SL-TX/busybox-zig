@@ -1,0 +1,16 @@
+{
+  "applet": "bunzip2",
+  "name": "decompress_file",
+  "stdout": "hello world\nhello world\nhello world\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "a.bz2": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QlpoOTFBWSZTWe+/vVRW77+9AAAHUe+/vQAQQAAGRO+/ve+/vSAAIu+/ve+/vUNPRCDJiO+/vSIpa1bvv73vv718Xe+/vRTvv71CQu+/vVFaSA=="
+      }
+    }
+  }
+}

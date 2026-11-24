@@ -1,0 +1,8 @@
+{
+  "applet": "mkdir",
+  "name": "bad_mode",
+  "stdout": "",
+  "stderr": "mkdir: invalid mode 'xyz'\n",
+  "exit": 1,
+  "tree": {}
+}

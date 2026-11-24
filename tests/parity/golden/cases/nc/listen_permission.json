@@ -1,0 +1,8 @@
+{
+  "applet": "nc",
+  "name": "listen_permission",
+  "stdout": "",
+  "stderr": "nc: bind: Permission denied\n",
+  "exit": 1,
+  "tree": {}
+}

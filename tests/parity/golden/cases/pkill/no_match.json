@@ -1,0 +1,8 @@
+{
+  "applet": "pkill",
+  "name": "no_match",
+  "stdout": "",
+  "stderr": "",
+  "exit": 1,
+  "tree": {}
+}

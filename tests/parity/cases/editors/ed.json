@@ -1,0 +1,143 @@
+{
+  "applet": "ed",
+  "cases": [
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "pty_print",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "use_pty": true,
+      "script": [
+        "1p\n",
+        [
+          "q\n",
+          "old line"
+        ]
+      ],
+      "expect": {
+        "exit": 0
+      }
+    },
+    {
+      "name": "print_all",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "stdin": "1,$p\nq\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "old line\nsecond\n"
+      }
+    },
+    {
+      "name": "substitute_write",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "old line\nsecond\n"
+      },
+      "stdin": "1s/old/new/\n1p\nw\nq\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "new line\n"
+      }
+    },
+    {
+      "name": "append",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "files": {
+        "f": "one\n"
+      },
+      "stdin": "$a\nthree\n.\n1,$p\nq\n",
+      "expect": {
+        "exit": 0,
+        "stdout": "one\nthree\n"
+      }
+    },
+    {
+      "name": "line_number",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "stdin": "1=\n3=\nq\n",
+      "files": {
+        "f": "one\ntwo\nthree\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "1\n3\n"
+      }
+    },
+    {
+      "name": "range_delete",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "stdin": "2,3d\n1,$p\nw\nq\n",
+      "files": {
+        "f": "one\ntwo\nthree\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "one\n"
+      }
+    },
+    {
+      "name": "literal_replacement",
+      "argv": [
+        "-s",
+        "<TMP>/f"
+      ],
+      "stdin": "1s/a/&X\\1/\n1p\nw\nq\n",
+      "files": {
+        "f": "abc\n"
+      },
+      "dirs": [],
+      "env": {},
+      "cwd": ".",
+      "normalize": [],
+      "requires": [],
+      "timeout_ms": 5000,
+      "expect": {
+        "exit": 0,
+        "stdout": "&X\\1bc\n"
+      }
+    }
+  ]
+}

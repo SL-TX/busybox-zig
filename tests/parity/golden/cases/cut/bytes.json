@@ -1,0 +1,8 @@
+{
+  "applet": "cut",
+  "name": "bytes",
+  "stdout": "ac\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

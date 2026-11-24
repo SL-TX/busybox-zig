@@ -1,0 +1,8 @@
+{
+  "applet": "iplink",
+  "name": "set_no_arg",
+  "stdout": "",
+  "stderr": "iplink: \"dev\" requires an argument\n",
+  "exit": 2,
+  "tree": {}
+}

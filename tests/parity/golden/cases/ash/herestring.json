@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "herestring",
+  "stdout": "here string\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

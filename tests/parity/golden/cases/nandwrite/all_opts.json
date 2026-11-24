@@ -1,0 +1,23 @@
+{
+  "applet": "nandwrite",
+  "name": "all_opts",
+  "stdout": "",
+  "stderr": "nandwrite: can't open 'nofile': No such file or directory\n",
+  "exit": 1,
+  "tree": {
+    "image.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "REFUQTEyMzQ="
+      }
+    },
+    "infile": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "run-init",
+  "name": "dry_run_bad_dir",
+  "stdout": "",
+  "stderr": "run-init: can't change directory to '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

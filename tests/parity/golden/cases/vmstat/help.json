@@ -1,0 +1,8 @@
+{
+  "applet": "vmstat",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: vmstat [-n] [INTERVAL [COUNT]]\n\nShow virtual memory statistics\n\n\t-n\tShow header once\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

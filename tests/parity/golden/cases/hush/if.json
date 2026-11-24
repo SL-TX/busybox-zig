@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "if",
+  "stdout": "yes\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

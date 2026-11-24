@@ -1,0 +1,13 @@
+{
+  "applet": "pwd",
+  "name": "from_subdir",
+  "stdout": "<TMP>/sub\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "sub": {
+      "type": "dir",
+      "mode": 493
+    }
+  }
+}

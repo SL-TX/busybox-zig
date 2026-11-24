@@ -1,0 +1,16 @@
+{
+  "applet": "start-stop-daemon",
+  "name": "test_pidfile",
+  "stdout": "",
+  "stderr": "start-stop-daemon: warning: killing process 999999: No such process\n",
+  "exit": 1,
+  "tree": {
+    "dead.pid": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "OTk5OTk5Cg=="
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "kill",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: kill [-l] [-SIG] PID...\n\nSend a signal (default: TERM) to given PIDs\n\n\t-l\tList all signal names and numbers\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

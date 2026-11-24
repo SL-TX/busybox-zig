@@ -1,0 +1,8 @@
+{
+  "applet": "ionice",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "ionice: invalid option -- 'z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ionice [-c 1-3] [-n 0-7] [-t] { -p PID | PROG ARGS }\n\nChange I/O priority and class\n\n\t-c N\tClass. 1:realtime 2:best-effort 3:idle\n\t-n N\tPriority\n\t-t\tIgnore errors\n",
+  "exit": 1,
+  "tree": {}
+}

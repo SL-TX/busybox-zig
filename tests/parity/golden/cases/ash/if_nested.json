@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "if_nested",
+  "stdout": "good\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

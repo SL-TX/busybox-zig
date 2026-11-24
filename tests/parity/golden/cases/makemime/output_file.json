@@ -1,0 +1,37 @@
+{
+  "applet": "makemime",
+  "name": "output_file",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "out.eml": {
+      "type": "file",
+      "mode": 436,
+      "content": {
+        "__base64__": "TWltZS1WZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PSI8TUFUQ0g+IgoKLS08TUFUQ0g+CkNvbnRlbnQtVHlwZTogdGV4dC9wbGFpbjsgY2hhcnNldD11cy1hc2NpaQpDb250ZW50LURpc3Bvc2l0aW9uOiBpbmxpbmU7IGZpbGVuYW1lPSJBLnR4dCIKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmFzZTY0CgphR1ZzYkc4Z2QyOXliR1FLCi0tPE1BVENIPi0tCgo="
+      }
+    },
+    "big.bin": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB"
+      }
+    },
+    "B.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "c2Vjb25kIGZpbGUK"
+      }
+    },
+    "A.txt": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQK"
+      }
+    }
+  }
+}

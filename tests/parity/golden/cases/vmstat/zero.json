@@ -1,0 +1,8 @@
+{
+  "applet": "vmstat",
+  "name": "zero",
+  "stdout": "procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------\n r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu<MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH><MATCH>\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

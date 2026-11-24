@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "heredoc_backtick",
+  "stdout": "echo inner\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

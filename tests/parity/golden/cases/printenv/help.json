@@ -1,0 +1,8 @@
+{
+  "applet": "printenv",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: printenv [VARIABLE]...\n\nPrint environment VARIABLEs.\nIf no VARIABLE specified, print all.\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

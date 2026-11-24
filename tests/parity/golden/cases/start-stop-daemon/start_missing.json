@@ -1,0 +1,8 @@
+{
+  "applet": "start-stop-daemon",
+  "name": "start_missing",
+  "stdout": "",
+  "stderr": "start-stop-daemon: can't execute '/nonexistent': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

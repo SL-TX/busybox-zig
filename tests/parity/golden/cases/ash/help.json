@@ -1,0 +1,8 @@
+{
+  "applet": "ash",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: ash [-il] [-|+Cabefmnuvx] [-|+o OPT]... [-c 'SCRIPT' [ARG0 ARGS] | FILE ARGS | -s ARGS]\n\nUnix shell interpreter\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

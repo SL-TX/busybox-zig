@@ -1,0 +1,4 @@
+
+Usage: freeramdisk DEVICE
+
+Free all memory used by the specified ramdisk

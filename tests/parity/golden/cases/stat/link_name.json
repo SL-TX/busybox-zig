@@ -1,0 +1,21 @@
+{
+  "applet": "stat",
+  "name": "link_name",
+  "stdout": "'l' -> 'a'\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "l": {
+      "type": "symlink",
+      "mode": 511,
+      "target": "a"
+    },
+    "a": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "eA=="
+      }
+    }
+  }
+}

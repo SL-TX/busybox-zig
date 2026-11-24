@@ -1,0 +1,16 @@
+{
+  "applet": "fsck",
+  "name": "all_filter_type",
+  "stdout": "[fsck.ext2 (1) -- /mnt] fsck.ext2 /dev/sdb1\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "fstab": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "L2Rldi9zZGExIC8gZXh0NCBkZWZhdWx0cyAwIDEKL2Rldi9zZGIxIC9tbnQgZXh0MiBkZWZhdWx0cyAwIDIK"
+      }
+    }
+  }
+}

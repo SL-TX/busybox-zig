@@ -1,0 +1,8 @@
+{
+  "applet": "tftp",
+  "name": "put_missing_file",
+  "stdout": "",
+  "stderr": "tftp: can't open 'f': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

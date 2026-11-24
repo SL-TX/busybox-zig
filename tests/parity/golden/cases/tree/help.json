@@ -1,0 +1,8 @@
+{
+  "applet": "tree",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nNo help available\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

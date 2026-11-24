@@ -1,0 +1,4 @@
+
+Usage: findfs LABEL=label | UUID=uuid
+
+Find filesystem device based on label or UUID

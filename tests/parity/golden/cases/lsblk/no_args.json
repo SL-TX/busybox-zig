@@ -1,0 +1,8 @@
+{
+  "applet": "lsblk",
+  "name": "no_args",
+  "stdout": "NAME            MAJ:MIN  SIZE TYPE MOUNTPOINTS\nnvme0n1         259:0    931G disk\nnvme0n1p1       259:1    286M part /boot/efi\nnvme0n1p2       259:2   8392M part\nnvme0n1p3       259:3    923G part /\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

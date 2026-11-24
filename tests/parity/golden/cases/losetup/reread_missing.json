@@ -1,0 +1,8 @@
+{
+  "applet": "losetup",
+  "name": "reread_missing",
+  "stdout": "",
+  "stderr": "losetup: can't open '/dev/loop9': No such file or directory\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+
+Usage: cal [-jmy] [[MONTH] YEAR]
+
+Display a calendar
+
+	-j	Use julian dates
+	-m	Week starts on Monday
+	-y	Display the entire year

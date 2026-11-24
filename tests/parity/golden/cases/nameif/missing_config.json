@@ -1,0 +1,8 @@
+{
+  "applet": "nameif",
+  "name": "missing_config",
+  "stdout": "",
+  "stderr": "nameif: /nonexistent: No such file or directory\n",
+  "exit": 0,
+  "tree": {}
+}

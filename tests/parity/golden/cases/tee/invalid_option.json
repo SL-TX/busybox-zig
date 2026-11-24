@@ -1,0 +1,8 @@
+{
+  "applet": "tee",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "tee: invalid option -- 'q'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: tee [-ai] [FILE]...\n\nCopy stdin to each FILE, and also to stdout\n\n\t-a\tAppend to the given FILEs, don't overwrite\n\t-i\tIgnore interrupt signals (SIGINT)\n",
+  "exit": 1,
+  "tree": {}
+}

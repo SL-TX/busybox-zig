@@ -1,0 +1,16 @@
+{
+  "applet": "gzip",
+  "name": "decompress_unknown_suffix",
+  "stdout": "",
+  "stderr": "gzip: plain: unknown suffix - ignored\n",
+  "exit": 1,
+  "tree": {
+    "plain": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "aGVsbG8gd29ybGQKaGVsbG8gd29ybGQKaGVsbG8gd29ybGQK"
+      }
+    }
+  }
+}

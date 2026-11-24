@@ -1,0 +1,8 @@
+{
+  "applet": "openvt",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "openvt: can't find open VT\n",
+  "exit": 1,
+  "tree": {}
+}

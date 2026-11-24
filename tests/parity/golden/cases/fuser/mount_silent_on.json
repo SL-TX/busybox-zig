@@ -1,0 +1,8 @@
+{
+  "applet": "fuser",
+  "name": "mount_silent_on",
+  "stdout": "",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

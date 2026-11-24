@@ -1,0 +1,30 @@
+{
+  "applet": "wc",
+  "name": "lwcL_third_not_longer",
+  "stdout": "        2         2         5         2 f1\n        2         2         8         5 f2\n        1         1         2         1 f3\n        5         5        15         5 total\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "f3": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "ego="
+      }
+    },
+    "f2": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "Y2NjY2MKeAo="
+      }
+    },
+    "f1": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "YQpiYgo="
+      }
+    }
+  }
+}

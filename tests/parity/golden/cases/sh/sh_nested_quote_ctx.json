@@ -1,0 +1,8 @@
+{
+  "applet": "sh",
+  "name": "sh_nested_quote_ctx",
+  "stdout": "b c d\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

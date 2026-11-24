@@ -1,0 +1,16 @@
+{
+  "applet": "ash",
+  "name": "umask_file_mode",
+  "stdout": "0077\n600\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {
+    "modefile": {
+      "type": "file",
+      "mode": 384,
+      "content": {
+        "__base64__": "eAo="
+      }
+    }
+  }
+}

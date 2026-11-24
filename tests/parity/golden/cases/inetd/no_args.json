@@ -1,0 +1,8 @@
+{
+  "applet": "inetd",
+  "name": "no_args",
+  "stdout": "",
+  "stderr": "inetd: non-root must specify config file\n",
+  "exit": 1,
+  "tree": {}
+}

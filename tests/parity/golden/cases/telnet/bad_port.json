@@ -1,0 +1,8 @@
+{
+  "applet": "telnet",
+  "name": "bad_port",
+  "stdout": "",
+  "stderr": "telnet: bad port 'abc'\n",
+  "exit": 1,
+  "tree": {}
+}

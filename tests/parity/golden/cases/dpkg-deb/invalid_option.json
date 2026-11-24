@@ -1,0 +1,8 @@
+{
+  "applet": "dpkg-deb",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "dpkg-deb: unrecognized option '--badopt'\nBusyBox v1.39.0.git (2026-11-21 17:35:34 MSK) multi-call binary.\n\nUsage: dpkg-deb [-cefxX] FILE [DIR]\n\nPerform actions on Debian packages (.deb)\n\n\t-c\tList files\n\t-f\tPrint control fields\n\t-e\tExtract control files to DIR (default: ./DEBIAN)\n\t-x\tExtract files to DIR (no default)\n\t-X\tVerbose extract\n",
+  "exit": 1,
+  "tree": {}
+}

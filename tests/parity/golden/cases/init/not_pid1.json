@@ -1,0 +1,8 @@
+{
+  "applet": "init",
+  "name": "not_pid1",
+  "stdout": "",
+  "stderr": "init: must be run as PID 1\n",
+  "exit": 1,
+  "tree": {}
+}

@@ -1,0 +1,8 @@
+{
+  "applet": "sleep",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: sleep [N]...\n\nPause for a time equal to the total of the args given, where each arg can\nhave an optional suffix of (s)econds, (m)inutes, (h)ours, or (d)ays\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

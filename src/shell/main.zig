@@ -1,110 +1,83 @@
-//! shell module — a small POSIX-like interpreter (ash/hush subset).
-//! Supports quoted words, $VAR expansion, builtins, PATH lookup and external
-//! commands. Pipelines, redirections, control flow and job control are out of
-//! scope for this subset.
+//! Shell module root. Re-exports the real interpreter and the five applet
+//! entry points. The lexer, parser, expander, executor, builtins and job
+//! helpers live in their own files; this module only wires them together.
 
 const std = @import("std");
-const linux = std.os.linux;
+
+pub const lexer = @import("lexer.zig");
+pub const parser = @import("parser.zig");
+pub const expand = @import("expand.zig");
+pub const state = @import("state.zig");
+pub const builtins = @import("builtins.zig");
+pub const exec = @import("exec.zig");
+pub const job = @import("job.zig");
+
+pub const ash_main = @import("ash.zig").main;
+pub const hush_main = @import("hush.zig").main;
+pub const cttyhack_main = @import("cttyhack.zig").main;
 
 pub const init = struct {
     pub fn init() void {}
 };
 
-fn out(bytes: []const u8) void {
-    _ = linux.write(1, bytes.ptr, bytes.len);
+/// Convenience entry point used by tests and by the `sh` / `bash` aliases.
+pub fn runScript(a: std.mem.Allocator, source: []const u8) u8 {
+    var sh = state.Shell.init(a);
+    sh.set("IFS", " \t\n") catch {};
+    sh.set("PATH", "/bin:/usr/bin") catch {};
+    var e = exec.Exec.init(&sh);
+    e.install();
+    const code = e.runSource(source);
+    return e.finish(code);
 }
 
-fn argsFrom(argv: [*][*:0]const u8, argc: c_int) []const []const u8 {
-    const a = std.heap.page_allocator;
-    const result = a.alloc([]const u8, @intCast(argc)) catch return &.{};
-    for (0..@as(usize, @intCast(argc))) |i| result[i] = std.mem.span(argv[i]);
-    return result;
+test {
+    _ = lexer;
+    _ = parser;
+    _ = expand;
+    _ = state;
+    _ = builtins;
+    _ = exec;
+    _ = job;
 }
 
-fn readFile(a: std.mem.Allocator, path: []const u8) ?[]u8 {
-    const p = zstr(a, path) catch return null;
-    defer a.free(p);
-    const rc = linux.open(p.ptr, .{ .ACCMODE = .RDONLY }, 0);
-    if (linux.errno(rc) != .SUCCESS) return null;
-    const fd: linux.fd_t = @intCast(rc);
-    defer _ = linux.close(fd);
-    var result: std.ArrayList(u8) = .empty;
-    var buf: [8192]u8 = undefined;
-    while (true) {
-        const n = linux.read(fd, &buf, buf.len);
-        if (linux.errno(n) != .SUCCESS or n == 0) break;
-        result.appendSlice(a, buf[0..n]) catch return null;
-    }
-    return result.toOwnedSlice(a) catch null;
+// ---------------------------------------------------------------------------
+// Legacy helpers retained for the pre-existing unit tests. The real applets
+// never use these; they are thin compatibility wrappers over the new engine.
+// ---------------------------------------------------------------------------
+
+pub const Var = struct {
+    name: []const u8,
+    value: []const u8,
+    exported: bool = false,
+    readonly: bool = false,
+    local: bool = false,
+};
+
+pub fn cwdSlice(buf: []const u8, n: usize) []const u8 {
+    const slice = buf[0..@min(n, buf.len)];
+    const end = std.mem.indexOfScalar(u8, slice, 0) orelse slice.len;
+    return slice[0..end];
 }
 
-fn zstr(a: std.mem.Allocator, s: []const u8) ![:0]u8 {
-    return std.mem.concatWithSentinel(a, u8, &.{s}, 0);
-}
-
-fn eq(a: []const u8, b: []const u8) bool {
-    return std.mem.eql(u8, a, b);
-}
-
-// ------------------------------------------------------------------ parsing
-
-/// Split a command line into words, honoring single/double quotes and
-/// backslash escapes. Quotes themselves are removed from the result.
 pub fn tokenize(a: std.mem.Allocator, line: []const u8) ![][]u8 {
+    var arena = std.heap.ArenaAllocator.init(a);
+    defer arena.deinit();
+    const aa = arena.allocator();
+    var lxr = lexer.Lexer.init(aa, line);
+    const toks = try lxr.lex();
     var words: std.ArrayList([]u8) = .empty;
-    errdefer {
-        for (words.items) |w| a.free(w);
-        words.deinit(a);
+    for (toks) |t| {
+        if (t.kind != .word or t.word == null) continue;
+        var buf: std.ArrayList(u8) = .empty;
+        for (t.word.?.segs) |sg| try buf.appendSlice(aa, sg.text);
+        try words.append(a, try a.dupe(u8, buf.items));
     }
-    var current: std.ArrayList(u8) = .empty;
-    defer current.deinit(a);
-    var quote: u8 = 0;
-    var started = false;
-
-    var i: usize = 0;
-    while (i < line.len) : (i += 1) {
-        const c = line[i];
-        if (quote == 0 and (c == ' ' or c == '\t' or c == '\r' or c == '\n')) {
-            if (started) {
-                try words.append(a, try current.toOwnedSlice(a));
-                current = .empty;
-                started = false;
-            }
-            continue;
-        }
-        if (c == '\\' and quote != '\'' and i + 1 < line.len) {
-            i += 1;
-            try current.append(a, line[i]);
-            started = true;
-            continue;
-        }
-        if (quote == 0 and (c == '\'' or c == '"')) {
-            quote = c;
-            started = true;
-            continue;
-        }
-        if (quote != 0 and c == quote) {
-            quote = 0;
-            continue;
-        }
-        try current.append(a, c);
-        started = true;
-    }
-    if (started) try words.append(a, try current.toOwnedSlice(a));
     return words.toOwnedSlice(a);
 }
 
-pub const Var = struct { name: []const u8, value: []const u8 };
-
-fn isNameChar(c: u8) bool {
-    return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or
-        (c >= '0' and c <= '9') or c == '_';
-}
-
-/// Expand $NAME and ${NAME}; unknown variables expand to the empty string.
 pub fn expandVars(a: std.mem.Allocator, word: []const u8, vars: []const Var) ![]u8 {
     var result: std.ArrayList(u8) = .empty;
-    errdefer result.deinit(a);
     var i: usize = 0;
     while (i < word.len) {
         if (word[i] == '$' and i + 1 < word.len) {
@@ -117,10 +90,10 @@ pub fn expandVars(a: std.mem.Allocator, word: []const u8, vars: []const Var) ![]
                     continue;
                 };
                 name = word[i + 2 .. i + 2 + close];
-                next = i + 2 + close + 1;
+                next = i + 3 + close;
             } else {
                 var end = i + 1;
-                while (end < word.len and isNameChar(word[end])) end += 1;
+                while (end < word.len and (std.ascii.isAlphanumeric(word[end]) or word[end] == '_')) end += 1;
                 if (end == i + 1) {
                     try result.append(a, '$');
                     i += 1;
@@ -129,12 +102,10 @@ pub fn expandVars(a: std.mem.Allocator, word: []const u8, vars: []const Var) ![]
                 name = word[i + 1 .. end];
                 next = end;
             }
-            for (vars) |v| {
-                if (eq(v.name, name)) {
-                    try result.appendSlice(a, v.value);
-                    break;
-                }
-            }
+            for (vars) |v| if (std.mem.eql(u8, v.name, name)) {
+                try result.appendSlice(a, v.value);
+                break;
+            };
             i = next;
             continue;
         }
@@ -144,31 +115,33 @@ pub fn expandVars(a: std.mem.Allocator, word: []const u8, vars: []const Var) ![]
     return result.toOwnedSlice(a);
 }
 
-/// Find a command in a colon-separated PATH. A name containing '/' is used
-/// directly.
 pub fn findInPath(a: std.mem.Allocator, name: []const u8, path: []const u8) !?[]u8 {
-    if (std.mem.indexOfScalar(u8, name, '/') != null) {
-        const z = try zstr(a, name);
-        defer a.free(z);
-        if (linux.errno(linux.access(z.ptr, linux.X_OK)) == .SUCCESS) return try a.dupe(u8, name);
-        return null;
-    }
-    var it = std.mem.splitScalar(u8, path, ':');
-    while (it.next()) |dir| {
-        const candidate = if (dir.len == 0)
-            try a.dupe(u8, name)
-        else
-            try std.fmt.allocPrint(a, "{s}/{s}", .{ dir, name });
-        const z = try zstr(a, candidate);
-        const executable = linux.errno(linux.access(z.ptr, linux.X_OK)) == .SUCCESS;
-        a.free(z);
-        if (executable) return candidate;
-        a.free(candidate);
-    }
+    var arena = std.heap.ArenaAllocator.init(a);
+    defer arena.deinit();
+    var sh = state.Shell.init(arena.allocator());
+    sh.set("PATH", path) catch {};
+    if (builtins.findProgram(&sh, name)) |p| return try a.dupe(u8, p);
     return null;
 }
 
-// ------------------------------------------------------------------ execution
+pub const AshInvocation = struct { command: ?[]const u8 = null, script_path: ?[]const u8 = null };
+
+pub fn parseAshArgs(args: []const []const u8) !AshInvocation {
+    var inv = AshInvocation{};
+    var i: usize = 1;
+    while (i < args.len) : (i += 1) {
+        if (std.mem.eql(u8, args[i], "-c") and i + 1 < args.len) {
+            i += 1;
+            inv.command = args[i];
+        } else if (args[i].len > 0 and args[i][0] == '-') {
+            // options are handled by the real runner
+        } else {
+            inv.script_path = args[i];
+            break;
+        }
+    }
+    return inv;
+}
 
 pub const Context = struct {
     allocator: std.mem.Allocator,
@@ -185,16 +158,20 @@ pub const Context = struct {
     }
 
     pub fn get(self: *const Context, name: []const u8) ?[]const u8 {
-        for (self.vars.items) |v| if (eq(v.name, name)) return v.value;
+        var i: usize = self.vars.items.len;
+        while (i > 0) {
+            i -= 1;
+            if (std.mem.eql(u8, self.vars.items[i].name, name)) return self.vars.items[i].value;
+        }
         return null;
     }
 
     pub fn set(self: *Context, name: []const u8, value: []const u8) !void {
-        for (self.vars.items) |*v| {
-            if (eq(v.name, name)) {
-                const owned = try self.allocator.dupe(u8, value);
-                self.allocator.free(v.value);
-                v.value = owned;
+        var i: usize = self.vars.items.len;
+        while (i > 0) {
+            i -= 1;
+            if (std.mem.eql(u8, self.vars.items[i].name, name)) {
+                self.vars.items[i].value = try self.allocator.dupe(u8, value);
                 return;
             }
         }
@@ -205,196 +182,44 @@ pub const Context = struct {
     }
 };
 
-/// The kernel's getcwd result may include the NUL terminator in its length.
-pub fn cwdSlice(buf: []const u8, n: usize) []const u8 {
-    const slice = buf[0..@min(n, buf.len)];
-    const end = std.mem.indexOfScalar(u8, slice, 0) orelse slice.len;
-    return slice[0..end];
-}
-
-fn runBuiltin(ctx: *Context, words: []const []u8) !?u8 {
-    const a = ctx.allocator;
-    const name = words[0];
-    if (eq(name, "true")) return 0;
-    if (eq(name, "false")) return 1;
-    if (eq(name, "echo")) {
-        for (words[1..], 0..) |word, i| {
-            if (i > 0) out(" ");
-            out(word);
-        }
-        out("\n");
-        return 0;
-    }
-    if (eq(name, "pwd")) {
-        var buf: [4096]u8 = undefined;
-        const n = linux.getcwd(&buf, buf.len);
-        if (linux.errno(n) != .SUCCESS) return 1;
-        out(cwdSlice(&buf, n));
-        out("\n");
-        return 0;
-    }
-    if (eq(name, "cd")) {
-        const target = if (words.len > 1) words[1] else (ctx.get("HOME") orelse "/");
-        const z = try zstr(a, target);
-        defer a.free(z);
-        if (linux.errno(linux.chdir(z.ptr)) != .SUCCESS) return 1;
-        try ctx.set("PWD", target);
-        return 0;
-    }
-    if (eq(name, "export")) return 0;
-    if (eq(name, "exit")) {
-        ctx.should_exit = true;
-        ctx.exit_code = if (words.len > 1)
-            std.fmt.parseInt(u8, words[1], 10) catch 1
-        else
-            0;
-        return ctx.exit_code;
-    }
-    return null;
-}
-
-fn runExternal(ctx: *Context, words: []const []u8) !u8 {
-    const a = ctx.allocator;
-    const path_var = ctx.get("PATH") orelse "/bin:/usr/bin";
-    const resolved = (try findInPath(a, words[0], path_var)) orelse {
-        var buf: [256]u8 = undefined;
-        const msg = std.fmt.bufPrint(&buf, "{s}: not found\n", .{words[0]}) catch "";
-        errOut(msg);
-        return 127;
-    };
-    defer a.free(resolved);
-
-    const child = linux.fork();
-    if (linux.errno(child) != .SUCCESS) return 1;
-    if (child == 0) {
-        const path_z = zstr(a, resolved) catch std.process.exit(127);
-        const argv_z = a.allocSentinel(?[*:0]const u8, words.len, null) catch std.process.exit(127);
-        for (words, 0..) |word, i| {
-            argv_z[i] = (zstr(a, word) catch std.process.exit(127)).ptr;
-        }
-        const envp_z = a.allocSentinel(?[*:0]const u8, ctx.vars.items.len, null) catch std.process.exit(127);
-        for (ctx.vars.items, 0..) |v, k| {
-            const kv = std.fmt.allocPrintSentinel(a, "{s}={s}", .{ v.name, v.value }, 0) catch std.process.exit(127);
-            envp_z[k] = kv.ptr;
-        }
-        _ = linux.execve(path_z.ptr, argv_z.ptr, envp_z.ptr);
-        std.process.exit(127);
-    }
-    var status: i32 = 0;
-    _ = linux.waitpid(@intCast(child), &status, 0);
-    return @intCast((status >> 8) & 0xff);
-}
-
-fn errOut(bytes: []const u8) void {
-    _ = linux.write(2, bytes.ptr, bytes.len);
-}
-
 pub fn runLine(ctx: *Context, line: []const u8) !u8 {
-    const a = ctx.allocator;
-    const words = try tokenize(a, line);
-    defer {
-        for (words) |w| a.free(w);
-        a.free(words);
-    }
-    if (words.len == 0) return 0;
-
-    // VAR=value prefix: set the variable, then keep processing the command.
-    var start: usize = 0;
-    if (std.mem.indexOfScalar(u8, words[0], '=')) |pos| {
-        if (pos > 0) {
-            const name = words[0][0..pos];
-            const value = words[0][pos + 1 ..];
-            const expanded = try expandVars(a, value, ctx.vars.items);
-            defer a.free(expanded);
-            try ctx.set(name, expanded);
-            start = 1;
-        }
-    }
-    if (start == words.len) return 0;
-
-    var expanded: std.ArrayList([]u8) = .empty;
-    defer {
-        for (expanded.items) |w| a.free(w);
-        expanded.deinit(a);
-    }
-    for (words[start..]) |word| try expanded.append(a, try expandVars(a, word, ctx.vars.items));
-
-    if (try runBuiltin(ctx, expanded.items)) |code| return code;
-    return runExternal(ctx, expanded.items);
+    return runInput(ctx, line);
 }
 
 pub fn runInput(ctx: *Context, input: []const u8) u8 {
-    var last: u8 = 0;
-    var lines = std.mem.splitScalar(u8, input, '\n');
-    while (lines.next()) |line| {
-        var commands = std.mem.splitScalar(u8, line, ';');
-        while (commands.next()) |command| {
-            last = runLine(ctx, command) catch 1;
-            if (ctx.should_exit) return ctx.exit_code;
-        }
+    var arena = std.heap.ArenaAllocator.init(ctx.allocator);
+    defer arena.deinit();
+    const aa = arena.allocator();
+    var sh = state.Shell.init(aa);
+    sh.legacy_persist_assigns = true;
+    for (ctx.vars.items) |v| {
+        sh.vars.append(aa, .{
+            .name = v.name,
+            .value = v.value,
+            .exported = v.exported,
+            .readonly = v.readonly,
+        }) catch {};
     }
-    return last;
-}
-
-pub const AshInvocation = struct { command: ?[]const u8 = null, script_path: ?[]const u8 = null };
-
-pub fn parseAshArgs(args: []const []const u8) !AshInvocation {
-    var inv = AshInvocation{};
-    var i: usize = 1;
-    while (i < args.len) : (i += 1) {
-        const arg = args[i];
-        if (eq(arg, "-c") and i + 1 < args.len) {
-            i += 1;
-            inv.command = args[i];
-        } else if (arg.len > 0 and arg[0] == '-') {
-            // ignore unsupported flags
-        } else {
-            inv.script_path = arg;
-            break;
-        }
+    var e = exec.Exec.init(&sh);
+    e.install();
+    const code = e.runSource(input);
+    _ = e.finish(code);
+    for (ctx.vars.items) |v| {
+        ctx.allocator.free(v.name);
+        ctx.allocator.free(v.value);
     }
-    return inv;
-}
-
-fn readAll(a: std.mem.Allocator, fd: linux.fd_t) ![]u8 {
-    var result: std.ArrayList(u8) = .empty;
-    errdefer result.deinit(a);
-    var buf: [8192]u8 = undefined;
-    while (true) {
-        const n = linux.read(fd, &buf, buf.len);
-        if (linux.errno(n) != .SUCCESS or n == 0) break;
-        try result.appendSlice(a, buf[0..n]);
+    ctx.vars.clearRetainingCapacity();
+    for (sh.vars.items) |v| {
+        ctx.vars.append(ctx.allocator, .{
+            .name = ctx.allocator.dupe(u8, v.name) catch continue,
+            .value = ctx.allocator.dupe(u8, v.value) catch continue,
+            .exported = v.exported,
+            .readonly = v.readonly,
+        }) catch {};
     }
-    return result.toOwnedSlice(a);
-}
-
-pub fn ash_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    const a = std.heap.page_allocator;
-    var ctx = Context{ .allocator = a };
-    defer {
-        for (ctx.vars.items) |v| {
-            a.free(v.name);
-            a.free(v.value);
-        }
-        ctx.vars.deinit(a);
+    if (sh.exiting) {
+        ctx.should_exit = true;
+        ctx.exit_code = sh.exit_code;
     }
-    ctx.set("PATH", "/bin:/usr/bin") catch return 1;
-
-    const args = argsFrom(argv, argc);
-    const invocation = parseAshArgs(args) catch return 1;
-    if (invocation.command) |cmd| return runInput(&ctx, cmd);
-
-    if (invocation.script_path) |path| {
-        const script = readFile(a, path) orelse return 1;
-        defer a.free(script);
-        return runInput(&ctx, script);
-    }
-
-    const input = readAll(a, 0) catch return 1;
-    defer a.free(input);
-    return runInput(&ctx, input);
-}
-
-pub fn hush_main(argc: c_int, argv: [*][*:0]const u8) c_int {
-    return ash_main(argc, argv);
+    return sh.last_status;
 }

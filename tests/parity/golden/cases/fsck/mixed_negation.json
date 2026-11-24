@@ -1,0 +1,16 @@
+{
+  "applet": "fsck",
+  "name": "mixed_negation",
+  "stdout": "",
+  "stderr": "fsck: either all or none of the filesystem types passed to -t must be prefixed with 'no' or '!'\n",
+  "exit": 1,
+  "tree": {
+    "fstab": {
+      "type": "file",
+      "mode": 420,
+      "content": {
+        "__base64__": "L2Rldi9zZGExIC8gZXh0NCBkZWZhdWx0cyAwIDEKL2Rldi9zZGIxIC9tbnQgZXh0MiBkZWZhdWx0cyAwIDIK"
+      }
+    }
+  }
+}

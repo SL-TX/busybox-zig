@@ -1,0 +1,8 @@
+{
+  "applet": "ipcs",
+  "name": "semaphores",
+  "stdout": "\n------ Semaphore Arrays --------\nkey        semid      owner      perms      nsems     \n\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

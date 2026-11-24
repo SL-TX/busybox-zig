@@ -1,0 +1,8 @@
+{
+  "applet": "md5sum",
+  "name": "invalid_option",
+  "stdout": "",
+  "stderr": "md5sum: invalid option -- 'Z'\nBusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: md5sum [-c[sw]] [FILE]...\n\nPrint or check MD5 checksums\n\n\t-c\tCheck sums against list in FILEs\n\t-s\tDon't output anything, status code shows success\n\t-w\tWarn about improperly formatted checksum lines\n",
+  "exit": 1,
+  "tree": {}
+}

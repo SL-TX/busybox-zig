@@ -1,0 +1,8 @@
+{
+  "applet": "hush",
+  "name": "read",
+  "stdout": "one/two\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

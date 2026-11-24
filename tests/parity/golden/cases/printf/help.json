@@ -1,0 +1,8 @@
+{
+  "applet": "printf",
+  "name": "help",
+  "stdout": "BusyBox v1.39.0.git (<TIMESTAMP>) multi-call binary.\n\nUsage: printf FORMAT [ARG]...\n\nFormat and print ARG(s) according to FORMAT (a-la C printf)\n",
+  "stderr": "",
+  "exit": 0,
+  "tree": {}
+}

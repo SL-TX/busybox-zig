@@ -1,0 +1,754 @@
+{
+  "applet": "sh",
+  "cases": [
+    {
+      "name": "pipeline",
+      "argv": [
+        "-c",
+        "printf 'a\\nb\\nc\\n' | grep b"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "echo_basic",
+      "argv": [
+        "-c",
+        "echo hello world"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "and_or",
+      "argv": [
+        "-c",
+        "false && echo bad || echo good; true && echo yes || echo no"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "func",
+      "argv": [
+        "-c",
+        "f(){ echo \"arg=$1 count=$#\"; }; f hello"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "test_numeric",
+      "argv": [
+        "-c",
+        "[ 3 -gt 2 ] && echo gt; test 3 -eq 3 && echo eq"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "printf_basic",
+      "argv": [
+        "-c",
+        "printf '%s|%d|%x\\n' abc 42 255"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "eval",
+      "argv": [
+        "-c",
+        "eval 'echo evalworks'"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "redir_out",
+      "argv": [
+        "-c",
+        "echo hi > out.txt; cat out.txt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "for_in",
+      "argv": [
+        "-c",
+        "for x in a b c; do echo $x; done"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "export",
+      "argv": [
+        "-c",
+        "export FOO=bar; printenv FOO"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "help",
+      "argv": [
+        "--help"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "arith_basic",
+      "argv": [
+        "-c",
+        "echo $((3+5*2)) $(( (3+5)*2 )) $((10/3)) $((10%3))"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "case",
+      "argv": [
+        "-c",
+        "case abc in a*) echo match;; *) echo no;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "vars",
+      "argv": [
+        "-c",
+        "X=world; echo hello-$X; echo ${X}"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "glob",
+      "argv": [
+        "-c",
+        "touch a.txt b.txt c.sh; echo *.txt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "while",
+      "argv": [
+        "-c",
+        "i=0; while [ $i -lt 3 ]; do echo $i; i=$((i+1)); done"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "cd",
+      "argv": [
+        "-c",
+        "mkdir -p sub; cd sub; pwd; cd ..; pwd"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "heredoc",
+      "argv": [
+        "-c",
+        "cat <<EOF\nline one\nline two\nEOF"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "if",
+      "argv": [
+        "-c",
+        "if true; then echo yes; else echo no; fi"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "getopts",
+      "argv": [
+        "-c",
+        "set -- -a -b val; while getopts ab: o; do echo \"$o:$OPTARG\"; done"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "trap_exit",
+      "argv": [
+        "-c",
+        "trap 'echo bye' EXIT; echo hello"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "read",
+      "argv": [
+        "-c",
+        "printf 'one two\\n' | { read a b; echo \"$a/$b\"; }"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "func_local",
+      "argv": [
+        "-c",
+        "f(){ local x=inside; echo $x; }; x=outside; f; echo $x"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_argv0",
+      "argv": [
+        "-c",
+        "echo $0",
+        "mysh"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_stdin",
+      "argv": [],
+      "stdin": "echo shstdin\n",
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_glob_multicomponent",
+      "argv": [
+        "-c",
+        "mkdir -p d1/sub d2/sub; touch d1/sub/f d2/sub/f; echo */*/f"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_opt_set_o_list",
+      "argv": [
+        "-c",
+        "set -o"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_xtrace_quote",
+      "argv": [
+        "-c",
+        "set -x; echo \"a b\" \"\" \"q'uote\" 2>&1"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_umask_query",
+      "argv": [
+        "-c",
+        "umask; umask"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_test_mtime",
+      "argv": [
+        "-c",
+        "touch -d 2020-01-01 old; touch -d 2021-01-01 new; [ old -ot new ] && echo ot; [ new -nt old ] && echo nt"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_ansi_c_quote",
+      "argv": [
+        "-c",
+        "echo $'a\\tb'"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_glob_dotfiles",
+      "argv": [
+        "-c",
+        "touch .a .b visible; echo .*"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_printf_flags",
+      "argv": [
+        "-c",
+        "printf \"%.2s|%08d|%.3d|%#x|%+d|%-5s|% 5d|%05d|%#o|%x\\n\" abcdef 42 42 42 42 z 7 7 8 255"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_read_raw",
+      "argv": [
+        "-c",
+        "printf \"a\\\\nb\\\\nc\\n\" | { read -r x; echo \"[$x]\"; }"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_nested_quote_ctx",
+      "argv": [
+        "-c",
+        "unset V; echo ${V:-'b c' d}"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_pos_param_default",
+      "argv": [
+        "-c",
+        "echo \"[${1-def}]\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_case_mixed_quote",
+      "argv": [
+        "-c",
+        "case abc in a\"b\"*) echo M;; *) echo N;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_test_ot_strict",
+      "argv": [
+        "-c",
+        "touch -d 2020-01-01 a; touch -d 2021-01-01 b; [ a -ot b ] && echo OT"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_read_escaped_ifs",
+      "argv": [
+        "-c",
+        "printf 'a\\ b c\\n' | { read x y; echo \"[$x][$y]\"; }"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_printf_b_precision",
+      "argv": [
+        "-c",
+        "printf '%.2b\\n' x; echo rc=$?"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_utf8_param_length",
+      "argv": [
+        "-c",
+        "X='abcd\u00c9fg'; echo ${#X}"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_tilde_colon_assignment",
+      "argv": [
+        "-c",
+        "a=~root:~root; echo \"[$a]\"; echo \"<${a#~root}>\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_pattern_quote_removal",
+      "argv": [
+        "-c",
+        "x='*'; echo \"<${x#'*'}>\"; y=abc; echo \"<${y#'*'}>\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_unquoted_empty_expansion",
+      "argv": [
+        "-c",
+        "e=; echo a $e b $e c"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_errexit_subshell",
+      "argv": [
+        "-c",
+        "set -e; (true); echo OK; (false); echo FAIL"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_case_paren_pattern",
+      "argv": [
+        "-c",
+        "case m in (m) echo MATCH;; esac"
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    },
+    {
+      "name": "sh_printf_hex_escape",
+      "argv": [
+        "-c",
+        "printf \"\\x41\\101\\n\""
+      ],
+      "stdin": null,
+      "files": {},
+      "dirs": [],
+      "symlinks": {},
+      "env": {},
+      "cwd": ".",
+      "timeout_ms": 5000,
+      "normalize": [],
+      "requires": []
+    }
+  ]
+}
