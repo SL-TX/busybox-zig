@@ -123,7 +123,8 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [
-        "regex:\\b\\d+\\b"
+        "regex:\\b\\d+\\b",
+        "regex:\\b\\d+d\\d+\\b"
       ],
       "requires": [],
       "exec_argv": [

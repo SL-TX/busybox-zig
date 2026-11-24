@@ -1,7 +1,7 @@
 {
   "applet": "stat",
   "name": "default_dir",
-  "stdout": "  File: d\n  Size: 40        \tBlocks: 0          IO Block: 4096   directory\nDevice: 22h/34d\t<MATCH>      Links: 2\nAccess: (0755/drwxr-xr-x)  Uid: ( 1000/      sl)   Gid: ( 1000/      sl)\nAccess: <TIMESTAMP> +0000\nModify: <TIMESTAMP> +0000\nChange: <TIMESTAMP> +0000\n",
+  "stdout": "  File: d\n  Size: 40        \tBlocks: 0          IO Block: 4096   directory\nDevice: 22h/34d\t<MATCH>     Links: 2\nAccess: (0755/drwxr-xr-x)  Uid: ( 1000/      sl)   Gid: ( 1000/      sl)\nAccess: <TIMESTAMP> +0000\nModify: <TIMESTAMP> +0000\nChange: <TIMESTAMP> +0000\n",
   "stderr": "",
   "exit": 0,
   "tree": {

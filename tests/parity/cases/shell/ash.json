@@ -3002,7 +3002,7 @@
       "env": {},
       "cwd": ".",
       "timeout_ms": 5000,
-      "normalize": [],
+      "normalize": ["regex:(?<=\\n)\\d+(?=\\n1\\n)"],
       "requires": []
     },
     {

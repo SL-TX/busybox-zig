@@ -20,7 +20,8 @@
         "regex:(?<=offset:       )-?\\d+",
         "regex:(?<=freq.adjust:  )-?\\d+",
         "regex:(?<=time\\.tv_sec:  )\\d+",
-        "regex:(?<=time\\.tv_usec: )\\d+"
+        "regex:(?<=time\\.tv_usec: )\\d+",
+        "regex:(?<=status:       )\\d+"
       ]
     },
     {

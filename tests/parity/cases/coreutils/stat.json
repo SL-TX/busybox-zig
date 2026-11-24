@@ -223,7 +223,7 @@
       "normalize": [
         "timestamp",
         "regex:\\.\\d{9}",
-        "regex:Inode: \\d+"
+        "regex:Inode: +\\d+"
       ],
       "requires": []
     },
@@ -244,7 +244,7 @@
       "normalize": [
         "timestamp",
         "regex:\\.\\d{9}",
-        "regex:Inode: \\d+"
+        "regex:Inode: +\\d+"
       ],
       "requires": []
     },
@@ -267,7 +267,7 @@
       "normalize": [
         "timestamp",
         "regex:\\.\\d{9}",
-        "regex:Inode: \\d+"
+        "regex:Inode: +\\d+"
       ],
       "requires": []
     },

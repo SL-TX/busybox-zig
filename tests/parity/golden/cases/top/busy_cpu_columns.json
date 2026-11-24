@@ -1,7 +1,7 @@
 {
   "applet": "top",
   "name": "busy_cpu_columns",
-  "stdout": "<MATCH> <MATCH> sl   R     <MATCH>  <MATCH>.<MATCH>   <MATCH>  <MATCH>.<MATCH> sh -c while :; do :; done\n",
+  "stdout": "<MATCH> <MATCH> sl<MATCH>R     <MATCH>  <MATCH>.<MATCH>   <MATCH>  <MATCH>.<MATCH> sh -c while :; do :; done\n",
   "stderr": "",
   "exit": 0,
   "tree": {

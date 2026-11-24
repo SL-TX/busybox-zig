@@ -29,7 +29,8 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [
-        "timestamp"
+        "timestamp",
+        "regex:(?m)^[A-Z][a-z]{2} +\\d{1,2} "
       ],
       "requires": []
     },

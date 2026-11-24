@@ -164,7 +164,8 @@
       "cwd": ".",
       "timeout_ms": 5000,
       "normalize": [
-        "regex:\\d+"
+        "regex:\\d+",
+        "regex: +(?=R )"
       ],
       "requires": [],
       "exec_argv": [

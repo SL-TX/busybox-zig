@@ -133,8 +133,12 @@ fn installDir(location: []const u8) []const u8 {
 
 fn reportLinkError(path: []const u8, errno: linux.E, err: anytype) void {
     if (errno == .EXIST) return;
-    err.writeAll("busybox: cannot create link ");
+    // Reference install_links() calls bb_simple_perror_msg(fpc), which prints
+    // "busybox: <path>: <strerror>\n" — not a custom "cannot create link" text.
+    err.writeAll("busybox: ");
     err.writeAll(path);
+    err.writeAll(": ");
+    err.writeAll(libbb_zig.messages.strerror(@intFromEnum(errno)));
     err.writeAll("\n");
 }
 

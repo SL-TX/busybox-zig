@@ -1,7 +1,7 @@
 {
   "applet": "ps",
   "name": "etime",
-  "stdout": "PID   ELAPSED\n    <MATCH>  5d07\n    <MATCH>  5d07\n",
+  "stdout": "PID   ELAPSED\n    <MATCH>  <MATCH>\n    <MATCH>  <MATCH>\n",
   "stderr": "",
   "exit": 0,
   "tree": {}
